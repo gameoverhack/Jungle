@@ -16,21 +16,28 @@ void AppController::setup() {
 	LOG_NOTICE("Initialising");
 	// TODO: move to DataController class
 	// for now just make one new sequence in 1 Scene
-	Sequence * newSequence = new Sequence();
-	newSequence->_name = "someSeqName";
-	newSequence->_victimResult = "someOtherSeqNameA";
-	newSequence->_attackerResult = "someOtherSeqNameB";
 	
-	newSequence->_sequenceVideo.loadMovie("/Users/ollie/Source/of_62_osx/apps/stranger_danger_artifacts/t_seq_01_all_alpha_embedded2.mov");
+	/* make scene one */
+	Scene * newScene = new Scene();
+	newScene->setName("MyScene1");
+	newScene->setNumOfSequences(1);
 	
-	loadVector(ofToDataPath("Tw Seq01_sg1_transform.bin"), newSequence->_atk1Transforms);
-	loadVector(ofToDataPath("Tw Seq01_sg2_transform.bin"), newSequence->_atk2Transforms);
-	loadVector(ofToDataPath("Tw Seq01_mm_transform.bin"), newSequence->_vicTransforms);
+	/* make sequence one */
+	Sequence * newSequence = new Sequence("someSeqName");
+	
+	/* set insert sequence into scene */
+	newScene->setSequence(newSequence->getName(), newSequence);
+	/* set current sequence */
+	newScene->setCurrentSequence(newSequence->getName());
+	
+	_appModel->setScene(newScene->getName(), newScene);
+	
+	_appModel->setCurrentScene(newScene->getName());
 	
 	// etc
 	
-	_appModel->setSequence(newSequence, 0);
-	_appModel->setCurrentSequence("someSeqName", 0);		// should this be broken into setScene and setSequence??? This seems ok for now..
+//	_appModel->setSequence(newSequence, 0);
+//	_appModel->setCurrentSequence("someSeqName", 0);		// should this be broken into setScene and setSequence??? This seems ok for now..
 	_appModel->getCurrentSequence()->_sequenceVideo.play();	// i guess the model could handle this but safer to make it explicit...
 	
 
@@ -46,18 +53,18 @@ void AppController::setup() {
 	cout << _appModel->getAllPropsAsList() << endl;
 	
 	_appView = new AppView(1280, 720);
-	LOG_NOTICE("Initialised");
+	LOG_NOTICE("Initialisation complete");
 	
 }
 
 // TODO: move to DataController class
-void AppController::loadVector(string filePath, vector< CamTransform > & vec) {
-	LOG_NOTICE(("Loading Vector: " + filePath));
+//void AppController::loadVector(string filePath, vector< CamTransform > & vec) {
+//	LOG_NOTICE(("Loading Vector: " + filePath));
 //	cout << "Loading vec: " << filePath << endl;
-	std::ifstream ifs(filePath.c_str());
-	boost::archive::text_iarchive ia(ifs);
-	ia >> vec;	
-}
+//	std::ifstream ifs(filePath.c_str());
+//	boost::archive::text_iarchive ia(ifs);
+//	ia >> vec;	
+//}
 
 //--------------------------------------------------------------
 void AppController::update() {

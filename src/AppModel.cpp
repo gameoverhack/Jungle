@@ -9,26 +9,51 @@
 
 #include "AppModel.h"
 
-void AppModel::setSequence(Sequence * newSequence, int inSceneIndex) {
-	assert(inSceneIndex < NUM_SCENES);								// make sure we're not requesting out of range
-	_scenes[inSceneIndex][newSequence->_name] = newSequence;
+void AppModel::setScene(string sceneName, Scene * scene){
+	_scenes.insert(pair<string, Scene *>(sceneName, scene));
 }
 
-Sequence * AppModel::getSequence(string sequenceName, int inSceneIndex) {
-	assert(inSceneIndex < NUM_SCENES);								// make sure we're not requesting out of range
-	assert(_scenes[inSceneIndex].count(sequenceName) != 0);			// make sure sequence is in the scene
-	return _scenes[inSceneIndex][sequenceName];
+bool AppModel::setCurrentScene(string sceneName){
+	
+	map<string, Scene *>::iterator iter;
+	for ( iter=_scenes.begin() ; iter != _scenes.end(); iter++ )
+		cout << (*iter).first << " => " << (*iter).second << endl;
+	
+	iter = _scenes.find(sceneName);
+	if(iter != _scenes.end()){
+		_currentScene = iter->second; /* TODO: DO we have to dereference this? TEST IT. */
+		LOG_NOTICE("Set current scene to " + sceneName);
+		return true;
+	}
+	else{
+		LOG_ERROR("Unable to set current scene to '" + sceneName + "' because its not in the map");
+	}
+	return false;
 }
 
-void AppModel::setCurrentSequence(string sequenceName, int inSceneIndex) {
-	assert(inSceneIndex < NUM_SCENES);								// make sure we're not requesting out of range
-	assert(_scenes[inSceneIndex].count(sequenceName) != 0);			// make sure sequence is in the scene
-	_currentSequence = _scenes[inSceneIndex][sequenceName];
-}
+//void AppModel::setSequence(Sequence * newSequence, int inSceneIndex) {
+//	assert(inSceneIndex < NUM_SCENES);								// make sure we're not requesting out of range
+//	_scenes[inSceneIndex][newSequence->_name] = newSequence;
+//}
+//
+//Sequence * AppModel::getSequence(string sequenceName, int inSceneIndex) {
+//	assert(inSceneIndex < NUM_SCENES);								// make sure we're not requesting out of range
+//	assert(_scenes[inSceneIndex].count(sequenceName) != 0);			// make sure sequence is in the scene
+//	return _scenes[inSceneIndex][sequenceName];
+//}
+//
+//void AppModel::setCurrentSequence(string sequenceName, int inSceneIndex) {
+//	assert(inSceneIndex < NUM_SCENES);								// make sure we're not requesting out of range
+//	assert(_scenes[inSceneIndex].count(sequenceName) != 0);			// make sure sequence is in the scene
+//	_currentSequence = _scenes[inSceneIndex][sequenceName];
+//}
 
 Sequence * AppModel::getCurrentSequence() {
-	assert(_currentSequence != NULL);							// make sure _currentSequence is set (is this enough?)
-	return _currentSequence;
+	Sequence * seq;
+	assert(_currentScene != NULL); // make sure _currentSequence is set (is this enough?)
+	seq = _currentScene->getCurrentSequence();
+	assert(seq != NULL);
+	return seq;
 }
 
 /********************************************************

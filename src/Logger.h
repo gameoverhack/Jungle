@@ -26,10 +26,10 @@ enum juLogLevel{
 
 #define LOGGER			LoggerSingleton::Instance()
 
-#define LOG(level, str)	LoggerSingleton::Instance()->log(level, typeid(*this).name(), str)
-#define LOG_ERROR(str)	LoggerSingleton::Instance()->log(JU_LOG_ERROR, typeid(*this).name(), str)
-#define LOG_WARNING(str) LoggerSingleton::Instance()->log(JU_LOG_WARNING, typeid(*this).name(), str)
-#define LOG_NOTICE(str)	LoggerSingleton::Instance()->log(JU_LOG_NOTICE, typeid(*this).name(), str)
+#define LOG(level, str)	LoggerSingleton::Instance()->log(level, typeid(*this).name(), (str))
+#define LOG_ERROR(str)	LoggerSingleton::Instance()->log(JU_LOG_ERROR, typeid(*this).name(), (str))
+#define LOG_WARNING(str) LoggerSingleton::Instance()->log(JU_LOG_WARNING, typeid(*this).name(), (str))
+#define LOG_NOTICE(str)	LoggerSingleton::Instance()->log(JU_LOG_NOTICE, typeid(*this).name(), (str))
 
 #define LOG_OPEN_FILE	LoggerSingleton::Instance()->openLogFile
 //#define LOG_CLOSE_FILE	LoggerSingleton::Instance()->closeLogFile()

@@ -20,17 +20,21 @@
 #include <map>
 #include <assert.h>
 
-using namespace std;
+using std::map;
 
 class AppModel {
 
 public:
 	
-	void setCurrentSequence(string sequenceName, int inSceneIndex);
+	void setScene(string name, Scene * scene);
+	bool setCurrentScene(string sceneName);
+
+	/* add these if they are required */
+//	void setCurrentSequence(string sequenceName, int inSceneIndex);
 	Sequence * getCurrentSequence();
 	
-	void setSequence(Sequence * newSequence, int inSceneIndex);
-	Sequence * getSequence(string sequenceName, int inSceneIndex);
+//	void setSequence(Sequence * newSequence, int inSceneIndex);
+//	Sequence * getSequence(string sequenceName, int inSceneIndex);
 	
 	void setProperty(string propName, boost::any propVal);
 	
@@ -50,9 +54,11 @@ private:
 	bool is_char_ptr(const boost::any & operand);
 	
 	map<string, boost::any>				_anyProps;
-	map<string, Sequence*>				_scenes[NUM_SCENES];
+//	map<string, Sequence*>				_scenes[NUM_SCENES];
 	
-	Sequence *							_currentSequence;
+	map<string, Scene *>				_scenes;
+	
+	Scene *							_currentScene;
 	
 protected:
 

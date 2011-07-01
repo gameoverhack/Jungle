@@ -42,7 +42,7 @@ private:
 	
 	bool		isFullScreen;
 	
-	void loadVector(string filePath, vector< CamTransform > & vec);
+	//void loadVector(string filePath, vector< CamTransform > & vec);
 	
 protected:
 	
