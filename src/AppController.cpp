@@ -8,10 +8,12 @@
  */
 
 #include "AppController.h"
+#include "Logger.h"
 
 //--------------------------------------------------------------
 void AppController::setup() {
-	
+	LOGGER->setLogLevel(JU_LOG_NOTICE);
+	LOG(JU_LOG_NOTICE, "Setup begin");
 	// TODO: move to DataController class
 	// for now just make one new sequence in 1 Scene
 	Sequence * newSequence = new Sequence();
@@ -44,6 +46,7 @@ void AppController::setup() {
 	cout << _appModel->getAllPropsAsList() << endl;
 	
 	_appView = new AppView(1280, 720);
+//	LOG(JU_LOG_NOTICE, "Setup end");
 	
 }
 
