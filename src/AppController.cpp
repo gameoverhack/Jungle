@@ -13,7 +13,7 @@
 //--------------------------------------------------------------
 void AppController::setup() {
 	LOGGER->setLogLevel(JU_LOG_NOTICE);
-	LOG(JU_LOG_NOTICE, "Setup begin");
+	LOG_NOTICE("Initialising");
 	// TODO: move to DataController class
 	// for now just make one new sequence in 1 Scene
 	Sequence * newSequence = new Sequence();
@@ -46,13 +46,14 @@ void AppController::setup() {
 	cout << _appModel->getAllPropsAsList() << endl;
 	
 	_appView = new AppView(1280, 720);
-//	LOG(JU_LOG_NOTICE, "Setup end");
+	LOG_NOTICE("Initialised");
 	
 }
 
 // TODO: move to DataController class
 void AppController::loadVector(string filePath, vector< CamTransform > & vec) {
-	cout << "Loading vec: " << filePath << endl;
+	LOG_NOTICE(("Loading Vector: " + filePath));
+//	cout << "Loading vec: " << filePath << endl;
 	std::ifstream ifs(filePath.c_str());
 	boost::archive::text_iarchive ia(ifs);
 	ia >> vec;	
@@ -60,12 +61,13 @@ void AppController::loadVector(string filePath, vector< CamTransform > & vec) {
 
 //--------------------------------------------------------------
 void AppController::update() {
+//	LOG_NOTICE("Updaing");
 	_appView->update();
 }
 
 //--------------------------------------------------------------
 void AppController::draw() {
-	
+//	LOG_NOTICE("Drawing");
 	ofSetColor(255, 255, 255, 255);
 	_appView->draw();
 	

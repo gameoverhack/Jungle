@@ -40,11 +40,9 @@ bool Logger::closeLogFile()
 //--------------------------------------------------------------
 void Logger::log(juLogLevel l, string objectName, string _msg)
 {	
-	printf("L: %d, LogLevel: %d\n", l, _logLevel);
 	if(l < _logLevel){
 		return;
-	}
-	
+	}	
 	stringstream outstring;
 	outstring << "[" << gettimestamp() << "]: " << objectName << ":: " << _msg.c_str() << "\n";
     if(!_toFile)
