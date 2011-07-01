@@ -14,11 +14,7 @@ void AppModel::setScene(string sceneName, Scene * scene){
 }
 
 bool AppModel::setCurrentScene(string sceneName){
-	
 	map<string, Scene *>::iterator iter;
-	for ( iter=_scenes.begin() ; iter != _scenes.end(); iter++ )
-		cout << (*iter).first << " => " << (*iter).second << endl;
-	
 	iter = _scenes.find(sceneName);
 	if(iter != _scenes.end()){
 		_currentScene = iter->second; /* TODO: DO we have to dereference this? TEST IT. */

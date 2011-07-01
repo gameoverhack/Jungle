@@ -44,7 +44,7 @@ void Logger::log(juLogLevel l, string objectName, string _msg)
 		return;
 	}	
 	stringstream outstring;
-	outstring << "[" << gettimestamp() << "]: " << objectName << ":: " << _msg.c_str() << "\n";
+	outstring << "[" << gettimestamp() << "]: " << getLogLevelName(l) << ": " << objectName << ":: " << _msg.c_str() << "\n";
     if(!_toFile)
     {
         cout << outstring.str();
@@ -54,6 +54,23 @@ void Logger::log(juLogLevel l, string objectName, string _msg)
         cout << outstring.str();
         _logFile << outstring.str();
     }
+}
+
+string Logger::getLogLevelName(juLogLevel l){
+	switch(l){
+		case JU_LOG_VERBOSE:
+			return "VERBOSE";
+		case JU_LOG_NOTICE:
+			return "NOTICE ";
+		case JU_LOG_WARNING:
+			return "WARNING";
+		case JU_LOG_ERROR:
+			return "ERROR  ";
+		case JU_LOG_FATAL_ERROR:
+			return "FATAL  ";
+		default:
+			return "UNKOWN_LOG_LEVEL";
+	}
 }
 
 void Logger::setLogLevel(juLogLevel l){

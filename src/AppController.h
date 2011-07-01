@@ -14,7 +14,7 @@
 #include "AppView.h"
 #include "AppModel.h"
 
-#define D _appView
+#include "DataController.h"
 
 class AppController : public ofBaseApp {
 	

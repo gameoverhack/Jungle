@@ -14,6 +14,8 @@
 void AppController::setup() {
 	LOGGER->setLogLevel(JU_LOG_NOTICE);
 	LOG_NOTICE("Initialising");
+	DataController data(ofToDataPath("config.xml"));
+	
 	// TODO: move to DataController class
 	// for now just make one new sequence in 1 Scene
 	
@@ -42,13 +44,13 @@ void AppController::setup() {
 	
 
 	// setup propertie/vars we might want to save using simple/boost::any props on model
-	_appModel->setProperty("shaderBlendRatio", 0.5f);
-	_appModel->setProperty("shaderGammaCorrection", 2.0f);
+//	_appModel->setProperty("shaderBlendRatio", 0.5f);
+//	_appModel->setProperty("shaderGammaCorrection", 2.0f);
 	
-	_appModel->setProperty("shaderVertPath", (string)("vertex"));
-	_appModel->setProperty("shaderFragPath", (string)("multitexturemerge"));
-	
-	_appModel->setProperty("showDebugView", true);
+//	_appModel->setProperty("shaderVertPath", (string)("vertex"));
+//	_appModel->setProperty("shaderFragPath", (string)("multitexturemerge"));
+//	
+//	_appModel->setProperty("showDebugView", true);
 	
 	cout << _appModel->getAllPropsAsList() << endl;
 	

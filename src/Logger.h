@@ -66,7 +66,7 @@ public:
     char 	*gettimestamp();
 	
 	void	setLogLevel(juLogLevel l);
-	
+	string	getLogLevelName(juLogLevel l);
 private:
 	
     ofstream	_logFile;

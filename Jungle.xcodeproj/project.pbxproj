@@ -13,6 +13,7 @@
 		072CF9D713BD864E000DBD67 /* SceneView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 072CF9D213BD864E000DBD67 /* SceneView.cpp */; };
 		072CF9DC13BD8691000DBD67 /* AppController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 072CF9DA13BD8691000DBD67 /* AppController.cpp */; };
 		0754595613BD9C2500325443 /* Logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0754595413BD9C2500325443 /* Logger.cpp */; };
+		07545BA513BDF80200325443 /* DataController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07545BA413BDF80200325443 /* DataController.cpp */; };
 		778072F113BB4547007BAC08 /* ofxAlphaVideoPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7780727E13BB4547007BAC08 /* ofxAlphaVideoPlayer.cpp */; };
 		778072F213BB4547007BAC08 /* ofxQtUtils_alpha.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7780728013BB4547007BAC08 /* ofxQtUtils_alpha.cpp */; };
 		778072F313BB4547007BAC08 /* ofxFbo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7780728413BB4547007BAC08 /* ofxFbo.cpp */; };
@@ -130,6 +131,9 @@
 		0754595413BD9C2500325443 /* Logger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Logger.cpp; sourceTree = "<group>"; };
 		0754595513BD9C2500325443 /* Logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Logger.h; sourceTree = "<group>"; };
 		07545B3813BDF28200325443 /* VectorLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VectorLoader.h; sourceTree = "<group>"; };
+		07545BA313BDF80200325443 /* DataController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataController.h; sourceTree = "<group>"; };
+		07545BA413BDF80200325443 /* DataController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DataController.cpp; sourceTree = "<group>"; };
+		07545BB013BDFD1F00325443 /* config.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = config.xml; path = bin/data/config.xml; sourceTree = SOURCE_ROOT; };
 		7780727E13BB4547007BAC08 /* ofxAlphaVideoPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxAlphaVideoPlayer.cpp; sourceTree = "<group>"; };
 		7780727F13BB4547007BAC08 /* ofxAlphaVideoPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxAlphaVideoPlayer.h; sourceTree = "<group>"; };
 		7780728013BB4547007BAC08 /* ofxQtUtils_alpha.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxQtUtils_alpha.cpp; sourceTree = "<group>"; };
@@ -297,6 +301,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		07545BA713BDFCFC00325443 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				07545BB013BDFD1F00325443 /* config.xml */,
+			);
+			name = Config;
+			sourceTree = "<group>";
+		};
 		7780727D13BB4547007BAC08 /* ofxAlphaVideoPlayer */ = {
 			isa = PBXGroup;
 			children = (
@@ -649,6 +661,8 @@
 			children = (
 				072CF9DA13BD8691000DBD67 /* AppController.cpp */,
 				072CF9DB13BD8691000DBD67 /* AppController.h */,
+				07545BA313BDF80200325443 /* DataController.h */,
+				07545BA413BDF80200325443 /* DataController.cpp */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -912,6 +926,7 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				07545BA713BDFCFC00325443 /* Config */,
 				778076C713BC2F9E007BAC08 /* Shaders */,
 				7780737B13BB65C9007BAC08 /* Utilities */,
 				7780731313BB4592007BAC08 /* Views */,
@@ -1129,6 +1144,7 @@
 				072CF9D713BD864E000DBD67 /* SceneView.cpp in Sources */,
 				072CF9DC13BD8691000DBD67 /* AppController.cpp in Sources */,
 				0754595613BD9C2500325443 /* Logger.cpp in Sources */,
+				07545BA513BDF80200325443 /* DataController.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

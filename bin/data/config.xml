@@ -1,0 +1,25 @@
+<?xml version="1.0" standalone=no>
+<config>
+	<properties>
+		<!-- Could just have <prop type="x" value="y"/>, makes reading values a bit cleaner -->
+		<movieDataPath type="string">/some/path/to/some/place</movieDataPath>
+
+		<shaderVertPath type="string">vertex</shaderVertPath>
+		<shaderFragPath type="string">multitexturemerge</shaderFragPath>
+		<shaderGammaCorrection type="float">2.0</shaderGammaCorrection>
+		<shaderBlendRatio type="float">0.5</shaderBlendRatio>
+
+		<!-- probably would have video width + app width? -->
+		<width type="float">1280</width>
+		<height type="float">720</height>
+		
+		<showDebugView type="bool">true</showDebugView>
+		
+	</properties>
+	<scenes>
+		<scene name="MyScene1" >
+			<!-- we only need this for the number of actors really... Could just guess the name and poke for the number of files -->
+			<sequence name="Seq01" actors="3"/>
+		</scene>
+	</scenes>
+</config>
