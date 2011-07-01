@@ -12,23 +12,31 @@
 
 DataController::DataController(string configFilePath){
 	LOG_NOTICE("Initialising with " + configFilePath);
+
 	/* try to open the file */
-	TiXmlDocument xmldoc(configFilePath);
-	TiXmlElement *el;
-	string propName, propValue, propType;
-	
-	if(!xmldoc.LoadFile()){ /* Capital letter method names wat. */
+	_xmldoc = new TiXmlDocument(configFilePath);	
+	if(!_xmldoc->LoadFile()){ /* Capital letter method names wat. */
 		LOG_ERROR("Could not load config: " + configFilePath);
 		/*
-			Not sure how we should be failing here, no global quit method in the app
-			Don't want to assert because we want to log the failure.
+		 Not sure how we should be failing here, no global quit method in the app
+		 Don't want to assert because we want to log the failure.
 		 */
 		abort();
 	}
-	/* loaded the document */
+	
+	loadAppProperties(configFilePath);
+	loadSceneData(configFilePath);
+	LOG_NOTICE("Initialisation complete");
+	
+}
+
+void DataController::loadAppProperties(string fs){
+	TiXmlElement *el;	
+	string propName, propValue, propType;
+
 	/* find the properties node */
 	LOG_NOTICE("Discovering properties");
-	el = xmldoc.RootElement()->FirstChildElement("properties");
+	el = _xmldoc->RootElement()->FirstChildElement("properties");
 	for(TiXmlElement *prop = el->FirstChildElement(); prop; prop = prop->NextSiblingElement()){
 		LOG_NOTICE("Reading property: " + string(prop->Value())  +
 				   "(" + string(prop->Attribute("type")) +
@@ -36,7 +44,7 @@ DataController::DataController(string configFilePath){
 		propName = string(prop->Value());
 		propType = string(prop->Attribute("type"));
 		propValue = string(prop->FirstChild()->Value());
-
+		
 		if(propType == "float"){
 			_appModel->setProperty(propName, strtof(propValue.c_str(), NULL));
 		}
@@ -53,14 +61,95 @@ DataController::DataController(string configFilePath){
 			LOG_WARNING("Could not set property: " + propName + ", unkown type: " + propType);
 		}
 	}
-	LOG_NOTICE("Initialisation complete");
+}
+
+void DataController::loadSceneData(string filePath){
+	TiXmlElement *el;
+	Scene *scene;
+	Sequence *sequence;
+	vector<CamTransform> *transform;
+	string transformFilename;
+	
+	LOG_NOTICE("Loading scene data");
+	
+	/* find the scenes */
+	el = _xmldoc->RootElement()->FirstChildElement("scenes");
+	for(TiXmlElement *sceneEl = el->FirstChildElement("scene");
+			sceneEl; sceneEl = sceneEl->NextSiblingElement()){
+		/* make new scene */
+		scene = new Scene();
+		/* try to get attribute */
+		if(!sceneEl->Attribute("name")){
+			LOG_ERROR("Could not set scene name, no name? ");
+			delete scene;
+			continue;
+		}
+		/* save name */
+		scene->setName(sceneEl->Attribute("name"));
+		/* find the children of the scene node (ie: sequences) */
+		bool hasSetCurrentSequence, hasSetCurrentScene;
+		for(TiXmlElement *seqEl = sceneEl->FirstChildElement("sequence");
+				seqEl; seqEl = seqEl->NextSiblingElement("sequence")){
+			sequence = new Sequence();
+			sequence->setName(seqEl->Attribute("name"));
+			sequence->setVictimResult(seqEl->Attribute("victimResult"));
+			sequence->setAttackerResult(seqEl->Attribute("attackerResult"));
+			/* find the transforms */
+			for(TiXmlElement *transEl = seqEl->FirstChildElement("transform");
+					transEl; transEl = transEl->NextSiblingElement("transform")){
+				transform = new vector<CamTransform>();
+				if(!loadVector<CamTransform>(ofToDataPath(transEl->Attribute("filename")), transform)){
+					delete transform;
+					continue;
+				}
+				/* insert transform into sequence vector */
+				sequence->addTransform(*transform);
+			}
+			/* made the sequence, insert it into scene */
+			scene->setSequence(sequence->getName(), sequence);
+			if(!hasSetCurrentSequence){
+				scene->setCurrentSequence(sequence->getName());
+			}
+		}
+		_appModel->setScene(scene->getName(), scene);
+		if(!hasSetCurrentScene){
+			_appModel->setCurrentScene(scene->getName());
+		}
+	}
+	
+	_appModel->getCurrentSequence()->_sequenceVideo.loadMovie("/Users/ollie/Source/of_62_osx/apps/stranger_danger_artifacts/t_seq_01_all_alpha_embedded2.mov");
+	_appModel->getCurrentSequence()->_sequenceVideo.play();
+	
+	
+	/* make scene one */
+//	Scene * newScene = new Scene();
+//	newScene->setName("MyScene1");
+//	newScene->setNumOfSequences(1);
+//	
+//	/* make sequence one */
+//	Sequence * newSequence = new Sequence("someSeqName");
+//	
+//	/* set insert sequence into scene */
+//	newScene->setSequence(newSequence->getName(), newSequence);
+//	/* set current sequence */
+//	newScene->setCurrentSequence(newSequence->getName());
+//	
+//	_appModel->setScene(newScene->getName(), newScene);
+//	
+//	_appModel->setCurrentScene(newScene->getName());
 	
 }
 
 template <class vectorType>
-void DataController::loadVector(string filePath, vector< vectorType > & vec) {
+bool DataController::loadVector(string filePath, vector< vectorType > * vec) {
+	LOG_NOTICE("Load: " + filePath);
 	ofLog(OF_LOG_VERBOSE, ("LoadVector: " + filePath));
 	std::ifstream ifs(filePath.c_str());
+	if(ifs.fail()){
+		LOG_ERROR("Could not load " + filePath);
+		abort(); /* Could be a bit over zealous */
+	}
     boost::archive::text_iarchive ia(ifs);
-    ia >> vec;	
+    ia >> (*vec);
+	return true;
 }

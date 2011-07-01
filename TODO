@@ -1,0 +1,15 @@
+- Parsing in DataController needs a bit more error checking when converting from xml values to model values. [ollie?]
+- SceneView does not perform a glRotate. [ollie]
+- SceneView update needs to be smarter with regards to whether there are 2 attackers or not.
+- DataModel deconstructor
+	- DataModel owns all the pointers to scene/sequence stuff.
+- Where to call sequence.loadMovie?
+	- in datacontroller when creating sequence?
+	- call movie.play() in setCurrentSequence()
+	- sequence movie and loop movie xml data
+- xml movie datapath
+	- relative to OF data path or absolute paths?
+	- Can set a switch for that?
+		- adds cruft properties to the model, better to just pick one or the other
+		- I think OF data path.
+	- Should guess movie paths in DataController from scene and sequence name.

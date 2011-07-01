@@ -48,21 +48,11 @@ public:
 };
 
 
-#include "VectorLoader.h"
-
 class Sequence {
 
 public:
 	
-	Sequence(string name){
-		_name = name;
-		LOG_NOTICE("Initialising with name: " + name);
-		_victimResult = _name+"b";
-		_attackerResult = _name+"a";
-		_sequenceVideo.loadMovie("/Users/ollie/Source/of_62_osx/apps/stranger_danger_artifacts/t_seq_01_all_alpha_embedded2.mov");
-		loadVector<CamTransform>(ofToDataPath("Tw Seq01_sg1_transform.bin"), _atk1Transforms);
-		loadVector<CamTransform>(ofToDataPath("Tw Seq01_sg2_transform.bin"), _atk2Transforms);
-		loadVector<CamTransform>(ofToDataPath("Tw Seq01_mm_transform.bin"), _vicTransforms);
+	Sequence(){
 		
 	};	// TODO: make constructor or is it too verbose?
 	~Sequence(){printf("Destructing sequence %s\n", _name.c_str());};	// TODO: clean up?
@@ -87,6 +77,17 @@ public:
 	string getVictimResult(){
 		return _victimResult;
 	}
+	
+	void addTransform(vector<CamTransform> & trans){
+		_transforms.push_back(trans);
+	}
+	
+	vector<CamTransform> getTransformVector(int i){
+		if(i >= 0 && i <= _transforms.size()){
+			LOG_ERROR("Attempted to get transform for " + ofToString(i));
+		}
+		return _transforms.at(i);
+	}
 		
 private:
 	
@@ -97,15 +98,14 @@ private:
 public:
 	ofxAlphaVideoPlayer		_sequenceVideo;
 	ofxAlphaVideoPlayer		_loopVideo;
-
-	//getTransformFor(player)
 	
-	map<string, CamTransform>	_transforms;
-	
-	vector<CamTransform>	_atk1Transforms;
-	vector<CamTransform>	_atk2Transforms;
-	vector<CamTransform>	_vicTransforms;
-	
+	/*
+		wanted to use pointers to avoid copying a vector each push_back
+		but apparently you cant store pointers to templated vectors
+		in a vector
+	*/
+	 
+	vector< vector<CamTransform> > _transforms; 
 };
 
 
@@ -129,10 +129,7 @@ public:
 	};
 	
 	int getNumOfSequences(){
-		return _numOfSequences;
-	}
-	void setNumOfSequences(int num){
-		_numOfSequences = num;
+		return _sequences.size();
 	}
 	
 	string getName(){
@@ -184,9 +181,7 @@ private:
 	
 	string					_name;
 	
-	int						_numOfSequences;
 	Sequence *				_currentSequence;
-	
 	
 	map<string, Sequence*>	_sequences;
 	

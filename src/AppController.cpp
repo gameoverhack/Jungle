@@ -15,58 +15,13 @@ void AppController::setup() {
 	LOGGER->setLogLevel(JU_LOG_NOTICE);
 	LOG_NOTICE("Initialising");
 	DataController data(ofToDataPath("config.xml"));
-	
-	// TODO: move to DataController class
-	// for now just make one new sequence in 1 Scene
-	
-	/* make scene one */
-	Scene * newScene = new Scene();
-	newScene->setName("MyScene1");
-	newScene->setNumOfSequences(1);
-	
-	/* make sequence one */
-	Sequence * newSequence = new Sequence("someSeqName");
-	
-	/* set insert sequence into scene */
-	newScene->setSequence(newSequence->getName(), newSequence);
-	/* set current sequence */
-	newScene->setCurrentSequence(newSequence->getName());
-	
-	_appModel->setScene(newScene->getName(), newScene);
-	
-	_appModel->setCurrentScene(newScene->getName());
-	
-	// etc
-	
-//	_appModel->setSequence(newSequence, 0);
-//	_appModel->setCurrentSequence("someSeqName", 0);		// should this be broken into setScene and setSequence??? This seems ok for now..
-	_appModel->getCurrentSequence()->_sequenceVideo.play();	// i guess the model could handle this but safer to make it explicit...
-	
 
-	// setup propertie/vars we might want to save using simple/boost::any props on model
-//	_appModel->setProperty("shaderBlendRatio", 0.5f);
-//	_appModel->setProperty("shaderGammaCorrection", 2.0f);
-	
-//	_appModel->setProperty("shaderVertPath", (string)("vertex"));
-//	_appModel->setProperty("shaderFragPath", (string)("multitexturemerge"));
-//	
-//	_appModel->setProperty("showDebugView", true);
-	
 	cout << _appModel->getAllPropsAsList() << endl;
 	
 	_appView = new AppView(1280, 720);
 	LOG_NOTICE("Initialisation complete");
 	
 }
-
-// TODO: move to DataController class
-//void AppController::loadVector(string filePath, vector< CamTransform > & vec) {
-//	LOG_NOTICE(("Loading Vector: " + filePath));
-//	cout << "Loading vec: " << filePath << endl;
-//	std::ifstream ifs(filePath.c_str());
-//	boost::archive::text_iarchive ia(ifs);
-//	ia >> vec;	
-//}
 
 //--------------------------------------------------------------
 void AppController::update() {

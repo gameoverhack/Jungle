@@ -66,9 +66,10 @@ void SceneView::update() {
 	
 	if(currentSequenceVideo->isFrameNew()){
 		/* draw characters faces to new positions */
-		drawCharacter(&_vicFBO, &_cameraOne, &(_appModel->getCurrentSequence()->_vicTransforms[currentFrame]));
-		drawCharacter(&_atk1FBO, &_cameraTwo, &(_appModel->getCurrentSequence()->_atk1Transforms[currentFrame]));
-		drawCharacter(&_atk2FBO, &_cameraTwo, &(_appModel->getCurrentSequence()->_atk2Transforms[currentFrame]));
+		/* TODO: This needs to be smarter */
+		drawCharacter(&_vicFBO, &_cameraOne, &(_appModel->getCurrentSequence()->getTransformVector(0)[currentFrame]));
+		drawCharacter(&_atk1FBO, &_cameraTwo, &(_appModel->getCurrentSequence()->getTransformVector(1)[currentFrame]));
+		drawCharacter(&_atk2FBO, &_cameraTwo, &(_appModel->getCurrentSequence()->getTransformVector(2)[currentFrame]));
 	}
 	
 	_viewFBO.begin();

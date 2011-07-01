@@ -15,10 +15,14 @@
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
 
+#include <string>
+using std::string;
+
 #include "tinyxml.h"
 
 #include "Logger.h"
 #include "AppModel.h"
+#include "AppDataTypes.h"
 
 class DataController {
 
@@ -26,8 +30,15 @@ public:
 	DataController(string configFilePath);
 //	~DataController();
 	
+	void loadAppProperties(string fs);
+	void loadSceneData(string filePath);
+
 	template<class vectorType>
-	void loadVector(string filePath, vector<vectorType> & vec);
+	bool loadVector(string filePath, vector<vectorType> * vec);
+	
+private :
+	
+	TiXmlDocument *_xmldoc;
 	
 };
 

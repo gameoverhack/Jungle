@@ -17,9 +17,14 @@
 		
 	</properties>
 	<scenes>
-		<scene name="MyScene1" >
+		<scene name="MyScene1">
 			<!-- we only need this for the number of actors really... Could just guess the name and poke for the number of files -->
-			<sequence name="Seq01" actors="3"/>
+			<sequence name="Seq01" attackerResult="atkresult" victimResult="vicResult">
+				<movies sequenceMovie="somemove.mov" loopMovie="looper"/>
+				<transform filename="Tw Seq01_mm_transform.bin"/>
+				<transform filename="Tw Seq01_sg1_transform.bin"/>
+				<transform filename="Tw Seq01_sg2_transform.bin"/>
+			</sequence>
 		</scene>
 	</scenes>
 </config>
