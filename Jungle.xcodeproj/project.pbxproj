@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		072CF9D413BD864E000DBD67 /* AppView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 072CF9CC13BD864E000DBD67 /* AppView.cpp */; };
+		072CF9D513BD864E000DBD67 /* BaseView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 072CF9CE13BD864E000DBD67 /* BaseView.cpp */; };
+		072CF9D613BD864E000DBD67 /* DebugView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 072CF9D013BD864E000DBD67 /* DebugView.cpp */; };
+		072CF9D713BD864E000DBD67 /* SceneView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 072CF9D213BD864E000DBD67 /* SceneView.cpp */; };
+		072CF9DC13BD8691000DBD67 /* AppController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 072CF9DA13BD8691000DBD67 /* AppController.cpp */; };
 		778072F113BB4547007BAC08 /* ofxAlphaVideoPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7780727E13BB4547007BAC08 /* ofxAlphaVideoPlayer.cpp */; };
 		778072F213BB4547007BAC08 /* ofxQtUtils_alpha.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7780728013BB4547007BAC08 /* ofxQtUtils_alpha.cpp */; };
 		778072F313BB4547007BAC08 /* ofxFbo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7780728413BB4547007BAC08 /* ofxFbo.cpp */; };
@@ -36,10 +41,6 @@
 		7780730B13BB4547007BAC08 /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 778072EC13BB4547007BAC08 /* tinyxmlerror.cpp */; };
 		7780730C13BB4547007BAC08 /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 778072ED13BB4547007BAC08 /* tinyxmlparser.cpp */; };
 		7780730D13BB4547007BAC08 /* ofxXmlSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 778072EF13BB4547007BAC08 /* ofxXmlSettings.cpp */; };
-		7780731A13BB460B007BAC08 /* AppController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7780731913BB460B007BAC08 /* AppController.cpp */; };
-		7780731D13BB46DF007BAC08 /* AppView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7780731C13BB46DF007BAC08 /* AppView.cpp */; };
-		7780732013BB46F5007BAC08 /* BaseView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7780731F13BB46F5007BAC08 /* BaseView.cpp */; };
-		7780732413BB4ACA007BAC08 /* SceneView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7780732313BB4ACA007BAC08 /* SceneView.cpp */; };
 		7780732713BB4C1E007BAC08 /* AppModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7780732613BB4C1E007BAC08 /* AppModel.cpp */; };
 		778076CD13BC2FAF007BAC08 /* alphamerge.frag in Sources */ = {isa = PBXBuildFile; fileRef = 778076C913BC2FAF007BAC08 /* alphamerge.frag */; };
 		778076CE13BC2FAF007BAC08 /* decomposite.frag in Sources */ = {isa = PBXBuildFile; fileRef = 778076CA13BC2FAF007BAC08 /* decomposite.frag */; };
@@ -115,6 +116,16 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		072CF9CC13BD864E000DBD67 /* AppView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AppView.cpp; sourceTree = "<group>"; };
+		072CF9CD13BD864E000DBD67 /* AppView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppView.h; sourceTree = "<group>"; };
+		072CF9CE13BD864E000DBD67 /* BaseView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BaseView.cpp; sourceTree = "<group>"; };
+		072CF9CF13BD864E000DBD67 /* BaseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseView.h; sourceTree = "<group>"; };
+		072CF9D013BD864E000DBD67 /* DebugView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DebugView.cpp; sourceTree = "<group>"; };
+		072CF9D113BD864E000DBD67 /* DebugView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugView.h; sourceTree = "<group>"; };
+		072CF9D213BD864E000DBD67 /* SceneView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneView.cpp; sourceTree = "<group>"; };
+		072CF9D313BD864E000DBD67 /* SceneView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneView.h; sourceTree = "<group>"; };
+		072CF9DA13BD8691000DBD67 /* AppController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AppController.cpp; sourceTree = "<group>"; };
+		072CF9DB13BD8691000DBD67 /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
 		7780727E13BB4547007BAC08 /* ofxAlphaVideoPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxAlphaVideoPlayer.cpp; sourceTree = "<group>"; };
 		7780727F13BB4547007BAC08 /* ofxAlphaVideoPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxAlphaVideoPlayer.h; sourceTree = "<group>"; };
 		7780728013BB4547007BAC08 /* ofxQtUtils_alpha.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxQtUtils_alpha.cpp; sourceTree = "<group>"; };
@@ -198,14 +209,6 @@
 		778072ED13BB4547007BAC08 /* tinyxmlparser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlparser.cpp; sourceTree = "<group>"; };
 		778072EF13BB4547007BAC08 /* ofxXmlSettings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxXmlSettings.cpp; sourceTree = "<group>"; };
 		778072F013BB4547007BAC08 /* ofxXmlSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxXmlSettings.h; sourceTree = "<group>"; };
-		7780731813BB460B007BAC08 /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
-		7780731913BB460B007BAC08 /* AppController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AppController.cpp; sourceTree = "<group>"; };
-		7780731B13BB46DF007BAC08 /* AppView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppView.h; sourceTree = "<group>"; };
-		7780731C13BB46DF007BAC08 /* AppView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AppView.cpp; sourceTree = "<group>"; };
-		7780731E13BB46F5007BAC08 /* BaseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseView.h; sourceTree = "<group>"; };
-		7780731F13BB46F5007BAC08 /* BaseView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BaseView.cpp; sourceTree = "<group>"; };
-		7780732213BB4ACA007BAC08 /* SceneView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneView.h; sourceTree = "<group>"; };
-		7780732313BB4ACA007BAC08 /* SceneView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneView.cpp; sourceTree = "<group>"; };
 		7780732513BB4C1E007BAC08 /* AppModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppModel.h; sourceTree = "<group>"; };
 		7780732613BB4C1E007BAC08 /* AppModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AppModel.cpp; sourceTree = "<group>"; };
 		778074E613BB81EC007BAC08 /* AppDataTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDataTypes.h; sourceTree = "<group>"; };
@@ -640,8 +643,8 @@
 		7780731113BB4584007BAC08 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				7780731813BB460B007BAC08 /* AppController.h */,
-				7780731913BB460B007BAC08 /* AppController.cpp */,
+				072CF9DA13BD8691000DBD67 /* AppController.cpp */,
+				072CF9DB13BD8691000DBD67 /* AppController.h */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -659,12 +662,14 @@
 		7780731313BB4592007BAC08 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				7780731B13BB46DF007BAC08 /* AppView.h */,
-				7780731C13BB46DF007BAC08 /* AppView.cpp */,
-				7780731E13BB46F5007BAC08 /* BaseView.h */,
-				7780731F13BB46F5007BAC08 /* BaseView.cpp */,
-				7780732213BB4ACA007BAC08 /* SceneView.h */,
-				7780732313BB4ACA007BAC08 /* SceneView.cpp */,
+				072CF9CC13BD864E000DBD67 /* AppView.cpp */,
+				072CF9CD13BD864E000DBD67 /* AppView.h */,
+				072CF9CE13BD864E000DBD67 /* BaseView.cpp */,
+				072CF9CF13BD864E000DBD67 /* BaseView.h */,
+				072CF9D013BD864E000DBD67 /* DebugView.cpp */,
+				072CF9D113BD864E000DBD67 /* DebugView.h */,
+				072CF9D213BD864E000DBD67 /* SceneView.cpp */,
+				072CF9D313BD864E000DBD67 /* SceneView.h */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1106,15 +1111,16 @@
 				7780730B13BB4547007BAC08 /* tinyxmlerror.cpp in Sources */,
 				7780730C13BB4547007BAC08 /* tinyxmlparser.cpp in Sources */,
 				7780730D13BB4547007BAC08 /* ofxXmlSettings.cpp in Sources */,
-				7780731A13BB460B007BAC08 /* AppController.cpp in Sources */,
-				7780731D13BB46DF007BAC08 /* AppView.cpp in Sources */,
-				7780732013BB46F5007BAC08 /* BaseView.cpp in Sources */,
-				7780732413BB4ACA007BAC08 /* SceneView.cpp in Sources */,
 				7780732713BB4C1E007BAC08 /* AppModel.cpp in Sources */,
 				778076CD13BC2FAF007BAC08 /* alphamerge.frag in Sources */,
 				778076CE13BC2FAF007BAC08 /* decomposite.frag in Sources */,
 				778076CF13BC2FAF007BAC08 /* multitexturemerge.frag in Sources */,
 				778076D013BC2FAF007BAC08 /* vertex.vert in Sources */,
+				072CF9D413BD864E000DBD67 /* AppView.cpp in Sources */,
+				072CF9D513BD864E000DBD67 /* BaseView.cpp in Sources */,
+				072CF9D613BD864E000DBD67 /* DebugView.cpp in Sources */,
+				072CF9D713BD864E000DBD67 /* SceneView.cpp in Sources */,
+				072CF9DC13BD8691000DBD67 /* AppController.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

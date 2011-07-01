@@ -9,7 +9,7 @@
 
 #include "SceneView.h"
 
-SceneView::SceneView(int width, int height) : BaseView(width ,height) {
+SceneView::SceneView(float width, float height) : BaseView(width ,height) {
 	/* Set up cameras */
 
 	/* temp use static images for cam */

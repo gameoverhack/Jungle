@@ -17,10 +17,11 @@ class BaseView {
 
 public:
 	
-	BaseView(int width, int height);	//ctor
+	BaseView(float width, float height);	//ctor
 	~BaseView();						//dtor
 	
 	virtual void update() = 0; /* update view fbo to draw image */
+
 	virtual void draw(); /* draw out the view fbo */
 	virtual void draw(float x, float y);
 	virtual void draw(float x, float y, float width, float height);
@@ -33,7 +34,7 @@ private:
 	
 protected:
 	
-	int			_viewHeight, _viewWidth;
+	float		_viewHeight, _viewWidth;
 	
 	ofxFbo		_viewFBO; /* final output FBO */
 	

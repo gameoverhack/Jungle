@@ -19,7 +19,7 @@ void AppController::setup() {
 	newSequence->_victimResult = "someOtherSeqNameA";
 	newSequence->_attackerResult = "someOtherSeqNameB";
 	
-	newSequence->_sequenceVideo.loadMovie("/Users/gameover/Desktop/StrangerDanger/video/t_seq_01_all_alpha_embedded2.mov");
+	newSequence->_sequenceVideo.loadMovie("/Users/ollie/Source/of_62_osx/apps/stranger_danger_artifacts/t_seq_01_all_alpha_embedded2.mov");
 	
 	loadVector(ofToDataPath("Tw Seq01_sg1_transform.bin"), newSequence->_atk1Transforms);
 	loadVector(ofToDataPath("Tw Seq01_sg2_transform.bin"), newSequence->_atk2Transforms);
@@ -38,6 +38,8 @@ void AppController::setup() {
 	
 	_appModel->setProperty("shaderVertPath", (string)("vertex"));
 	_appModel->setProperty("shaderFragPath", (string)("multitexturemerge"));
+	
+	_appModel->setProperty("showDebugView", true);
 	
 	cout << _appModel->getAllPropsAsList() << endl;
 	
@@ -63,39 +65,37 @@ void AppController::draw() {
 	
 	ofSetColor(255, 255, 255, 255);
 	_appView->draw();
-
-	string msg = "FPS: " + ofToString(ofGetFrameRate()) + "\n";
-	msg += _appModel->getAllPropsAsList();
 	
-	ofSetColor(0, 255, 0, 255);
-	ofDrawBitmapString(msg, 20, 20);
 }
 
 //--------------------------------------------------------------
 void AppController::keyPressed(int key){
 	
-	float gamma;
-	float blend;
+	float gamma = boost::any_cast<float>(_appModel->getProperty("shaderGammaCorrection"));
+	float blend = boost::any_cast<float>(_appModel->getProperty("shaderBlendRatio"));
 	
 	switch (key) {
 		case 'x':
-			gamma = boost::any_cast<float>(_appModel->getProperty("shaderGammaCorrection")) + 0.01;
+			gamma += 0.1;
 			break;
 		case 'z':
-			gamma = boost::any_cast<float>(_appModel->getProperty("shaderGammaCorrection")) - 0.01;
+			gamma -= 0.1;
 			break;
 		case 's':
-			blend = boost::any_cast<float>(_appModel->getProperty("shaderBlendRatio")) + 0.01;
+			blend += 0.1;
 			break;
 		case 'a':
-			blend = boost::any_cast<float>(_appModel->getProperty("shaderBlendRatio")) - 0.01;
+			blend -= 0.1;
 			break;
+		case 'd':
+			_appModel->setProperty("showDebugView", !boost::any_cast<bool>(_appModel->getProperty("showDebugView")));
+			break;			
 		default:
 			break;
 	}
-	
-	_appModel->setProperty("shaderBlendRatio", gamma);
-	_appModel->setProperty("shaderGammaCorrection", blend);
+	printf("Gamma: %f\n", gamma);
+	_appModel->setProperty("shaderBlendRatio", blend);
+	_appModel->setProperty("shaderGammaCorrection", gamma);
 	
 }
 

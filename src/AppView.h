@@ -12,12 +12,13 @@
 
 #include "BaseView.h"
 #include "SceneView.h"
+#include "DebugView.h"
 
 class AppView : public BaseView {
 
 public:
 	
-	AppView(int width, int height);		//ctor
+	AppView(float width, float height);		//ctor
 	//~AppView();						//dtor
 	
 	void update();
@@ -26,6 +27,7 @@ public:
 private:
 	
 	SceneView *_sceneView;
+	DebugView *_debugView;
 	
 protected:
 	

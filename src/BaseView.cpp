@@ -9,7 +9,7 @@
 
 #include "BaseView.h"
 
-BaseView::BaseView(int width, int height) {
+BaseView::BaseView(float width, float height) {
 	/* save parameters */
 	_viewWidth = width;
 	_viewHeight = height;

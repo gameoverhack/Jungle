@@ -17,7 +17,7 @@ class SceneView : public BaseView {
 	
 public:
 	
-	SceneView(int width, int height);	//ctor
+	SceneView(float width, float height);	//ctor
 	//SceneView();						//dtor
 	
 	void update();

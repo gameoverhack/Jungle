@@ -9,12 +9,14 @@
 
 #include "AppView.h"
 
-AppView::AppView(int width, int height) : BaseView(width ,height) {
+AppView::AppView(float width, float height) : BaseView(width ,height) {
 	_sceneView = new SceneView(width, height);
+	_debugView = new DebugView(width, height);
 }
 
 void AppView::update() {
 	_sceneView->update();
+	_debugView->update();
 }
 
 void AppView::draw() {
@@ -26,6 +28,8 @@ void AppView::draw() {
 	/* draw Mic view */
 	/* draw smasher view */
 	/* draw diagnositc view */
-	
+	if(boost::any_cast<bool>(_appModel->getProperty("showDebugView"))){
+		_debugView->draw();
+	}
 }
 
