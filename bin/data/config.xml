@@ -2,7 +2,7 @@
 <config>
 	<properties>
 		<!-- Could just have <prop type="x" value="y"/>, makes reading values a bit cleaner -->
-		<movieDataPath type="string">/some/path/to/some/place</movieDataPath>
+		<movieDataPath type="string">scenes/</movieDataPath>
 
 		<shaderVertPath type="string">vertex</shaderVertPath>
 		<shaderFragPath type="string">multitexturemerge</shaderFragPath>
@@ -17,13 +17,18 @@
 		
 	</properties>
 	<scenes>
-		<scene name="MyScene1">
-			<!-- we only need this for the number of actors really... Could just guess the name and poke for the number of files -->
-			<sequence name="Seq01" attackerResult="atkresult" victimResult="vicResult">
-				<movies sequenceMovie="somemove.mov" loopMovie="looper"/>
-				<transform filename="Tw Seq01_mm_transform.bin"/>
-				<transform filename="Tw Seq01_sg1_transform.bin"/>
-				<transform filename="Tw Seq01_sg2_transform.bin"/>
+		<scene name="tease">
+			<sequence name="seq01" attackerResult="seq02a" victimResult="seq01b">
+				<sequenceMovie filename="t_seq01.mov">
+					<transform filename="t_seq01_vic_transform.bin"/>
+					<transform filename="t_seq01_atk1_transform.bin"/>
+					<transform filename="t_seq01_atk2_transform.bin"/>
+				</sequenceMovie>
+				<loopMovie filename="t_seq01_loop.mov">
+					<transform filename="t_seq01_vic_transform.bin"/>
+					<transform filename="t_seq01_atk1_transform.bin"/>
+					<transform filename="t_seq01_atk2_transform.bin"/>
+				</loopMovie>
 			</sequence>
 		</scene>
 	</scenes>

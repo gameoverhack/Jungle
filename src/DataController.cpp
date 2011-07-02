@@ -69,6 +69,7 @@ void DataController::loadSceneData(string filePath){
 	Sequence *sequence;
 	vector<CamTransform> *transform;
 	string transformFilename;
+	ofxAlphaVideoPlayer *video;
 	
 	LOG_NOTICE("Loading scene data");
 	
@@ -76,6 +77,7 @@ void DataController::loadSceneData(string filePath){
 	el = _xmldoc->RootElement()->FirstChildElement("scenes");
 	for(TiXmlElement *sceneEl = el->FirstChildElement("scene");
 			sceneEl; sceneEl = sceneEl->NextSiblingElement()){
+
 		/* make new scene */
 		scene = new Scene();
 		/* try to get attribute */
@@ -84,16 +86,44 @@ void DataController::loadSceneData(string filePath){
 			delete scene;
 			continue;
 		}
+
 		/* save name */
 		scene->setName(sceneEl->Attribute("name"));
+
 		/* find the children of the scene node (ie: sequences) */
 		bool hasSetCurrentSequence, hasSetCurrentScene;
 		for(TiXmlElement *seqEl = sceneEl->FirstChildElement("sequence");
 				seqEl; seqEl = seqEl->NextSiblingElement("sequence")){
+
 			sequence = new Sequence();
 			sequence->setName(seqEl->Attribute("name"));
 			sequence->setVictimResult(seqEl->Attribute("victimResult"));
 			sequence->setAttackerResult(seqEl->Attribute("attackerResult"));
+
+			/* find sequence movie */
+			TiXmlElement *mvSeq = seqEl->FirstChildElement("sequenceMovie");
+			/* set up sequence movie */
+			video = new ofxAlphaVideoPlayer();
+			video->loadMovie(mvSeq->Attribute("filename")); /* TODO: error check this attrbute call */
+			sequence->setSequenceMovie(video);
+			
+			/* find the sequence transforms */
+			for(TiXmlElement *transEl = mvSeq->FirstChildElement("transform");
+				transEl; transEl = transEl->NextSiblingElement("transform")){
+				transform = new vector<CamTransform>();
+				if(!loadVector<CamTransform>(ofToDataPath(transEl->Attribute("filename")), transform)){
+					delete transform;
+					continue;
+				}
+				/* insert transform into sequence vector */
+				sequence->addSequenceTransform(*transform);
+			}
+			
+			
+			
+			
+			/* find loop movie */
+			
 			/* find the transforms */
 			for(TiXmlElement *transEl = seqEl->FirstChildElement("transform");
 					transEl; transEl = transEl->NextSiblingElement("transform")){
@@ -118,26 +148,7 @@ void DataController::loadSceneData(string filePath){
 	}
 	
 	_appModel->getCurrentSequence()->_sequenceVideo.loadMovie("/Users/ollie/Source/of_62_osx/apps/stranger_danger_artifacts/t_seq_01_all_alpha_embedded2.mov");
-	_appModel->getCurrentSequence()->_sequenceVideo.play();
-	
-	
-	/* make scene one */
-//	Scene * newScene = new Scene();
-//	newScene->setName("MyScene1");
-//	newScene->setNumOfSequences(1);
-//	
-//	/* make sequence one */
-//	Sequence * newSequence = new Sequence("someSeqName");
-//	
-//	/* set insert sequence into scene */
-//	newScene->setSequence(newSequence->getName(), newSequence);
-//	/* set current sequence */
-//	newScene->setCurrentSequence(newSequence->getName());
-//	
-//	_appModel->setScene(newScene->getName(), newScene);
-//	
-//	_appModel->setCurrentScene(newScene->getName());
-	
+	_appModel->getCurrentSequence()->_sequenceVideo.play();	
 }
 
 template <class vectorType>

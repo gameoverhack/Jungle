@@ -53,8 +53,10 @@ class Sequence {
 public:
 	
 	Sequence(){
-		
-	};	// TODO: make constructor or is it too verbose?
+		_sequenceVideo = NULL;
+		_loopVideo = NULL;
+	};
+	
 	~Sequence(){printf("Destructing sequence %s\n", _name.c_str());};	// TODO: clean up?
 
 	string getName(){
@@ -78,15 +80,22 @@ public:
 		return _victimResult;
 	}
 	
-	void addTransform(vector<CamTransform> & trans){
-		_transforms.push_back(trans);
-	}
+	void addSequenceTransform(vector<CamTransform> & trans){
+		_sequenceTransforms.push_back(trans);
+	}	
 	
 	vector<CamTransform> getTransformVector(int i){
 		if(i >= 0 && i <= _transforms.size()){
 			LOG_ERROR("Attempted to get transform for " + ofToString(i));
 		}
 		return _transforms.at(i);
+	}
+	
+	void setSequenceMovie(ofxAlphaVideoPlayer *video){
+		if(_sequenceVideo != NULL){
+			delete _sequenceVideo;
+		}
+		_sequenceVideo = video;
 	}
 		
 private:
@@ -96,8 +105,8 @@ private:
 	string					_victimResult;
 	
 public:
-	ofxAlphaVideoPlayer		_sequenceVideo;
-	ofxAlphaVideoPlayer		_loopVideo;
+	ofxAlphaVideoPlayer		* _sequenceVideo;
+	ofxAlphaVideoPlayer		* _loopVideo;
 	
 	/*
 		wanted to use pointers to avoid copying a vector each push_back
@@ -105,7 +114,8 @@ public:
 		in a vector
 	*/
 	 
-	vector< vector<CamTransform> > _transforms; 
+	vector< vector<CamTransform> > _sequenceTransforms; 
+	vector< vector<CamTransform> > _loopTransforms; 
 };
 
 
