@@ -84,8 +84,9 @@ public:
 	}	
 	
 	vector<CamTransform> getTransformVector(int i){
-		if(i >= 0 && i <= _transforms.size()){
+		if(i > _transforms.size() || i < 0){
 			LOG_ERROR("Attempted to get transform for " + ofToString(i));
+			abort();
 		}
 		return _transforms.at(i);
 	}
