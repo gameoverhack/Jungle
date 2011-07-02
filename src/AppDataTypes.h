@@ -53,8 +53,7 @@ class Sequence {
 public:
 	
 	Sequence(){
-		_sequenceVideo = NULL;
-		_loopVideo = NULL;
+		_movie = NULL;
 	};
 	
 	~Sequence(){printf("Destructing sequence %s\n", _name.c_str());};	// TODO: clean up?
@@ -80,8 +79,8 @@ public:
 		return _victimResult;
 	}
 	
-	void addSequenceTransform(vector<CamTransform> & trans){
-		_sequenceTransforms.push_back(trans);
+	void addTransform(vector<CamTransform> & trans){
+		_transforms.push_back(trans);
 	}	
 	
 	vector<CamTransform> getTransformVector(int i){
@@ -92,10 +91,18 @@ public:
 	}
 	
 	void setSequenceMovie(ofxAlphaVideoPlayer *video){
-		if(_sequenceVideo != NULL){
-			delete _sequenceVideo;
+		if(_movie != NULL){
+			delete _movie;
 		}
-		_sequenceVideo = video;
+		_movie = video;
+	}
+	
+	ofxAlphaVideoPlayer * getSequenceMovie(){
+		return _movie;
+	}
+	
+	void setIsInteractive(bool b){
+		_isInteractive = b;
 	}
 		
 private:
@@ -103,10 +110,11 @@ private:
 	string					_name;
 	string					_attackerResult;
 	string					_victimResult;
-	
+	bool					_isInteractive;
+
 public:
-	ofxAlphaVideoPlayer		* _sequenceVideo;
-	ofxAlphaVideoPlayer		* _loopVideo;
+
+	ofxAlphaVideoPlayer		* _movie;
 	
 	/*
 		wanted to use pointers to avoid copying a vector each push_back
@@ -114,8 +122,7 @@ public:
 		in a vector
 	*/
 	 
-	vector< vector<CamTransform> > _sequenceTransforms; 
-	vector< vector<CamTransform> > _loopTransforms; 
+	vector< vector<CamTransform> > _transforms; 
 };
 
 

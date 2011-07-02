@@ -65,15 +65,19 @@ void DataController::loadAppProperties(string fs){
 
 void DataController::loadSceneData(string filePath){
 	TiXmlElement *el;
+
 	Scene *scene;
 	Sequence *sequence;
+
 	vector<CamTransform> *transform;
-	string transformFilename;
 	ofxAlphaVideoPlayer *video;
+	
+	string combinedPath;
 	
 	LOG_NOTICE("Loading scene data");
 	
 	/* find the scenes */
+	bool hasSetCurrentScene = false;
 	el = _xmldoc->RootElement()->FirstChildElement("scenes");
 	for(TiXmlElement *sceneEl = el->FirstChildElement("scene");
 			sceneEl; sceneEl = sceneEl->NextSiblingElement()){
@@ -89,66 +93,70 @@ void DataController::loadSceneData(string filePath){
 
 		/* save name */
 		scene->setName(sceneEl->Attribute("name"));
-
-		/* find the children of the scene node (ie: sequences) */
-		bool hasSetCurrentSequence, hasSetCurrentScene;
+		
+		/* convenience */
+		string sceneRootPath = ofToDataPath((boost::any_cast<string>)(_appModel->getProperty("movieDataPath"))) + "/" + scene->getName() + "/";
+		
+		bool hasSetCurrentSequence = false;
+		/* find the children of the scene node (ie: sequences) */		
 		for(TiXmlElement *seqEl = sceneEl->FirstChildElement("sequence");
 				seqEl; seqEl = seqEl->NextSiblingElement("sequence")){
 
 			sequence = new Sequence();
 			sequence->setName(seqEl->Attribute("name"));
-			sequence->setVictimResult(seqEl->Attribute("victimResult"));
-			sequence->setAttackerResult(seqEl->Attribute("attackerResult"));
-
-			/* find sequence movie */
-			TiXmlElement *mvSeq = seqEl->FirstChildElement("sequenceMovie");
-			/* set up sequence movie */
-			video = new ofxAlphaVideoPlayer();
-			video->loadMovie(mvSeq->Attribute("filename")); /* TODO: error check this attrbute call */
-			sequence->setSequenceMovie(video);
-			
-			/* find the sequence transforms */
-			for(TiXmlElement *transEl = mvSeq->FirstChildElement("transform");
-				transEl; transEl = transEl->NextSiblingElement("transform")){
-				transform = new vector<CamTransform>();
-				if(!loadVector<CamTransform>(ofToDataPath(transEl->Attribute("filename")), transform)){
-					delete transform;
-					continue;
-				}
-				/* insert transform into sequence vector */
-				sequence->addSequenceTransform(*transform);
+			/* check if this has interactive attribute */
+			if(seqEl->Attribute("interactive")){
+				LOG_VERBOSE(sequence->getName()+ " has interactive attribute");
+				sequence->setIsInteractive(true);
+				sequence->setVictimResult(seqEl->Attribute("victimResult")); 	/* todo: error checking on existance of these attributes */
+				sequence->setAttackerResult(seqEl->Attribute("attackerResult"));/* todo: error checking on existance of these attributes */				
+			}
+			else{
+				LOG_VERBOSE(sequence->getName()+ " does not have interactive attribute");
+				sequence->setIsInteractive(false);
 			}
 			
-			
-			
-			
-			/* find loop movie */
-			
-			/* find the transforms */
+			/* Find the transforms for this sequence */
 			for(TiXmlElement *transEl = seqEl->FirstChildElement("transform");
-					transEl; transEl = transEl->NextSiblingElement("transform")){
+				transEl; transEl = transEl->NextSiblingElement("transform")){
 				transform = new vector<CamTransform>();
-				if(!loadVector<CamTransform>(ofToDataPath(transEl->Attribute("filename")), transform)){
+				if(!loadVector<CamTransform>(sceneRootPath+transEl->Attribute("filename"), transform)){
+					/* load Vector failed will log own error */
 					delete transform;
-					continue;
+					//continue;
+					abort();
 				}
 				/* insert transform into sequence vector */
 				sequence->addTransform(*transform);
 			}
+			
+			/* Load the sequence movie */
+			video = new ofxAlphaVideoPlayer();
+			combinedPath = sceneRootPath+scene->getName() + "_" + sequence->getName()+".mov";
+			if(!video->loadMovie(combinedPath)){
+				LOG_ERROR("Could not load movie: "+combinedPath);
+				delete video; /* free video */
+				delete sequence; /* cant use sequence without video so fail it */
+				//continue;
+				abort(); /* lets just assume no video for one means whole thing is broken */
+			};
+			video->play();
+			/* todo: call play here or in setCurrentSequence? */
+			sequence->setSequenceMovie(video);
+
 			/* made the sequence, insert it into scene */
 			scene->setSequence(sequence->getName(), sequence);
 			if(!hasSetCurrentSequence){
 				scene->setCurrentSequence(sequence->getName());
+				hasSetCurrentSequence = true;
 			}
 		}
 		_appModel->setScene(scene->getName(), scene);
 		if(!hasSetCurrentScene){
 			_appModel->setCurrentScene(scene->getName());
+			hasSetCurrentScene = true;
 		}
 	}
-	
-	_appModel->getCurrentSequence()->_sequenceVideo.loadMovie("/Users/ollie/Source/of_62_osx/apps/stranger_danger_artifacts/t_seq_01_all_alpha_embedded2.mov");
-	_appModel->getCurrentSequence()->_sequenceVideo.play();	
 }
 
 template <class vectorType>

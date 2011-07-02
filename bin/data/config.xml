@@ -14,21 +14,21 @@
 		<height type="float">720</height>
 		
 		<showDebugView type="bool">true</showDebugView>
+
+		<!-- log level, int or string? -->
 		
 	</properties>
 	<scenes>
 		<scene name="tease">
-			<sequence name="seq01" attackerResult="seq02a" victimResult="seq01b">
-				<sequenceMovie filename="t_seq01.mov">
-					<transform filename="t_seq01_vic_transform.bin"/>
-					<transform filename="t_seq01_atk1_transform.bin"/>
-					<transform filename="t_seq01_atk2_transform.bin"/>
-				</sequenceMovie>
-				<loopMovie filename="t_seq01_loop.mov">
-					<transform filename="t_seq01_vic_transform.bin"/>
-					<transform filename="t_seq01_atk1_transform.bin"/>
-					<transform filename="t_seq01_atk2_transform.bin"/>
-				</loopMovie>
+			<sequence name="seq01">
+				<transform filename="tease_seq01_transform_vic.bin"/>
+				<transform filename="tease_seq01_transform_atk1.bin"/>
+				<transform filename="tease_seq01_transform_atk2.bin"/>
+			</sequence>
+			<sequence name="seq01_loop" interactive="true" attackerResult="seq01" victimResult="seq01">
+				<transform filename="tease_seq01_transform_vic.bin"/>
+				<transform filename="tease_seq01_transform_atk1.bin"/>
+				<transform filename="tease_seq01_transform_atk2.bin"/>
 			</sequence>
 		</scene>
 	</scenes>
