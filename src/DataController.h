@@ -23,6 +23,7 @@ using std::string;
 #include "Logger.h"
 #include "AppModel.h"
 #include "AppDataTypes.h"
+#include "Constants.h"
 
 class DataController {
 

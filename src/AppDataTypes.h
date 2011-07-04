@@ -20,8 +20,7 @@ using std::pair;
 
 #include "ofxAlphaVideoPlayer.h"
 #include "Logger.h"
-
-#define NUM_SCENES 1
+#include "Constants.h"
 
 class CamTransform {
 private:
@@ -54,6 +53,7 @@ public:
 	
 	Sequence(){
 		_movie = NULL;
+		_isInteractive = false;
 	};
 	
 	~Sequence(){printf("Destructing sequence %s\n", _name.c_str());};	// TODO: clean up?
@@ -63,6 +63,14 @@ public:
 	}
 	void setName(string name){
 		_name = name;
+	}
+	
+	void setNextSequenceName(string ns){
+		_nextSequenceName = ns;
+	}
+	
+	string getNextSequenceName(){
+		return _nextSequenceName;
 	}
 	
 	void setAttackerResult(string str){
@@ -105,10 +113,39 @@ public:
 	void setIsInteractive(bool b){
 		_isInteractive = b;
 	}
+
+	bool getIsInteractive(){
+		return _isInteractive;
+	}
+	
+	void prepareSequenceMovie(){
+		_movie->play();
+		/* must be set after play ? */
+		if(_isInteractive){
+			/* loop on interactive movies */
+			_movie->setLoopState(OF_LOOP_NORMAL);
+		}
+		else{
+			_movie->setLoopState(OF_LOOP_NONE);
+		}
 		
+	}
+	
+	void resetSequenceMovie(){
+		if(_movie != NULL){
+			_movie->stop();
+			_movie->setPosition(0.0);
+		}
+		else{
+			LOG_ERROR("Could not reset sequence movie, movie == NULL");
+			abort();
+		}
+	}
+	
 private:
 	
 	string					_name;
+	string					_nextSequenceName;
 	string					_attackerResult;
 	string					_victimResult;
 	bool					_isInteractive;
@@ -136,7 +173,9 @@ class Scene {
 	
 public:
 
-	Scene(){};
+	Scene(){
+		_currentSequence = NULL;
+	};
 	~Scene(){
 		/* not sure if we have to delete the sequences here, 
 		 I think we do because they are pointers not objects,
@@ -171,7 +210,16 @@ public:
 		map<string, Sequence *>::iterator iter;
 		iter = _sequences.find(seq);
 		if(iter != _sequences.end()){
-			_currentSequence = iter->second; /* TODO: DO we have to dereference this? TEST IT. */
+			if(_currentSequence != NULL){
+				/* reset video state for current sequence */
+				_currentSequence->resetSequenceMovie();
+			}
+
+			/* set new current sequence */
+			_currentSequence = iter->second;
+			/* play new current sequence movie */
+			_currentSequence->prepareSequenceMovie();
+			
 			LOG_NOTICE("Set current sequence to " + seq);
 			return true;
 		}
@@ -181,20 +229,42 @@ public:
 		return false;
 	}
 	
-	void setCurrentSequence(Sequence * seq){
+	bool setCurrentSequence(Sequence * seq){
 		/* TODO:
 			Search through the map by value to find if the sequence is a valid
 			sequence? Linear search so "slow", (our data size is always going
 			to be so small it doesn't matter though.
 		*/
-		_currentSequence = seq;
+		return setCurrentSequence(seq->getName());
 	}
 	
 	Sequence * getCurrentSequence(){
 		return _currentSequence;
 	}
 	
+	/* increments the current sequence to the next sequence (of the current sequence) */
+	bool nextSequence(){
+		Sequence * seq = getCurrentSequence();
+		/*
+			we're on the last sequence of this scene if
+				- sequence is not interactive
+				- the next sequence for this sequence is its self
+			Kind of magic logic, might be better to set either
+				- bool _isLastSequence = true;
+				or
+				- string _nextSequence = "####FINALSEQUENCETOKEN####";
 
+			Using the string means making a define
+		 
+		 */
+		if(_currentSequence->getNextSequenceName()== kLAST_SEQUENCE_TOKEN){
+			return false;
+		}
+		/* not last sequence, so set next */
+		setCurrentSequence(_currentSequence->getNextSequenceName());
+		return true;
+	}
+	
 private:
 	
 	string					_name;

@@ -26,15 +26,15 @@ class AppModel {
 
 public:
 	
+	AppModel();
+	
 	void setScene(string name, Scene * scene);
 	bool setCurrentScene(string sceneName);
 
-	/* add these if they are required */
-//	void setCurrentSequence(string sequenceName, int inSceneIndex);
 	Sequence * getCurrentSequence();
+	Scene * getCurrentScene();
 	
-//	void setSequence(Sequence * newSequence, int inSceneIndex);
-//	Sequence * getSequence(string sequenceName, int inSceneIndex);
+	bool nextScene();
 	
 	void setProperty(string propName, boost::any propVal);
 	

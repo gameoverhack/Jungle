@@ -9,6 +9,10 @@
 
 #include "AppModel.h"
 
+AppModel::AppModel(){
+	_currentScene = NULL;
+}
+
 void AppModel::setScene(string sceneName, Scene * scene){
 	_scenes.insert(pair<string, Scene *>(sceneName, scene));
 }
@@ -27,22 +31,27 @@ bool AppModel::setCurrentScene(string sceneName){
 	return false;
 }
 
-//void AppModel::setSequence(Sequence * newSequence, int inSceneIndex) {
-//	assert(inSceneIndex < NUM_SCENES);								// make sure we're not requesting out of range
-//	_scenes[inSceneIndex][newSequence->_name] = newSequence;
-//}
-//
-//Sequence * AppModel::getSequence(string sequenceName, int inSceneIndex) {
-//	assert(inSceneIndex < NUM_SCENES);								// make sure we're not requesting out of range
-//	assert(_scenes[inSceneIndex].count(sequenceName) != 0);			// make sure sequence is in the scene
-//	return _scenes[inSceneIndex][sequenceName];
-//}
-//
-//void AppModel::setCurrentSequence(string sequenceName, int inSceneIndex) {
-//	assert(inSceneIndex < NUM_SCENES);								// make sure we're not requesting out of range
-//	assert(_scenes[inSceneIndex].count(sequenceName) != 0);			// make sure sequence is in the scene
-//	_currentSequence = _scenes[inSceneIndex][sequenceName];
-//}
+bool AppModel::nextScene(){
+	string nextname;
+	/* find current scene in map */
+	map<string, Scene *>::iterator iter;
+	for(iter = _scenes.begin(); iter != _scenes.end(); iter++){
+		if(iter->first == _currentScene->getName()){
+			iter++; /* found current, increment to next */
+			/* is iter end? set name to first if so, else use iter name */
+			nextname = (iter == _scenes.end() ? _scenes.begin()->first : iter->first);
+			setCurrentScene(nextname);
+			LOG_VERBOSE("Nextscene: " + nextname);
+			return true;
+		}
+	}
+	return false; /* should never get here, can probably just be void return */
+}
+
+Scene * AppModel::getCurrentScene(){
+	assert(_currentScene != NULL);
+	return _currentScene;
+}
 
 Sequence * AppModel::getCurrentSequence() {
 	Sequence * seq;

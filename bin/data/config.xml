@@ -20,7 +20,11 @@
 	</properties>
 	<scenes>
 		<scene name="tease">
-			<sequence name="seq01">
+			<sequence name="seq01" nextSequence="seq01_loop">
+			<!-- 
+				Should have a nextSequence=".." here? makes things a bit more flexible (loading screens or something?
+				Also means we know when a sequence is the last sequence in a scene.
+			-->
 				<transform filename="tease_seq01_transform_vic.bin"/>
 				<transform filename="tease_seq01_transform_atk1.bin"/>
 				<transform filename="tease_seq01_transform_atk2.bin"/>

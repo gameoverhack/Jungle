@@ -12,11 +12,13 @@
 
 //--------------------------------------------------------------
 void AppController::setup() {
-	LOGGER->setLogLevel(JU_LOG_NOTICE);
+	LOGGER->setLogLevel(JU_LOG_VERBOSE);
 	LOG_NOTICE("Initialising");
 	DataController data(ofToDataPath("config.xml"));
 
 	cout << _appModel->getAllPropsAsList() << endl;
+	
+	_appModel->setProperty("userAction", kNoUserAction);
 	
 	_appView = new AppView(1280, 720);
 	LOG_NOTICE("Initialisation complete");
@@ -25,13 +27,74 @@ void AppController::setup() {
 
 //--------------------------------------------------------------
 void AppController::update() {
-//	LOG_NOTICE("Updaing");
+//	LOG_VERBOSE("Updating");
+	Scene * currentScene;
+	Sequence * currentSequence;
+	ofxAlphaVideoPlayer * movie;
+	
+	/* get current scene */
+	currentScene = _appModel->getCurrentScene();	
+	/* get current sequence */
+	currentSequence = currentScene->getCurrentSequence();
+
+	/* check if sequence was interactive */
+	if(currentSequence->getIsInteractive()){
+		/* Check for interactive event */
+		// this->hasInteractiveEventFlag()
+		/* we have had an interactive event */
+		int userAction = boost::any_cast<int>(_appModel->getProperty("userAction"));
+		if( userAction == kAttackerAction){
+			LOG_VERBOSE("Interactive action: Attacker");	
+			_appModel->setProperty("userAction", kNoUserAction);
+			currentScene->setCurrentSequence(currentSequence->getAttackerResult());
+		}
+		else if(userAction == kVictimAction){
+			LOG_VERBOSE("Interactive action: Victim");	
+			_appModel->setProperty("userAction", kNoUserAction);
+			currentScene->setCurrentSequence(currentSequence->getVictimResult());
+		}
+
+		/* else continue playing this video */
+		movie = currentSequence->getSequenceMovie();
+	}
+	else{
+		/* Not interactive movie */
+		/* check if we're at the ened of the movie */
+		movie = currentSequence->getSequenceMovie();
+//		movie->setLoopState(OF_LOOP_NONE);
+//		printf("movie position: %f\n", movie->getPosition());
+//		if(movie->getPosition() == 1.0){
+		if(movie->getIsMovieDone()){
+			/* at end of non interactive movie, change to next sequence */
+			if(currentScene->nextSequence()){
+				/* loaded next sequence in this scene, keep going */
+			}
+			else{
+				/* couldn't load next sequence, there isn't one etc */
+				/* set this scenes sequence to first sequence (for when we get back to it) */
+// TODO:	This needs a method, can just use the key order since our keys are alpha ordered, 
+//			i feel odd about doing that though. I guess it is guarenteed though.
+//				currentScene->setCurrentSequence(0); 
+				
+				/* load next scene */
+				_appModel->nextScene();
+				currentScene = _appModel->getCurrentScene();
+				currentSequence = currentScene->getCurrentSequence();
+			}
+		}
+		/* have to call this incase it changed */
+		movie = currentSequence->getSequenceMovie();
+	}
+	
+	/* update the movie */
+	movie->update();
+
 	_appView->update();
 }
 
 //--------------------------------------------------------------
 void AppController::draw() {
-//	LOG_NOTICE("Drawing");
+//	LOG_VERBOSE("Drawing");
 	ofSetColor(255, 255, 255, 255);
 	_appView->draw();
 	
@@ -58,7 +121,13 @@ void AppController::keyPressed(int key){
 			break;
 		case 'd':
 			_appModel->setProperty("showDebugView", !boost::any_cast<bool>(_appModel->getProperty("showDebugView")));
-			break;			
+			break;
+		case 'q':
+			_appModel->setProperty("userAction", kVictimAction);
+			break;
+		case 'p':
+			_appModel->setProperty("userAction", kAttackerAction);
+			break;
 		default:
 			break;
 	}
