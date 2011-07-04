@@ -12,6 +12,8 @@
 #define _H_DEBUGVIEW
 
 #include "BaseView.h"
+#include "ofxAlphaVideoPlayer.h"
+#include "AppDataTypes.h"
 
 class DebugView : public BaseView {
 	

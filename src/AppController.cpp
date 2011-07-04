@@ -61,9 +61,6 @@ void AppController::update() {
 		/* Not interactive movie */
 		/* check if we're at the ened of the movie */
 		movie = currentSequence->getSequenceMovie();
-//		movie->setLoopState(OF_LOOP_NONE);
-//		printf("movie position: %f\n", movie->getPosition());
-//		if(movie->getPosition() == 1.0){
 		if(movie->getIsMovieDone()){
 			/* at end of non interactive movie, change to next sequence */
 			if(currentScene->nextSequence()){
