@@ -29,7 +29,7 @@ class DataController {
 
 public:
 	DataController(string configFilePath);
-//	~DataController();
+	~DataController();
 	
 	void loadAppProperties(string fs);
 	void loadSceneData(string filePath);

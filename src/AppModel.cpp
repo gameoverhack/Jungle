@@ -13,6 +13,13 @@ AppModel::AppModel(){
 	_currentScene = NULL;
 }
 
+AppModel::~AppModel(){
+	map<string, Scene *>::iterator iter;
+	for(iter = _scenes.begin(); iter != _scenes.end(); iter++){
+		delete (iter->second);
+	}
+}
+
 void AppModel::setScene(string sceneName, Scene * scene){
 	_scenes.insert(pair<string, Scene *>(sceneName, scene));
 }

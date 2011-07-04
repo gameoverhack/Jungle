@@ -30,6 +30,10 @@ DataController::DataController(string configFilePath){
 	
 }
 
+DataController::~DataController(){
+	delete _xmldoc;
+}
+
 void DataController::loadAppProperties(string fs){
 	TiXmlElement *el;	
 	string propName, propValue, propType;

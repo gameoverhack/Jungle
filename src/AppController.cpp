@@ -14,7 +14,7 @@
 void AppController::setup() {
 	LOGGER->setLogLevel(JU_LOG_VERBOSE);
 	LOG_NOTICE("Initialising");
-	DataController data(ofToDataPath("config.xml"));
+	DataController dataController(ofToDataPath("config.xml"));
 
 	cout << _appModel->getAllPropsAsList() << endl;
 	

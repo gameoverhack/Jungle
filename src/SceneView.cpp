@@ -54,8 +54,6 @@ void SceneView::update() {
 	ofTexture *sceneTexture;
 	CamTransform *actorTransform;
 	int currentFrame;
-	
-	//currentSequenceVideo->update();
 
 	/* get the video texture */
 	sceneTexture = &(currentSequenceVideo->getTextureReference());
@@ -115,6 +113,8 @@ void SceneView::drawCharacter(ofxFbo * targetFBO,
 	/* scale down camera texture */
 	glScalef(0.5, 0.5, 0);
 	
+//	printf("Rotation: %f\n", transform->rotation);
+//	glRotatef(transform->rotation, 1.0, 0.0, 0.0);
 	/* draw face texture */
 	faceTexture->draw(0,0);
 	

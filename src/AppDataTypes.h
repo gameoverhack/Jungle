@@ -56,7 +56,9 @@ public:
 		_isInteractive = false;
 	};
 	
-	~Sequence(){printf("Destructing sequence %s\n", _name.c_str());};	// TODO: clean up?
+	~Sequence(){
+		delete _movie;
+	};
 
 	string getName(){
 		return _name;
@@ -176,13 +178,12 @@ public:
 	Scene(){
 		_currentSequence = NULL;
 	};
+
 	~Scene(){
-		/* not sure if we have to delete the sequences here, 
-		 I think we do because they are pointers not objects,
-		 so the map isn't smart enough to call delete on them,
-		 
-		 can check this by putting a printf in ~Sequence()
-		*/
+		map<string, Sequence *>::iterator iter;
+		for(iter = _sequences.begin(); iter != _sequences.end(); iter++){
+			delete (iter->second);
+		}
 	};
 	
 	int getNumOfSequences(){

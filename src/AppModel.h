@@ -27,6 +27,7 @@ class AppModel {
 public:
 	
 	AppModel();
+	~AppModel();
 	
 	void setScene(string name, Scene * scene);
 	bool setCurrentScene(string sceneName);
@@ -54,7 +55,6 @@ private:
 	bool is_char_ptr(const boost::any & operand);
 	
 	map<string, boost::any>				_anyProps;
-//	map<string, Sequence*>				_scenes[NUM_SCENES];
 	
 	map<string, Scene *>				_scenes;
 	
