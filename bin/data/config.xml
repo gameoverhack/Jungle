@@ -26,13 +26,13 @@
 				Also means we know when a sequence is the last sequence in a scene.
 			-->
 				<transform filename="t_seq01a_movie_vic1_transform.bin"/>
-				<transform filename="t_seq01a_movie_atk2_transform.bin"/>
 				<transform filename="t_seq01a_movie_atk1_transform.bin"/>
+				<transform filename="t_seq01a_movie_atk2_transform.bin"/>
 			</sequence>
 			<sequence name="seq02a" interactive="true" attackerResult="seq01a" victimResult="seq01a">
 				<transform filename="t_seq02a_movie_vic1_transform.bin"/>
-				<transform filename="t_seq02a_movie_atk2_transform.bin"/>
 				<transform filename="t_seq02a_movie_atk1_transform.bin"/>
+				<transform filename="t_seq02a_movie_atk2_transform.bin"/>
 			</sequence>
 		</scene>
 	</scenes>

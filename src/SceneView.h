@@ -34,7 +34,7 @@ private:
 	ofTexture _cameraTwo;
 	
 	/* fbo stuff */
-	ofTexture _vicTex, _atk1Tex, _atk2Tex;
+	ofTexture _vic1Tex, _atk1Tex, _atk2Tex;
 	ofxFbo _vicFBO, _atk1FBO, _atk2FBO;
 	
 	/* Shader stuff */

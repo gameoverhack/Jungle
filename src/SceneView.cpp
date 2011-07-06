@@ -31,9 +31,9 @@ SceneView::SceneView(float width, float height) : BaseView(width ,height) {
 	/* set up fbos */
 	
 	/* Allocate texture and attach*/
-	_vicTex.allocate(_viewWidth, _viewHeight, GL_RGBA);
+	_vic1Tex.allocate(_viewWidth, _viewHeight, GL_RGBA);
 	_vicFBO.setup(_viewWidth, _viewHeight);
-	_vicFBO.attach(_vicTex);
+	_vicFBO.attach(_vic1Tex);
 	
 	_atk1Tex.allocate(_viewWidth, _viewHeight, GL_RGBA);
 	_atk1FBO.setup(_viewWidth, _viewHeight);
@@ -78,9 +78,9 @@ void SceneView::update() {
 	// set up shader stuff
 	_shader.begin();
 	_shader.setTexture("textures[0]", *sceneTexture, 10);
-	_shader.setTexture("textures[1]", _vicTex, 11);
-	_shader.setTexture("textures[2]", _atk2Tex, 12); // order swapped due to numbers in alpha mask, wanted to have it desc from vic to atk2
-	_shader.setTexture("textures[3]", _atk1Tex, 13);
+	_shader.setTexture("textures[1]", _vic1Tex, 11);
+	_shader.setTexture("textures[2]", _atk1Tex, 12);
+	_shader.setTexture("textures[3]", _atk2Tex, 13);
 	_shader.setUniform1i("numTextures", 4);
 	_shader.setUniform1f("blendRatio", boost::any_cast<float>(_appModel->getProperty("shaderBlendRatio")));
 	_shader.setUniform1f("gammaCorrection", boost::any_cast<float>(_appModel->getProperty("shaderGammaCorrection")));
