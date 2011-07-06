@@ -42,33 +42,40 @@ class Logger
 	
 public:
 	
-    Logger()
-    {
+    Logger() {
+		
         _toFile = false;
 		_logLevel = JU_LOG_WARNING;
+		_padLength	= 1; // default whitespace padding (self adjusting so we can set to 1 but could be any num)
 		
 		/* wont ever by written cause we default to a higher level of logging ... */
         log(JU_LOG_NOTICE, typeid(this).name(), "Created logger");
-    };
+    
+	};
 	
-    ~Logger()
-    {	
+    ~Logger() {	
+		
         log(JU_LOG_NOTICE, typeid(this).name(), "Logging off...");
         log(JU_LOG_NOTICE, typeid(this).name(), "\\___________________________________________________//");	
-        if (_toFile){
-			closeLogFile();
-		} 
+        
+		if (_toFile) closeLogFile();
+
     };
 	
     bool	openLogFile(string _filename);
     bool	closeLogFile();
 	
     void	log(juLogLevel l, string obj, string	_msg);
-    char 	*gettimestamp();
 	
 	void	setLogLevel(juLogLevel l);
-	string	getLogLevelName(juLogLevel l);
+	
 private:
+	
+	inline string	getLogLevelName(juLogLevel l);
+	inline char 	*getTimeStamp();
+	inline string	pad(string & objectName);
+	
+	int			_padLength;
 	
     ofstream	_logFile;
     string		_filename;
