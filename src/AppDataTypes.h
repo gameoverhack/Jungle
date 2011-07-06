@@ -18,7 +18,7 @@
 using std::map;
 using std::pair;
 
-#include "ofxAlphaVideoPlayer.h"
+#include "goVideoPlayer.h"
 #include "Logger.h"
 #include "Constants.h"
 
@@ -101,14 +101,14 @@ public:
 		return _transforms.at(i);
 	}
 	
-	void setSequenceMovie(ofxAlphaVideoPlayer *video){
+	void setSequenceMovie(goVideoPlayer *video){
 		if(_movie != NULL){
 			delete _movie;
 		}
 		_movie = video;
 	}
 	
-	ofxAlphaVideoPlayer * getSequenceMovie(){
+	goVideoPlayer * getSequenceMovie(){
 		return _movie;
 	}
 	
@@ -154,7 +154,7 @@ private:
 
 public:
 
-	ofxAlphaVideoPlayer		* _movie;
+	goVideoPlayer		* _movie;
 	
 	/*
 		wanted to use pointers to avoid copying a vector each push_back

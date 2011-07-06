@@ -14,8 +14,7 @@
 		072CF9DC13BD8691000DBD67 /* AppController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 072CF9DA13BD8691000DBD67 /* AppController.cpp */; };
 		0754595613BD9C2500325443 /* Logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0754595413BD9C2500325443 /* Logger.cpp */; };
 		07545BA513BDF80200325443 /* DataController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07545BA413BDF80200325443 /* DataController.cpp */; };
-		778072F113BB4547007BAC08 /* ofxAlphaVideoPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7780727E13BB4547007BAC08 /* ofxAlphaVideoPlayer.cpp */; };
-		778072F213BB4547007BAC08 /* ofxQtUtils_alpha.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7780728013BB4547007BAC08 /* ofxQtUtils_alpha.cpp */; };
+		77047FF213C4A8130099581A /* goQtUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77047FF013C4A8130099581A /* goQtUtils.cpp */; };
 		778072F313BB4547007BAC08 /* ofxFbo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7780728413BB4547007BAC08 /* ofxFbo.cpp */; };
 		778072F413BB4547007BAC08 /* ofxShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7780728813BB4547007BAC08 /* ofxShader.cpp */; };
 		778072F513BB4547007BAC08 /* goVideoPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7780728C13BB4547007BAC08 /* goVideoPlayer.cpp */; };
@@ -135,10 +134,8 @@
 		07545BB013BDFD1F00325443 /* config.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = config.xml; path = bin/data/config.xml; sourceTree = SOURCE_ROOT; };
 		07545DB713BE412D00325443 /* TODO */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO; sourceTree = "<group>"; };
 		07545FA413C1768600325443 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
-		7780727E13BB4547007BAC08 /* ofxAlphaVideoPlayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxAlphaVideoPlayer.cpp; sourceTree = "<group>"; };
-		7780727F13BB4547007BAC08 /* ofxAlphaVideoPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxAlphaVideoPlayer.h; sourceTree = "<group>"; };
-		7780728013BB4547007BAC08 /* ofxQtUtils_alpha.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxQtUtils_alpha.cpp; sourceTree = "<group>"; };
-		7780728113BB4547007BAC08 /* ofxQtUtils_alpha.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxQtUtils_alpha.h; sourceTree = "<group>"; };
+		77047FF013C4A8130099581A /* goQtUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = goQtUtils.cpp; sourceTree = "<group>"; };
+		77047FF113C4A8130099581A /* goQtUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = goQtUtils.h; sourceTree = "<group>"; };
 		7780728413BB4547007BAC08 /* ofxFbo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxFbo.cpp; sourceTree = "<group>"; };
 		7780728513BB4547007BAC08 /* ofxFbo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxFbo.h; sourceTree = "<group>"; };
 		7780728813BB4547007BAC08 /* ofxShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxShader.cpp; sourceTree = "<group>"; };
@@ -310,18 +307,6 @@
 			name = Config;
 			sourceTree = "<group>";
 		};
-		7780727D13BB4547007BAC08 /* ofxAlphaVideoPlayer */ = {
-			isa = PBXGroup;
-			children = (
-				7780727E13BB4547007BAC08 /* ofxAlphaVideoPlayer.cpp */,
-				7780727F13BB4547007BAC08 /* ofxAlphaVideoPlayer.h */,
-				7780728013BB4547007BAC08 /* ofxQtUtils_alpha.cpp */,
-				7780728113BB4547007BAC08 /* ofxQtUtils_alpha.h */,
-			);
-			name = ofxAlphaVideoPlayer;
-			path = ../../../addons/ofxAlphaVideoPlayer;
-			sourceTree = SOURCE_ROOT;
-		};
 		7780728213BB4547007BAC08 /* ofxFbo */ = {
 			isa = PBXGroup;
 			children = (
@@ -370,6 +355,8 @@
 		7780728B13BB4547007BAC08 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				77047FF013C4A8130099581A /* goQtUtils.cpp */,
+				77047FF113C4A8130099581A /* goQtUtils.h */,
 				7780728C13BB4547007BAC08 /* goVideoPlayer.cpp */,
 				7780728D13BB4547007BAC08 /* goVideoPlayer.h */,
 			);
@@ -718,7 +705,6 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
-				7780727D13BB4547007BAC08 /* ofxAlphaVideoPlayer */,
 				7780728213BB4547007BAC08 /* ofxFbo */,
 				7780728613BB4547007BAC08 /* ofxShader */,
 				7780728A13BB4547007BAC08 /* goVideoPlayer */,
@@ -1108,8 +1094,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
-				778072F113BB4547007BAC08 /* ofxAlphaVideoPlayer.cpp in Sources */,
-				778072F213BB4547007BAC08 /* ofxQtUtils_alpha.cpp in Sources */,
 				778072F313BB4547007BAC08 /* ofxFbo.cpp in Sources */,
 				778072F413BB4547007BAC08 /* ofxShader.cpp in Sources */,
 				778072F513BB4547007BAC08 /* goVideoPlayer.cpp in Sources */,
@@ -1147,6 +1131,7 @@
 				072CF9DC13BD8691000DBD67 /* AppController.cpp in Sources */,
 				0754595613BD9C2500325443 /* Logger.cpp in Sources */,
 				07545BA513BDF80200325443 /* DataController.cpp in Sources */,
+				77047FF213C4A8130099581A /* goQtUtils.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -30,7 +30,7 @@ void AppController::update() {
 //	LOG_VERBOSE("Updating");
 	Scene * currentScene;
 	Sequence * currentSequence;
-	ofxAlphaVideoPlayer * movie;
+	goVideoPlayer * movie;
 	
 	/* get current scene */
 	currentScene = _appModel->getCurrentScene();	

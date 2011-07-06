@@ -28,7 +28,7 @@ void DebugView::update(){
 	ofDrawBitmapString(msg, 20, 20); /* this gets rendered upside down for some reason ?*/
 	
 	/* draw scene progression */
-	ofxAlphaVideoPlayer *video = _appModel->getCurrentSequence()->getSequenceMovie();
+	goVideoPlayer *video = _appModel->getCurrentSequence()->getSequenceMovie();
 	Sequence * seq = _appModel->getCurrentSequence();
 	Scene * scn = _appModel->getCurrentScene();
 	

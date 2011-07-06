@@ -74,7 +74,7 @@ void DataController::loadSceneData(string filePath){
 	Sequence *sequence;
 
 	vector<CamTransform> *transform;
-	ofxAlphaVideoPlayer *video;
+	goVideoPlayer *video;
 	
 	string combinedPath;
 	
@@ -156,7 +156,7 @@ void DataController::loadSceneData(string filePath){
 			}
 			
 			/* Load the sequence movie */
-			video = new ofxAlphaVideoPlayer();
+			video = new goVideoPlayer();
 			combinedPath = sceneRootPath+scene->getName() + "_" + sequence->getName()+".mov";
 			if(!video->loadMovie(combinedPath)){
 				LOG_ERROR("Could not load movie: "+combinedPath);
