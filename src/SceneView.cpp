@@ -29,13 +29,16 @@ SceneView::SceneView(float width, float height) : BaseView(width ,height) {
 						GL_RGB);
 	
 	/* set up fbos */
+	
 	/* Allocate texture and attach*/
 	_vicTex.allocate(_viewWidth, _viewHeight, GL_RGBA);
 	_vicFBO.setup(_viewWidth, _viewHeight);
 	_vicFBO.attach(_vicTex);
+	
 	_atk1Tex.allocate(_viewWidth, _viewHeight, GL_RGBA);
 	_atk1FBO.setup(_viewWidth, _viewHeight);
 	_atk1FBO.attach(_atk1Tex);
+	
 	_atk2Tex.allocate(_viewWidth, _viewHeight, GL_RGBA);
 	_atk2FBO.setup(_viewWidth, _viewHeight);
 	_atk2FBO.attach(_atk2Tex);
