@@ -97,28 +97,32 @@ void SceneView::update() {
 void SceneView::drawCharacter(ofxFbo * targetFBO, 
 							  ofTexture * faceTexture, 
 							  CamTransform *transform){
-	/* set up draw state */
+	// set up draw state
 	targetFBO->begin();
 	glPushMatrix();
-	glClear(GL_COLOR_BUFFER_BIT); /* clear frame */
+	glClear(GL_COLOR_BUFFER_BIT); // clear frame
 	
-	/* do the transform */
-	/* translate to the right place */
+	// do the transform
+	
+	// translate to the right place
 	glTranslatef(transform->x, transform->y, 0.0);
-	/* scale to transform size */
+	
+	// scale to transform size
 	glScalef(transform->scaleX, transform->scaleY, 0.0);
 	
-	/* translate back half (/4 due to glScale) the width/height of the camera texture */
+	// rotate the head
+	glRotatef(transform->rotation, 0.0f, 0.0f, 1.0f);
+	
+	// translate back half (/4 due to glScale) the width/height of the camera texture
 	glTranslatef(-(faceTexture->getWidth()/4.0), -(faceTexture->getHeight()/4.0), 0.0);
-	/* scale down camera texture */
+	
+	// scale down camera texture
 	glScalef(0.5, 0.5, 0);
 	
-//	printf("Rotation: %f\n", transform->rotation);
-//	glRotatef(transform->rotation, 1.0, 0.0, 0.0);
-	/* draw face texture */
+	// draw face texture 
 	faceTexture->draw(0,0);
 	
-	/* end rendering */
+	// end rendering 
 	glPopMatrix();
 	targetFBO->end();	
 }
