@@ -1,5 +1,5 @@
 
-/* sampler2DRect because we're using NPOT texture sizes */
+// sampler2DRect because we're using NPOT texture sizes
 uniform sampler2DRect alphaTexture;
 uniform sampler2DRect frameTexture;
 

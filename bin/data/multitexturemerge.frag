@@ -1,4 +1,4 @@
-/* sampler2DRect because we're using NPOT texture sizes */
+// sampler2DRect because we're using NPOT texture sizes
 /*
 	Order for textures is assumed to be
 	scene background
@@ -19,23 +19,23 @@ vec4 blend(vec4 a, vec4 b){
 
 void main(){
 	vec4 sceneTexel, vic1Texel, atk1Texel, atk2Texel;
-	/* these values are pretty aproximate right now */
+	// these values are pretty aproximate right now
 	float atk1AlphaValue	= 104.0/255.0;
 	float atk2Alphavalue	= 178.0/255.0;
 	float vic1AlphaValue	= 226.0/255.0;
 	float alphaDelta		= 0.1;
 
 	
-	/* Get texels from textures */
+	// Get texels from textures
 	sceneTexel	= texture2DRect(textures[0], gl_TexCoord[0].xy);
 	vic1Texel	= texture2DRect(textures[1], gl_TexCoord[0].xy);
 	atk1Texel	= texture2DRect(textures[2], gl_TexCoord[0].xy);
 	
 	if(numTextures == 4) {
 		atk2Texel = texture2DRect(textures[3], gl_TexCoord[0].xy);
-	} else atk2Texel.rgba = vec4(0.0, 0.0, 0.0, 0.0); /* fake null value */
+	} else atk2Texel.rgba = vec4(0.0, 0.0, 0.0, 0.0); // fake null value
 	
-	/* Uncomment this to see actor textures unmasked */
+	// Uncomment this to see actor textures unmasked
 //	if(vic1Texel.a > 0.0){
 //		sceneTexel.rgb = vic1Texel.rgb;
 //	}
@@ -48,8 +48,8 @@ void main(){
 //		sceneTexel.rgb = atk2Texel.rgb;
 //	}
 	
-	/* set frame alpha depending on the scenes alpha */
-	if(sceneTexel.a < (240.0/255.0)){ /* dodge the noise */
+	// set frame alpha depending on the scenes alpha
+	if(sceneTexel.a < (240.0/255.0)){ // dodge the noise
 	
 		if (sceneTexel.a < vic1AlphaValue + alphaDelta &&
 			sceneTexel.a > vic1AlphaValue - alphaDelta &&
@@ -74,7 +74,7 @@ void main(){
 
 	}
 
-	/* set alpha to be full after we've gotten the data out */
+	// set alpha to be full after we've gotten the data out
 	sceneTexel.a = 1.0; 
 
 	gl_FragColor = sceneTexel;

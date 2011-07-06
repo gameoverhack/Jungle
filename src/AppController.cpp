@@ -32,16 +32,16 @@ void AppController::update() {
 	Sequence * currentSequence;
 	goVideoPlayer * movie;
 	
-	/* get current scene */
+	// get current scene
 	currentScene = _appModel->getCurrentScene();	
-	/* get current sequence */
+	// get current sequence
 	currentSequence = currentScene->getCurrentSequence();
 
-	/* check if sequence was interactive */
+	// check if sequence was interactive
 	if(currentSequence->getIsInteractive()){
-		/* Check for interactive event */
+		// Check for interactive event
 		// this->hasInteractiveEventFlag()
-		/* we have had an interactive event */
+		// we have had an interactive event
 		int userAction = boost::any_cast<int>(_appModel->getProperty("userAction"));
 		if( userAction == kAttackerAction){
 			LOG_VERBOSE("Interactive action: Attacker");	
@@ -54,36 +54,36 @@ void AppController::update() {
 			currentScene->setCurrentSequence(currentSequence->getVictimResult());
 		}
 
-		/* else continue playing this video */
+		// else continue playing this video
 		movie = currentSequence->getSequenceMovie();
 	}
 	else{
-		/* Not interactive movie */
-		/* check if we're at the ened of the movie */
+		// Not interactive movie
+		// check if we're at the ened of the movie
 		movie = currentSequence->getSequenceMovie();
 		if(movie->getIsMovieDone()){
-			/* at end of non interactive movie, change to next sequence */
+			// at end of non interactive movie, change to next sequence
 			if(currentScene->nextSequence()){
-				/* loaded next sequence in this scene, keep going */
+				// loaded next sequence in this scene, keep going
 			}
 			else{
-				/* couldn't load next sequence, there isn't one etc */
-				/* set this scenes sequence to first sequence (for when we get back to it) */
+				// couldn't load next sequence, there isn't one etc
+				// set this scenes sequence to first sequence (for when we get back to it)
 // TODO:	This needs a method, can just use the key order since our keys are alpha ordered, 
 //			i feel odd about doing that though. I guess it is guarenteed though.
 //				currentScene->setCurrentSequence(0); 
 				
-				/* load next scene */
+				// load next scene
 				_appModel->nextScene();
 				currentScene = _appModel->getCurrentScene();
 				currentSequence = currentScene->getCurrentSequence();
 			}
 		}
-		/* have to call this incase it changed */
+		// have to call this incase it changed
 		movie = currentSequence->getSequenceMovie();
 	}
 	
-	/* update the movie */
+	// update the movie
 	movie->update();
 
 	_appView->update();

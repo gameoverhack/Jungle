@@ -6,6 +6,7 @@
  *  Copyright 2011 trace media. All rights reserved.
  *
  */
+
 #ifndef _H_APPDATATYPES
 #define _H_APPDATATYPES
 
@@ -122,9 +123,9 @@ public:
 	
 	void prepareSequenceMovie(){
 		_movie->play();
-		/* must be set after play ? */
+		// must be set after play ?
 		if(_isInteractive){
-			/* loop on interactive movies */
+			// loop on interactive movies
 			_movie->setLoopState(OF_LOOP_NORMAL);
 		}
 		else{
@@ -133,12 +134,11 @@ public:
 		
 	}
 	
-	void resetSequenceMovie(){
-		if(_movie != NULL){
+	void resetSequenceMovie() {
+		if(_movie != NULL) {
 			_movie->stop();
 			_movie->setPosition(0.0);
-		}
-		else{
+		} else {
 			LOG_ERROR("Could not reset sequence movie, movie == NULL");
 			abort();
 		}
@@ -166,11 +166,8 @@ public:
 };
 
 
-/* 
+// Scene holds a map of Sequences, key'd by the sequence name
 
- Scene holds a map of Sequences, key'd by the sequence name
-
-*/
 class Scene {
 	
 public:
@@ -212,13 +209,13 @@ public:
 		iter = _sequences.find(seq);
 		if(iter != _sequences.end()){
 			if(_currentSequence != NULL){
-				/* reset video state for current sequence */
+				// reset video state for current sequence
 				_currentSequence->resetSequenceMovie();
 			}
 
-			/* set new current sequence */
+			// set new current sequence
 			_currentSequence = iter->second;
-			/* play new current sequence movie */
+			// play new current sequence movie
 			_currentSequence->prepareSequenceMovie();
 			
 			LOG_NOTICE("Set current sequence to " + seq);
@@ -231,11 +228,10 @@ public:
 	}
 	
 	bool setCurrentSequence(Sequence * seq){
-		/* TODO:
-			Search through the map by value to find if the sequence is a valid
-			sequence? Linear search so "slow", (our data size is always going
-			to be so small it doesn't matter though.
-		*/
+		// TODO:
+		// Search through the map by value to find if the sequence is a valid
+		// sequence? Linear search so "slow", (our data size is always going
+		// to be so small it doesn't matter though.
 		return setCurrentSequence(seq->getName());
 	}
 	
@@ -243,7 +239,7 @@ public:
 		return _currentSequence;
 	}
 	
-	/* increments the current sequence to the next sequence (of the current sequence) */
+	// increments the current sequence to the next sequence (of the current sequence)
 	bool nextSequence(){
 		Sequence * seq = getCurrentSequence();
 		/*
@@ -258,10 +254,12 @@ public:
 			Using the string means making a define
 		 
 		 */
+		
 		if(_currentSequence->getNextSequenceName()== kLAST_SEQUENCE_TOKEN){
 			return false;
 		}
-		/* not last sequence, so set next */
+		
+		// not last sequence, so set next
 		setCurrentSequence(_currentSequence->getNextSequenceName());
 		return true;
 	}

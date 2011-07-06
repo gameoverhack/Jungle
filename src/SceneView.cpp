@@ -10,9 +10,9 @@
 #include "SceneView.h"
 
 SceneView::SceneView(float width, float height) : BaseView(width ,height) {
-	/* Set up cameras */
+	// Set up cameras
 
-	/* temp use static images for cam */
+	// temp use static images for cam
 	ofImage frameImage;
 	frameImage.loadImage("gueule.jpg");
 	
@@ -28,9 +28,9 @@ SceneView::SceneView(float width, float height) : BaseView(width ,height) {
 						frameImage.getHeight(), 
 						GL_RGB);
 	
-	/* set up fbos */
+	// set up fbos
 	
-	/* Allocate texture and attach*/
+	// Allocate texture and attach*/
 	_vic1Tex.allocate(_viewWidth, _viewHeight, GL_RGBA);
 	_vicFBO.setup(_viewWidth, _viewHeight);
 	_vicFBO.attach(_vic1Tex);
@@ -43,7 +43,7 @@ SceneView::SceneView(float width, float height) : BaseView(width ,height) {
 	_atk2FBO.setup(_viewWidth, _viewHeight);
 	_atk2FBO.attach(_atk2Tex);
 	
-	/* set up shader */
+	// set up shader
 	string vertPath = boost::any_cast<string>(_appModel->getProperty("shaderVertPath"));
 	string fragPath = boost::any_cast<string>(_appModel->getProperty("shaderFragPath"));
 	
@@ -58,16 +58,16 @@ void SceneView::update() {
 	CamTransform *actorTransform;
 	int currentFrame;
 
-	/* get the video texture */
+	// get the video texture
 	sceneTexture = &(currentSequenceVideo->getTextureReference());
 	currentFrame = currentSequenceVideo->getCurrentFrame();
 	
-	glClearColor(0.0, 0.0, 0.0, 0.0); /* transparent clear colour */
-	ofSetColor(255,255,255); /* no tinting */
+	glClearColor(0.0, 0.0, 0.0, 0.0); // transparent clear colour
+	ofSetColor(255,255,255); // no tinting
 	
 	if(currentSequenceVideo->isFrameNew()){
-		/* draw characters faces to new positions */
-		/* TODO: This needs to be smarter */
+		// draw characters faces to new positions
+		// TODO: This needs to be smarter
 		drawCharacter(&_vicFBO, &_cameraOne, &(_appModel->getCurrentSequence()->getTransformVector(0)[currentFrame]));
 		drawCharacter(&_atk1FBO, &_cameraTwo, &(_appModel->getCurrentSequence()->getTransformVector(1)[currentFrame]));
 		drawCharacter(&_atk2FBO, &_cameraTwo, &(_appModel->getCurrentSequence()->getTransformVector(2)[currentFrame]));

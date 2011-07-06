@@ -10,22 +10,22 @@
 #include "BaseView.h"
 
 BaseView::BaseView(float width, float height) {
-	/* save parameters */
+	// save parameters
 	_viewWidth = width;
 	_viewHeight = height;
 	
-	/* Create black pixels for inital texture, TODO: Potentially not required */
+	// Create black pixels for inital texture, TODO: Potentially not required
 	unsigned char * black = (unsigned char *)calloc(_viewWidth * _viewHeight * 4, sizeof(unsigned char));
 	
-	/* allocate the fbo texture */
+	// allocate the fbo texture
 	_viewFBOTexture.allocate(_viewWidth, _viewHeight, GL_RGBA);
 	_viewFBOTexture.loadData(black, _viewWidth, _viewHeight, GL_RGBA);
 	
-	/* set up fbo and attach texture */
+	// set up fbo and attach texture
 	_viewFBO.setup(_viewWidth, _viewHeight);
 	_viewFBO.attach(_viewFBOTexture);
 	
-	/* Free black pixels */
+	// Free black pixels
 	free(black);
 }
 
@@ -34,7 +34,7 @@ BaseView::~BaseView() {
 	_viewFBOTexture.clear();
 }
 
-/* Returns the views fbo */ 
+// Returns the views fbo 
 ofxFbo * BaseView::getViewFBO(){
 	return &_viewFBO;
 }

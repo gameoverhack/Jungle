@@ -6,6 +6,7 @@
  *  Copyright 2009 __MyCompanyName__. All rights reserved.
  *
  */
+
 #ifndef _H_LOGGER
 #define _H_LOGGER
 
@@ -48,7 +49,7 @@ public:
 		_logLevel = JU_LOG_WARNING;
 		_padLength	= 1; // default whitespace padding (self adjusting so we can set to 1 but could be any num)
 		
-		/* wont ever by written cause we default to a higher level of logging ... */
+		// wont ever by written cause we default to a higher level of logging ...
         log(JU_LOG_NOTICE, typeid(this).name(), "Created logger");
     
 	};

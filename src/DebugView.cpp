@@ -11,7 +11,7 @@
 
 
 DebugView::DebugView(float width, float height) : BaseView(width, height){
-	/* nothing? */
+	// nothing?
 }
 
 void DebugView::update(){
@@ -20,14 +20,14 @@ void DebugView::update(){
 
 	_viewFBO.begin();
 	glPushMatrix();
-	glClearColor(0.0, 0.0, 0.0, 0.0); /* transparent clear colour */
+	glClearColor(0.0, 0.0, 0.0, 0.0); // transparent clear colour
 	glClear(GL_COLOR_BUFFER_BIT);
 	
-	/* draw strings */
+	// draw strings
 	ofSetColor(0, 255, 0, 255);
-	ofDrawBitmapString(msg, 20, 20); /* this gets rendered upside down for some reason ?*/
+	ofDrawBitmapString(msg, 20, 20); // this gets rendered upside down for some reason ?*/
 	
-	/* draw scene progression */
+	// draw scene progression
 	goVideoPlayer *video = _appModel->getCurrentSequence()->getSequenceMovie();
 	Sequence * seq = _appModel->getCurrentSequence();
 	Scene * scn = _appModel->getCurrentScene();

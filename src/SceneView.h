@@ -18,7 +18,7 @@ class SceneView : public BaseView {
 public:
 	
 	SceneView(float width, float height);	//ctor
-	//SceneView();						//dtor
+	//SceneView();							//dtor
 	
 	void update();
 	//void draw();
@@ -33,11 +33,11 @@ private:
 	ofTexture _cameraOne;
 	ofTexture _cameraTwo;
 	
-	/* fbo stuff */
+	// fbo stuff
 	ofTexture _vic1Tex, _atk1Tex, _atk2Tex;
 	ofxFbo _vicFBO, _atk1FBO, _atk2FBO;
 	
-	/* Shader stuff */
+	// Shader stuff
 	ofxShader _shader;
 	
 protected:

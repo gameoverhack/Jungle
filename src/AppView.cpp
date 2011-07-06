@@ -21,13 +21,13 @@ void AppView::update() {
 
 void AppView::draw() {
 	
-	/* composite all views */
+	// composite all views
 	
 	_sceneView->draw();
 	
-	/* draw Mic view */
-	/* draw smasher view */
-	/* draw diagnositc view */
+	// draw Mic view
+	// draw smasher view
+	// draw diagnositc view
 	if(boost::any_cast<bool>(_appModel->getProperty("showDebugView"))){
 		_debugView->draw();
 	}

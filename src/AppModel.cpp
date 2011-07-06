@@ -28,7 +28,7 @@ bool AppModel::setCurrentScene(string sceneName){
 	map<string, Scene *>::iterator iter;
 	iter = _scenes.find(sceneName);
 	if(iter != _scenes.end()){
-		_currentScene = iter->second; /* TODO: DO we have to dereference this? TEST IT. */
+		_currentScene = iter->second; // TODO: DO we have to dereference this? TEST IT.
 		LOG_NOTICE("Set current scene to " + sceneName);
 		return true;
 	}
@@ -40,19 +40,19 @@ bool AppModel::setCurrentScene(string sceneName){
 
 bool AppModel::nextScene(){
 	string nextname;
-	/* find current scene in map */
+	// find current scene in map
 	map<string, Scene *>::iterator iter;
 	for(iter = _scenes.begin(); iter != _scenes.end(); iter++){
 		if(iter->first == _currentScene->getName()){
-			iter++; /* found current, increment to next */
-			/* is iter end? set name to first if so, else use iter name */
+			iter++; // found current, increment to next
+			// is iter end? set name to first if so, else use iter name
 			nextname = (iter == _scenes.end() ? _scenes.begin()->first : iter->first);
 			setCurrentScene(nextname);
 			LOG_VERBOSE("Nextscene: " + nextname);
 			return true;
 		}
 	}
-	return false; /* should never get here, can probably just be void return */
+	return false; // should never get here, can probably just be void return
 }
 
 Scene * AppModel::getCurrentScene(){
