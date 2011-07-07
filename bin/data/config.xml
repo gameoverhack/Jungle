@@ -2,18 +2,20 @@
 <config>
 	<properties>
 		<!-- Could just have <prop type="x" value="y"/>, makes reading values a bit cleaner -->
-		<movieDataPath type="string">/Users/gameover/Desktop/StrangerDanger/video</movieDataPath>
-
-		<shaderVertPath type="string">vertex</shaderVertPath>
-		<shaderFragPath type="string">multitexturemerge</shaderFragPath>
-		<shaderGammaCorrection type="float">2.0</shaderGammaCorrection>
-		<shaderBlendRatio type="float">0.5</shaderBlendRatio>
+		<property name="movieDataPath" type="string">/Users/gameover/Desktop/StrangerDanger/video</property>
+		<!--property name="movieDataPath" type="string">scenes/</property-->
+		<!--WHATCH OUT FOR THAT FORWARD SLASH! BAD THINGS HAPPEN WHEN YOU END UP WITH DOUBLE SLASHES-->
+		
+		<property name="shaderVertPath" type="string">vertex</property>
+		<property name="shaderFragPath" type="string">multitexturemerge</property>
+		<property name="shaderGammaCorrection" type="float">2.0</property>
+		<property name="shaderBlendRatio" type="float">0.5</property>
 
 		<!-- probably would have video width + app width? -->
-		<width type="float">1280</width>
-		<height type="float">720</height>
+		<property name="width" type="float">1280</property>
+		<property name="height" type="float">720</property>
 		
-		<showDebugView type="bool">true</showDebugView>
+		<property name="showDebugView" type="bool">true</property>
 
 		<!-- log level, int or string? -->
 		

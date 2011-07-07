@@ -18,7 +18,7 @@
 #include <string>
 using std::string;
 
-#include "tinyxml.h"
+#include "ofxXmlSettings.h"
 
 #include "Logger.h"
 #include "AppModel.h"
@@ -31,15 +31,14 @@ public:
 	DataController(string configFilePath);
 	~DataController();
 	
-	void loadAppProperties(string fs);
-	void loadSceneData(string filePath);
+	void loadAppProperties();
+	void loadSceneData();
 
 	template<class vectorType>
 	bool loadVector(string filePath, vector<vectorType> * vec);
 	
 private :
-	
-	TiXmlDocument *_xmldoc;
+	ofxXmlSettings * _xml;
 	
 };
 

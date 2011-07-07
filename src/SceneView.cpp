@@ -14,7 +14,7 @@ SceneView::SceneView(float width, float height) : BaseView(width ,height) {
 
 	// temp use static images for cam
 	ofImage frameImage;
-	frameImage.loadImage("gueule.jpg");
+	assert(frameImage.loadImage("gueule.jpg")); // nasty but i keep wondering what's wrong and i just haven't copied the file ;-)
 	
 	_cameraOne.allocate(frameImage.getWidth(), frameImage.getHeight(), GL_RGB);
 	_cameraOne.loadData(frameImage.getPixels(), // Load pixels in to texture
