@@ -29,36 +29,43 @@ public:
 	AppModel();
 	~AppModel();
 	
-	void setScene(string name, Scene * scene);
-	bool setCurrentScene(string sceneName);
+	void		setScene(string name, Scene * scene);
+	bool		setCurrentScene(string sceneName);
 
-	Sequence * getCurrentSequence();
-	Scene * getCurrentScene();
+	void		setCameraTextures(ofTexture * victimCamTex, ofTexture * attackCamTex);
+	ofTexture * getVictimCamTexRef();
+	ofTexture * getAttackCamTexRef();
 	
-	bool nextScene();
+	Sequence	* getCurrentSequence();
+	Scene		* getCurrentScene();
 	
-	void setProperty(string propName, boost::any propVal);
+	bool		nextScene();
 	
-	void getProperty(string propName, int & propVal);
-	void getProperty(string propName, float & propVal);
-	void getProperty(string propName, string & propVal);
+	void		setProperty(string propName, boost::any propVal);
 	
-	boost::any getProperty(string propName);
+	void		getProperty(string propName, int & propVal);
+	void		getProperty(string propName, float & propVal);
+	void		getProperty(string propName, string & propVal);
+	
+	boost::any	getProperty(string propName);
 
-	string	getAllPropsAsList();
+	string		getAllPropsAsList();
 	
 private:
 	
-	bool is_int(const boost::any & operand);
-	bool is_float(const boost::any & operand);
-	bool is_string(const boost::any & operand);
-	bool is_char_ptr(const boost::any & operand);
+	bool		is_int(const boost::any & operand);
+	bool		is_float(const boost::any & operand);
+	bool		is_string(const boost::any & operand);
+	bool		is_char_ptr(const boost::any & operand);
 	
-	map<string, boost::any>				_anyProps;
+	map<string, boost::any>		_anyProps;
 	
-	map<string, Scene *>				_scenes;
+	map<string, Scene *>		_scenes;
 	
-	Scene *							_currentScene;
+	Scene *						_currentScene;
+	
+	ofTexture *					_victimCamTex;
+	ofTexture *					_attackCamTex;
 	
 protected:
 

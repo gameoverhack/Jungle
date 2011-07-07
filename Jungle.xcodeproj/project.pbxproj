@@ -15,6 +15,11 @@
 		0754595613BD9C2500325443 /* Logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0754595413BD9C2500325443 /* Logger.cpp */; };
 		07545BA513BDF80200325443 /* DataController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07545BA413BDF80200325443 /* DataController.cpp */; };
 		77047FF213C4A8130099581A /* goQtUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77047FF013C4A8130099581A /* goQtUtils.cpp */; };
+		775690BB13C5C4C3000C9682 /* CamController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 775690BA13C5C4C3000C9682 /* CamController.cpp */; };
+		775690CB13C5C6DB000C9682 /* goVideoGrabber.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 775690C913C5C6DB000C9682 /* goVideoGrabber.cpp */; };
+		7756925513C5EAF9000C9682 /* ofxQTKitVideoGrabber.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7756922F13C5EAF9000C9682 /* ofxQTKitVideoGrabber.mm */; };
+		775692D613C5EC74000C9682 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 775692D513C5EC74000C9682 /* CoreVideo.framework */; };
+		7756930813C5EC80000C9682 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7756930713C5EC80000C9682 /* QTKit.framework */; };
 		778072F313BB4547007BAC08 /* ofxFbo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7780728413BB4547007BAC08 /* ofxFbo.cpp */; };
 		778072F413BB4547007BAC08 /* ofxShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7780728813BB4547007BAC08 /* ofxShader.cpp */; };
 		778072F513BB4547007BAC08 /* goVideoPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7780728C13BB4547007BAC08 /* goVideoPlayer.cpp */; };
@@ -136,6 +141,14 @@
 		07545FA413C1768600325443 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		77047FF013C4A8130099581A /* goQtUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = goQtUtils.cpp; sourceTree = "<group>"; };
 		77047FF113C4A8130099581A /* goQtUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = goQtUtils.h; sourceTree = "<group>"; };
+		775690B913C5C4C3000C9682 /* CamController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CamController.h; sourceTree = "<group>"; };
+		775690BA13C5C4C3000C9682 /* CamController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CamController.cpp; sourceTree = "<group>"; };
+		775690C913C5C6DB000C9682 /* goVideoGrabber.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = goVideoGrabber.cpp; sourceTree = "<group>"; };
+		775690CA13C5C6DB000C9682 /* goVideoGrabber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = goVideoGrabber.h; sourceTree = "<group>"; };
+		7756922E13C5EAF9000C9682 /* ofxQTKitVideoGrabber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxQTKitVideoGrabber.h; sourceTree = "<group>"; };
+		7756922F13C5EAF9000C9682 /* ofxQTKitVideoGrabber.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ofxQTKitVideoGrabber.mm; sourceTree = "<group>"; };
+		775692D513C5EC74000C9682 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		7756930713C5EC80000C9682 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = System/Library/Frameworks/QTKit.framework; sourceTree = SDKROOT; };
 		7780728413BB4547007BAC08 /* ofxFbo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxFbo.cpp; sourceTree = "<group>"; };
 		7780728513BB4547007BAC08 /* ofxFbo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxFbo.h; sourceTree = "<group>"; };
 		7780728813BB4547007BAC08 /* ofxShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxShader.cpp; sourceTree = "<group>"; };
@@ -293,6 +306,8 @@
 				E4C246DA10CCAE22004149E2 /* freeimage.a in Frameworks */,
 				778072F813BB4547007BAC08 /* libboost_serialization-xgcc42-mt-1_46_1.a in Frameworks */,
 				778072FD13BB4547007BAC08 /* openCV.a in Frameworks */,
+				775692D613C5EC74000C9682 /* CoreVideo.framework in Frameworks */,
+				7756930813C5EC80000C9682 /* QTKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -305,6 +320,34 @@
 				07545BB013BDFD1F00325443 /* config.xml */,
 			);
 			name = Config;
+			sourceTree = "<group>";
+		};
+		775690C713C5C6DB000C9682 /* goVideoGrabber */ = {
+			isa = PBXGroup;
+			children = (
+				775690C813C5C6DB000C9682 /* src */,
+			);
+			name = goVideoGrabber;
+			path = ../../../addons/goVideoGrabber;
+			sourceTree = SOURCE_ROOT;
+		};
+		775690C813C5C6DB000C9682 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				775690C913C5C6DB000C9682 /* goVideoGrabber.cpp */,
+				775690CA13C5C6DB000C9682 /* goVideoGrabber.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		7756922D13C5EAF9000C9682 /* ofxQTKitVideoGrabber */ = {
+			isa = PBXGroup;
+			children = (
+				7756922E13C5EAF9000C9682 /* ofxQTKitVideoGrabber.h */,
+				7756922F13C5EAF9000C9682 /* ofxQTKitVideoGrabber.mm */,
+			);
+			name = ofxQTKitVideoGrabber;
+			path = ../../../addons/ofxQTKitVideoGrabber/addons/ofxQTKitVideoGrabber;
 			sourceTree = "<group>";
 		};
 		7780728213BB4547007BAC08 /* ofxFbo */ = {
@@ -651,6 +694,8 @@
 				072CF9DB13BD8691000DBD67 /* AppController.h */,
 				07545BA313BDF80200325443 /* DataController.h */,
 				07545BA413BDF80200325443 /* DataController.cpp */,
+				775690B913C5C4C3000C9682 /* CamController.h */,
+				775690BA13C5C4C3000C9682 /* CamController.cpp */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -705,6 +750,8 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				7756922D13C5EAF9000C9682 /* ofxQTKitVideoGrabber */,
+				775690C713C5C6DB000C9682 /* goVideoGrabber */,
 				7780728213BB4547007BAC08 /* ofxFbo */,
 				7780728613BB4547007BAC08 /* ofxShader */,
 				7780728A13BB4547007BAC08 /* goVideoPlayer */,
@@ -864,6 +911,8 @@
 		E45BE5980E8CC70C009D7055 /* core frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7756930713C5EC80000C9682 /* QTKit.framework */,
+				775692D513C5EC74000C9682 /* CoreVideo.framework */,
 				E4C2424410CC5A17004149E2 /* AppKit.framework */,
 				E4C2424510CC5A17004149E2 /* Cocoa.framework */,
 				E4C2424610CC5A17004149E2 /* IOKit.framework */,
@@ -1132,6 +1181,9 @@
 				0754595613BD9C2500325443 /* Logger.cpp in Sources */,
 				07545BA513BDF80200325443 /* DataController.cpp in Sources */,
 				77047FF213C4A8130099581A /* goQtUtils.cpp in Sources */,
+				775690BB13C5C4C3000C9682 /* CamController.cpp in Sources */,
+				775690CB13C5C6DB000C9682 /* goVideoGrabber.cpp in Sources */,
+				7756925513C5EAF9000C9682 /* ofxQTKitVideoGrabber.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1241,7 +1293,8 @@
 		E4B69B4E0A3A1720003C02F2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "x86_64 i386 ppc";
 				CONFIGURATION_BUILD_DIR = "$(SRCROOT)/bin/";
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
@@ -1270,6 +1323,8 @@
 					"-lpthread",
 				);
 				OTHER_LDFLAGS = "";
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
+				VALID_ARCHS = i386;
 			};
 			name = Debug;
 		};

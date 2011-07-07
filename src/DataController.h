@@ -28,6 +28,7 @@ using std::string;
 class DataController {
 
 public:
+	
 	DataController(string configFilePath);
 	~DataController();
 	
@@ -37,7 +38,8 @@ public:
 	template<class vectorType>
 	bool loadVector(string filePath, vector<vectorType> * vec);
 	
-private :
+private:
+	
 	ofxXmlSettings * _xml;
 	
 };

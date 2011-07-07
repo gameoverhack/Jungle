@@ -12,22 +12,43 @@
 
 //--------------------------------------------------------------
 void AppController::setup() {
+	
 	LOGGER->setLogLevel(JU_LOG_VERBOSE);
+	
 	LOG_NOTICE("Initialising");
+	
 	DataController dataController(ofToDataPath("config.xml"));
 
-	cout << _appModel->getAllPropsAsList() << endl;
+	// setup cameras
+	_camControllers[0] = new CamController();
+	_camControllers[1] = new CamController();
+	_camControllers[0]->setup("Built-in iSight", 640, 480);
+	_camControllers[1]->setup("ManyCam Virtual Webcam (RGB)", 640, 480);	// NB: had to use QTKit to get ManyCam working
+	
+	// register pointers to textures from cams on the model
+	_appModel->setCameraTextures(_camControllers[0]->getCamTextureRef(), _camControllers[1]->getCamTextureRef());
 	
 	_appModel->setProperty("userAction", kNoUserAction);
 	
 	_appView = new AppView(1280, 720);
+	
 	LOG_NOTICE("Initialisation complete");
 	
+}
+
+void AppController::swapCameras() {
+	// use pointer swap and re-register texture references on the model
+	swap(_camControllers[0], _camControllers[1]);
+	_appModel->setCameraTextures(_camControllers[0]->getCamTextureRef(), _camControllers[1]->getCamTextureRef());
 }
 
 //--------------------------------------------------------------
 void AppController::update() {
 //	LOG_VERBOSE("Updating");
+	
+	_camControllers[0]->update();
+	_camControllers[1]->update();
+	
 	Scene * currentScene;
 	Sequence * currentSequence;
 	goVideoPlayer * movie;
@@ -124,6 +145,9 @@ void AppController::keyPressed(int key){
 			break;
 		case 'p':
 			_appModel->setProperty("userAction", kAttackerAction);
+			break;
+		case 'm':
+			swapCameras();
 			break;
 		default:
 			break;

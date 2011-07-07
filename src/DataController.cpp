@@ -25,7 +25,7 @@ DataController::DataController(string configFilePath){
 	LOG_NOTICE("Initialisation complete");
 }
 
-DataController::~DataController(){
+DataController::~DataController() {
 	delete _xml;
 }
 

@@ -12,7 +12,7 @@
 SceneView::SceneView(float width, float height) : BaseView(width ,height) {
 	// Set up cameras
 
-	// temp use static images for cam
+	/* temp use static images for cam
 	ofImage frameImage;
 	assert(frameImage.loadImage("gueule.jpg")); // nasty but i keep wondering what's wrong and i just haven't copied the file ;-)
 	
@@ -27,13 +27,13 @@ SceneView::SceneView(float width, float height) : BaseView(width ,height) {
 						frameImage.getWidth(), 
 						frameImage.getHeight(), 
 						GL_RGB);
-	
+	*/
 	// set up fbos
 	
 	// Allocate texture and attach*/
 	_vic1Tex.allocate(_viewWidth, _viewHeight, GL_RGBA);
-	_vicFBO.setup(_viewWidth, _viewHeight);
-	_vicFBO.attach(_vic1Tex);
+	_vic1FBO.setup(_viewWidth, _viewHeight);
+	_vic1FBO.attach(_vic1Tex);
 	
 	_atk1Tex.allocate(_viewWidth, _viewHeight, GL_RGBA);
 	_atk1FBO.setup(_viewWidth, _viewHeight);
@@ -68,9 +68,9 @@ void SceneView::update() {
 	if(currentSequenceVideo->isFrameNew()){
 		// draw characters faces to new positions
 		// TODO: This needs to be smarter
-		drawCharacter(&_vicFBO, &_cameraOne, &(_appModel->getCurrentSequence()->getTransformVector(0)[currentFrame]));
-		drawCharacter(&_atk1FBO, &_cameraTwo, &(_appModel->getCurrentSequence()->getTransformVector(1)[currentFrame]));
-		drawCharacter(&_atk2FBO, &_cameraTwo, &(_appModel->getCurrentSequence()->getTransformVector(2)[currentFrame]));
+		drawCharacter(&_vic1FBO, _appModel->getVictimCamTexRef(), &(_appModel->getCurrentSequence()->getTransformVector(0)[currentFrame]));
+		drawCharacter(&_atk1FBO, _appModel->getAttackCamTexRef(), &(_appModel->getCurrentSequence()->getTransformVector(1)[currentFrame]));
+		drawCharacter(&_atk2FBO, _appModel->getAttackCamTexRef(), &(_appModel->getCurrentSequence()->getTransformVector(2)[currentFrame]));
 	}
 	
 	_viewFBO.begin();

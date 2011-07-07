@@ -68,6 +68,19 @@ Sequence * AppModel::getCurrentSequence() {
 	return seq;
 }
 
+void AppModel::setCameraTextures(ofTexture * victimCamTex, ofTexture * attackCamTex) {
+	_victimCamTex = victimCamTex;
+	_attackCamTex = attackCamTex;
+}
+
+ofTexture * AppModel::getVictimCamTexRef() {
+	return _victimCamTex;
+}
+
+ofTexture * AppModel::getAttackCamTexRef() {
+	return _attackCamTex;
+}
+
 /********************************************************
  * Getters and setters for simple int, float, string	*
  * properties using boost::any and std::map. These		*

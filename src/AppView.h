@@ -19,7 +19,7 @@ class AppView : public BaseView {
 public:
 	
 	AppView(float width, float height);		//ctor
-	//~AppView();						//dtor
+	//~AppView();							//dtor
 	
 	void update();
 	void draw();
