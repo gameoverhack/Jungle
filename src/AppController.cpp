@@ -77,8 +77,7 @@ void AppController::update() {
 
 		// else continue playing this video
 		movie = currentSequence->getSequenceMovie();
-	}
-	else{
+	} else {
 		// Not interactive movie
 		// check if we're at the ened of the movie
 		movie = currentSequence->getSequenceMovie();
@@ -149,9 +148,19 @@ void AppController::keyPressed(int key){
 		case 'm':
 			swapCameras();
 			break;
+		case ' ':
+			_appModel->getSequenceMovie()->togglePaused();
+			break;
+		case 356: // left arrow
+			_appModel->getSequenceMovie()->previousFrame();
+			break;
+		case 358: // right arrow
+			_appModel->getSequenceMovie()->nextFrame();
+			break;
 		default:
 			break;
 	}
+	cout << key << endl;
 	printf("Gamma: %f\n", gamma);
 	_appModel->setProperty("shaderBlendRatio", blend);
 	_appModel->setProperty("shaderGammaCorrection", gamma);

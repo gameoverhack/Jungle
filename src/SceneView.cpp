@@ -64,13 +64,16 @@ void SceneView::update() {
 	
 	glClearColor(0.0, 0.0, 0.0, 0.0); // transparent clear colour
 	ofSetColor(255,255,255); // no tinting
-	
+
 	if(currentSequenceVideo->isFrameNew()){
 		// draw characters faces to new positions
 		// TODO: This needs to be smarter
 		drawCharacter(&_vic1FBO, _appModel->getVictimCamTexRef(), &(_appModel->getCurrentSequence()->getTransformVector(0)[currentFrame]));
 		drawCharacter(&_atk1FBO, _appModel->getAttackCamTexRef(), &(_appModel->getCurrentSequence()->getTransformVector(1)[currentFrame]));
-		drawCharacter(&_atk2FBO, _appModel->getAttackCamTexRef(), &(_appModel->getCurrentSequence()->getTransformVector(2)[currentFrame]));
+		
+		if (_appModel->getCurrentSequence()->getTransformCount() > 2) {
+			drawCharacter(&_atk2FBO, _appModel->getAttackCamTexRef(), &(_appModel->getCurrentSequence()->getTransformVector(2)[currentFrame]));
+		}
 	}
 	
 	_viewFBO.begin();
@@ -103,6 +106,7 @@ void SceneView::drawCharacter(ofxFbo * targetFBO,
 	// set up draw state
 	targetFBO->begin();
 	glPushMatrix();
+
 	glClear(GL_COLOR_BUFFER_BIT); // clear frame
 	
 	// do the transform
@@ -111,6 +115,7 @@ void SceneView::drawCharacter(ofxFbo * targetFBO,
 	glTranslatef(transform->x, transform->y, 0.0);
 	
 	// scale to transform size
+	//glScalef(-1.0f, 1.0f, 1.0f);
 	glScalef(transform->scaleX, transform->scaleY, 0.0);
 	
 	// rotate the head

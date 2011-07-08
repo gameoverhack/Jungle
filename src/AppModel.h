@@ -32,12 +32,13 @@ public:
 	void		setScene(string name, Scene * scene);
 	bool		setCurrentScene(string sceneName);
 
+	Sequence		* getCurrentSequence();
+	Scene			* getCurrentScene();
+	goVideoPlayer	* getSequenceMovie();
+	
 	void		setCameraTextures(ofTexture * victimCamTex, ofTexture * attackCamTex);
 	ofTexture * getVictimCamTexRef();
 	ofTexture * getAttackCamTexRef();
-	
-	Sequence	* getCurrentSequence();
-	Scene		* getCurrentScene();
 	
 	bool		nextScene();
 	
@@ -53,10 +54,13 @@ public:
 	
 private:
 	
-	bool		is_int(const boost::any & operand);
-	bool		is_float(const boost::any & operand);
-	bool		is_string(const boost::any & operand);
-	bool		is_char_ptr(const boost::any & operand);
+	inline string	pad(string & objectName);
+	int				_padLength;
+	
+	bool			is_int(const boost::any & operand);
+	bool			is_float(const boost::any & operand);
+	bool			is_string(const boost::any & operand);
+	bool			is_char_ptr(const boost::any & operand);
 	
 	map<string, boost::any>		_anyProps;
 	

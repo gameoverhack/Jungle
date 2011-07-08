@@ -94,12 +94,27 @@ public:
 		_transforms.push_back(trans);
 	}	
 	
+	int	getTransformCount() {
+		return _transforms.size();
+	}
+	
 	vector<CamTransform> getTransformVector(int i){
 		if(i > _transforms.size() || i < 0){
 			LOG_ERROR("Attempted to get transform for " + ofToString(i));
 			abort();
 		}
 		return _transforms.at(i);
+	}
+	
+	string getTransformAsString(int i, int f) {
+		vector<CamTransform> t = getTransformVector(i);
+		string tranString = "f: " + ofToString(f) + 
+							" x: " + ofToString(t[f].x) + 
+							" y: " + ofToString(t[f].y) + 
+							" r: " + ofToString(t[f].rotation) + 
+							" sX: " + ofToString(t[f].scaleX) + 
+							" sY: " + ofToString(t[f].scaleY);
+		return tranString;
 	}
 	
 	void setSequenceMovie(goVideoPlayer *video){
