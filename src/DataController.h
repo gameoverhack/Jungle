@@ -15,10 +15,13 @@
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
 
+#include <boost/algorithm/string.hpp> // string splitting
+
 #include <string>
 using std::string;
 
 #include "ofxXmlSettings.h"
+#include "goDirList.h"
 
 #include "Logger.h"
 #include "AppModel.h"
@@ -33,6 +36,9 @@ public:
 	
 	bool propertyXMLBuilder(string propertyConfigFilepath);
 	bool propertyXMLParser(string propertyConfigFilepath);
+	
+	bool sceneXMLBuilder(string configFilePath);
+	bool sceneXMLParser(string configFilePath);
 	
 	void loadAppProperties();
 	void loadSceneData();

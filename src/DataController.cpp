@@ -9,6 +9,29 @@
 
 #include "DataController.h"
 
+DataController::DataController(string configFilePath){
+	LOG_NOTICE("Initialising with " + configFilePath);
+	
+	_xml = new ofxXmlSettings();
+	if(!_xml->loadFile(configFilePath)){
+		LOG_ERROR("Could not load config: " + configFilePath);
+		abort();
+	}
+	_xml->pushTag("config"); // Get inside root node
+	
+	
+	propertyXMLParser(configFilePath);
+	propertyXMLBuilder(configFilePath);
+	sceneXMLBuilder("some file");
+	
+	LOG_NOTICE("Initialisation complete");
+}
+
+DataController::~DataController(){
+	delete _xml;
+}
+
+
 bool DataController::propertyXMLParser(string propertyConfigFilepath){
 	//  load up the property xml file 
 	ofxXmlSettings *xml = new ofxXmlSettings();
@@ -67,6 +90,7 @@ bool DataController::propertyXMLParser(string propertyConfigFilepath){
 	
 	//  close xml file 
 	delete xml;
+	return true;
 }
 
 bool DataController::propertyXMLBuilder(string propertyConfigFilepath){
@@ -125,26 +149,214 @@ bool DataController::propertyXMLBuilder(string propertyConfigFilepath){
 	}
 }
 
-DataController::DataController(string configFilePath){
-	LOG_NOTICE("Initialising with " + configFilePath);
+bool DataController::sceneXMLParser(string configFilePath){
+	
+}
 
-	_xml = new ofxXmlSettings();
-	if(!_xml->loadFile(configFilePath)){
-		LOG_ERROR("Could not load config: " + configFilePath);
+// Some rules about scenes
+// -> = "leads to", N - no action, V - victim action, A - attacker action
+// seq01a N-> seq01a_loop
+// seq01a V-> seq02b
+// seq01a_loop N-> seq01a_loop
+// seq01a_loop V-> seq02b
+// seq01a_loop A-> seq02a
+// 
+// by this,
+// any seqXXb should be considered the final sequence in a scene
+
+
+bool DataController::sceneXMLBuilder(string configFilePath){
+
+	ofxXmlSettings xml; // bulid into this and save it.
+
+	goDirList lister;
+	int numFiles;
+	map<string, int> filenameToListPosMap;
+
+	// Yuck. have to remember the "which" int that is associated with a 
+	// scene name, so we can get back at the right ones to insert details
+	// for the scene. Techically, the lister might always return the files
+	// correctly grouped, but theres no guarentee to the structure
+	map<string, int> nameToXMLWhichMap;
+	int which; // used for ofxXmlSettings "which" params
+	
+	
+	vector<string> substrings; // stores split string parts
+	
+	// add and list the dir
+	lister.addDir(ofToDataPath(boost::any_cast<string>(_appModel->getProperty("movieDataPath")), true));
+	lister.allowExt("mov");
+	lister.allowExt("bin");
+	numFiles = lister.listDir(true);
+	
+	// quick error check
+	if(numFiles == 0){
+		LOG_ERROR("Could not build scene config, goDirList reported 0 files.");
 		abort();
 	}
-	_xml->pushTag("config"); // Get inside root node
 	
+	// set up xml basics
+	xml.addTag("config:scenes");
+	xml.pushTag("config");
+	xml.pushTag("scenes"); // set doc root
 	
-	propertyXMLParser(configFilePath);
-	propertyXMLBuilder(configFilePath);
+	// Iterate the files 
+	for(int fileNumber = 0; fileNumber < numFiles; fileNumber++){
+		string filename = lister.getName(fileNumber);
+		filename = filename.substr(0, filename.find_last_of(".")); // remove ext
+		boost::split(substrings, filename, boost::is_any_of("_")); // split filename
+		
+		// first substring is the scene name, check if its existant
+		if(nameToXMLWhichMap.find(substrings[0]) == nameToXMLWhichMap.end()){
+			// doesn't exist, add it
+			which = xml.addTag("scene");
+			xml.addAttribute("scene", "name", substrings[0], which);
+			// Add to info map
+			nameToXMLWhichMap.insert(pair<string, int>(substrings[0], which));			
+		}
+
+		// get "which" scene tag for this scene name
+		which = nameToXMLWhichMap.find(substrings[0])->second;
+		// push into scene
+		xml.pushTag("scene", which);
+
+		// add sequence to scene
+
+		// transform file for a sequence
+		if(filename.find("transform") !=string::npos){
+			// does the sequence exist?
+			string mapName = substrings[1];
+			if(filename.find("loop") != string::npos){
+				// loop file, so append _loop to mapname
+				mapName = substrings[1] + "_loop";
+			}
+			
+			if(nameToXMLWhichMap.find(mapName) == nameToXMLWhichMap.end()){
+				// doesn't exist, so create a sequence with the right name
+				which = xml.addTag("sequence");
+				xml.setAttribute("sequence", "name", mapName, which);
+				// NOTE: this is only a partial creation, does not set all attributes
+				nameToXMLWhichMap.insert(pair<string, int>(mapName, which));
+			}
+			// Find which sequence to push into
+			which = nameToXMLWhichMap.find(mapName)->second;
+			
+			// push into sequence
+			xml.pushTag("sequence", which);
+
+			// insert transform stuff
+			which = xml.addTag("transform");
+			// set attributes for this transform
+			xml.addAttribute("transform", "filename", lister.getName(fileNumber), which);
+
+			xml.addAttribute("transform", "size", lister.getSize(fileNumber), which);
+			xml.addAttribute("transform", "dateCreated", lister.getCreated(fileNumber), which);
+			xml.addAttribute("transform", "dateModified", lister.getModified(fileNumber), which);
+			
+			xml.popTag(); // pop sequence			
+		}
+		// loop file for a sequence
+		else if(filename.find("loop") != string::npos){
+			// does the sequence exist, it might not because we might get a transform
+			// before we get a movie, in which case we'll have inserted a basic
+			// sequence tag
+			string mapName = substrings[1] + "_loop";
+
+			if(nameToXMLWhichMap.find(mapName) == nameToXMLWhichMap.end()){
+				// doesn't exist, so create a sequence with the right name
+				which = xml.addTag("sequence");
+				xml.setAttribute("sequence", "name", mapName, which);
+				// NOTE: this is only a partial creation, does not set all attributes
+				nameToXMLWhichMap.insert(pair<string, int>(mapName, which));
+			}
+			which = nameToXMLWhichMap.find(mapName)->second;
+
+			// add the sequence attributes
+			xml.setAttribute("sequence", "name", mapName, which);
+			xml.setAttribute("sequence", "interactive", "true", which);
+			
+			// seq01a_loop N-> seq01a_loop
+			xml.addAttribute("sequence", "nextSequence", mapName, which);
+			
+			
+			// seq01a_loop V-> seq02b
+			// seq01a_loop A-> seq02a
+
+			int seqNum;
+			// pull out the sequence number from the sequence name, so we can increment it
+			if(sscanf(substrings[1].c_str(), "seq%da_loop", &seqNum) != 1){
+				LOG_ERROR("Could not sscanf sequence number from sequence name "+substrings[1]);
+				abort();
+			}
+			seqNum++;
+			char seqNumString[10]; // should never have more than 10 digits...
+			snprintf(seqNumString, sizeof(seqNumString), "%02d", seqNum);
+			// create a new sequence name
+			string newName = "seq"+string(seqNumString)+"a";
+			xml.addAttribute("sequence", "attackerResult", newName, which);
+			newName = "seq"+string(seqNumString)+"b";
+			xml.addAttribute("sequence", "victimResult", newName, which);
+			
+			xml.addAttribute("sequence", "size", lister.getSize(fileNumber), which);
+			xml.addAttribute("sequence", "dateCreated", lister.getCreated(fileNumber), which);
+			xml.addAttribute("sequence", "dateModified", lister.getModified(fileNumber), which);
+		}
+		else{
+			// Not a loop, not a transform, is a regular sequence movie
+			string mapName = substrings[1];
+
+			if(nameToXMLWhichMap.find(mapName) == nameToXMLWhichMap.end()){
+				// doesn't exist, so create a sequence with the right name
+				which = xml.addTag("sequence");
+				xml.setAttribute("sequence", "name", mapName, which);
+				// NOTE: this is only a partial creation, does not set all attributes
+				nameToXMLWhichMap.insert(pair<string, int>(mapName, which));
+			}
+			which = nameToXMLWhichMap.find(mapName)->second;
+			
+			// add the sequence attributes
+			xml.setAttribute("sequence", "name", substrings[1], which); // just second part
+			xml.setAttribute("sequence", "interactive", "victim", which); // only victim can interact			
+			
+			// seq01a N-> seq01a_loop
+			xml.addAttribute("sequence", "nextSequence", substrings[1]+"_loop", which); // seq01a -> seq01a_loop
+
+			
+			// seq01a V-> seq02b
+			int seqNum;
+			// pull out the sequence number from the sequence name, so we can increment it
+			if(sscanf(substrings[1].c_str(), "seq%da_loop", &seqNum) != 1){
+				LOG_ERROR("Could not sscanf sequence number from sequence name "+substrings[1]);
+				abort();
+			}
+			seqNum++;
+			char seqNumString[10]; // should never have more than 10 digits...
+			snprintf(seqNumString, sizeof(seqNumString), "%02d", seqNum);
+			// create a new sequence name
+			string newName = "seq"+string(seqNumString)+"b";
+			xml.addAttribute("sequence", "victimResult", newName, which); // seq01a -> seq01b
+
+			xml.addAttribute("sequence", "size", lister.getSize(fileNumber), which);
+			xml.addAttribute("sequence", "dateCreated", lister.getCreated(fileNumber), which);
+			xml.addAttribute("sequence", "dateModified", lister.getModified(fileNumber), which);
+		}
+		xml.popTag(); // scene pop 
+	}
 	
-	LOG_NOTICE("Initialisation complete");
+	string filename = boost::any_cast<string>(_appModel->getProperty("scenesXMLFile"));
+	if(xml.saveFile(filename+"_temp.xml")){
+		// remove the first file
+		remove(ofToDataPath(filename, true).c_str());
+		// rename temp to final file
+		rename(ofToDataPath(filename+"_temp.xml", true).c_str(), ofToDataPath(filename, true).c_str());
+		return true;
+	}
+	else{
+		LOG_ERROR("Could not save properties to xml. File error?");
+		return false;
+	}	
 }
 
-DataController::~DataController(){
-	delete _xml;
-}
 
 void DataController::loadAppProperties(){
 

@@ -72,7 +72,6 @@
 		E4C2428310CC5B66004149E2 /* PocoXML.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C2427E10CC5B66004149E2 /* PocoXML.a */; };
 		E4C2429410CC5C38004149E2 /* freetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C2429310CC5C38004149E2 /* freetype.a */; };
 		E4C242CD10CC650E004149E2 /* libfmodex.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C242CC10CC650E004149E2 /* libfmodex.dylib */; };
-		E4C2443910CC7693004149E2 /* openFrameworks-Info.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */; };
 		E4C246DA10CCAE22004149E2 /* freeimage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C246D910CCAE22004149E2 /* freeimage.a */; };
 /* End PBXBuildFile section */
 
@@ -110,7 +109,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
-				E4C2443910CC7693004149E2 /* openFrameworks-Info.plist in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -131,10 +129,10 @@
 		0754595513BD9C2500325443 /* Logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Logger.h; sourceTree = "<group>"; };
 		07545BA313BDF80200325443 /* DataController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataController.h; sourceTree = "<group>"; };
 		07545BA413BDF80200325443 /* DataController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DataController.cpp; sourceTree = "<group>"; };
-		07545BB013BDFD1F00325443 /* config.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = config.xml; path = bin/data/config.xml; sourceTree = SOURCE_ROOT; };
 		07545DB713BE412D00325443 /* TODO */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO; sourceTree = "<group>"; };
 		07545FA413C1768600325443 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
-		07B2000E13C6AB9800FF66CB /* scenes.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = scenes.xml; path = bin/data/scenes.xml; sourceTree = SOURCE_ROOT; };
+		07B2019113CAD52500FF66CB /* config_properties.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = config_properties.xml; path = bin/data/config_properties.xml; sourceTree = SOURCE_ROOT; };
+		07B2019213CAD52500FF66CB /* config_scenes.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = config_scenes.xml; path = bin/data/config_scenes.xml; sourceTree = SOURCE_ROOT; };
 		77047FF013C4A8130099581A /* goQtUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = goQtUtils.cpp; sourceTree = "<group>"; };
 		77047FF113C4A8130099581A /* goQtUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = goQtUtils.h; sourceTree = "<group>"; };
 		7780728413BB4547007BAC08 /* ofxFbo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxFbo.cpp; sourceTree = "<group>"; };
@@ -303,8 +301,8 @@
 		07545BA713BDFCFC00325443 /* Config */ = {
 			isa = PBXGroup;
 			children = (
-				07545BB013BDFD1F00325443 /* config.xml */,
-				07B2000E13C6AB9800FF66CB /* scenes.xml */,
+				07B2019113CAD52500FF66CB /* config_properties.xml */,
+				07B2019213CAD52500FF66CB /* config_scenes.xml */,
 			);
 			name = Config;
 			sourceTree = "<group>";
