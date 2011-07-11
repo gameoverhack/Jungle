@@ -134,6 +134,7 @@
 		07545BB013BDFD1F00325443 /* config.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = config.xml; path = bin/data/config.xml; sourceTree = SOURCE_ROOT; };
 		07545DB713BE412D00325443 /* TODO */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO; sourceTree = "<group>"; };
 		07545FA413C1768600325443 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		07B2000E13C6AB9800FF66CB /* scenes.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = scenes.xml; path = bin/data/scenes.xml; sourceTree = SOURCE_ROOT; };
 		77047FF013C4A8130099581A /* goQtUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = goQtUtils.cpp; sourceTree = "<group>"; };
 		77047FF113C4A8130099581A /* goQtUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = goQtUtils.h; sourceTree = "<group>"; };
 		7780728413BB4547007BAC08 /* ofxFbo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxFbo.cpp; sourceTree = "<group>"; };
@@ -303,6 +304,7 @@
 			isa = PBXGroup;
 			children = (
 				07545BB013BDFD1F00325443 /* config.xml */,
+				07B2000E13C6AB9800FF66CB /* scenes.xml */,
 			);
 			name = Config;
 			sourceTree = "<group>";

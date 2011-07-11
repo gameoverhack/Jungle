@@ -9,30 +9,18 @@
 
 #include "DataController.h"
 
-DataController::DataController(string configFilePath){
-	LOG_NOTICE("Initialising with " + configFilePath);
-
-	_xml = new ofxXmlSettings();
-	if(!_xml->loadFile(configFilePath)){
-		LOG_ERROR("Could not load config: " + configFilePath);
-		abort();
+bool DataController::propertyXMLParser(string propertyConfigFilepath){
+	//  load up the property xml file 
+	ofxXmlSettings *xml = new ofxXmlSettings();
+	if(!xml->loadFile(propertyConfigFilepath)){
+		LOG_ERROR("Could not load property config: " + propertyConfigFilepath);
+		abort();		
 	}
-	_xml->pushTag("config"); // Get inside root node
 	
-	loadAppProperties();
-	loadSceneData();
-	
-	LOG_NOTICE("Initialisation complete");
-}
-
-DataController::~DataController(){
-	delete _xml;
-}
-
-void DataController::loadAppProperties(){
+	//  pull out the properties 
 	string defaultString = "this should never be seen"; // getValue requires type to know what to return
 	string propName, propValue, propType;
-
+	
 	LOG_NOTICE("Discovering properties");
 	// Find all the property tags
 	if(!_xml->tagExists("properties")){
@@ -47,13 +35,13 @@ void DataController::loadAppProperties(){
 									  "name", defaultString, i);
 		propType = _xml->getAttribute("property",
 									  "type", defaultString, i);
-
+		
 		/*
 		 
-			Have to cast the returns from ofxXmlsettings::getValue for some reason
-			even though we pass in a default value to make it call the correct
-			function.
-			
+		 Have to cast the returns from ofxXmlsettings::getValue for some reason
+		 even though we pass in a default value to make it call the correct
+		 function.
+		 
 		 */
 		if(propType == "float"){
 			_appModel->setProperty(propName,
@@ -76,6 +64,90 @@ void DataController::loadAppProperties(){
 		}
 	} 
 	_xml->popTag();
+	
+	//  close xml file 
+	delete xml;
+}
+
+bool DataController::propertyXMLBuilder(string propertyConfigFilepath){
+	int which; // used for ofxXmlSettings
+	
+	// get list of all properties 
+	map<string, string> propsAsMap = _appModel->getAllPropsNameTypeAsMap();
+
+	// set up xml
+	ofxXmlSettings xml;
+	xml.addTag("config");
+	xml.pushTag("config");
+	xml.addTag("properties");
+	xml.pushTag("properties");
+
+	// create nodes for each property 
+	map<string, string>::iterator iter = propsAsMap.begin();
+	while(iter != propsAsMap.end()){
+		which = xml.addTag("property");
+		xml.addAttribute("property", "name", iter->first, which); // name
+		xml.addAttribute("property", "type", iter->second, which); // type
+
+		// value
+		if(iter->second == "float"){
+			xml.setValue("property", boost::any_cast<float>(_appModel->getProperty(iter->first)), which);
+		}
+		else if(iter->second == "int"){
+			xml.setValue("property", boost::any_cast<int>(_appModel->getProperty(iter->first)), which);
+		}
+		else if(iter->second == "bool"){
+			xml.setValue("property", boost::any_cast<bool>(_appModel->getProperty(iter->first)) ? "true" : "false", which);
+		}
+		else if(iter->second == "string"){
+			xml.setValue("property", boost::any_cast<string>(_appModel->getProperty(iter->first)), which);
+		}
+		else{
+			LOG_WARNING("Could not save property: " + iter->first + ", unkown type: " + iter->second);
+		}		
+		iter++;
+	}
+	xml.popTag();
+	xml.popTag();
+	
+	// save propertxml
+	LOG_NOTICE("Saving properties to xml");
+	if(xml.saveFile(propertyConfigFilepath+"_temp.xml")){
+		// remove the first file
+		remove(ofToDataPath(propertyConfigFilepath, true).c_str());
+		// rename temp to final file
+		rename(ofToDataPath(propertyConfigFilepath+"_temp.xml", true).c_str(), ofToDataPath(propertyConfigFilepath, true).c_str());
+		return true;
+	}
+	else{
+		LOG_ERROR("Could not save properties to xml. File error?");
+		return false;
+	}
+}
+
+DataController::DataController(string configFilePath){
+	LOG_NOTICE("Initialising with " + configFilePath);
+
+	_xml = new ofxXmlSettings();
+	if(!_xml->loadFile(configFilePath)){
+		LOG_ERROR("Could not load config: " + configFilePath);
+		abort();
+	}
+	_xml->pushTag("config"); // Get inside root node
+	
+	
+	propertyXMLParser(configFilePath);
+	propertyXMLBuilder(configFilePath);
+	
+	LOG_NOTICE("Initialisation complete");
+}
+
+DataController::~DataController(){
+	delete _xml;
+}
+
+void DataController::loadAppProperties(){
+
 
 }
 

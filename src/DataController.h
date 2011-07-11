@@ -31,6 +31,9 @@ public:
 	DataController(string configFilePath);
 	~DataController();
 	
+	bool propertyXMLBuilder(string propertyConfigFilepath);
+	bool propertyXMLParser(string propertyConfigFilepath);
+	
 	void loadAppProperties();
 	void loadSceneData();
 
