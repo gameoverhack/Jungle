@@ -148,6 +148,32 @@ string AppModel::getAllPropsAsList() {
 	
 }
 
+map<string, string> AppModel::getAllPropsAsMap(){
+	/*
+	 returning as name,type instead of name,boost::any 
+	 beacuse we'd have to expose the is_int/etc to check the any types.
+	 */
+	map<string, string> retmap;
+	
+	map<string, boost::any>::iterator iter;
+	for (iter = _anyProps.begin(); iter != _anyProps.end(); iter++) {
+		/* add the name and type to the map */		
+		if (is_int(iter->second)){
+			retmap.insert(pair<string,string>(iter->first, "int"));
+		}
+		if (is_float(iter->second)){
+			retmap.insert(pair<string,string>(iter->first, "float"));
+		}
+		if (is_string(iter->second)){
+			retmap.insert(pair<string,string>(iter->first, "string"));
+		}
+		if(is_bool(iter->second)){
+			retmap.insert(pair<string,string>(iter->first, "bool"));
+		}
+	}
+	return retmap;
+}
+
 // check type int
 bool AppModel::is_int(const boost::any & operand) {
     return operand.type() == typeid(int);
@@ -161,6 +187,10 @@ bool AppModel::is_float(const boost::any & operand) {
 // check type string
 bool AppModel::is_string(const boost::any & operand) {
     return operand.type() == typeid(string);
+}
+
+bool AppModel::is_bool(const boost::any & operand){
+	return operand.type() == typeid(bool);
 }
 
 // check type char *

@@ -18,9 +18,13 @@
 #include <boost/any.hpp>
 
 #include <map>
+#include <vector>
 #include <assert.h>
+#include <string>
 
 using std::map;
+using std::vector;
+using std::string;
 
 class AppModel {
 
@@ -46,6 +50,7 @@ public:
 	boost::any getProperty(string propName);
 
 	string	getAllPropsAsList();
+	map<string, string> getAllPropsAsMap();
 	
 private:
 	
@@ -53,6 +58,7 @@ private:
 	bool is_float(const boost::any & operand);
 	bool is_string(const boost::any & operand);
 	bool is_char_ptr(const boost::any & operand);
+	bool is_bool(const boost::any & operand);
 	
 	map<string, boost::any>				_anyProps;
 	
