@@ -50,7 +50,7 @@ public:
 	boost::any getProperty(string propName);
 
 	string	getAllPropsAsList();
-	map<string, string> getAllPropsAsMap();
+	map<string, string> getAllPropsNameTypeAsMap();
 	
 private:
 	

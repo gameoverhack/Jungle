@@ -148,7 +148,7 @@ string AppModel::getAllPropsAsList() {
 	
 }
 
-map<string, string> AppModel::getAllPropsAsMap(){
+map<string, string> AppModel::getAllPropsNameTypeAsMap(){
 	/*
 	 returning as name,type instead of name,boost::any 
 	 beacuse we'd have to expose the is_int/etc to check the any types.
