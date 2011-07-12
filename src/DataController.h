@@ -28,6 +28,7 @@ using std::string;
 #include "AppDataTypes.h"
 #include "Constants.h"
 #include "SceneXMLBuilder.h"
+#include "SceneXMLParser.h"
 
 class DataController {
 
@@ -39,10 +40,6 @@ public:
 	bool propertyXMLParser(string propertyConfigFilepath);
 
 	bool sceneXMLParser(string configFilePath);
-	
-
-	template<class vectorType>
-	bool loadVector(string filePath, vector<vectorType> * vec);
 	
 private :
 	ofxXmlSettings * _xml;

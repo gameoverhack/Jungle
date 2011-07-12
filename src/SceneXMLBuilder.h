@@ -29,6 +29,7 @@ using std::string;
 #include "ofxXmlSettings.h"
 #include "goDirList.h"
 #include "Logger.h"
+#include "IXMLBuilder.h"
 
 // Some rules about scenes
 // -> = "leads to", N - no action, V - victim action, A - attacker action
@@ -41,16 +42,13 @@ using std::string;
 // by this,
 // any seqXXb should be considered the final sequence in a scene
 
-class SceneXMLBuilder {
+class SceneXMLBuilder : public IXMLBuilder {
 public:
 	SceneXMLBuilder(string dataPath, string xmlFile);
-	bool santiseFiles(); // lowercases all files ON DISK, any other checks?
-	bool scanFiles(); // creates info map of each file
-	bool build(); // builds actual xml from the info map
-	bool save();
+	void santiseFiles(); // lowercases all files ON DISK, any other checks?
+	void scanFiles(); // creates info map of each file
+	void buildXML(); // builds actual xml from the info map
 private:
-	ofxXmlSettings	_xml;
-
 	// Yuck. Have to remember the "which" int that is associated with a 
 	// scene name and sequence name(stored as "scene/sequence"), so we 
 	// can get back at the right "which" numbers associated to those sequences

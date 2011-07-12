@@ -16,6 +16,7 @@
 		07545BA513BDF80200325443 /* DataController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07545BA413BDF80200325443 /* DataController.cpp */; };
 		07B2036513CBE2B500FF66CB /* SceneXMLBuilder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07B2036413CBE2B500FF66CB /* SceneXMLBuilder.cpp */; };
 		07B204F313CC304000FF66CB /* libboost_regex-xgcc42-mt-1_46_1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 07B204F213CC304000FF66CB /* libboost_regex-xgcc42-mt-1_46_1.a */; };
+		07B2061613CC5A6100FF66CB /* SceneXMLParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07B2061513CC5A6100FF66CB /* SceneXMLParser.cpp */; };
 		77047FF213C4A8130099581A /* goQtUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77047FF013C4A8130099581A /* goQtUtils.cpp */; };
 		778072F313BB4547007BAC08 /* ofxFbo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7780728413BB4547007BAC08 /* ofxFbo.cpp */; };
 		778072F413BB4547007BAC08 /* ofxShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7780728813BB4547007BAC08 /* ofxShader.cpp */; };
@@ -138,6 +139,12 @@
 		07B2036313CBE2B500FF66CB /* SceneXMLBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneXMLBuilder.h; sourceTree = "<group>"; };
 		07B2036413CBE2B500FF66CB /* SceneXMLBuilder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneXMLBuilder.cpp; sourceTree = "<group>"; };
 		07B204F213CC304000FF66CB /* libboost_regex-xgcc42-mt-1_46_1.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libboost_regex-xgcc42-mt-1_46_1.a"; sourceTree = "<group>"; };
+		07B205FD13CC585A00FF66CB /* IXMLBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXMLBuilder.h; sourceTree = "<group>"; };
+		07B2061113CC5A1C00FF66CB /* IXMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXMLParser.h; sourceTree = "<group>"; };
+		07B2061413CC5A6100FF66CB /* SceneXMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneXMLParser.h; sourceTree = "<group>"; };
+		07B2061513CC5A6100FF66CB /* SceneXMLParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneXMLParser.cpp; sourceTree = "<group>"; };
+		07B2063213CC73F200FF66CB /* VectorLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VectorLoader.h; sourceTree = "<group>"; };
+		07B206EC13CC7FEF00FF66CB /* tinyxmldump.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tinyxmldump.h; sourceTree = "<group>"; };
 		77047FF013C4A8130099581A /* goQtUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = goQtUtils.cpp; sourceTree = "<group>"; };
 		77047FF113C4A8130099581A /* goQtUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = goQtUtils.h; sourceTree = "<group>"; };
 		7780728413BB4547007BAC08 /* ofxFbo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxFbo.cpp; sourceTree = "<group>"; };
@@ -311,6 +318,19 @@
 				07B2019213CAD52500FF66CB /* config_scenes.xml */,
 			);
 			name = Config;
+			sourceTree = "<group>";
+		};
+		07B2076813CC833A00FF66CB /* XML */ = {
+			isa = PBXGroup;
+			children = (
+				07B2036313CBE2B500FF66CB /* SceneXMLBuilder.h */,
+				07B2036413CBE2B500FF66CB /* SceneXMLBuilder.cpp */,
+				07B205FD13CC585A00FF66CB /* IXMLBuilder.h */,
+				07B2061113CC5A1C00FF66CB /* IXMLParser.h */,
+				07B2061413CC5A6100FF66CB /* SceneXMLParser.h */,
+				07B2061513CC5A6100FF66CB /* SceneXMLParser.cpp */,
+			);
+			name = XML;
 			sourceTree = "<group>";
 		};
 		7780728213BB4547007BAC08 /* ofxFbo */ = {
@@ -690,12 +710,13 @@
 		7780737B13BB65C9007BAC08 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				07B2076813CC833A00FF66CB /* XML */,
+				07B206EC13CC7FEF00FF66CB /* tinyxmldump.h */,
 				77DD1F1513BC466B00F19718 /* Singleton.h */,
 				0754595413BD9C2500325443 /* Logger.cpp */,
 				0754595513BD9C2500325443 /* Logger.h */,
 				07545FA413C1768600325443 /* Constants.h */,
-				07B2036313CBE2B500FF66CB /* SceneXMLBuilder.h */,
-				07B2036413CBE2B500FF66CB /* SceneXMLBuilder.cpp */,
+				07B2063213CC73F200FF66CB /* VectorLoader.h */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -1142,6 +1163,7 @@
 				07545BA513BDF80200325443 /* DataController.cpp in Sources */,
 				77047FF213C4A8130099581A /* goQtUtils.cpp in Sources */,
 				07B2036513CBE2B500FF66CB /* SceneXMLBuilder.cpp in Sources */,
+				07B2061613CC5A6100FF66CB /* SceneXMLParser.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

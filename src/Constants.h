@@ -10,7 +10,7 @@
 #ifndef _H_CONSTANTS
 #define _H_CONSTANTS
 
-const string kLAST_SEQUENCE_TOKEN = "####FINALSEQUENCE####";
+const string kLAST_SEQUENCE_TOKEN = "__FINAL_SEQUENCE__";
 const int kNoUserAction = 0;
 const int kAttackerAction = 1;
 const int kVictimAction = 2;

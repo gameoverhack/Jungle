@@ -10,12 +10,18 @@
 #include "SceneXMLBuilder.h"
 
 
-SceneXMLBuilder::SceneXMLBuilder(string dataPath, string xmlFile){
+SceneXMLBuilder::SceneXMLBuilder(string dataPath, string xmlFile) : IXMLBuilder(xmlFile){
 	LOG_NOTICE("Creating scene xml builder with path:" + dataPath + " and config:" + xmlFile);
-	_xmlFile = xmlFile;
 	_dataPath = dataPath;
 
-	setupLister();
+	setupLister();	// set up lister
+	santiseFiles();	// make sure files are ok
+	scanFiles();	// build info map
+	buildXML();		// build xml
+	if(!save()){	// save xml
+		LOG_ERROR("Could not save XML");
+		abort();
+	}; 
 }
 
 // Set up file lister
@@ -39,7 +45,7 @@ void SceneXMLBuilder::setupLister(){
 // Makes sure our files are in good order
 // This means all lowercase.
 // (Anything else required?)
-bool SceneXMLBuilder::santiseFiles(){
+void SceneXMLBuilder::santiseFiles(){
 	string filename;
 	string filenameLower;
 	string path, pathLower;
@@ -60,7 +66,6 @@ bool SceneXMLBuilder::santiseFiles(){
 	}
 	// have to relist dir
 	setupLister();
-	return true;
 }
 
 
@@ -69,7 +74,7 @@ bool SceneXMLBuilder::santiseFiles(){
 // inserting that information as key/value pairs (strings) into a map,
 // then inserting that map into the _info member variable (keyed by filename
 // Building the xml graph should be done entirely by just using the _info map
-bool SceneXMLBuilder::scanFiles(){
+void SceneXMLBuilder::scanFiles(){
 	// filename stuff
 	string fullname;
 	vector<string> substrings; // stores split string parts
@@ -160,7 +165,7 @@ bool SceneXMLBuilder::scanFiles(){
 
 
 
-bool SceneXMLBuilder::build(){
+void SceneXMLBuilder::buildXML(){
 	map<string, string> fileInfo;
 	
 	int which; // used for ofxXmlSettings "which" params
@@ -222,21 +227,6 @@ bool SceneXMLBuilder::build(){
 	}
 	_xml.popTag(); // pop scenes
 	_xml.popTag(); // pop config
-
-}
-
-bool SceneXMLBuilder::save(){
-	if(_xml.saveFile(_xmlFile+"_temp.xml")){
-		// remove the first file
-		remove(ofToDataPath(_xmlFile, true).c_str());
-		// rename temp to final file
-		rename(ofToDataPath(_xmlFile+"_temp.xml", true).c_str(), ofToDataPath(_xmlFile, true).c_str());
-		return true;
-	}
-	else{
-		LOG_ERROR("Could not save properties to xml. File error?");
-		return false;
-	}
 }
 
 
@@ -311,3 +301,4 @@ int SceneXMLBuilder::findSceneWhich(string sceneKey){
 	which = _keyToXMLWhichMap.find(sceneKey)->second;
 	return which;
 }
+
