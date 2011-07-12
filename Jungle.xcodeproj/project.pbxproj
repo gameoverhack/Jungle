@@ -14,6 +14,8 @@
 		072CF9DC13BD8691000DBD67 /* AppController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 072CF9DA13BD8691000DBD67 /* AppController.cpp */; };
 		0754595613BD9C2500325443 /* Logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0754595413BD9C2500325443 /* Logger.cpp */; };
 		07545BA513BDF80200325443 /* DataController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07545BA413BDF80200325443 /* DataController.cpp */; };
+		07B2036513CBE2B500FF66CB /* SceneXMLBuilder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07B2036413CBE2B500FF66CB /* SceneXMLBuilder.cpp */; };
+		07B204F313CC304000FF66CB /* libboost_regex-xgcc42-mt-1_46_1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 07B204F213CC304000FF66CB /* libboost_regex-xgcc42-mt-1_46_1.a */; };
 		77047FF213C4A8130099581A /* goQtUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77047FF013C4A8130099581A /* goQtUtils.cpp */; };
 		778072F313BB4547007BAC08 /* ofxFbo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7780728413BB4547007BAC08 /* ofxFbo.cpp */; };
 		778072F413BB4547007BAC08 /* ofxShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7780728813BB4547007BAC08 /* ofxShader.cpp */; };
@@ -133,6 +135,9 @@
 		07545FA413C1768600325443 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		07B2019113CAD52500FF66CB /* config_properties.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = config_properties.xml; path = bin/data/config_properties.xml; sourceTree = SOURCE_ROOT; };
 		07B2019213CAD52500FF66CB /* config_scenes.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = config_scenes.xml; path = bin/data/config_scenes.xml; sourceTree = SOURCE_ROOT; };
+		07B2036313CBE2B500FF66CB /* SceneXMLBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneXMLBuilder.h; sourceTree = "<group>"; };
+		07B2036413CBE2B500FF66CB /* SceneXMLBuilder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneXMLBuilder.cpp; sourceTree = "<group>"; };
+		07B204F213CC304000FF66CB /* libboost_regex-xgcc42-mt-1_46_1.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libboost_regex-xgcc42-mt-1_46_1.a"; sourceTree = "<group>"; };
 		77047FF013C4A8130099581A /* goQtUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = goQtUtils.cpp; sourceTree = "<group>"; };
 		77047FF113C4A8130099581A /* goQtUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = goQtUtils.h; sourceTree = "<group>"; };
 		7780728413BB4547007BAC08 /* ofxFbo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxFbo.cpp; sourceTree = "<group>"; };
@@ -292,6 +297,7 @@
 				E4C246DA10CCAE22004149E2 /* freeimage.a in Frameworks */,
 				778072F813BB4547007BAC08 /* libboost_serialization-xgcc42-mt-1_46_1.a in Frameworks */,
 				778072FD13BB4547007BAC08 /* openCV.a in Frameworks */,
+				07B204F313CC304000FF66CB /* libboost_regex-xgcc42-mt-1_46_1.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -421,6 +427,7 @@
 		7780729A13BB4547007BAC08 /* mac */ = {
 			isa = PBXGroup;
 			children = (
+				07B204F213CC304000FF66CB /* libboost_regex-xgcc42-mt-1_46_1.a */,
 				7780729B13BB4547007BAC08 /* libboost_serialization-xgcc42-mt-1_46_1.a */,
 			);
 			path = mac;
@@ -687,6 +694,8 @@
 				0754595413BD9C2500325443 /* Logger.cpp */,
 				0754595513BD9C2500325443 /* Logger.h */,
 				07545FA413C1768600325443 /* Constants.h */,
+				07B2036313CBE2B500FF66CB /* SceneXMLBuilder.h */,
+				07B2036413CBE2B500FF66CB /* SceneXMLBuilder.cpp */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -1132,6 +1141,7 @@
 				0754595613BD9C2500325443 /* Logger.cpp in Sources */,
 				07545BA513BDF80200325443 /* DataController.cpp in Sources */,
 				77047FF213C4A8130099581A /* goQtUtils.cpp in Sources */,
+				07B2036513CBE2B500FF66CB /* SceneXMLBuilder.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1221,9 +1231,11 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_2)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_3)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../../addons/ofxBoost/lib/mac\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)/../../../addons/ofxOpenCv/libs/opencv/lib/osx\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_3 = "\"$(SRCROOT)/../../../addons/ofxBoost/lib/mac\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../libs/freeimage/lib/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_14 = "\"$(SRCROOT)/../../../libs/fmodex/lib/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_15 = "\"$(SRCROOT)/../../../libs/freetype/lib/osx\"";
@@ -1348,6 +1360,7 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_3)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_7)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_8)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../libs/freeimage/lib/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_14 = "\"$(SRCROOT)/../../../libs/fmodex/lib/osx\"";
@@ -1358,6 +1371,7 @@
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_5 = "\"$(SRCROOT)/../../../libs/poco/lib/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_6 = "\"$(SRCROOT)/../../../libs/rtAudio/lib/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_7 = "\"$(SRCROOT)/../../../addons/ofxOpenCv/libs/opencv/lib/osx\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_8 = "\"$(SRCROOT)/../../../addons/ofxBoost/lib/mac\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)Debug";
 				WRAPPER_EXTENSION = app;
@@ -1401,9 +1415,11 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_2)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_3)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../../addons/ofxBoost/lib/mac\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)/../../../addons/ofxOpenCv/libs/opencv/lib/osx\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_3 = "\"$(SRCROOT)/../../../addons/ofxBoost/lib/mac\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../libs/freeimage/lib/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_14 = "\"$(SRCROOT)/../../../libs/fmodex/lib/osx\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_15 = "\"$(SRCROOT)/../../../libs/freetype/lib/osx\"";

@@ -27,6 +27,7 @@ using std::string;
 #include "AppModel.h"
 #include "AppDataTypes.h"
 #include "Constants.h"
+#include "SceneXMLBuilder.h"
 
 class DataController {
 
