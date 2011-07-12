@@ -29,6 +29,8 @@ using std::string;
 #include "Constants.h"
 #include "SceneXMLBuilder.h"
 #include "SceneXMLParser.h"
+#include "PropertyXMLParser.h"
+#include "PropertyXMLBuilder.h"
 
 class DataController {
 
@@ -36,13 +38,9 @@ public:
 	DataController(string configFilePath);
 	~DataController();
 	
-	bool propertyXMLBuilder(string propertyConfigFilepath);
-	bool propertyXMLParser(string propertyConfigFilepath);
-
-	bool sceneXMLParser(string configFilePath);
-	
 private :
 	ofxXmlSettings * _xml;
+	string _configFilePath;
 	
 };
 

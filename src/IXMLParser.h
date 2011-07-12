@@ -12,6 +12,7 @@
 
 #include "ofxXmlSettings.h"
 #include "Logger.h"
+#include "JungleExceptions.h"
 
 class IXMLParser{
 
@@ -25,7 +26,7 @@ public:
 		// quick check
 		if(!_xml.loadFile(ofToDataPath(_xmlFile))){
 			LOG_ERROR("Could not load scene config: " + ofToDataPath(_xmlFile) + ". Is there XML in it?");
-			abort(); //TODO This should throw exception instead
+			throw JungleException("Could not load XML file " + _xmlFile);
 		}
 	}
 

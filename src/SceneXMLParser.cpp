@@ -8,6 +8,7 @@
  */
 
 #include "SceneXMLParser.h"
+#include "JungleExceptions.h"
 
 SceneXMLParser::SceneXMLParser(string dataPath, string xmlFile) : IXMLParser(xmlFile){
 	_dataPath = dataPath;
@@ -38,10 +39,10 @@ void SceneXMLParser::parseXML(){
 	
 	_xml.pushTag("config"); // move into root
 	
-	LOG_NOTICE("Loading scene data");
+	LOG_VERBOSE("Loading scene data");
 	if(!_xml.tagExists("scenes")){ // quick check
 		LOG_ERROR("No scenes configuration to load!");
-		abort();
+		throw JungleException("No scenes node in configuration");
 	}
 	
 	// set scenes to root
@@ -57,7 +58,7 @@ void SceneXMLParser::parseXML(){
 		
 		// save name
 		scene->setName(_xml.getAttribute("scene", "name", defaultString, sceneNum));
-		LOG_NOTICE("Scene: " + scene->getName());
+		LOG_VERBOSE("Currently loading scene: " + scene->getName());
 		
 		// convenience
 		string sceneRootPath = ofToDataPath((boost::any_cast<string>)(_appModel->getProperty("scenesDataPath"))) + "/" + scene->getName() + "/";
@@ -78,10 +79,10 @@ void SceneXMLParser::parseXML(){
 			// set name
 			if(!_xml.attributeExists("sequence", "name", seqNum)){
 				LOG_ERROR("No sequence name for sequence: "+ofToString(seqNum));
-				abort();
+				throw JungleException("No sequence name for sequence: "+ofToString(seqNum));
 			}
 			sequence->setName(_xml.getAttribute("sequence", "name", defaultString, seqNum));
-			LOG_NOTICE("Sequence: " + sequence->getName());
+			LOG_VERBOSE("Currently loading sequence: " + sequence->getName());
 			
 			// check that the sequence file matches the attributes saved in the xml (dates/size)
 			calculatedFilename = scene->getName()+"_"+sequence->getName()+".mov";
@@ -90,7 +91,7 @@ void SceneXMLParser::parseXML(){
 			fileInfo["size"] = _xml.getAttribute("sequence", "size", defaultString, seqNum);
 			if(!compareFileinfo(calculatedFilename, fileInfo)){
 				LOG_WARNING("File details for " + calculatedFilename +" does not match xml store");
-				abort();
+				throw JungleException("File details for " + calculatedFilename +" does not match xml store");
 			}
 		
 			
@@ -103,7 +104,7 @@ void SceneXMLParser::parseXML(){
 				   !_xml.attributeExists("sequence", "attackerResult", seqNum)){
 					LOG_ERROR("Sequence " + sequence->getName() + " is interactive but has no victim/attacker result names");
 					delete sequence;
-					abort();
+					throw JungleException("Sequence " + sequence->getName() + " is interactive but has no victim/attacker result names");
 				}
 				// set attacker/victim results
 				sequence->setVictimResult(_xml.getAttribute("sequence", "victimResult", defaultString, seqNum)); 
@@ -141,9 +142,19 @@ void SceneXMLParser::parseXML(){
 											 transform)){
 					// load Vector failed will log own error
 					delete transform;
-					abort();
+					throw JungleException("Could not load transform data");
 				}
 				// insert transform into sequence vector
+				// check that the sequence file matches the attributes saved in the xml (dates/size)
+				calculatedFilename = _xml.getAttribute("transform", "filename", defaultString, transNum);
+				fileInfo["dateCreated"] =  _xml.getAttribute("transform", "dateCreated", defaultString, transNum);
+				fileInfo["dateModified"] = _xml.getAttribute("transform", "dateModified", defaultString, transNum);
+				fileInfo["size"] = _xml.getAttribute("transform", "size", defaultString, transNum);
+				if(!compareFileinfo(calculatedFilename, fileInfo)){
+					LOG_WARNING("File details for " + calculatedFilename +" does not match xml store");
+					throw JungleException("File details for " + calculatedFilename +" does not match xml store");
+				}
+				
 				sequence->addTransform(*transform);				
 			}
 			_xml.popTag(); // pop out of sequence
@@ -192,19 +203,19 @@ bool SceneXMLParser::compareFileinfo(string filename, map<string, string> fileIn
 	}
 	int listerID = _filenameToListerIDMap.find(filename)->second;
 
-	LOG_NOTICE("Incoming: lister vs fileinfo - \n\t" + _lister.getCreated(listerID) + " : " + fileInfo["dateCreated"] + ",\n\t" + _lister.getModified(listerID) + " : " + fileInfo["dateModified"] + ",\n\t" + ofToString(_lister.getSize(listerID)) + " : " + fileInfo["size"]);
+	//LOG_NOTICE("Incoming: lister vs fileinfo - \n\t" + _lister.getCreated(listerID) + " : " + fileInfo["dateCreated"] + ",\n\t" + _lister.getModified(listerID) + " : " + fileInfo["dateModified"] + ",\n\t" + ofToString(_lister.getSize(listerID)) + " : " + fileInfo["size"]);
 	
 	bool retv = true;
 	if(_lister.getCreated(listerID) != fileInfo["dateCreated"]){
-		LOG_WARNING("dateCreated mismatch on " + filename + "("+_lister.getCreated(listerID) + " vs " + fileInfo["dateCreated"]+")");
+		LOG_WARNING("dateCreated mismatch on " + filename + "("+_lister.getCreated(listerID) + "hdd vs " + fileInfo["dateCreated"]+"xml)");
 		retv = false;
 	}
 	if(_lister.getModified(listerID) != fileInfo["dateModified"]){
-		LOG_WARNING("dateModified mismatch on " + filename + "("+_lister.getCreated(listerID) + " vs " + fileInfo["dateModified"]+")");
+		LOG_WARNING("dateModified mismatch on " + filename + "("+_lister.getCreated(listerID) + "hdd vs " + fileInfo["dateModified"]+"xml)");
 		retv = false;
 	}
 	if(ofToString(_lister.getSize(listerID)) != fileInfo["size"]){
-		LOG_WARNING("size mismatch on " + filename + "("+ofToString(_lister.getSize(listerID)) + " vs " + fileInfo["info"]+")");
+		LOG_WARNING("size mismatch on " + filename + "("+ofToString(_lister.getSize(listerID)) + "hdd vs " + fileInfo["size"]+"xml)");
 		retv = false;
 	}
 	return retv;

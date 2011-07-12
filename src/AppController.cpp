@@ -128,7 +128,6 @@ void AppController::keyPressed(int key){
 		default:
 			break;
 	}
-	printf("Gamma: %f\n", gamma);
 	_appModel->setProperty("shaderBlendRatio", blend);
 	_appModel->setProperty("shaderGammaCorrection", gamma);
 	
