@@ -37,12 +37,9 @@ public:
 	
 	bool propertyXMLBuilder(string propertyConfigFilepath);
 	bool propertyXMLParser(string propertyConfigFilepath);
-	
-	bool sceneXMLBuilder(string configFilePath);
+
 	bool sceneXMLParser(string configFilePath);
 	
-	void loadAppProperties();
-	void loadSceneData();
 
 	template<class vectorType>
 	bool loadVector(string filePath, vector<vectorType> * vec);

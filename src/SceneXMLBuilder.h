@@ -30,6 +30,16 @@ using std::string;
 #include "goDirList.h"
 #include "Logger.h"
 
+// Some rules about scenes
+// -> = "leads to", N - no action, V - victim action, A - attacker action
+// seq01a N-> seq01a_loop
+// seq01a V-> seq02b
+// seq01a_loop N-> seq01a_loop
+// seq01a_loop V-> seq02b
+// seq01a_loop A-> seq02a
+// 
+// by this,
+// any seqXXb should be considered the final sequence in a scene
 
 class SceneXMLBuilder {
 public:

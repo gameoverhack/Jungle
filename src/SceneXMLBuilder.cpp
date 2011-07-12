@@ -22,7 +22,6 @@ SceneXMLBuilder::SceneXMLBuilder(string dataPath, string xmlFile){
 // resets state so it can be called whenever you want to start fresh
 void SceneXMLBuilder::setupLister(){
 	_lister.reset();
-	printf("%s\n", ofToDataPath(_dataPath, true).c_str());
 	_lister.addDir(ofToDataPath(_dataPath, true));
 	_lister.allowExt("mov");
 	_lister.allowExt("MOV");
@@ -65,37 +64,6 @@ bool SceneXMLBuilder::santiseFiles(){
 }
 
 
-// Increments the sequence number in a sequence name
-// eg: seq01a -> seq02a
-string SceneXMLBuilder::createNextSequenceString(string seq){
-	int seqNum;
-	char seqNumString[20];
-	char formatString[20];
-	string matchstring;
-
-	
-	cmatch match;
-	string ret = seq;
-	
-	// pull out the sequence number from the sequence name, so we can increment it
-	if(regex_match(seq.c_str(), match, regex("seq(\\d+)a"))){
-		matchstring = string(match[1].first, match[1].second);
-		sscanf(matchstring.c_str(), "%d", &seqNum); // find int
-		seqNum++; // inc int
-		// get correct width in format string
-		snprintf(formatString, sizeof(formatString), "%%0%dd", (int)matchstring.length());
-		printf("FOrmatstring: '%s'\n", formatString);
-		snprintf(seqNumString, sizeof(seqNumString), formatString, seqNum);
-		ret.replace(ret.find_last_of(matchstring)-matchstring.length()+1,
-					matchstring.length(),
-					seqNumString);
-	}
-	else{
-		LOG_ERROR("Could not find int to increment");
-		abort();
-	}
-	return ret;
-}
 
 // Scans files in directories, working out information relavent to them.
 // inserting that information as key/value pairs (strings) into a map,
@@ -177,16 +145,130 @@ bool SceneXMLBuilder::scanFiles(){
 		fileInfo.insert(make_pair("size", ofToString(_lister.getSize(fileNum))));
 		fileInfo.insert(make_pair("filename", _lister.getName(fileNum))); // might as well save this too.
 
-		printf("%s\n", fullname.c_str());
-		map<string, string>::iterator iter;
-		iter=fileInfo.begin();
-		while(iter != fileInfo.end()){
-			printf("\t%s\t\t\t=\t%s\n", iter->first.c_str(), iter->second.c_str());
-			iter++;
-		}
-		// save
+//		printf("%s\n", fullname.c_str());
+//		map<string, string>::iterator iter;
+//		iter=fileInfo.begin();
+//		while(iter != fileInfo.end()){
+//			printf("\t%s\t\t\t=\t%s\n", iter->first.c_str(), iter->second.c_str());
+//			iter++;
+//		}
+
+		// save info
 		_info.insert(pair<string, map<string, string> >(fullname, fileInfo));
 	}
+}
+
+
+
+bool SceneXMLBuilder::build(){
+	map<string, string> fileInfo;
+	
+	int which; // used for ofxXmlSettings "which" params
+
+	// set up xml basics
+	_xml.addTag("config:scenes");
+
+	// set document root
+	// note both these are popped at end of method
+	_xml.pushTag("config");
+	_xml.pushTag("scenes");
+	
+	map<string, map<string, string> >::iterator iter = _info.begin();
+	while(iter != _info.end()){
+		fileInfo = (iter->second); // Copy here for nicer syntax (instead of using a pointer.)
+		// find scene name and push into it
+		string key = "scene";
+		which = findSceneWhich(fileInfo[key]);
+		_xml.pushTag("scene", which);
+		// find sequence tag (don't push here cause adding sequences dones't require that
+		which = findSequenceWhich(fileInfo["scene"]+"/"+fileInfo["sequence"]);
+
+		// find the type of file we're dealing with
+		if(fileInfo["type"] == "transform"){
+			// push into node
+			_xml.pushTag("sequence", which);
+
+			// add the transform node and its info
+			which = _xml.addTag("transform");
+			// set attributes for this transform
+			_xml.addAttribute("transform", "filename", fileInfo["filename"], which);
+			
+			_xml.addAttribute("transform", "size", fileInfo["size"], which);
+			_xml.addAttribute("transform", "dateCreated", fileInfo["dateCreated"], which);
+			_xml.addAttribute("transform", "dateModified", fileInfo["dateModified"], which);
+			
+			_xml.popTag(); // pop sequence
+			
+		}
+		else{
+			if(fileInfo["type"] == "loop"){	
+				// loop specific stuff
+				// seq01a_loop V-> seq02b
+				// seq01a_loop A-> seq02a
+				_xml.addAttribute("sequence", "attackerResult", fileInfo["attackerResult"], which);
+				_xml.addAttribute("sequence", "victimResult", fileInfo["victimResult"], which);
+			}
+			// every sequence has this stuff
+			_xml.setAttribute("sequence", "interactivity", fileInfo["interactivity"], which);
+			// seq01a -> seq01a_loop
+			// seq01a_loop N-> seq01a_loop
+			_xml.addAttribute("sequence", "nextSequence", fileInfo["nextSequence"], which);
+			_xml.addAttribute("sequence", "size", fileInfo["size"], which);
+			_xml.addAttribute("sequence", "dateCreated", fileInfo["dateCreated"], which);
+			_xml.addAttribute("sequence", "dateModified", fileInfo["dateModified"], which);
+		} 
+		_xml.popTag(); // pop scene
+		iter++; // next file
+	}
+	_xml.popTag(); // pop scenes
+	_xml.popTag(); // pop config
+
+}
+
+bool SceneXMLBuilder::save(){
+	if(_xml.saveFile(_xmlFile+"_temp.xml")){
+		// remove the first file
+		remove(ofToDataPath(_xmlFile, true).c_str());
+		// rename temp to final file
+		rename(ofToDataPath(_xmlFile+"_temp.xml", true).c_str(), ofToDataPath(_xmlFile, true).c_str());
+		return true;
+	}
+	else{
+		LOG_ERROR("Could not save properties to xml. File error?");
+		return false;
+	}
+}
+
+
+// Increments the sequence number in a sequence name
+// eg: seq01a -> seq02a
+string SceneXMLBuilder::createNextSequenceString(string seq){
+	int seqNum;
+	char seqNumString[20];
+	char formatString[20];
+	string matchstring;
+	
+	
+	cmatch match;
+	string ret = seq;
+	
+	// pull out the sequence number from the sequence name, so we can increment it
+	if(regex_match(seq.c_str(), match, regex("seq(\\d+)a"))){
+		matchstring = string(match[1].first, match[1].second);
+		sscanf(matchstring.c_str(), "%d", &seqNum); // find int
+		seqNum++; // inc int
+		// get correct width in format string
+		snprintf(formatString, sizeof(formatString), "%%0%dd", (int)matchstring.length());
+		snprintf(seqNumString, sizeof(seqNumString), formatString, seqNum);
+		ret.replace(ret.find_last_of(matchstring)-matchstring.length()+1,
+					matchstring.length(),
+					seqNumString);
+	}
+	else{
+		LOG_ERROR("Could not find int to increment");
+		abort();
+	}
+	return ret;
 }
 
 // Find the 'which' value for a scene and sequence key
@@ -228,83 +310,4 @@ int SceneXMLBuilder::findSceneWhich(string sceneKey){
 	// get "which" scene tag for this scene name
 	which = _keyToXMLWhichMap.find(sceneKey)->second;
 	return which;
-}
-
-bool SceneXMLBuilder::build(){
-	map<string, string> fileInfo;
-	
-	int which; // used for ofxXmlSettings "which" params
-
-	// set up xml basics
-	_xml.addTag("config:scenes");
-
-	// set document root
-	// note both these are popped at end of method
-	_xml.pushTag("config");
-	_xml.pushTag("scenes");
-	
-	map<string, map<string, string> >::iterator iter = _info.begin();
-	while(iter != _info.end()){
-		fileInfo = (iter->second); // Copy here for nicer syntax (instead of using a pointer.)
-		// find scene name and push into it
-		string key = "scene";
-		which = findSceneWhich(fileInfo[key]);
-		_xml.pushTag("scene", which);
-		// find sequence tag (don't push here cause adding sequences dones't require that
-		which = findSequenceWhich(fileInfo["scene"]+"/"+fileInfo["sequence"]);
-
-		// find the type of file we're dealing with
-		if(fileInfo["type"] == "transform"){
-			// push into node
-			_xml.pushTag("sequence", which);
-
-			// add the transform node and its info
-			which = _xml.addTag("transform");
-			// set attributes for this transform
-			_xml.addAttribute("transform", "filename", fileInfo["filename"], which);
-			
-			_xml.addAttribute("transform", "size", fileInfo["size"], which);
-			_xml.addAttribute("transform", "dateCreated", fileInfo["dateCreated"], which);
-			_xml.addAttribute("transform", "dateModified", fileInfo["dateModifed"], which);
-			
-			_xml.popTag(); // pop sequence
-			
-		}
-		else{
-			if(fileInfo["type"] == "loop"){	
-				// loop specific stuff
-				// seq01a_loop V-> seq02b
-				// seq01a_loop A-> seq02a
-				_xml.addAttribute("sequence", "attackerResult", fileInfo["attackerResult"], which);
-				_xml.addAttribute("sequence", "victimResult", fileInfo["victimResult"], which);
-			}
-			// every sequence has this stuff
-			_xml.setAttribute("sequence", "interactivity", fileInfo["interactivity"], which);
-			// seq01a -> seq01a_loop
-			// seq01a_loop N-> seq01a_loop
-			_xml.addAttribute("sequence", "nextSequence", fileInfo["nextSequence"], which);
-			_xml.addAttribute("sequence", "size", fileInfo["size"], which);
-			_xml.addAttribute("sequence", "dateCreated", fileInfo["dateCreated"], which);
-			_xml.addAttribute("sequence", "dateModified", fileInfo["dateModifed"], which);
-		} 
-		_xml.popTag(); // pop scene
-		iter++; // next file
-	}
-	_xml.popTag(); // pop scenes
-	_xml.popTag(); // pop config
-
-}
-
-bool SceneXMLBuilder::save(){
-	if(_xml.saveFile(_xmlFile+"_temp.xml")){
-		// remove the first file
-		remove(ofToDataPath(_xmlFile, true).c_str());
-		// rename temp to final file
-		rename(ofToDataPath(_xmlFile+"_temp.xml", true).c_str(), ofToDataPath(_xmlFile, true).c_str());
-		return true;
-	}
-	else{
-		LOG_ERROR("Could not save properties to xml. File error?");
-		return false;
-	}
 }

@@ -20,8 +20,8 @@ DataController::DataController(string configFilePath){
 
 	sceneBuilder.santiseFiles();
 	sceneBuilder.scanFiles();
-//	sceneBuilder.build();
-//	sceneBuilder.save();
+	sceneBuilder.build();
+	sceneBuilder.save();
 
 	sceneXMLParser(boost::any_cast<string>(_appModel->getProperty("scenesXMLFile")));
 	
@@ -305,30 +305,9 @@ bool DataController::sceneXMLParser(string sceneConfigFilePath){
 	
 }
 
-// Some rules about scenes
-// -> = "leads to", N - no action, V - victim action, A - attacker action
-// seq01a N-> seq01a_loop
-// seq01a V-> seq02b
-// seq01a_loop N-> seq01a_loop
-// seq01a_loop V-> seq02b
-// seq01a_loop A-> seq02a
-// 
-// by this,
-// any seqXXb should be considered the final sequence in a scene
 
 
-bool DataController::sceneXMLBuilder(string sceneConfigFilePath){
 
-}
-
-
-void DataController::loadAppProperties(){
-
-
-}
-
-void DataController::loadSceneData(){
-}
 
 template <class vectorType>
 bool DataController::loadVector(string filePath, vector< vectorType > * vec) {
