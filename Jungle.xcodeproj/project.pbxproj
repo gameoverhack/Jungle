@@ -48,10 +48,6 @@
 		7780730C13BB4547007BAC08 /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 778072ED13BB4547007BAC08 /* tinyxmlparser.cpp */; };
 		7780730D13BB4547007BAC08 /* ofxXmlSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 778072EF13BB4547007BAC08 /* ofxXmlSettings.cpp */; };
 		7780732713BB4C1E007BAC08 /* AppModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7780732613BB4C1E007BAC08 /* AppModel.cpp */; };
-		778076CD13BC2FAF007BAC08 /* alphamerge.frag in Sources */ = {isa = PBXBuildFile; fileRef = 778076C913BC2FAF007BAC08 /* alphamerge.frag */; };
-		778076CE13BC2FAF007BAC08 /* decomposite.frag in Sources */ = {isa = PBXBuildFile; fileRef = 778076CA13BC2FAF007BAC08 /* decomposite.frag */; };
-		778076CF13BC2FAF007BAC08 /* multitexturemerge.frag in Sources */ = {isa = PBXBuildFile; fileRef = 778076CB13BC2FAF007BAC08 /* multitexturemerge.frag */; };
-		778076D013BC2FAF007BAC08 /* vertex.vert in Sources */ = {isa = PBXBuildFile; fileRef = 778076CC13BC2FAF007BAC08 /* vertex.vert */; };
 		E45BE0AA0E8CC67C009D7055 /* GLee.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE0A90E8CC67C009D7055 /* GLee.a */; };
 		E45BE2E40E8CC69C009D7055 /* rtAudio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE2E30E8CC69C009D7055 /* rtAudio.a */; };
 		E45BE97B0E8CC7DD009D7055 /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE9710E8CC7DD009D7055 /* AGL.framework */; };
@@ -1168,10 +1164,6 @@
 				7780730C13BB4547007BAC08 /* tinyxmlparser.cpp in Sources */,
 				7780730D13BB4547007BAC08 /* ofxXmlSettings.cpp in Sources */,
 				7780732713BB4C1E007BAC08 /* AppModel.cpp in Sources */,
-				778076CD13BC2FAF007BAC08 /* alphamerge.frag in Sources */,
-				778076CE13BC2FAF007BAC08 /* decomposite.frag in Sources */,
-				778076CF13BC2FAF007BAC08 /* multitexturemerge.frag in Sources */,
-				778076D013BC2FAF007BAC08 /* vertex.vert in Sources */,
 				072CF9D413BD864E000DBD67 /* AppView.cpp in Sources */,
 				072CF9D513BD864E000DBD67 /* BaseView.cpp in Sources */,
 				072CF9D613BD864E000DBD67 /* DebugView.cpp in Sources */,
