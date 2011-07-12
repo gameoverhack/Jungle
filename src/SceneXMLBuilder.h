@@ -38,11 +38,20 @@ public:
 	bool scanFiles(); // creates info map of each file
 	bool build(); // builds actual xml from the info map
 	bool save();
-	void setupLister();
-	string createNextSequenceString(string seq);
 private:
 	ofxXmlSettings	_xml;
 
+	// Yuck. Have to remember the "which" int that is associated with a 
+	// scene name and sequence name(stored as "scene/sequence"), so we 
+	// can get back at the right "which" numbers associated to those sequences
+	// and scenes.
+	// We have to do this because we might get things out of order and have to
+	// get back to the correct, previously created, node
+	// This is a member variable so we can access it in some helper functions
+	// that push/pop around the xml graph
+	map<string, int> _keyToXMLWhichMap;
+	
+	
 	string			_xmlFile;
 	string			_dataPath;
 
@@ -50,6 +59,11 @@ private:
 	int				_numFiles;
 
 	map<string, map<string, string> > _info; // filename, map
+
+	void setupLister();
+	string createNextSequenceString(string seq);
+	int findSequenceWhich(string seqKey); // find 'which' value for key, see function for better explanation
+	int findSceneWhich(string sceneKey);
 	
 };
 

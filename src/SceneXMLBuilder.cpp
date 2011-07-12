@@ -11,13 +11,15 @@
 
 
 SceneXMLBuilder::SceneXMLBuilder(string dataPath, string xmlFile){
-	LOG_NOTICE("Creating scene xml builder with " + dataPath + " and " + xmlFile);
+	LOG_NOTICE("Creating scene xml builder with path:" + dataPath + " and config:" + xmlFile);
 	_xmlFile = xmlFile;
 	_dataPath = dataPath;
 
 	setupLister();
 }
 
+// Set up file lister
+// resets state so it can be called whenever you want to start fresh
 void SceneXMLBuilder::setupLister(){
 	_lister.reset();
 	printf("%s\n", ofToDataPath(_dataPath, true).c_str());
@@ -27,8 +29,17 @@ void SceneXMLBuilder::setupLister(){
 	_lister.allowExt("bin");
 	_lister.allowExt("BIN");
 	_numFiles = _lister.listDir(true);
+	// quick error check
+	if(_numFiles == 0){
+		LOG_ERROR("Could not build scene config, goDirList reported 0 files found.");
+		abort();
+	}
+	
 }
 
+// Makes sure our files are in good order
+// This means all lowercase.
+// (Anything else required?)
 bool SceneXMLBuilder::santiseFiles(){
 	string filename;
 	string filenameLower;
@@ -42,7 +53,7 @@ bool SceneXMLBuilder::santiseFiles(){
 		path = _lister.getPath(fileNum);
 		pathLower = path;
 #ifdef TARGET_WIN32
-		LOG_ERROR("SANTISE FILES DOES NOT HANDLE WINDOWS PATHS, can propbaly just use same code though.");
+		LOG_ERROR("SANTISE FILES DOES NOT HANDLE WINDOWS PATHS, can propbaly just use same code though. Requires testing");
 		abort();
 #endif
 		pathLower.replace(pathLower.find_last_of(filename)-filename.length()+1, filename.length(), filenameLower);
@@ -53,6 +64,9 @@ bool SceneXMLBuilder::santiseFiles(){
 	return true;
 }
 
+
+// Increments the sequence number in a sequence name
+// eg: seq01a -> seq02a
 string SceneXMLBuilder::createNextSequenceString(string seq){
 	int seqNum;
 	char seqNumString[20];
@@ -83,25 +97,14 @@ string SceneXMLBuilder::createNextSequenceString(string seq){
 	return ret;
 }
 
+// Scans files in directories, working out information relavent to them.
+// inserting that information as key/value pairs (strings) into a map,
+// then inserting that map into the _info member variable (keyed by filename
+// Building the xml graph should be done entirely by just using the _info map
 bool SceneXMLBuilder::scanFiles(){
-
 	// filename stuff
 	string fullname;
 	vector<string> substrings; // stores split string parts
-	
-	// regex patterns
-	// matches (any scene)_seq(any digits)_(anything)_transform.bin
-//	regex transformFilenamePattern(".+_seq\\d+[a|b]_.+_transform\\.bin");
-
-	//	regex transformFilenamePattern(".+_seq\\d+[a|b]_.+_transform\\.bin", boost::regex_constants::icase|boost::regex_constants::perl);
-//	// matches (any scene)_seq(any digits)(a or b)_loop.mov
-//	regex loopFilenamePattern(".+_seq\\d+[a|b]_loop\\.mov", boost::regex_constants::icase|boost::regex_constants::perl);
-//	// matches (any scene)_seq(any digits)a.mov
-//	regex aFilenamePattern(".+_seq\\d+a\\.mov", boost::regex_constants::icase|boost::regex_constants::perl);
-//	// matches (any scene)_seq(any digits)b.mov
-//	regex bFilenamePattern(".+_seq\\d+b\\.mov", boost::regex_constants::icase|boost::regex_constants::perl);
-
-	// add and list the dir
 	
 	// iterate all files, discovering what we want to know about them
 	for(int fileNum = 0; fileNum < _numFiles; fileNum++){
@@ -151,7 +154,7 @@ bool SceneXMLBuilder::scanFiles(){
 			else{
 				// not a loop movie, just a or b
 				// find out if its a b sequence
-				if(regex_search(fullname, regex(".+seq\\db"))){
+				if(regex_search(fullname, regex(".+seq\\d+b"))){
 					// is b sequence
 					fileInfo.insert(make_pair("type", "b"));
 					fileInfo.insert(make_pair("nextSequence", "__FINAL_SEQUENCE__")); // nothing comes after a b sequence in the scene
@@ -166,17 +169,6 @@ bool SceneXMLBuilder::scanFiles(){
 				}
 				   
 			}
-//
-//			// find out if its a "b" sequence
-//			if(regex_search(filename, regex(".+seq\\db\\.mov"))){
-//				// is a b sequence
-//				fileInfo.insert(make_pair("aorb", "b"));
-//			}
-//			else{
-//				// not b, so is a
-//				fileInfo.insert(make_pair("aorb", "a");
-//			}
-							
 		}
 
 		// default info for all files
@@ -197,197 +189,110 @@ bool SceneXMLBuilder::scanFiles(){
 	}
 }
 
-bool SceneXMLBuilder::build(){
-	goDirList lister;
-	int _numFiles;
-	map<string, int> filenameToListPosMap;
-
-	// Yuck. have to remember the "which" int that is associated with a 
-	// scene name, so we can get back at the right ones to insert details
-	// for the scene. Techically, the lister might always return the files
-	// correctly grouped, but theres no guarentee to the structure
-	map<string, int> nameToXMLWhichMap;
-	int which; // used for ofxXmlSettings "which" params
-
-
-	vector<string> substrings; // stores split string parts
-
-
-	// quick error check
-	if(_numFiles == 0){
-		LOG_ERROR("Could not build scene config, goDirList reported 0 files.");
-		abort();
+// Find the 'which' value for a scene and sequence key
+// These names should be in the format "scene/sequence"
+// if the sequence part does not exist, it is created.
+// NOTE:	This expects to have been pushTag()'d into a scene node already
+//			IT DOES NOT CREATE THE SCENE NODE IF IT DOESN'T EXIST
+int SceneXMLBuilder::findSequenceWhich(string seqKey){
+	int which;
+	vector<string> keys;
+	boost::split(keys, seqKey, boost::is_any_of("/"));
+	if(_keyToXMLWhichMap.find(seqKey) == _keyToXMLWhichMap.end()){
+		// Doesn't exist, so create a sequence with the right name
+		which = _xml.addTag("sequence");
+		// NOTE: this is only a partial creation, does not set all attributes
+		_xml.setAttribute("sequence", "name", keys[1], which);
+		// add info to map
+		_keyToXMLWhichMap.insert(make_pair(seqKey, which));
 	}
+	// Find which sequence to push into
+	which = _keyToXMLWhichMap.find(seqKey)->second;
+	return which;
+}
+
+// Find the 'which' value for a scene key
+// creates the scene xml node if it does not exist and adds the which value
+// to the name to which map.
+int SceneXMLBuilder::findSceneWhich(string sceneKey){
+	int which;
+	// does the scene already exist?
+	if(_keyToXMLWhichMap.find(sceneKey) == _keyToXMLWhichMap.end()){
+		// doesn't exist, add it
+		which = _xml.addTag("scene");
+		// NOTE partial setup, name only.
+		_xml.addAttribute("scene", "name", sceneKey, which);
+		// Add to info map
+		_keyToXMLWhichMap.insert(make_pair(sceneKey, which));
+	}
+	// get "which" scene tag for this scene name
+	which = _keyToXMLWhichMap.find(sceneKey)->second;
+	return which;
+}
+
+bool SceneXMLBuilder::build(){
+	map<string, string> fileInfo;
+	
+	int which; // used for ofxXmlSettings "which" params
 
 	// set up xml basics
 	_xml.addTag("config:scenes");
-	_xml.pushTag("config");
-	_xml.pushTag("scenes"); // set doc root
 
-	// Iterate the files 
-	for(int fileNumber = 0; fileNumber < _numFiles; fileNumber++){
-		string filename = lister.getName(fileNumber);
-		filename = filename.substr(0, filename.find_last_of(".")); // remove ext
-		boost::split(substrings, filename, boost::is_any_of("_")); // split filename
-		
-		// first substring is the scene name, check if its existant
-		if(nameToXMLWhichMap.find(substrings[0]) == nameToXMLWhichMap.end()){
-			// doesn't exist, add it
-			which = _xml.addTag("scene");
-			_xml.addAttribute("scene", "name", substrings[0], which);
-			// Add to info map
-			nameToXMLWhichMap.insert(pair<string, int>(substrings[0], which));			
-		}
-		
-		// get "which" scene tag for this scene name
-		which = nameToXMLWhichMap.find(substrings[0])->second;
-		// push into scene
+	// set document root
+	// note both these are popped at end of method
+	_xml.pushTag("config");
+	_xml.pushTag("scenes");
+	
+	map<string, map<string, string> >::iterator iter = _info.begin();
+	while(iter != _info.end()){
+		fileInfo = (iter->second); // Copy here for nicer syntax (instead of using a pointer.)
+		// find scene name and push into it
+		string key = "scene";
+		which = findSceneWhich(fileInfo[key]);
 		_xml.pushTag("scene", which);
-		
-		// add sequence to scene
-		
-		// transform file for a sequence
-		if(filename.find("transform") !=string::npos){
-			// does the sequence exist?
-			string mapName = substrings[1];
-			if(filename.find("loop") != string::npos){
-				// loop file, so append _loop to mapname
-				mapName = substrings[1] + "_loop";
-			}
-			
-			if(nameToXMLWhichMap.find(mapName) == nameToXMLWhichMap.end()){
-				// doesn't exist, so create a sequence with the right name
-				which = _xml.addTag("sequence");
-				_xml.setAttribute("sequence", "name", mapName, which);
-				// NOTE: this is only a partial creation, does not set all attributes
-				nameToXMLWhichMap.insert(pair<string, int>(mapName, which));
-			}
-			// Find which sequence to push into
-			which = nameToXMLWhichMap.find(mapName)->second;
-			
-			// push into sequence
+		// find sequence tag (don't push here cause adding sequences dones't require that
+		which = findSequenceWhich(fileInfo["scene"]+"/"+fileInfo["sequence"]);
+
+		// find the type of file we're dealing with
+		if(fileInfo["type"] == "transform"){
+			// push into node
 			_xml.pushTag("sequence", which);
-			
-			// insert transform stuff
+
+			// add the transform node and its info
 			which = _xml.addTag("transform");
 			// set attributes for this transform
-			_xml.addAttribute("transform", "filename", lister.getName(fileNumber), which);
+			_xml.addAttribute("transform", "filename", fileInfo["filename"], which);
 			
-			_xml.addAttribute("transform", "size", lister.getSize(fileNumber), which);
-			_xml.addAttribute("transform", "dateCreated", lister.getCreated(fileNumber), which);
-			_xml.addAttribute("transform", "dateModified", lister.getModified(fileNumber), which);
+			_xml.addAttribute("transform", "size", fileInfo["size"], which);
+			_xml.addAttribute("transform", "dateCreated", fileInfo["dateCreated"], which);
+			_xml.addAttribute("transform", "dateModified", fileInfo["dateModifed"], which);
 			
-			_xml.popTag(); // pop sequence			
-		}
-		// loop file for a sequence
-		else if(filename.find("loop") != string::npos){
-			// does the sequence exist, it might not because we might get a transform
-			// before we get a movie, in which case we'll have inserted a basic
-			// sequence tag
-			string mapName = substrings[1] + "_loop";
+			_xml.popTag(); // pop sequence
 			
-			if(nameToXMLWhichMap.find(mapName) == nameToXMLWhichMap.end()){
-				// doesn't exist, so create a sequence with the right name
-				which = _xml.addTag("sequence");
-				_xml.setAttribute("sequence", "name", mapName, which);
-				// NOTE: this is only a partial creation, does not set all attributes
-				nameToXMLWhichMap.insert(pair<string, int>(mapName, which));
-			}
-			which = nameToXMLWhichMap.find(mapName)->second;
-			
-			// add the sequence attributes
-			_xml.setAttribute("sequence", "name", mapName, which);
-			_xml.setAttribute("sequence", "interactive", "both", which);
-			
-			// seq01a_loop N-> seq01a_loop
-			_xml.addAttribute("sequence", "nextSequence", mapName, which);
-			
-			
-			// seq01a_loop V-> seq02b
-			// seq01a_loop A-> seq02a
-			
-			int seqNum;
-			// pull out the sequence number from the sequence name, so we can increment it
-			if(sscanf(substrings[1].c_str(), "seq%da_loop", &seqNum) != 1){
-				LOG_ERROR("Could not sscanf sequence number from sequence name "+substrings[1]);
-				abort();
-			}
-			seqNum++;
-			char seqNumString[10]; // should never have more than 10 digits...
-			snprintf(seqNumString, sizeof(seqNumString), "%02d", seqNum);
-			// create a new sequence name
-			string newName = "seq"+string(seqNumString)+"a";
-			_xml.addAttribute("sequence", "attackerResult", newName, which);
-			newName = "seq"+string(seqNumString)+"b";
-			_xml.addAttribute("sequence", "victimResult", newName, which);
-			
-			_xml.addAttribute("sequence", "size", lister.getSize(fileNumber), which);
-			_xml.addAttribute("sequence", "dateCreated", lister.getCreated(fileNumber), which);
-			_xml.addAttribute("sequence", "dateModified", lister.getModified(fileNumber), which);
 		}
 		else{
-			// Not a loop, not a transform, is a regular sequence movie
-			string mapName = substrings[1];
-			
-			if(nameToXMLWhichMap.find(mapName) == nameToXMLWhichMap.end()){
-				// doesn't exist, so create a sequence with the right name
-				which = _xml.addTag("sequence");
-				_xml.setAttribute("sequence", "name", mapName, which);
-				// NOTE: this is only a partial creation, does not set all attributes
-				nameToXMLWhichMap.insert(pair<string, int>(mapName, which));
+			if(fileInfo["type"] == "loop"){	
+				// loop specific stuff
+				// seq01a_loop V-> seq02b
+				// seq01a_loop A-> seq02a
+				_xml.addAttribute("sequence", "attackerResult", fileInfo["attackerResult"], which);
+				_xml.addAttribute("sequence", "victimResult", fileInfo["victimResult"], which);
 			}
-			which = nameToXMLWhichMap.find(mapName)->second;
-			
-			// add the sequence attributes
-			_xml.setAttribute("sequence", "name", substrings[1], which); // just second part
-			_xml.setAttribute("sequence", "interactive", "victim", which); // only victim can interact			
-			
-			// seq01a N-> seq01a_loop
-			_xml.addAttribute("sequence", "nextSequence", substrings[1]+"_loop", which); // seq01a -> seq01a_loop
-			
-			
-			// seq01a V-> seq02b
-			int seqNum;
-			// pull out the sequence number from the sequence name, so we can increment it
-			if(sscanf(substrings[1].c_str(), "seq%da_loop", &seqNum) != 1){
-				LOG_ERROR("Could not sscanf sequence number from sequence name "+substrings[1]);
-				abort();
-			}
-			seqNum++;
-			char seqNumString[10]; // should never have more than 10 digits...
-			snprintf(seqNumString, sizeof(seqNumString), "%02d", seqNum);
-			// create a new sequence name
-			string newName = "seq"+string(seqNumString)+"b";
-			_xml.addAttribute("sequence", "victimResult", newName, which); // seq01a -> seq01b
-			
-			_xml.addAttribute("sequence", "size", lister.getSize(fileNumber), which);
-			_xml.addAttribute("sequence", "dateCreated", lister.getCreated(fileNumber), which);
-			_xml.addAttribute("sequence", "dateModified", lister.getModified(fileNumber), which);
-		}
-		_xml.popTag(); // scene pop 
+			// every sequence has this stuff
+			_xml.setAttribute("sequence", "interactivity", fileInfo["interactivity"], which);
+			// seq01a -> seq01a_loop
+			// seq01a_loop N-> seq01a_loop
+			_xml.addAttribute("sequence", "nextSequence", fileInfo["nextSequence"], which);
+			_xml.addAttribute("sequence", "size", fileInfo["size"], which);
+			_xml.addAttribute("sequence", "dateCreated", fileInfo["dateCreated"], which);
+			_xml.addAttribute("sequence", "dateModified", fileInfo["dateModifed"], which);
+		} 
+		_xml.popTag(); // pop scene
+		iter++; // next file
 	}
+	_xml.popTag(); // pop scenes
+	_xml.popTag(); // pop config
 
-	// re iterate over the xml
-	string seqName = "";
-	int scanfInt;
-	for(int sceneNum = 0; sceneNum < _xml.getNumTags("scenes"); sceneNum++){
-		_xml.pushTag("scenes", sceneNum);
-		for(int seqNum = 0; seqNum < _xml.getNumTags("sequence"); seqNum++){
-			// check if name is a b, set nextSequence to __FINAL__SEQUENCE__
-			seqName = _xml.getAttribute("sequence", "name", seqName, seqNum);
-			if(seqName[seqName.length()-1] == 'b'){ // brittle, but should hold up. Don't process _loop
-				_xml.setAttribute("sequence", "nextSequence", "__FINAL_SEQUENCE__", seqNum);
-			}
-			// mark last sequence a and b in scene as final sequence
-			// nothing else to do but assume finals are at the end of the file list
-			// and hence at the end of the xml.
-		}
-		_xml.popTag();
-	}
-
-	// set last sequences to __FINAL_SEQUENCE__
-	// set all sequences with b in them to __FINAL_SEQUENCE__
-	// TODO
 }
 
 bool SceneXMLBuilder::save(){
