@@ -107,7 +107,7 @@ void Logger::setLogLevel(juLogLevel l){
 
 inline char * Logger::getTimeStamp()
 {
-    sprintf(_timestamp, "%0.2d/%0.2i/%i - %0.2i:%0.2i:%0.2i", ofGetDay(), ofGetMonth(), ofGetYear(), ofGetHours(),  ofGetMinutes(), ofGetSeconds());
+    sprintf(_timestamp, "%02i/%02i/%i - %02i:%02i:%02i", ofGetDay(), ofGetMonth(), ofGetYear(), ofGetHours(),  ofGetMinutes(), ofGetSeconds());
     return _timestamp;
 }
 //--------------------------------------------------------------
