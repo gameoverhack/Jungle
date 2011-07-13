@@ -51,7 +51,6 @@
                 <transform filename="t_seq06a_transform_atk2.bin" size="11944" dateCreated="2011-07-13 07:02:42" dateModified="2011-07-13 07:01:02"></transform>
                 <transform filename="t_seq06a_transform_vic1.bin" size="15331" dateCreated="2011-07-13 07:02:42" dateModified="2011-07-13 07:01:02"></transform>
             </sequence>
-            <sequence name="seq" interactivity="victim" nextSequence="seq_loop" size="13298845" dateCreated="2011-06-28 03:56:36" dateModified="2011-06-27 06:05:31"></sequence>
         </scene>
     </scenes>
 </config>

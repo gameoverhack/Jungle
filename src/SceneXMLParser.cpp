@@ -169,8 +169,9 @@ void SceneXMLParser::parseXML(){
 				abort(); // lets just assume no video for one means whole thing is broken
 			};
 			// TODO: video->play(); vidoe->setPause(true);
-			sequence->setSequenceMovie(video);
 			
+			sequence->setSequenceMovie(video);
+			sequence->prepareSequenceMovie();
 			// made the sequence, insert it into scene
 			scene->setSequence(sequence->getName(), sequence);
 			if(seqNum == 0){

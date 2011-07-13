@@ -59,6 +59,12 @@ void AppController::update() {
 	// get current sequence
 	currentSequence = currentScene->getCurrentSequence();
 
+	// else continue playing this video
+	movie = currentSequence->getSequenceMovie();
+	
+	// update the movie
+	movie->update();
+	
 	// check if sequence was interactive
 	if(currentSequence->getIsInteractive()){
 		// Check for interactive event
@@ -76,12 +82,10 @@ void AppController::update() {
 			currentScene->setCurrentSequence(currentSequence->getVictimResult());
 		}
 
-		// else continue playing this video
-		movie = currentSequence->getSequenceMovie();
+
 	} else {
 		// Not interactive movie
-		// check if we're at the ened of the movie
-		movie = currentSequence->getSequenceMovie();
+
 		if(movie->getIsMovieDone()){
 			// at end of non interactive movie, change to next sequence
 			if(currentScene->nextSequence()){
@@ -103,9 +107,6 @@ void AppController::update() {
 		movie = currentSequence->getSequenceMovie();
 	}
 	
-	// update the movie
-	movie->update();
-
 	_appView->update();
 }
 
@@ -114,6 +115,7 @@ void AppController::draw() {
 //	LOG_VERBOSE("Drawing");
 	ofSetColor(255, 255, 255, 255);
 	_appView->draw();
+	
 	
 }
 
@@ -151,6 +153,9 @@ void AppController::keyPressed(int key){
 			break;
 		case ' ':
 			_appModel->getSequenceMovie()->togglePaused();
+			break;
+		case '>':
+			_appModel->getSequenceMovie()->setFrame(_appModel->getSequenceMovie()->getTotalNumFrames()-24);
 			break;
 		case 356: // left arrow
 			_appModel->getSequenceMovie()->previousFrame();

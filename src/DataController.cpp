@@ -17,8 +17,8 @@ DataController::DataController(string configFilePath)
 	// fire and forget
 	PropertyXMLParser propertyXMLParser(_configFilePath);
 //	PropertyXMLBuilder propertyXMLBuilder(_configFilePath);
-	SceneXMLBuilder sceneXMLBuilder(boost::any_cast<string>(_appModel->getProperty("scenesDataPath")),
-									boost::any_cast<string>(_appModel->getProperty("scenesXMLFile")));
+	//SceneXMLBuilder sceneXMLBuilder(boost::any_cast<string>(_appModel->getProperty("scenesDataPath")),
+	//								boost::any_cast<string>(_appModel->getProperty("scenesXMLFile")));
 
 	try {
 		// also fire and forget

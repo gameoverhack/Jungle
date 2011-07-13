@@ -143,22 +143,26 @@ public:
 		return _isInteractive;
 	}
 	
-	void prepareSequenceMovie(){
+	void setPaused(bool b) {
+		_movie->setPaused(b);
+	}
+	
+	void prepareSequenceMovie() {
 		_movie->play();
 		// must be set after play ?
-		if(_isInteractive){
+		if(_isInteractive) {
 			// loop on interactive movies
 			_movie->setLoopState(OF_LOOP_NORMAL);
-		}
-		else{
+		} else {
 			_movie->setLoopState(OF_LOOP_NONE);
 		}
-		
+		setPaused(true);
 	}
 	
 	void resetSequenceMovie() {
 		if(_movie != NULL) {
-			_movie->stop();
+			//_movie->stop();
+			_movie->setPaused(true);
 			_movie->setPosition(0.0);
 		} else {
 			LOG_ERROR("Could not reset sequence movie, movie == NULL");
@@ -232,7 +236,7 @@ public:
 			// set new current sequence
 			_currentSequence = iter->second;
 			// play new current sequence movie
-			_currentSequence->prepareSequenceMovie();
+			_currentSequence->setPaused(false);
 			
 			LOG_NOTICE("Set current sequence to " + seq);
 			return true;
