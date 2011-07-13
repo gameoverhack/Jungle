@@ -28,7 +28,7 @@ public:
 					   CamTransform *transform);
 	
 private:
-	
+		int currentFrame;
 	//Scene * _currentScene;
 	ofTexture _cameraOne;
 	ofTexture _cameraTwo;

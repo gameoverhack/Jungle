@@ -28,6 +28,7 @@ void AppController::setup() {
 	// register pointers to textures from cams on the model
 	_appModel->setCameraTextures(_camControllers[0]->getCamTextureRef(), _camControllers[1]->getCamTextureRef());
 	
+	_appModel->setProperty("showUnmaskedTextures", 0);
 	_appModel->setProperty("userAction", kNoUserAction);
 	
 	_appView = new AppView(1280, 720);
@@ -92,7 +93,6 @@ void AppController::update() {
 // TODO:	This needs a method, can just use the key order since our keys are alpha ordered, 
 //			i feel odd about doing that though. I guess it is guarenteed though.
 //				currentScene->setCurrentSequence(0); 
-				
 				// load next scene
 				_appModel->nextScene();
 				currentScene = _appModel->getCurrentScene();
@@ -122,6 +122,7 @@ void AppController::keyPressed(int key){
 	
 	float gamma = boost::any_cast<float>(_appModel->getProperty("shaderGammaCorrection"));
 	float blend = boost::any_cast<float>(_appModel->getProperty("shaderBlendRatio"));
+	int showUnmask = boost::any_cast<int>(_appModel->getProperty("showUnmaskedTextures"));
 	
 	switch (key) {
 		case 'x':
@@ -157,11 +158,13 @@ void AppController::keyPressed(int key){
 		case 358: // right arrow
 			_appModel->getSequenceMovie()->nextFrame();
 			break;
+		case 'h':
+			_appModel->setProperty("showUnmaskedTextures", (showUnmask == 1 ? 0 : 1));
+			break;
 		default:
 			break;
 	}
-	cout << key << endl;
-	printf("Gamma: %f\n", gamma);
+
 	_appModel->setProperty("shaderBlendRatio", blend);
 	_appModel->setProperty("shaderGammaCorrection", gamma);
 	

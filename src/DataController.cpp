@@ -187,7 +187,7 @@ void DataController::loadSceneData(){
 					abort();
 				}
 				// insert transform into sequence vector
-				sequence->addTransform(*transform);				
+				sequence->addTransform(transform);				
 			}
 			_xml->popTag(); // pop out of sequence
 			

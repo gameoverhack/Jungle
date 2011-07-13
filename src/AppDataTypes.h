@@ -31,6 +31,8 @@ private:
 	{
 		ar & x;
 		ar & y;
+		ar & w;
+		ar & h;
 		ar & scaleX;
 		ar & scaleY;
 		ar & rotation;
@@ -38,12 +40,14 @@ private:
 public:
 	float x;
 	float y;
+	float w;
+	float h;
 	float scaleX;
 	float scaleY;
 	float rotation;
 	CamTransform(){};
-	CamTransform(float _x, float _y, float _scaleX, float _scaleY, float _rotation) :
-	x(_x), y(_y), scaleX(_scaleX), scaleY(_scaleY), rotation(_rotation)
+	CamTransform(float _x, float _y, float _w, float _h, float _scaleX, float _scaleY, float _rotation) :
+	x(_x), y(_y), w(_w), h(_h), scaleX(_scaleX), scaleY(_scaleY), rotation(_rotation)
 	{}
 };
 
@@ -90,7 +94,7 @@ public:
 		return _victimResult;
 	}
 	
-	void addTransform(vector<CamTransform> & trans){
+	void addTransform(vector<CamTransform> * trans){
 		_transforms.push_back(trans);
 	}	
 	
@@ -98,7 +102,7 @@ public:
 		return _transforms.size();
 	}
 	
-	vector<CamTransform> getTransformVector(int i){
+	vector<CamTransform> * getTransformVector(int i){
 		if(i > _transforms.size() || i < 0){
 			LOG_ERROR("Attempted to get transform for " + ofToString(i));
 			abort();
@@ -107,13 +111,16 @@ public:
 	}
 	
 	string getTransformAsString(int i, int f) {
-		vector<CamTransform> t = getTransformVector(i);
+		vector<CamTransform> * t = getTransformVector(i);
 		string tranString = "f: " + ofToString(f) + 
-							" x: " + ofToString(t[f].x) + 
-							" y: " + ofToString(t[f].y) + 
-							" r: " + ofToString(t[f].rotation) + 
-							" sX: " + ofToString(t[f].scaleX) + 
-							" sY: " + ofToString(t[f].scaleY);
+							" x: " + ofToString(t->at(f).x) + 
+							" y: " + ofToString(t->at(f).y) + 
+							" w: " + ofToString(t->at(f).w) + 
+							" h: " + ofToString(t->at(f).h) +
+							" r: " + ofToString(t->at(f).rotation) + 
+							" sX: " + ofToString(t->at(f).scaleX) + 
+							" sY: " + ofToString(t->at(f).scaleY) +
+							" zz: " + ofToString((int)t->size());
 		return tranString;
 	}
 	
@@ -170,14 +177,8 @@ private:
 public:
 
 	goVideoPlayer		* _movie;
-	
-	/*
-		wanted to use pointers to avoid copying a vector each push_back
-		but apparently you cant store pointers to templated vectors
-		in a vector
-	*/
 	 
-	vector< vector<CamTransform> > _transforms; 
+	vector< vector<CamTransform>* > _transforms; 
 };
 
 

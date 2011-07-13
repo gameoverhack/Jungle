@@ -56,7 +56,6 @@ void SceneView::update() {
 	goVideoPlayer * currentSequenceVideo = _appModel->getCurrentSequence()->getSequenceMovie();
 	ofTexture *sceneTexture;
 	CamTransform *actorTransform;
-	int currentFrame;
 
 	// get the video texture
 	sceneTexture = &(currentSequenceVideo->getTextureReference());
@@ -68,11 +67,11 @@ void SceneView::update() {
 	if(currentSequenceVideo->isFrameNew()){
 		// draw characters faces to new positions
 		// TODO: This needs to be smarter
-		drawCharacter(&_vic1FBO, _appModel->getVictimCamTexRef(), &(_appModel->getCurrentSequence()->getTransformVector(0)[currentFrame]));
-		drawCharacter(&_atk1FBO, _appModel->getAttackCamTexRef(), &(_appModel->getCurrentSequence()->getTransformVector(1)[currentFrame]));
+		drawCharacter(&_vic1FBO, _appModel->getVictimCamTexRef(), &(_appModel->getCurrentSequence()->getTransformVector(0)->at(currentFrame)));
+		drawCharacter(&_atk1FBO, _appModel->getAttackCamTexRef(), &(_appModel->getCurrentSequence()->getTransformVector(1)->at(currentFrame)));
 		
 		if (_appModel->getCurrentSequence()->getTransformCount() > 2) {
-			drawCharacter(&_atk2FBO, _appModel->getAttackCamTexRef(), &(_appModel->getCurrentSequence()->getTransformVector(2)[currentFrame]));
+			drawCharacter(&_atk2FBO, _appModel->getAttackCamTexRef(), &(_appModel->getCurrentSequence()->getTransformVector(2)->at(currentFrame)));
 		}
 	}
 	
@@ -83,8 +82,14 @@ void SceneView::update() {
 	_shader.setTexture("textures[0]", *sceneTexture, 10);
 	_shader.setTexture("textures[1]", _vic1Tex, 11);
 	_shader.setTexture("textures[2]", _atk1Tex, 12);
-	_shader.setTexture("textures[3]", _atk2Tex, 13);
-	_shader.setUniform1i("numTextures", 4);
+	
+	int numTextures = 3;
+	if (_appModel->getCurrentSequence()->getTransformCount() > 2) {
+		_shader.setTexture("textures[3]", _atk2Tex, 13);
+		numTextures++;
+	}
+	_shader.setUniform1i("numTextures", numTextures);
+	_shader.setUniform1i("showUnmaskedTextures", boost::any_cast<int>(_appModel->getProperty("showUnmaskedTextures")));
 	_shader.setUniform1f("blendRatio", boost::any_cast<float>(_appModel->getProperty("shaderBlendRatio")));
 	_shader.setUniform1f("gammaCorrection", boost::any_cast<float>(_appModel->getProperty("shaderGammaCorrection")));
 	
@@ -102,24 +107,35 @@ void SceneView::update() {
 
 void SceneView::drawCharacter(ofxFbo * targetFBO, 
 							  ofTexture * faceTexture, 
-							  CamTransform *transform){
+							  CamTransform *transform) {
 	// set up draw state
 	targetFBO->begin();
 	glPushMatrix();
 
 	glClear(GL_COLOR_BUFFER_BIT); // clear frame
 	
-	// do the transform
+	// do the transfor m
 	
 	// translate to the right place
 	glTranslatef(transform->x, transform->y, 0.0);
 	
 	// scale to transform size
-	//glScalef(-1.0f, 1.0f, 1.0f);
-	glScalef(transform->scaleX, transform->scaleY, 0.0);
+	glScalef(-1.0f, 1.0f, 1.0f);
+
+	// magic transform shenanigans -> move to flash analyze functions eventually
+	float rot = transform->rotation;
+	float sclX = transform->w/640.0f;
+	float sclY = sclX;
+	
+	if (transform->rotation < -90.0 || transform->rotation > 90.0) {
+		sclY = -sclY;
+		rot = -rot;
+	}
+
+	glScalef(sclX, sclY, 1.0f);
 	
 	// rotate the head
-	glRotatef(transform->rotation, 0.0f, 0.0f, 1.0f);
+	glRotatef(rot, 0.0f, 0.0f, 1.0f);
 	
 	// translate back half (/4 due to glScale) the width/height of the camera texture
 	glTranslatef(-(faceTexture->getWidth()/4.0), -(faceTexture->getHeight()/4.0), 0.0);
