@@ -48,6 +48,11 @@
 		7780730C13BB4547007BAC08 /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 778072ED13BB4547007BAC08 /* tinyxmlparser.cpp */; };
 		7780730D13BB4547007BAC08 /* ofxXmlSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 778072EF13BB4547007BAC08 /* ofxXmlSettings.cpp */; };
 		7780732713BB4C1E007BAC08 /* AppModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7780732613BB4C1E007BAC08 /* AppModel.cpp */; };
+		77F0332313CD6F6C00D7811A /* CamController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77F0332113CD6F6C00D7811A /* CamController.cpp */; };
+		77F0336E13CD70B300D7811A /* ofxQTKitVideoGrabber.mm in Sources */ = {isa = PBXBuildFile; fileRef = 77F0334813CD70B300D7811A /* ofxQTKitVideoGrabber.mm */; };
+		77F033AE13CD70C600D7811A /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77F033AC13CD70C600D7811A /* CoreVideo.framework */; };
+		77F033AF13CD70C600D7811A /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77F033AD13CD70C600D7811A /* QTKit.framework */; };
+		77F0341613CD70F000D7811A /* goVideoGrabber.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77F0341413CD70F000D7811A /* goVideoGrabber.cpp */; };
 		E45BE0AA0E8CC67C009D7055 /* GLee.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE0A90E8CC67C009D7055 /* GLee.a */; };
 		E45BE2E40E8CC69C009D7055 /* rtAudio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE2E30E8CC69C009D7055 /* rtAudio.a */; };
 		E45BE97B0E8CC7DD009D7055 /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE9710E8CC7DD009D7055 /* AGL.framework */; };
@@ -236,6 +241,40 @@
 		778076CB13BC2FAF007BAC08 /* multitexturemerge.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = multitexturemerge.frag; path = bin/data/multitexturemerge.frag; sourceTree = SOURCE_ROOT; };
 		778076CC13BC2FAF007BAC08 /* vertex.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = vertex.vert; path = bin/data/vertex.vert; sourceTree = SOURCE_ROOT; };
 		77DD1F1513BC466B00F19718 /* Singleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Singleton.h; sourceTree = "<group>"; };
+		77F0332113CD6F6C00D7811A /* CamController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CamController.cpp; sourceTree = "<group>"; };
+		77F0332213CD6F6C00D7811A /* CamController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CamController.h; sourceTree = "<group>"; };
+		77F0334713CD70B300D7811A /* ofxQTKitVideoGrabber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxQTKitVideoGrabber.h; sourceTree = "<group>"; };
+		77F0334813CD70B300D7811A /* ofxQTKitVideoGrabber.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ofxQTKitVideoGrabber.mm; sourceTree = "<group>"; };
+		77F033AC13CD70C600D7811A /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		77F033AD13CD70C600D7811A /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = System/Library/Frameworks/QTKit.framework; sourceTree = SDKROOT; };
+		77F033E513CD70F000D7811A /* COMMIT_EDITMSG */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COMMIT_EDITMSG; sourceTree = "<group>"; };
+		77F033E613CD70F000D7811A /* config */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = config; sourceTree = "<group>"; };
+		77F033E713CD70F000D7811A /* description */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = description; sourceTree = "<group>"; };
+		77F033E813CD70F000D7811A /* HEAD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HEAD; sourceTree = "<group>"; };
+		77F033EA13CD70F000D7811A /* applypatch-msg.sample */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = "applypatch-msg.sample"; sourceTree = "<group>"; };
+		77F033EB13CD70F000D7811A /* commit-msg.sample */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = "commit-msg.sample"; sourceTree = "<group>"; };
+		77F033EC13CD70F000D7811A /* post-commit.sample */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = "post-commit.sample"; sourceTree = "<group>"; };
+		77F033ED13CD70F000D7811A /* post-receive.sample */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = "post-receive.sample"; sourceTree = "<group>"; };
+		77F033EE13CD70F000D7811A /* post-update.sample */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = "post-update.sample"; sourceTree = "<group>"; };
+		77F033EF13CD70F000D7811A /* pre-applypatch.sample */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = "pre-applypatch.sample"; sourceTree = "<group>"; };
+		77F033F013CD70F000D7811A /* pre-commit.sample */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = "pre-commit.sample"; sourceTree = "<group>"; };
+		77F033F113CD70F000D7811A /* pre-rebase.sample */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = "pre-rebase.sample"; sourceTree = "<group>"; };
+		77F033F213CD70F000D7811A /* prepare-commit-msg.sample */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = "prepare-commit-msg.sample"; sourceTree = "<group>"; };
+		77F033F313CD70F000D7811A /* update.sample */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = update.sample; sourceTree = "<group>"; };
+		77F033F413CD70F000D7811A /* index */ = {isa = PBXFileReference; lastKnownFileType = file; path = index; sourceTree = "<group>"; };
+		77F033F613CD70F000D7811A /* exclude */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = exclude; sourceTree = "<group>"; };
+		77F033F813CD70F000D7811A /* HEAD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HEAD; sourceTree = "<group>"; };
+		77F033FB13CD70F000D7811A /* master */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = master; sourceTree = "<group>"; };
+		77F033FE13CD70F000D7811A /* master */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = master; sourceTree = "<group>"; };
+		77F0340113CD70F000D7811A /* f40dccd74ee94be38bf2e4ea202c7ef66b7469 */ = {isa = PBXFileReference; lastKnownFileType = file; path = f40dccd74ee94be38bf2e4ea202c7ef66b7469; sourceTree = "<group>"; };
+		77F0340313CD70F000D7811A /* 8202810c8bbd3929c22da7f3a8ec87b6376968 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 8202810c8bbd3929c22da7f3a8ec87b6376968; sourceTree = "<group>"; };
+		77F0340513CD70F000D7811A /* a24f523267c8346abafc4c22b8858c6f35f2fc */ = {isa = PBXFileReference; lastKnownFileType = file; path = a24f523267c8346abafc4c22b8858c6f35f2fc; sourceTree = "<group>"; };
+		77F0340713CD70F000D7811A /* c3ca5252ebca3bd7c982de70970a30d01bb43c */ = {isa = PBXFileReference; lastKnownFileType = file; path = c3ca5252ebca3bd7c982de70970a30d01bb43c; sourceTree = "<group>"; };
+		77F0340913CD70F000D7811A /* 7efe0348807103380e85778a385099dcf47de1 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 7efe0348807103380e85778a385099dcf47de1; sourceTree = "<group>"; };
+		77F0340E13CD70F000D7811A /* master */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = master; sourceTree = "<group>"; };
+		77F0341113CD70F000D7811A /* master */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = master; sourceTree = "<group>"; };
+		77F0341413CD70F000D7811A /* goVideoGrabber.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = goVideoGrabber.cpp; sourceTree = "<group>"; };
+		77F0341513CD70F000D7811A /* goVideoGrabber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = goVideoGrabber.h; sourceTree = "<group>"; };
 		E45BE0390E8CC647009D7055 /* FreeImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FreeImage.h; path = ../../../libs/freeimage/include/FreeImage.h; sourceTree = SOURCE_ROOT; };
 		E45BE03F0E8CC650009D7055 /* fmod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fmod.h; path = ../../../libs/fmodex/include/fmod.h; sourceTree = SOURCE_ROOT; };
 		E45BE0400E8CC650009D7055 /* fmod.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = fmod.hpp; path = ../../../libs/fmodex/include/fmod.hpp; sourceTree = SOURCE_ROOT; };
@@ -307,6 +346,8 @@
 				778072F813BB4547007BAC08 /* libboost_serialization-xgcc42-mt-1_46_1.a in Frameworks */,
 				778072FD13BB4547007BAC08 /* openCV.a in Frameworks */,
 				07B204F313CC304000FF66CB /* libboost_regex-xgcc42-mt-1_46_1.a in Frameworks */,
+				77F033AE13CD70C600D7811A /* CoreVideo.framework in Frameworks */,
+				77F033AF13CD70C600D7811A /* QTKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -692,6 +733,8 @@
 				072CF9DB13BD8691000DBD67 /* AppController.h */,
 				07545BA313BDF80200325443 /* DataController.h */,
 				07545BA413BDF80200325443 /* DataController.cpp */,
+				77F0332113CD6F6C00D7811A /* CamController.cpp */,
+				77F0332213CD6F6C00D7811A /* CamController.h */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -745,9 +788,233 @@
 			name = Shaders;
 			sourceTree = "<group>";
 		};
+		77F0334613CD70B300D7811A /* ofxQTKitVideoGrabber */ = {
+			isa = PBXGroup;
+			children = (
+				77F0334713CD70B300D7811A /* ofxQTKitVideoGrabber.h */,
+				77F0334813CD70B300D7811A /* ofxQTKitVideoGrabber.mm */,
+			);
+			name = ofxQTKitVideoGrabber;
+			path = ../../../addons/ofxQTKitVideoGrabber/addons/ofxQTKitVideoGrabber;
+			sourceTree = "<group>";
+		};
+		77F033E313CD70F000D7811A /* goVideoGrabber */ = {
+			isa = PBXGroup;
+			children = (
+				77F033E413CD70F000D7811A /* .git */,
+				77F0341313CD70F000D7811A /* src */,
+			);
+			name = goVideoGrabber;
+			path = ../../../addons/goVideoGrabber;
+			sourceTree = SOURCE_ROOT;
+		};
+		77F033E413CD70F000D7811A /* .git */ = {
+			isa = PBXGroup;
+			children = (
+				77F033E513CD70F000D7811A /* COMMIT_EDITMSG */,
+				77F033E613CD70F000D7811A /* config */,
+				77F033E713CD70F000D7811A /* description */,
+				77F033E813CD70F000D7811A /* HEAD */,
+				77F033E913CD70F000D7811A /* hooks */,
+				77F033F413CD70F000D7811A /* index */,
+				77F033F513CD70F000D7811A /* info */,
+				77F033F713CD70F000D7811A /* logs */,
+				77F033FF13CD70F000D7811A /* objects */,
+				77F0340C13CD70F000D7811A /* refs */,
+			);
+			path = .git;
+			sourceTree = "<group>";
+		};
+		77F033E913CD70F000D7811A /* hooks */ = {
+			isa = PBXGroup;
+			children = (
+				77F033EA13CD70F000D7811A /* applypatch-msg.sample */,
+				77F033EB13CD70F000D7811A /* commit-msg.sample */,
+				77F033EC13CD70F000D7811A /* post-commit.sample */,
+				77F033ED13CD70F000D7811A /* post-receive.sample */,
+				77F033EE13CD70F000D7811A /* post-update.sample */,
+				77F033EF13CD70F000D7811A /* pre-applypatch.sample */,
+				77F033F013CD70F000D7811A /* pre-commit.sample */,
+				77F033F113CD70F000D7811A /* pre-rebase.sample */,
+				77F033F213CD70F000D7811A /* prepare-commit-msg.sample */,
+				77F033F313CD70F000D7811A /* update.sample */,
+			);
+			path = hooks;
+			sourceTree = "<group>";
+		};
+		77F033F513CD70F000D7811A /* info */ = {
+			isa = PBXGroup;
+			children = (
+				77F033F613CD70F000D7811A /* exclude */,
+			);
+			path = info;
+			sourceTree = "<group>";
+		};
+		77F033F713CD70F000D7811A /* logs */ = {
+			isa = PBXGroup;
+			children = (
+				77F033F813CD70F000D7811A /* HEAD */,
+				77F033F913CD70F000D7811A /* refs */,
+			);
+			path = logs;
+			sourceTree = "<group>";
+		};
+		77F033F913CD70F000D7811A /* refs */ = {
+			isa = PBXGroup;
+			children = (
+				77F033FA13CD70F000D7811A /* heads */,
+				77F033FC13CD70F000D7811A /* remotes */,
+			);
+			path = refs;
+			sourceTree = "<group>";
+		};
+		77F033FA13CD70F000D7811A /* heads */ = {
+			isa = PBXGroup;
+			children = (
+				77F033FB13CD70F000D7811A /* master */,
+			);
+			path = heads;
+			sourceTree = "<group>";
+		};
+		77F033FC13CD70F000D7811A /* remotes */ = {
+			isa = PBXGroup;
+			children = (
+				77F033FD13CD70F000D7811A /* origin */,
+			);
+			path = remotes;
+			sourceTree = "<group>";
+		};
+		77F033FD13CD70F000D7811A /* origin */ = {
+			isa = PBXGroup;
+			children = (
+				77F033FE13CD70F000D7811A /* master */,
+			);
+			path = origin;
+			sourceTree = "<group>";
+		};
+		77F033FF13CD70F000D7811A /* objects */ = {
+			isa = PBXGroup;
+			children = (
+				77F0340013CD70F000D7811A /* 1e */,
+				77F0340213CD70F000D7811A /* 24 */,
+				77F0340413CD70F000D7811A /* 2f */,
+				77F0340613CD70F000D7811A /* 82 */,
+				77F0340813CD70F000D7811A /* e2 */,
+				77F0340A13CD70F000D7811A /* info */,
+				77F0340B13CD70F000D7811A /* pack */,
+			);
+			path = objects;
+			sourceTree = "<group>";
+		};
+		77F0340013CD70F000D7811A /* 1e */ = {
+			isa = PBXGroup;
+			children = (
+				77F0340113CD70F000D7811A /* f40dccd74ee94be38bf2e4ea202c7ef66b7469 */,
+			);
+			path = 1e;
+			sourceTree = "<group>";
+		};
+		77F0340213CD70F000D7811A /* 24 */ = {
+			isa = PBXGroup;
+			children = (
+				77F0340313CD70F000D7811A /* 8202810c8bbd3929c22da7f3a8ec87b6376968 */,
+			);
+			path = 24;
+			sourceTree = "<group>";
+		};
+		77F0340413CD70F000D7811A /* 2f */ = {
+			isa = PBXGroup;
+			children = (
+				77F0340513CD70F000D7811A /* a24f523267c8346abafc4c22b8858c6f35f2fc */,
+			);
+			path = 2f;
+			sourceTree = "<group>";
+		};
+		77F0340613CD70F000D7811A /* 82 */ = {
+			isa = PBXGroup;
+			children = (
+				77F0340713CD70F000D7811A /* c3ca5252ebca3bd7c982de70970a30d01bb43c */,
+			);
+			path = 82;
+			sourceTree = "<group>";
+		};
+		77F0340813CD70F000D7811A /* e2 */ = {
+			isa = PBXGroup;
+			children = (
+				77F0340913CD70F000D7811A /* 7efe0348807103380e85778a385099dcf47de1 */,
+			);
+			path = e2;
+			sourceTree = "<group>";
+		};
+		77F0340A13CD70F000D7811A /* info */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = info;
+			sourceTree = "<group>";
+		};
+		77F0340B13CD70F000D7811A /* pack */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = pack;
+			sourceTree = "<group>";
+		};
+		77F0340C13CD70F000D7811A /* refs */ = {
+			isa = PBXGroup;
+			children = (
+				77F0340D13CD70F000D7811A /* heads */,
+				77F0340F13CD70F000D7811A /* remotes */,
+				77F0341213CD70F000D7811A /* tags */,
+			);
+			path = refs;
+			sourceTree = "<group>";
+		};
+		77F0340D13CD70F000D7811A /* heads */ = {
+			isa = PBXGroup;
+			children = (
+				77F0340E13CD70F000D7811A /* master */,
+			);
+			path = heads;
+			sourceTree = "<group>";
+		};
+		77F0340F13CD70F000D7811A /* remotes */ = {
+			isa = PBXGroup;
+			children = (
+				77F0341013CD70F000D7811A /* origin */,
+			);
+			path = remotes;
+			sourceTree = "<group>";
+		};
+		77F0341013CD70F000D7811A /* origin */ = {
+			isa = PBXGroup;
+			children = (
+				77F0341113CD70F000D7811A /* master */,
+			);
+			path = origin;
+			sourceTree = "<group>";
+		};
+		77F0341213CD70F000D7811A /* tags */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = tags;
+			sourceTree = "<group>";
+		};
+		77F0341313CD70F000D7811A /* src */ = {
+			isa = PBXGroup;
+			children = (
+				77F0341413CD70F000D7811A /* goVideoGrabber.cpp */,
+				77F0341513CD70F000D7811A /* goVideoGrabber.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				77F033E313CD70F000D7811A /* goVideoGrabber */,
+				77F0334613CD70B300D7811A /* ofxQTKitVideoGrabber */,
 				7780728213BB4547007BAC08 /* ofxFbo */,
 				7780728613BB4547007BAC08 /* ofxShader */,
 				7780728A13BB4547007BAC08 /* goVideoPlayer */,
@@ -907,6 +1174,8 @@
 		E45BE5980E8CC70C009D7055 /* core frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				77F033AC13CD70C600D7811A /* CoreVideo.framework */,
+				77F033AD13CD70C600D7811A /* QTKit.framework */,
 				E4C2424410CC5A17004149E2 /* AppKit.framework */,
 				E4C2424510CC5A17004149E2 /* Cocoa.framework */,
 				E4C2424610CC5A17004149E2 /* IOKit.framework */,
@@ -1176,6 +1445,9 @@
 				07B2061613CC5A6100FF66CB /* SceneXMLParser.cpp in Sources */,
 				07B2080813CC8A5400FF66CB /* PropertyXMLParser.cpp in Sources */,
 				07B2081113CC8BAD00FF66CB /* PropertyXMLBuilder.cpp in Sources */,
+				77F0332313CD6F6C00D7811A /* CamController.cpp in Sources */,
+				77F0336E13CD70B300D7811A /* ofxQTKitVideoGrabber.mm in Sources */,
+				77F0341613CD70F000D7811A /* goVideoGrabber.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

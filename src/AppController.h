@@ -15,6 +15,7 @@
 #include "AppModel.h"
 
 #include "DataController.h"
+#include "CamController.h"
 
 class AppController : public ofBaseApp {
 	
@@ -32,6 +33,8 @@ public:
 	void mouseReleased(int x, int y, int button);
 	void windowResized(int w, int h);
 	
+	void swapCameras();
+	
 	void setWindowed();
 	void setFullscreen();
 	void toggleFullscreen();
@@ -39,6 +42,8 @@ public:
 private:
 	
 	AppView		*_appView;
+	
+	CamController	*_camControllers[2];
 	
 	bool		isFullScreen;
 	

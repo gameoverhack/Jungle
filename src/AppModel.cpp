@@ -11,6 +11,7 @@
 
 AppModel::AppModel(){
 	_currentScene = NULL;
+	_padLength = 1;
 }
 
 AppModel::~AppModel(){
@@ -66,6 +67,25 @@ Sequence * AppModel::getCurrentSequence() {
 	seq = _currentScene->getCurrentSequence();
 	assert(seq != NULL);
 	return seq;
+}
+
+goVideoPlayer * AppModel::getSequenceMovie() {
+	goVideoPlayer * vid;
+	vid = getCurrentSequence()->getSequenceMovie();
+	return vid;
+}
+
+void AppModel::setCameraTextures(ofTexture * victimCamTex, ofTexture * attackCamTex) {
+	_victimCamTex = victimCamTex;
+	_attackCamTex = attackCamTex;
+}
+
+ofTexture * AppModel::getVictimCamTexRef() {
+	return _victimCamTex;
+}
+
+ofTexture * AppModel::getAttackCamTexRef() {
+	return _attackCamTex;
 }
 
 /********************************************************
@@ -130,7 +150,7 @@ string AppModel::getAllPropsAsList() {
 	for (anyIT = _anyProps.begin(); anyIT != _anyProps.end(); anyIT++) {
 		
 		string valAsString;
-
+		string propAsString = anyIT->first;
 		if (is_int(anyIT->second) == true) {
 			valAsString = ofToString(boost::any_cast<int>(anyIT->second));
 		}
@@ -141,7 +161,7 @@ string AppModel::getAllPropsAsList() {
 			valAsString = boost::any_cast<string>(anyIT->second);
 		}
 		
-		propsList += anyIT->first + " = " + valAsString + " type: " + anyIT->second.type().name() + "\n";
+		propsList += pad(propAsString) + " = " + pad(valAsString) + " type: " + anyIT->second.type().name() + "\n";
 	}
 	
 	return propsList;
@@ -174,6 +194,25 @@ map<string, string> AppModel::getAllPropsNameTypeAsMap(){
 	return retmap;
 }
 
+inline string AppModel::pad(string & t_string) {
+	
+	// possibly a more elegant sprintf solution for this but can't work out how to
+	// dynamically set sprintf(objWithWhiteSpace, "%" + ofToString(_padLength) + "s", objectName) ???
+	
+	string paddedString = t_string;
+	int padLength = 0;
+	
+	// check length and adjust overall pad if the objectName is longer than the current padLength
+	if (t_string.size() > _padLength) _padLength = t_string.size();
+	
+	padLength = _padLength - t_string.size();
+	
+	for (int i = 0; i < padLength; i++) paddedString += " ";
+	
+	return paddedString;
+
+}
+
 // check type int
 bool AppModel::is_int(const boost::any & operand) {
     return operand.type() == typeid(int);
@@ -189,7 +228,7 @@ bool AppModel::is_string(const boost::any & operand) {
     return operand.type() == typeid(string);
 }
 
-bool AppModel::is_bool(const boost::any & operand){
+bool AppModel::is_bool(const boost::any & operand) {
 	return operand.type() == typeid(bool);
 }
 

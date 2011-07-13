@@ -35,10 +35,13 @@ using std::string;
 class DataController {
 
 public:
+	
 	DataController(string configFilePath);
 	~DataController();
 	
-private :
+	
+private:
+
 	ofxXmlSettings * _xml;
 	string _configFilePath;
 	

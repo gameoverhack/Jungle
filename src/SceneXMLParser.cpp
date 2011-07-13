@@ -155,7 +155,7 @@ void SceneXMLParser::parseXML(){
 					throw JungleException("File details for " + calculatedFilename +" does not match xml store");
 				}
 				
-				sequence->addTransform(*transform);				
+				sequence->addTransform(transform);				
 			}
 			_xml.popTag(); // pop out of sequence
 			

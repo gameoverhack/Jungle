@@ -33,38 +33,49 @@ public:
 	AppModel();
 	~AppModel();
 	
-	void setScene(string name, Scene * scene);
-	bool setCurrentScene(string sceneName);
+	void		setScene(string name, Scene * scene);
+	bool		setCurrentScene(string sceneName);
 
-	Sequence * getCurrentSequence();
-	Scene * getCurrentScene();
+	Sequence		* getCurrentSequence();
+	Scene			* getCurrentScene();
+	goVideoPlayer	* getSequenceMovie();
 	
-	bool nextScene();
+	void		setCameraTextures(ofTexture * victimCamTex, ofTexture * attackCamTex);
+	ofTexture * getVictimCamTexRef();
+	ofTexture * getAttackCamTexRef();
 	
-	void setProperty(string propName, boost::any propVal);
+	bool		nextScene();
 	
-	void getProperty(string propName, int & propVal);
-	void getProperty(string propName, float & propVal);
-	void getProperty(string propName, string & propVal);
+	void		setProperty(string propName, boost::any propVal);
 	
-	boost::any getProperty(string propName);
+	void		getProperty(string propName, int & propVal);
+	void		getProperty(string propName, float & propVal);
+	void		getProperty(string propName, string & propVal);
+	
+	boost::any	getProperty(string propName);
 
 	string	getAllPropsAsList();
 	map<string, string> getAllPropsNameTypeAsMap();
 	
 private:
 	
-	bool is_int(const boost::any & operand);
-	bool is_float(const boost::any & operand);
-	bool is_string(const boost::any & operand);
-	bool is_char_ptr(const boost::any & operand);
-	bool is_bool(const boost::any & operand);
+	inline string	pad(string & objectName);
+	int				_padLength;
 	
-	map<string, boost::any>				_anyProps;
+	bool			is_int(const boost::any & operand);
+	bool			is_float(const boost::any & operand);
+	bool			is_string(const boost::any & operand);
+	bool			is_char_ptr(const boost::any & operand);
+	bool			is_bool(const boost::any & operand);
 	
-	map<string, Scene *>				_scenes;
+	map<string, boost::any>		_anyProps;
 	
-	Scene *							_currentScene;
+	map<string, Scene *>		_scenes;
+	
+	Scene *						_currentScene;
+	
+	ofTexture *					_victimCamTex;
+	ofTexture *					_attackCamTex;
 	
 protected:
 
