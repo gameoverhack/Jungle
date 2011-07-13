@@ -18,6 +18,8 @@ DataController::DataController(string configFilePath){
 //	PropertyXMLBuilder propertyXMLBuilder(_configFilePath);
 
 
+	SceneXMLBuilder sceneXMLBuilder(boost::any_cast<string>(_appModel->getProperty("scenesDataPath")),
+								 boost::any_cast<string>(_appModel->getProperty("scenesXMLFile")));
 	try {
 		// also fire and forget
 		SceneXMLParser sceneXMLParser(boost::any_cast<string>(_appModel->getProperty("scenesDataPath")),
@@ -26,6 +28,7 @@ DataController::DataController(string configFilePath){
 	catch (JungleException je) {
 		LOG_WARNING("Caught exception: " + je._message);
 		LOG_NOTICE("Uncomment below to force rebuild of scene xml on parse failure");
+		abort();
 //		SceneXMLBuilder sceneXMLBuilder(boost::any_cast<string>(_appModel->getProperty("scenesDataPath")),
 //									 boost::any_cast<string>(_appModel->getProperty("scenesXMLFile")));
 //		SceneXMLParser sceneXMLParser(boost::any_cast<string>(_appModel->getProperty("scenesDataPath")),
