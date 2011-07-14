@@ -86,18 +86,18 @@ SceneXMLParser::SceneXMLParser(string dataPath, string xmlFile) : IXMLParser(xml
 	
 
 //	UNCOMMENT THIS TO SEE THE MAP STRUCTURE.
-//	map<string, map<string, string> >::iterator iter;
-//	iter = _parsedData.begin();	
-//	while (iter != _parsedData.end()) {
-//		printf("%s =| \n", (iter->first).c_str());
-//		map<string, string>::iterator iter2;
-//		iter2 = iter->second.begin();
-//		while(iter2 != iter->second.end()){
-//			printf("\t%s => %s\n", (iter2->first).c_str(), (iter2->second).c_str());
-//			iter2++;
-//		}
-//		iter++;
-//	}
+	map<string, map<string, string> >::iterator iter;
+	iter = _parsedData.begin();	
+	while (iter != _parsedData.end()) {
+		printf("%s =| \n", (iter->first).c_str());
+		map<string, string>::iterator iter2;
+		iter2 = iter->second.begin();
+		while(iter2 != iter->second.end()){
+			printf("\t%s => %s\n", (iter2->first).c_str(), (iter2->second).c_str());
+			iter2++;
+		}
+		iter++;
+	}
 	timeA = ofGetElapsedTimeMillis();
 	// Checked file existence, checked metadata, checked transforms, OK to map => app model
 	createAppModel();
@@ -157,7 +157,7 @@ void SceneXMLParser::createAppModel(){
 			sequence = new Sequence();
 			sequence->setName(kvmap["name"]);
 			sequence->setNextSequenceName(kvmap["nextSequence"]);
-			
+			LOG_VERBOSE("Set " + sequence->getName() + " nextSeq to " + sequence->getNextSequenceName());
 			// loop only stuff
 			regex isLoopRegex("_loop$");
 			if(regex_search(sequence->getName(), isLoopRegex)){
@@ -168,24 +168,24 @@ void SceneXMLParser::createAppModel(){
 			// set interactivity
 			LOG_WARNING("TODO: INTERACTIVITY that isn't 'both' is ignored! Need to update Sequence class so its not just a bool value");
 //			sequence->setInteractivity(kvmap["interactivity"]); // TODO
-			sequence->setIsInteractive(true); 
+			sequence->setIsInteractive(false); 
 			
 			// set whether we faked movie data
-			LOG_WARNING("TODO: check validFile for 'fake' and flag the sequence as being faked (needs class update)");
 			if(kvmap["validFile"] == "fake"){
-//				sequence->setIsMovieFake(true); TODO
+				sequence->setIsMovieFaked(true);
 			}
 
 			// Load movie stuff
 			fileID = findFileIDForLister(kvmap["filename"]);
 			fullFilePath = _dirLister.getPath(fileID);			
+			sequence->setMovieFullFilePath(fullFilePath);
+
+			LOG_WARNING("TODO: Load movie should be done else where, change this from loadMovie, remove these calls");			
+			LOG_WARNING("TODO: Also might as well change setSequenceMovie to just setMovie (if its still used) since the name is a hold over from having _sequenceMovie and _loopMovie");			
 			movie = new goVideoPlayer();
 			movie->loadMovie(fullFilePath);
 			sequence->setSequenceMovie(movie);
 			sequence->prepareSequenceMovie();
-			LOG_WARNING("TODO: Load movie should be done else where, change this from loadMovie to setMovieFilename()");			
-//			sequence->setMovieFilepath(fullFilePath);
-			LOG_WARNING("TODO: Also might as well change setSequenceMovie to just setMovie (if its still used)");
 
 			// completed sequence, insert to scene
 			scene->setSequence(sequence->getName(), sequence);
