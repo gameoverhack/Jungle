@@ -201,7 +201,6 @@ void SceneXMLParser::createAppModel(){
 			loadVector(findFullFilePathForFilename(kvmap["filename"]), transform);
 			vector<string> keyParts;
 			boost::split(keyParts, parsedDataIter->first, boost::is_any_of(":"));
-			LOG_WARNING("Transforms are added in order that they come, not as named key/values");
 			sequence->setTransform(keyParts[2], transform);
 		}
 	}
