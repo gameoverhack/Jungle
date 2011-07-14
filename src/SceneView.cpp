@@ -89,7 +89,7 @@ void SceneView::update() {
 		numTextures++;
 	}
 	_shader.setUniform1i("numTextures", numTextures);
-	_shader.setUniform1i("showUnmaskedTextures", boost::any_cast<int>(_appModel->getProperty("showUnmaskedTextures")));
+	_shader.setUniform1i("showUnmaskedTextures", (int)(boost::any_cast<bool>(_appModel->getProperty("showUnmaskedTextures"))));
 	_shader.setUniform1f("blendRatio", boost::any_cast<float>(_appModel->getProperty("shaderBlendRatio")));
 	_shader.setUniform1f("gammaCorrection", boost::any_cast<float>(_appModel->getProperty("shaderGammaCorrection")));
 	

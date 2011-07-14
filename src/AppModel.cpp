@@ -159,6 +159,9 @@ string AppModel::getAllPropsAsList() {
 		if (is_string(anyIT->second) == true) {
 			valAsString = boost::any_cast<string>(anyIT->second);
 		}
+		if(is_bool(anyIT->second) == true){
+			valAsString = ((boost::any_cast<bool>)(anyIT->second) ? "true" : "false");
+		}
 		
 		propsList += pad(propAsString) + " = " + pad(valAsString) + " type: " + anyIT->second.type().name() + "\n";
 	}
