@@ -41,8 +41,6 @@ public:
 	
 	
 private:
-
-	ofxXmlSettings * _xml;
 	string _configFilePath;
 	
 };

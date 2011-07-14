@@ -55,7 +55,6 @@ bool AppModel::nextScene(){
 	}
 	return false; // should never get here, can probably just be void return
 }
-
 Scene * AppModel::getCurrentScene(){
 	assert(_currentScene != NULL);
 	return _currentScene;

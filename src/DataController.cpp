@@ -19,8 +19,8 @@ DataController::DataController(string configFilePath)
 //	PropertyXMLBuilder propertyXMLBuilder(_configFilePath);
 
 	bool attemptParse = true;
-	SceneXMLBuilder sceneXMLBuilder(boost::any_cast<string>(_appModel->getProperty("scenesDataPath")),
-									boost::any_cast<string>(_appModel->getProperty("scenesXMLFile")));			
+//	SceneXMLBuilder sceneXMLBuilder(boost::any_cast<string>(_appModel->getProperty("scenesDataPath")),
+//									boost::any_cast<string>(_appModel->getProperty("scenesXMLFile")));			
 
 	
 	while(attemptParse){
@@ -42,11 +42,11 @@ DataController::DataController(string configFilePath)
 			//									 boost::any_cast<string>(_appModel->getProperty("scenesXMLFile")));
 			//		SceneXMLParser sceneXMLParser(boost::any_cast<string>(_appModel->getProperty("scenesDataPath")),
 			//									  boost::any_cast<string>(_appModel->getProperty("scenesXMLFile")));			
-		}		
+		}
+		attemptParse = false;
 	}
 	
 	LOG_NOTICE("Initialisation complete");
-	abort();
 }
 
 DataController::~DataController(){

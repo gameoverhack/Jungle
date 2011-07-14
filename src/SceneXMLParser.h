@@ -39,8 +39,7 @@ public:
 	void validateMovieFileExistence();
 	void validateMovieTransformLengths();
 	void validateFileMetadata();
-
-	void parseXML1();
+	void createAppModel();
 	
 private:
 	string _dataPath;
@@ -56,7 +55,7 @@ private:
 	bool compareFileinfo(string filename, map<string, string> fileInfo);
 	void checkTagAttributesExist(string xmltag, vector<string> attributes, int which);	
 	int findFileIDForLister(string filename);
-
+	string findFullFilePathForFilename(string filename);
 };
 
 #endif

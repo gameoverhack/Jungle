@@ -16,7 +16,9 @@ SceneXMLParser::SceneXMLParser(string dataPath, string xmlFile) : IXMLParser(xml
 	setupDirLister(); // set up file lists;
 	populateDirListerIDMap();
 	load(); // load xml
-	parseXML(); // make map from xml
+	
+	// make map (map<string, map<string, string> _parsedData) from xml
+	parseXML(); 
 	
 	// Check that the map contains valid files (replace with temp fakes if it doesnt)
 	// throws JungleException if some files can't be fixed that should cause a crash since we can't go on at all.
@@ -34,10 +36,13 @@ SceneXMLParser::SceneXMLParser(string dataPath, string xmlFile) : IXMLParser(xml
 		throw je; // for now we'll just consider it a hard fail and throw up.
 	}
 	
+	// Validate size,dateCreated,dateModified with values from xml vs hdd
 	try{
 		validateFileMetadata();
 	}
 	catch(vector<string> vec){
+		// Some files were invalid, we should report this, and throw an exception
+		// who ever caled us should created a SceneXMLBuilder and rebuild the xml
 		string message = "";
 		for(vector<string>::iterator iter = vec.begin(); iter != vec.end(); iter++){
 			message = *iter + ", " + message;
@@ -48,20 +53,143 @@ SceneXMLParser::SceneXMLParser(string dataPath, string xmlFile) : IXMLParser(xml
 		throw MetadataMismatchException(message);
 	}
 	
+	
+	// Validate that transform and movie lengths are the same
 	try{
 		validateMovieTransformLengths();
 	}
 	catch (vector<string> vec) {
-		// means some files were missing, probably just pass this back up.
+		// Some files were either missing or invalid (length mismatch), 
+		// log an error and pass the missing files back up so whoever called us
+		// can make the files with the analyser.
 		string message = "";
 		for(vector<string>::iterator iter = vec.begin(); iter != vec.end(); iter++){
 			message = *iter + ", " + message;
 		}
 		message[message.length()-1] = ' ';
 		LOG_ERROR("Require reanalysis/creation of transform files: " + message);
-		throw vec;
+		//throw vec;
 	}
 	
+
+//	UNCOMMENT THIS TO SEE THE MAP STRUCTURE.
+//	map<string, map<string, string> >::iterator iter;
+//	iter = _parsedData.begin();	
+//	while (iter != _parsedData.end()) {
+//		printf("%s =| \n", (iter->first).c_str());
+//		map<string, string>::iterator iter2;
+//		iter2 = iter->second.begin();
+//		while(iter2 != iter->second.end()){
+//			printf("\t%s => %s\n", (iter2->first).c_str(), (iter2->second).c_str());
+//			iter2++;
+//		}
+//		iter++;
+//	}
+	
+	// Checked file existence, checked metadata, checked transforms, OK to map => app model
+	createAppModel();
+	LOG_VERBOSE("SceneXMLParser finished");
+}
+
+
+// Convert from map to model.
+// Should be all set up correctly like so:
+// 
+// scene => map of scene data
+// scene/sequence => map of sequence data
+// sence/sequence/transform => map of transform data
+// scene2 ...
+// scene/sequence ...
+// ... etc.
+// 
+// Even if some files are missing, SceneXMLBuilder will add nodes for scenes/sequences
+// if they are ever referenced by other files.
+// The map is sorted alphabetically, so scenes are not in the order they are in the
+// xml, but there is a scene["orderInXML"] => int (eg: 0, 1, 2) which could be
+// checked when deciding what to use for the first scene.
+void SceneXMLParser::createAppModel(){
+
+	// used for object construction
+	Scene *scene = NULL;
+	Sequence *sequence = NULL;
+	vector<CamTransform> *transform = NULL;
+	goVideoPlayer *movie;
+	
+	// file retrieval
+	int fileID;
+	string fullFilePath;
+	
+	bool hasCurrentScene = false; // used to set scene 0 to first current scene
+	bool hasCurrentSequence = false;
+	
+	LOG_VERBOSE("Creating map => model");
+	
+	map<string, map<string, string> >::iterator parsedDataIter;
+	for(parsedDataIter = _parsedData.begin(); parsedDataIter != _parsedData.end(); parsedDataIter++){
+		map<string, string> & kvmap = (parsedDataIter->second); // syntax convenience
+		LOG_VERBOSE("Converting " + kvmap["name"] + " ("+kvmap["type"]+")");
+		if(kvmap["type"] == "scene"){
+			scene = new Scene();
+			scene->setName(kvmap["name"]);
+			if(hasCurrentScene == false){
+				_appModel->setScene(scene->getName(), scene);
+				_appModel->setCurrentScene(scene->getName());
+				hasCurrentScene = true;
+			}
+		}
+		if(kvmap["type"] == "sequence"){			
+			sequence = new Sequence();
+			sequence->setName(kvmap["name"]);
+			sequence->setNextSequenceName(kvmap["nextSequence"]);
+			
+			// loop only stuff
+			regex isLoopRegex("_loop$");
+			if(regex_search(sequence->getName(), isLoopRegex)){
+				sequence->setAttackerResult(kvmap["attackerResult"]);
+				sequence->setVictimResult(kvmap["victimResult"]);
+			}
+			
+			// set interactivity
+			LOG_WARNING("TODO: INTERACTIVITY that isn't 'both' is ignored! Need to update Sequence class so its not just a bool value");
+//			sequence->setInteractivity(kvmap["interactivity"]); // TODO
+			sequence->setIsInteractive(true); 
+			
+			// set whether we faked movie data
+			LOG_WARNING("TODO: check validFile for 'fake' and flag the sequence as being faked (needs class update)");
+			if(kvmap["validFile"] == "fake"){
+//				sequence->setIsMovieFake(true); TODO
+			}
+
+			// Load movie stuff
+			fileID = findFileIDForLister(kvmap["filename"]);
+			fullFilePath = _dirLister.getPath(fileID);			
+			movie = new goVideoPlayer();
+			movie->loadMovie(fullFilePath);
+			sequence->setSequenceMovie(movie);
+			sequence->prepareSequenceMovie();
+			LOG_WARNING("TODO: Load movie should be done else where, change this from loadMovie to setMovieFilename()");			
+//			sequence->setMovieFilepath(fullFilePath);
+			LOG_WARNING("TODO: Also might as well change setSequenceMovie to just setMovie (if its still used)");
+
+			// completed sequence, insert to scene
+			scene->setSequence(sequence->getName(), sequence);
+			
+			// check if we're first sequence for this scene, if we are, set us to be current (ie first)
+			if(hasCurrentSequence == false){
+				scene->setCurrentSequence(sequence->getName());
+				hasCurrentSequence = true;
+			}
+		}
+		if(kvmap["type"] == "transform"){
+			transform = new vector<CamTransform>();
+			loadVector(findFullFilePathForFilename(kvmap["filename"]), transform);
+			vector<string> keyParts;
+			boost::split(keyParts, parsedDataIter->first, boost::is_any_of(":"));
+			LOG_WARNING("Transforms are added in order that they come, not as named key/values");
+//			sequence->addTransform(keyParts[2], transform);
+			sequence->addTransform(transform);
+		}
+	}
 }
 
 
@@ -121,7 +249,7 @@ void SceneXMLParser::parseXML(){
 
 		// Remember the name
 		sceneName = _xml.getAttribute("scene", "name",stringType, sceneNum);
-		LOG_VERBOSE("Currently xml=>map scene: " + sceneName);
+		LOG_VERBOSE("Parsing xml=>map scene: " + sceneName);
 
 		mapKey = sceneName;
 		_parsedData[mapKey]["name"] = sceneName;
@@ -138,7 +266,7 @@ void SceneXMLParser::parseXML(){
 		}
 		// iterate over all the sequences
 		for(int seqNum = 0; seqNum < _xml.getNumTags("sequence"); seqNum++){
-
+			
 			// check attributes
 			attributesToCheck.clear();
 			attributesToCheck.push_back("name");
@@ -146,11 +274,20 @@ void SceneXMLParser::parseXML(){
 			attributesToCheck.push_back("dateModified");
 			attributesToCheck.push_back("dateCreated");
 			attributesToCheck.push_back("interactivity");
+			attributesToCheck.push_back("nextSequence");
 			checkTagAttributesExist("sequence", attributesToCheck, seqNum);			
 						
 			// Remember the name
 			sequenceName = _xml.getAttribute("sequence", "name", stringType, seqNum);
-			LOG_VERBOSE("Currently xml=>map sequence: " + sequenceName);
+			LOG_VERBOSE("Parsing xml=>map sequence: " + sequenceName);
+
+			// check for loop only attributes
+			regex isLoopRegex("_loop$");
+			if(regex_search(sequenceName, isLoopRegex)){
+				attributesToCheck.push_back("attackerResult");
+				attributesToCheck.push_back("victimResult");
+				checkTagAttributesExist("sequence", attributesToCheck, seqNum);			
+			}
 			
 			// construct key for parsed data map, rebuild instead of just append to be clearer
 			mapKey = sceneName+":"+sequenceName;
@@ -158,7 +295,13 @@ void SceneXMLParser::parseXML(){
 			// save some details
 			_parsedData[mapKey]["name"] = sequenceName;
 			_parsedData[mapKey]["type"] = "sequence";
-			
+			_parsedData[mapKey]["nextSequence"] = _xml.getAttribute("sequence", "nextSequence", stringType, seqNum);
+			if(regex_search(sequenceName, isLoopRegex)){
+				_parsedData[mapKey]["attackerResult"] = _xml.getAttribute("sequence", "attackerResult", stringType, seqNum);
+				_parsedData[mapKey]["victimResult"] = _xml.getAttribute("sequence", "victimResult", stringType, seqNum);
+			}
+
+			   
 			// save movie file name
 			_parsedData[mapKey]["filename"] = sceneName+"_"+sequenceName+".mov";
 			_parsedData[mapKey]["validFile"] = "unvalidated";
@@ -473,188 +616,6 @@ void SceneXMLParser::validateMovieTransformLengths(){
 	
 }
 
-void SceneXMLParser::parseXML1(){
-
-	// used for creation
-	Scene *scene;
-	Sequence *sequence;
-	vector<CamTransform> *transform;
-	goVideoPlayer *movie;
-	
-	// conveniece stuff
-	string combinedPath;
-	string defaultString = "default string value should not be seen";
-
-	// Used for validation (dateCreated,dateModified,size) and loading
-	string fullFilePath = "";
-	string constructedFilename = "";
-	map<string, string> fileInfo; // dateCreated->"some date", etc
-	
-	bool hasCurrentScene = false; // used to set scene 0 to first current scene
-	
-	_xml.pushTag("config"); // move into root
-	
-	LOG_VERBOSE("Loading scene data");
-	if(!_xml.tagExists("scenes")){ // quick check
-		LOG_ERROR("No scenes configuration to load!");
-		throw JungleException("No scenes node in configuration");
-	}
-	
-	
-	for(int sceneNum = 0; sceneNum < _xml.getNumTags("scene"); sceneNum++){
-		if(!_xml.attributeExists("scene", "name", sceneNum)){
-			LOG_ERROR("Could not set scene name, no name?");
-		}
-		
-		// make new scene
-		scene = new Scene();
-		
-		// save name
-		scene->setName(_xml.getAttribute("scene", "name", defaultString, sceneNum));
-		LOG_VERBOSE("Currently loading scene: " + scene->getName());
-		
-		// convenience
-		string sceneRootPath = ofToDataPath((boost::any_cast<string>)(_appModel->getProperty("scenesDataPath"))) + "/" + scene->getName() + "/";
-		
-		/*
-		 push into scene so we can check attributes of sequences,
-		 cant just do it regularly because we have two "which" params,
-		 which scene and which sequence
-		 */
-		_xml.pushTag("scene", sceneNum);
-		
-		// find the children of the scene node (ie: sequences)		
-		for(int seqNum = 0; seqNum < _xml.getNumTags("sequence"); seqNum++){
-			
-			// create sequence
-			sequence = new Sequence();
-			
-			// set name
-			if(!_xml.attributeExists("sequence", "name", seqNum)){
-				LOG_ERROR("No sequence name for sequence: "+ofToString(seqNum));
-				throw JungleException("No sequence name for sequence: "+ofToString(seqNum));
-			}
-			sequence->setName(_xml.getAttribute("sequence", "name", defaultString, seqNum));
-			LOG_VERBOSE("Currently loading sequence: " + sequence->getName());
-
-			
-			// Load movie
-			
-			// check that the sequence movie file matches the attributes saved in the xml (dates/size)
-			constructedFilename = scene->getName()+"_"+sequence->getName()+".mov";
-			fileInfo["dateCreated"] =  _xml.getAttribute("sequence", "dateCreated", defaultString, seqNum);
-			fileInfo["dateModified"] = _xml.getAttribute("sequence", "dateModified", defaultString, seqNum);
-			fileInfo["size"] = _xml.getAttribute("sequence", "size", defaultString, seqNum);
-			if(!compareFileinfo(constructedFilename, fileInfo)){
-				LOG_WARNING("File details for " + constructedFilename +" does not match xml store");
-				delete sequence;
-				delete scene;
-				throw JungleException("File details for " + constructedFilename +" does not match xml store");
-				// NOTE:	because we throw exception here, we don't check if the key exists below
-				//			when we get the full file path because we assume that if we didn't fail
-				//			here then its ok there. IE: Add a check if you remove the throw.
-			}
-
-			// Load the sequence movie
-			movie = new goVideoPlayer();
-			fullFilePath = _dirLister.getPath(_filenameToDirListerIDMap[constructedFilename]);
-			printf("%s\n", fullFilePath.c_str());
-			if(!movie->loadMovie(fullFilePath)){
-				LOG_ERROR("Could not load movie: "+constructedFilename);
-				delete movie; // free video
-				delete sequence; // cant use sequence without video so fail it
-				delete scene;
-				abort(); // lets just assume no video for one means whole thing is broken
-			};
-			
-			// insert the video into the sequence
-			sequence->setSequenceMovie(movie);
-			sequence->prepareSequenceMovie();
-			
-			
-			// check for interactive attribute (loop videos wait for interaction)
-			string iteractivityType = _xml.getAttribute("sequence", "interactivity", defaultString, seqNum);
-			if(iteractivityType == "both"){
-				LOG_VERBOSE(sequence->getName()+ " has interactivity attribute");
-				sequence->setIsInteractive(true);
-				if(!_xml.attributeExists("sequence", "victimResult", seqNum) ||
-				   !_xml.attributeExists("sequence", "attackerResult", seqNum)){
-					LOG_ERROR("Sequence " + sequence->getName() + " is interactive but has no victim/attacker result names");
-					delete sequence;
-					throw JungleException("Sequence " + sequence->getName() + " is interactive but has no victim/attacker result names");
-				}
-				// set attacker/victim results
-				sequence->setVictimResult(_xml.getAttribute("sequence", "victimResult", defaultString, seqNum)); 
-				sequence->setAttackerResult(_xml.getAttribute("sequence", "attackerResult", defaultString, seqNum)); 
-			}
-			else{
-				LOG_VERBOSE(sequence->getName()+ " does not have 'both' interactive flag. MUST ADD PROPERTIES TO SEQUENCE TO HANDLE 'face' and 'victim (only)'");
-				sequence->setIsInteractive(false);
-			}
-			
-			// set up next sequence name
-			if(_xml.attributeExists("sequence", "nextSequence", seqNum)){
-				sequence->setNextSequenceName(_xml.getAttribute("sequence", "nextSequence", defaultString, seqNum));
-				LOG_VERBOSE("Setting next sequence to: " + sequence->getNextSequenceName());
-			}
-			else{
-				LOG_ERROR("No nextSequence attribute for " + sequence->getNextSequenceName());
-				throw JungleException("No nextSequence attribute for " + sequence->getNextSequenceName());
-			}
-			
-			// find transforms for this sequence
-			// Push into this sequence so we insert into the right one.
-			_xml.pushTag("sequence", seqNum);
-			for(int transNum = 0; transNum < _xml.getNumTags("transform"); transNum++){
-				transform = new vector<CamTransform>();
-				string filename = _xml.getAttribute("transform", "filename", defaultString, transNum);
-				if(!loadVector<CamTransform>(sceneRootPath+filename, transform)){
-					// load Vector failed will log own error
-					delete transform;
-					throw JungleException("Could not load transform data for" + filename);
-				}
-				
-			
-				
-				// check that the sequence file matches the attributes saved in the xml (dates/size)
-				constructedFilename = _xml.getAttribute("transform", "filename", defaultString, transNum);
-				fileInfo["dateCreated"] =  _xml.getAttribute("transform", "dateCreated", defaultString, transNum);
-				fileInfo["dateModified"] = _xml.getAttribute("transform", "dateModified", defaultString, transNum);
-				fileInfo["size"] = _xml.getAttribute("transform", "size", defaultString, transNum);
-				if(!compareFileinfo(constructedFilename, fileInfo)){
-					LOG_WARNING("File details for " + constructedFilename +" does not match xml store");
-					throw JungleException("File details for " + constructedFilename +" does not match xml store");
-				}
-
-				// insert transform into sequence vector				
-				sequence->addTransform(transform);				
-			}
-			_xml.popTag(); // pop out of sequence
-			
-			// made the sequence, insert it into scene
-			scene->setSequence(sequence->getName(), sequence);
-			if(seqNum == 0){
-				// set first sequence to current sequence
-				scene->setCurrentSequence(sequence->getName());
-			}
-			
-		} // end sequence for loop
-		
-		_xml.popTag(); // pop out of scene
-		
-		// finished creation, insert
-		_appModel->setScene(scene->getName(), scene);
-		if(sceneNum == 0){
-			// set first scene to current scene
-			_appModel->setCurrentScene(scene->getName());
-		}
-		
-	} // end scene for loop
-	
-	_xml.popTag(); // pop out of scenes
-	
-	
-}
 
 int SceneXMLParser::findFileIDForLister(string filename){
 	if(_filenameToDirListerIDMap.find(filename) == _filenameToDirListerIDMap.end()){
@@ -664,6 +625,11 @@ int SceneXMLParser::findFileIDForLister(string filename){
 	return _filenameToDirListerIDMap.find(filename)->second;
 }
 		   
+
+string SceneXMLParser::findFullFilePathForFilename(string filename){
+	int fileID = findFileIDForLister(filename);
+	return _dirLister.getPath(fileID);
+}
 
 // Set up file lister
 // resets state so it can be called whenever you want to start fresh

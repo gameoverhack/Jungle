@@ -1,8 +1,8 @@
 <config>
     <properties>
         <property name="height" type="float">720.000000</property>
-        <!--property name="scenesDataPath" type="string">scenes</property-->
-		<property name="scenesDataPath" type="string">/Users/gameover/Desktop/StrangerDanger/video</property>
+        <property name="scenesDataPath" type="string">scenes</property>
+		<!--property name="scenesDataPath" type="string">/Users/gameover/Desktop/StrangerDanger/video</property-->
         <property name="scenesXMLFile" type="string">config_scenes.xml</property>
         <property name="shaderBlendRatio" type="float">0.500000</property>
         <property name="shaderFragPath" type="string">multitexturemerge</property>
