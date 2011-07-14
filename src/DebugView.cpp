@@ -28,10 +28,10 @@ void DebugView::update(){
 	int currentFrame	= currentMovie->getCurrentFrame();
 	int totalFrames		= currentMovie->getTotalNumFrames();
 	
-	msg += "vic1 Transform: " + currentSequence->getTransformAsString(0, currentFrame) + "\n";
-	msg += "atk1 Transform: " + currentSequence->getTransformAsString(1, currentFrame) + "\n";
+	msg += "vic1 Transform: " + currentSequence->getTransformAsString("vic1", currentFrame) + "\n";
+	msg += "atk1 Transform: " + currentSequence->getTransformAsString("atk1", currentFrame) + "\n";
 	if (currentSequence->getTransformCount() > 2) {
-		msg += "atk2 Transform: " + currentSequence->getTransformAsString(2, currentFrame) + "\n";
+		msg += "atk2 Transform: " + currentSequence->getTransformAsString("atk2", currentFrame) + "\n";
 	}
 	
 	// get all the properties on the AppModel

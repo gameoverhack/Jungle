@@ -12,10 +12,14 @@
 
 SceneXMLParser::SceneXMLParser(string dataPath, string xmlFile) : IXMLParser(xmlFile){
 	_dataPath = dataPath;
+	int timeA, timeB;
 	
 	setupDirLister(); // set up file lists;
 	populateDirListerIDMap();
+	timeA = ofGetElapsedTimeMillis();
 	load(); // load xml
+	timeA = ofGetElapsedTimeMillis() - timeA;
+	printf("TIMER Load: %dms\n", timeA);
 	
 	// make map (map<string, map<string, string> _parsedData) from xml
 	parseXML(); 
@@ -24,6 +28,7 @@ SceneXMLParser::SceneXMLParser(string dataPath, string xmlFile) : IXMLParser(xml
 	// throws JungleException if some files can't be fixed that should cause a crash since we can't go on at all.
 	// OPTIONALLY:	We could look at "validFile" key when we create the model and not add that sequence,
 	//				that way we still run, but 
+	timeA = ofGetElapsedTimeMillis();
 	try{
 		validateMovieFileExistence();
 	}
@@ -35,7 +40,10 @@ SceneXMLParser::SceneXMLParser(string dataPath, string xmlFile) : IXMLParser(xml
 		// we'll just get the log error message 'no sequence seqXXa'
 		throw je; // for now we'll just consider it a hard fail and throw up.
 	}
+	timeA = ofGetElapsedTimeMillis() - timeA;
+	printf("TIMER validateMovieFileExistence: %dms\n", timeA);
 	
+	timeA = ofGetElapsedTimeMillis();
 	// Validate size,dateCreated,dateModified with values from xml vs hdd
 	try{
 		validateFileMetadata();
@@ -52,8 +60,10 @@ SceneXMLParser::SceneXMLParser(string dataPath, string xmlFile) : IXMLParser(xml
 		LOG_ERROR(message);
 		throw MetadataMismatchException(message);
 	}
-	
-	
+	timeA = ofGetElapsedTimeMillis() - timeA;
+	printf("TIMER metadata: %dms\n", timeA);
+
+	timeA = ofGetElapsedTimeMillis();
 	// Validate that transform and movie lengths are the same
 	try{
 		validateMovieTransformLengths();
@@ -70,6 +80,9 @@ SceneXMLParser::SceneXMLParser(string dataPath, string xmlFile) : IXMLParser(xml
 		LOG_ERROR("Require reanalysis/creation of transform files: " + message);
 		//throw vec;
 	}
+	timeA = ofGetElapsedTimeMillis() - timeA;
+	printf("TIMER lengths: %dms\n", timeA);
+
 	
 
 //	UNCOMMENT THIS TO SEE THE MAP STRUCTURE.
@@ -85,9 +98,12 @@ SceneXMLParser::SceneXMLParser(string dataPath, string xmlFile) : IXMLParser(xml
 //		}
 //		iter++;
 //	}
-	
+	timeA = ofGetElapsedTimeMillis();
 	// Checked file existence, checked metadata, checked transforms, OK to map => app model
 	createAppModel();
+	timeA = ofGetElapsedTimeMillis() - timeA;
+	printf("TIMER CREATE: %dms\n", timeA);
+
 	LOG_VERBOSE("SceneXMLParser finished");
 }
 
@@ -186,8 +202,7 @@ void SceneXMLParser::createAppModel(){
 			vector<string> keyParts;
 			boost::split(keyParts, parsedDataIter->first, boost::is_any_of(":"));
 			LOG_WARNING("Transforms are added in order that they come, not as named key/values");
-//			sequence->addTransform(keyParts[2], transform);
-			sequence->addTransform(transform);
+			sequence->setTransform(keyParts[2], transform);
 		}
 	}
 }
@@ -552,7 +567,7 @@ void SceneXMLParser::validateMovieTransformLengths(){
 			}
 		}
 			
-		// handle each type (sequence, transfom orscene)
+		// handle each type (sequence, transfom or scene)
 		if(kvmap["type"] == "sequence"){
 			try {
 				fileID = findFileIDForLister(kvmap["filename"]);
@@ -562,7 +577,9 @@ void SceneXMLParser::validateMovieTransformLengths(){
 					delete movie;
 				}
 				movie = new goVideoPlayer();
+				movie->setUseTexture(false);
 				movie->loadMovie(fullFilePath);
+				
 			}
 			catch (JungleException je) {
 				// No file existed, we expect that when we run this function
