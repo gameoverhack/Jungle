@@ -183,8 +183,8 @@ void SceneXMLParser::createAppModel(){
 			LOG_WARNING("TODO: Also might as well change setSequenceMovie to just setMovie (if its still used) since the name is a hold over from having _sequenceMovie and _loopMovie");			
 			movie = new goVideoPlayer();
 			movie->loadMovie(fullFilePath);
-			sequence->setSequenceMovie(movie);
-			sequence->prepareSequenceMovie();
+			sequence->setMovie(movie);
+			sequence->prepareMovie();
 
 			// completed sequence, insert to scene
 			scene->setSequence(sequence->getName(), sequence);

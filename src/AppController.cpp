@@ -58,7 +58,7 @@ void AppController::update() {
 	currentSequence = currentScene->getCurrentSequence();
 
 	// else continue playing this video
-	movie = currentSequence->getSequenceMovie();
+	movie = currentSequence->getMovie();
 	
 	// update the movie
 	movie->update();
@@ -110,7 +110,7 @@ void AppController::update() {
 			}
 		}
 		// have to call this incase it changed
-		movie = currentSequence->getSequenceMovie();
+		movie = currentSequence->getMovie();
 	}
 	
 	_appView->update();

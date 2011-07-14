@@ -70,7 +70,7 @@ Sequence * AppModel::getCurrentSequence() {
 
 goVideoPlayer * AppModel::getSequenceMovie() {
 	goVideoPlayer * vid;
-	vid = getCurrentSequence()->getSequenceMovie();
+	vid = getCurrentSequence()->getMovie();
 	return vid;
 }
 

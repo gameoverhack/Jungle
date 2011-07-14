@@ -142,14 +142,14 @@ public:
 		return tranString;
 	}
 	
-	void setSequenceMovie(goVideoPlayer *video){
+	void setMovie(goVideoPlayer *video){
 		if(_movie != NULL){
 			delete _movie;
 		}
 		_movie = video;
 	}
 	
-	goVideoPlayer * getSequenceMovie(){
+	goVideoPlayer * getMovie(){
 		return _movie;
 	}
 	
@@ -165,7 +165,7 @@ public:
 		_movie->setPaused(b);
 	}
 	
-	void prepareSequenceMovie() {
+	void prepareMovie() {
 		_movie->play();
 		// must be set after play ?
 		if(_interactivity == "both") {
@@ -177,7 +177,7 @@ public:
 		setPaused(true);
 	}
 	
-	void resetSequenceMovie() {
+	void resetMovie() {
 		if(_movie != NULL) {
 			//_movie->stop();
 			_movie->setPaused(true);
@@ -250,7 +250,7 @@ public:
 		if(iter != _sequences.end()){
 			if(_currentSequence != NULL){
 				// reset video state for current sequence
-				_currentSequence->resetSequenceMovie();
+				_currentSequence->resetMovie();
 			}
 
 			// set new current sequence
