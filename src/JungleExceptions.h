@@ -22,4 +22,13 @@ public:
 	string _message;
 };
 
+class MetadataMismatchException : public JungleException{
+
+public:
+	
+	MetadataMismatchException(string message) : JungleException(message){
+		// nothing
+	}
+};
+
 #endif

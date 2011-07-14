@@ -17,27 +17,33 @@ DataController::DataController(string configFilePath)
 	// fire and forget
 	PropertyXMLParser propertyXMLParser(_configFilePath);
 //	PropertyXMLBuilder propertyXMLBuilder(_configFilePath);
-	//SceneXMLBuilder sceneXMLBuilder(boost::any_cast<string>(_appModel->getProperty("scenesDataPath")),
-	//								boost::any_cast<string>(_appModel->getProperty("scenesXMLFile")));
 
-	SceneXMLBuilder sceneXMLBuilder(boost::any_cast<string>(_appModel->getProperty("scenesDataPath")),
-								 boost::any_cast<string>(_appModel->getProperty("scenesXMLFile")));
-	try {
-		// also fire and forget
-		SceneXMLParser sceneXMLParser(boost::any_cast<string>(_appModel->getProperty("scenesDataPath")),
-								   boost::any_cast<string>(_appModel->getProperty("scenesXMLFile")));	
-	}
-	catch (JungleException je) {
-		LOG_WARNING("Caught exception: " + je._message);
-		LOG_NOTICE("Uncomment below to force rebuild of scene xml on parse failure");
-		abort();
-//		SceneXMLBuilder sceneXMLBuilder(boost::any_cast<string>(_appModel->getProperty("scenesDataPath")),
-//									 boost::any_cast<string>(_appModel->getProperty("scenesXMLFile")));
-//		SceneXMLParser sceneXMLParser(boost::any_cast<string>(_appModel->getProperty("scenesDataPath")),
-//									  boost::any_cast<string>(_appModel->getProperty("scenesXMLFile")));			
+	bool attemptParse = true;
+	
+	while(attemptParse){
+		try {
+			// also fire and forget
+			SceneXMLParser sceneXMLParser(boost::any_cast<string>(_appModel->getProperty("scenesDataPath")),
+										  boost::any_cast<string>(_appModel->getProperty("scenesXMLFile")));	
+		}
+		catch(MetadataMismatchException ex){
+			LOG_NOTICE("Caught exception: " + ex._message);
+			SceneXMLBuilder sceneXMLBuilder(boost::any_cast<string>(_appModel->getProperty("scenesDataPath")),
+											boost::any_cast<string>(_appModel->getProperty("scenesXMLFile")));			
+		}
+		catch (JungleException je) {
+			LOG_WARNING("Caught exception: " + je._message);
+			LOG_NOTICE("Uncomment below to force rebuild of scene xml on parse failure");
+			abort();
+			//		SceneXMLBuilder sceneXMLBuilder(boost::any_cast<string>(_appModel->getProperty("scenesDataPath")),
+			//									 boost::any_cast<string>(_appModel->getProperty("scenesXMLFile")));
+			//		SceneXMLParser sceneXMLParser(boost::any_cast<string>(_appModel->getProperty("scenesDataPath")),
+			//									  boost::any_cast<string>(_appModel->getProperty("scenesXMLFile")));			
+		}		
 	}
 	
 	LOG_NOTICE("Initialisation complete");
+	abort();
 }
 
 DataController::~DataController(){

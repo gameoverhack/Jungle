@@ -9,6 +9,15 @@
 #ifndef _H_SCENEXMLPARSER
 #define _H_SCENEXMLPARSER
 
+#include <set>
+#include <map>
+#include <vector>
+using std::vector;
+using std::map;
+using std::set;
+
+#include <boost/algorithm/string.hpp> // string splitting
+
 #include "IXMLParser.h"
 #include "AppModel.h"
 #include "AppDataTypes.h"
@@ -20,18 +29,24 @@ class SceneXMLParser : public IXMLParser {
 public:
 	SceneXMLParser(string dataPath, string xmlFile);
 	void parseXML();
+	void validateMovieTransformLengths();
+	void validateFileMetadata();
+	void parseXML1();
 	
 private:
 	string _dataPath;
 
-	goDirList _lister;
+	goDirList _dirLister;
 	int _numFiles;
-	map<string, int> _filenameToListerIDMap; // maps filenames to _lister.getX(ID)
+	map<string, int> _filenameToDirListerIDMap; // maps filenames to _dirLister.getX(ID)
 
-	void setupLister();
-	void populateListerIDMap();
-	bool compareFileinfo(string filename, map<string, string> fileInfo);
+	map<string, map<string, string> > _parsedData; // scene/sequence or scene/sequence/transformname, map of values for end type (seq or trans
 	
+	void setupDirLister();
+	void populateDirListerIDMap();
+	bool compareFileinfo(string filename, map<string, string> fileInfo);
+	void checkTagAttributesExist(string xmltag, vector<string> attributes, int which);	
+	int findFileIDForLister(string filename);
 };
 
 #endif

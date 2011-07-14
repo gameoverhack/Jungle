@@ -74,6 +74,7 @@ void SceneXMLBuilder::santiseFiles(){
 // inserting that information as key/value pairs (strings) into a map,
 // then inserting that map into the _info member variable (keyed by filename
 // Building the xml graph should be done entirely by just using the _info map
+// THIS DOES NOT LOAD ANY EXTERNAL STRUCUTURES. Everything is just strings.
 void SceneXMLBuilder::scanFiles(){
 	// filename stuff
 	string fullname;
