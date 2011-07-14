@@ -58,9 +58,7 @@ public:
 	
 	Sequence(){
 		_movie = NULL;
-		_isInteractive = false;
 		_isMovieFaked = false;
-		_movieFullFilePath = "";
 	};
 	
 	~Sequence(){
@@ -155,12 +153,12 @@ public:
 		return _movie;
 	}
 	
-	void setIsInteractive(bool b){
-		_isInteractive = b;
+	void setInteractivity(string s){
+		_interactivity = s;
 	}
 
-	bool getIsInteractive(){
-		return _isInteractive;
+	string getInteractivity(){
+		return _interactivity;
 	}
 	
 	void setPaused(bool b) {
@@ -170,7 +168,7 @@ public:
 	void prepareSequenceMovie() {
 		_movie->play();
 		// must be set after play ?
-		if(_isInteractive) {
+		if(_interactivity == "both") {
 			// loop on interactive movies
 			_movie->setLoopState(OF_LOOP_NORMAL);
 		} else {
@@ -196,7 +194,7 @@ private:
 	string					_nextSequenceName;
 	string					_attackerResult;
 	string					_victimResult;
-	bool					_isInteractive;
+	string					_interactivity;
 	bool					_isMovieFaked;
 	string					_movieFullFilePath;
 

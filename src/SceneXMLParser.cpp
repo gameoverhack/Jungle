@@ -167,8 +167,7 @@ void SceneXMLParser::createAppModel(){
 			
 			// set interactivity
 			LOG_WARNING("TODO: INTERACTIVITY that isn't 'both' is ignored! Need to update Sequence class so its not just a bool value");
-//			sequence->setInteractivity(kvmap["interactivity"]); // TODO
-			sequence->setIsInteractive(false); 
+			sequence->setInteractivity(kvmap["interactivity"]);
 			
 			// set whether we faked movie data
 			if(kvmap["validFile"] == "fake"){

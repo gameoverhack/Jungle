@@ -64,7 +64,7 @@ void AppController::update() {
 	movie->update();
 	
 	// check if sequence was interactive
-	if(currentSequence->getIsInteractive()){
+	if(currentSequence->getInteractivity() == "both"){
 		// Check for interactive event
 		// this->hasInteractiveEventFlag()
 		// we have had an interactive event
@@ -79,8 +79,15 @@ void AppController::update() {
 			_appModel->setProperty("userAction", kNoUserAction);
 			currentScene->setCurrentSequence(currentSequence->getVictimResult());
 		}
-
-
+	} else if(currentSequence->getInteractivity() == "victim"){
+		int userAction = boost::any_cast<int>(_appModel->getProperty("userAction"));
+		if(userAction == kVictimAction){
+			LOG_VERBOSE("Interactive action: Victim");
+			_appModel->setProperty("userAction", kNoUserAction);
+			// TODO Have to check how this works, but for now we'll try to get the next loop, then the victim result of that
+			Sequence *loopseq = currentScene->getSequence(currentSequence->getNextSequenceName());
+			currentScene->setCurrentSequence(loopseq->getVictimResult());
+		}
 	} else {
 		// Not interactive movie
 
@@ -95,6 +102,7 @@ void AppController::update() {
 // TODO:	This needs a method, can just use the key order since our keys are alpha ordered, 
 //			i feel odd about doing that though. I guess it is guarenteed though.
 //				currentScene->setCurrentSequence(0); 
+				LOG_WARNING("Scene ended, but no method to rewind scene to first sequence. Loading next scene anyway");
 				// load next scene
 				_appModel->nextScene();
 				currentScene = _appModel->getCurrentScene();
