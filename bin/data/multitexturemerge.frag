@@ -1,12 +1,13 @@
 // sampler2DRect because we're using NPOT texture sizes
 /*
-	Order for textures is assumed to be
-	scene background
-	victim1
-	attacker1
-	attacker2
-*/
+ Order for textures is assumed to be
+ scene background
+ victim1
+ attacker1
+ attacker2
+ */
 uniform sampler2DRect textures[4];
+uniform int	showUnmaskedTextures;
 uniform int numTextures;
 uniform float gammaCorrection;
 uniform float blendRatio;
@@ -24,7 +25,7 @@ void main(){
 	float atk2Alphavalue	= 178.0/255.0;
 	float vic1AlphaValue	= 226.0/255.0;
 	float alphaDelta		= 0.1;
-
+	
 	
 	// Get texels from textures
 	sceneTexel	= texture2DRect(textures[0], gl_TexCoord[0].xy);
@@ -36,21 +37,23 @@ void main(){
 	} else atk2Texel.rgba = vec4(0.0, 0.0, 0.0, 0.0); // fake null value
 	
 	// Uncomment this to see actor textures unmasked
-//	if(vic1Texel.a > 0.0){
-//		sceneTexel.rgb = vic1Texel.rgb;
-//	}
-//
-//	if(atk1Texel.a > 0.0){
-//		sceneTexel.rgb = atk1Texel.rgb;
-//	}
-//
-//	if(atk2Texel.a > 0.0){
-//		sceneTexel.rgb = atk2Texel.rgb;
-//	}
+	if (showUnmaskedTextures == 1) {
+		if(vic1Texel.a > 0.0){
+			sceneTexel.rgb = vic1Texel.rgb;
+		}
+		
+		if(atk1Texel.a > 0.0){
+			sceneTexel.rgb = atk1Texel.rgb;
+		}
+		
+		if(atk2Texel.a > 0.0){
+			sceneTexel.rgb = atk2Texel.rgb;
+		}
+	}
 	
 	// set frame alpha depending on the scenes alpha
 	if(sceneTexel.a < (240.0/255.0)){ // dodge the noise
-	
+		
 		if (sceneTexel.a < vic1AlphaValue + alphaDelta &&
 			sceneTexel.a > vic1AlphaValue - alphaDelta &&
 			vic1Texel.a != 0.0) {
@@ -71,11 +74,11 @@ void main(){
 			
 			sceneTexel.rgb = blend(sceneTexel, atk1Texel).rgb;
 		}
-
+		
 	}
-
+	
 	// set alpha to be full after we've gotten the data out
 	sceneTexel.a = 1.0; 
-
+	
 	gl_FragColor = sceneTexel;
 }

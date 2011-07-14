@@ -31,6 +31,8 @@ private:
 	{
 		ar & x;
 		ar & y;
+		ar & w;
+		ar & h;
 		ar & scaleX;
 		ar & scaleY;
 		ar & rotation;
@@ -38,12 +40,14 @@ private:
 public:
 	float x;
 	float y;
+	float w;
+	float h;
 	float scaleX;
 	float scaleY;
 	float rotation;
 	CamTransform(){};
-	CamTransform(float _x, float _y, float _scaleX, float _scaleY, float _rotation) :
-	x(_x), y(_y), scaleX(_scaleX), scaleY(_scaleY), rotation(_rotation)
+	CamTransform(float _x, float _y, float _w, float _h, float _scaleX, float _scaleY, float _rotation) :
+	x(_x), y(_y), w(_w), h(_h), scaleX(_scaleX), scaleY(_scaleY), rotation(_rotation)
 	{}
 };
 
@@ -90,16 +94,34 @@ public:
 		return _victimResult;
 	}
 	
-	void addTransform(vector<CamTransform> & trans){
+	void addTransform(vector<CamTransform> * trans){
 		_transforms.push_back(trans);
 	}	
 	
-	vector<CamTransform> getTransformVector(int i){
+	int	getTransformCount() {
+		return _transforms.size();
+	}
+	
+	vector<CamTransform> * getTransformVector(int i){
 		if(i > _transforms.size() || i < 0){
 			LOG_ERROR("Attempted to get transform for " + ofToString(i));
 			abort();
 		}
 		return _transforms.at(i);
+	}
+	
+	string getTransformAsString(int i, int f) {
+		vector<CamTransform> * t = getTransformVector(i);
+		string tranString = "f: " + ofToString(f) + 
+							" x: " + ofToString(t->at(f).x) + 
+							" y: " + ofToString(t->at(f).y) + 
+							" w: " + ofToString(t->at(f).w) + 
+							" h: " + ofToString(t->at(f).h) +
+							" r: " + ofToString(t->at(f).rotation) + 
+							" sX: " + ofToString(t->at(f).scaleX) + 
+							" sY: " + ofToString(t->at(f).scaleY) +
+							" zz: " + ofToString((int)t->size());
+		return tranString;
 	}
 	
 	void setSequenceMovie(goVideoPlayer *video){
@@ -121,22 +143,26 @@ public:
 		return _isInteractive;
 	}
 	
-	void prepareSequenceMovie(){
+	void setPaused(bool b) {
+		_movie->setPaused(b);
+	}
+	
+	void prepareSequenceMovie() {
 		_movie->play();
 		// must be set after play ?
-		if(_isInteractive){
+		if(_isInteractive) {
 			// loop on interactive movies
 			_movie->setLoopState(OF_LOOP_NORMAL);
-		}
-		else{
+		} else {
 			_movie->setLoopState(OF_LOOP_NONE);
 		}
-		
+		setPaused(true);
 	}
 	
 	void resetSequenceMovie() {
 		if(_movie != NULL) {
-			_movie->stop();
+			//_movie->stop();
+			_movie->setPaused(true);
 			_movie->setPosition(0.0);
 		} else {
 			LOG_ERROR("Could not reset sequence movie, movie == NULL");
@@ -155,14 +181,8 @@ private:
 public:
 
 	goVideoPlayer		* _movie;
-	
-	/*
-		wanted to use pointers to avoid copying a vector each push_back
-		but apparently you cant store pointers to templated vectors
-		in a vector
-	*/
 	 
-	vector< vector<CamTransform> > _transforms; 
+	vector< vector<CamTransform>* > _transforms; 
 };
 
 
@@ -216,7 +236,7 @@ public:
 			// set new current sequence
 			_currentSequence = iter->second;
 			// play new current sequence movie
-			_currentSequence->prepareSequenceMovie();
+			_currentSequence->setPaused(false);
 			
 			LOG_NOTICE("Set current sequence to " + seq);
 			return true;

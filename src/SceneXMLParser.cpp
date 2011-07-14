@@ -155,7 +155,7 @@ void SceneXMLParser::parseXML(){
 					throw JungleException("File details for " + calculatedFilename +" does not match xml store");
 				}
 				
-				sequence->addTransform(*transform);				
+				sequence->addTransform(transform);				
 			}
 			_xml.popTag(); // pop out of sequence
 			
@@ -169,8 +169,9 @@ void SceneXMLParser::parseXML(){
 				abort(); // lets just assume no video for one means whole thing is broken
 			};
 			// TODO: video->play(); vidoe->setPause(true);
-			sequence->setSequenceMovie(video);
 			
+			sequence->setSequenceMovie(video);
+			sequence->prepareSequenceMovie();
 			// made the sequence, insert it into scene
 			scene->setSequence(sequence->getName(), sequence);
 			if(seqNum == 0){

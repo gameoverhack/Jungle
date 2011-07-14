@@ -12,22 +12,44 @@
 
 //--------------------------------------------------------------
 void AppController::setup() {
+	
 	LOGGER->setLogLevel(JU_LOG_VERBOSE);
+	
 	LOG_NOTICE("Initialising");
+
 	DataController dataController(ofToDataPath("config_properties.xml"));
 
-	cout << _appModel->getAllPropsAsList() << endl;
+	// setup cameras
+	_camControllers[0] = new CamController();
+	_camControllers[1] = new CamController();
+	_camControllers[0]->setup("Built-in iSight", 640, 480);
+	_camControllers[1]->setup("ManyCam Virtual Webcam (RGB)", 640, 480);	// NB: had to use QTKit to get ManyCam working
 	
+	// register pointers to textures from cams on the model
+	_appModel->setCameraTextures(_camControllers[0]->getCamTextureRef(), _camControllers[1]->getCamTextureRef());
+	
+	_appModel->setProperty("showUnmaskedTextures", 0);
 	_appModel->setProperty("userAction", kNoUserAction);
 	
 	_appView = new AppView(1280, 720);
+	
 	LOG_NOTICE("Initialisation complete");
 	
+}
+
+void AppController::swapCameras() {
+	// use pointer swap and re-register texture references on the model
+	swap(_camControllers[0], _camControllers[1]);
+	_appModel->setCameraTextures(_camControllers[0]->getCamTextureRef(), _camControllers[1]->getCamTextureRef());
 }
 
 //--------------------------------------------------------------
 void AppController::update() {
 //	LOG_VERBOSE("Updating");
+	
+	_camControllers[0]->update();
+	_camControllers[1]->update();
+	
 	Scene * currentScene;
 	Sequence * currentSequence;
 	goVideoPlayer * movie;
@@ -37,6 +59,12 @@ void AppController::update() {
 	// get current sequence
 	currentSequence = currentScene->getCurrentSequence();
 
+	// else continue playing this video
+	movie = currentSequence->getSequenceMovie();
+	
+	// update the movie
+	movie->update();
+	
 	// check if sequence was interactive
 	if(currentSequence->getIsInteractive()){
 		// Check for interactive event
@@ -54,13 +82,10 @@ void AppController::update() {
 			currentScene->setCurrentSequence(currentSequence->getVictimResult());
 		}
 
-		// else continue playing this video
-		movie = currentSequence->getSequenceMovie();
-	}
-	else{
+
+	} else {
 		// Not interactive movie
-		// check if we're at the ened of the movie
-		movie = currentSequence->getSequenceMovie();
+
 		if(movie->getIsMovieDone()){
 			// at end of non interactive movie, change to next sequence
 			if(currentScene->nextSequence()){
@@ -72,7 +97,6 @@ void AppController::update() {
 // TODO:	This needs a method, can just use the key order since our keys are alpha ordered, 
 //			i feel odd about doing that though. I guess it is guarenteed though.
 //				currentScene->setCurrentSequence(0); 
-				
 				// load next scene
 				_appModel->nextScene();
 				currentScene = _appModel->getCurrentScene();
@@ -83,9 +107,6 @@ void AppController::update() {
 		movie = currentSequence->getSequenceMovie();
 	}
 	
-	// update the movie
-	movie->update();
-
 	_appView->update();
 }
 
@@ -95,6 +116,7 @@ void AppController::draw() {
 	ofSetColor(255, 255, 255, 255);
 	_appView->draw();
 	
+	
 }
 
 //--------------------------------------------------------------
@@ -102,6 +124,7 @@ void AppController::keyPressed(int key){
 	
 	float gamma = boost::any_cast<float>(_appModel->getProperty("shaderGammaCorrection"));
 	float blend = boost::any_cast<float>(_appModel->getProperty("shaderBlendRatio"));
+	int showUnmask = boost::any_cast<int>(_appModel->getProperty("showUnmaskedTextures"));
 	
 	switch (key) {
 		case 'x':
@@ -125,9 +148,28 @@ void AppController::keyPressed(int key){
 		case 'p':
 			_appModel->setProperty("userAction", kAttackerAction);
 			break;
+		case 'm':
+			swapCameras();
+			break;
+		case ' ':
+			_appModel->getSequenceMovie()->togglePaused();
+			break;
+		case '>':
+			_appModel->getSequenceMovie()->setFrame(_appModel->getSequenceMovie()->getTotalNumFrames()-24);
+			break;
+		case 356: // left arrow
+			_appModel->getSequenceMovie()->previousFrame();
+			break;
+		case 358: // right arrow
+			_appModel->getSequenceMovie()->nextFrame();
+			break;
+		case 'h':
+			_appModel->setProperty("showUnmaskedTextures", (showUnmask == 1 ? 0 : 1));
+			break;
 		default:
 			break;
 	}
+
 	_appModel->setProperty("shaderBlendRatio", blend);
 	_appModel->setProperty("shaderGammaCorrection", gamma);
 	
