@@ -16,7 +16,24 @@ SceneXMLParser::SceneXMLParser(string dataPath, string xmlFile) : IXMLParser(xml
 	setupDirLister(); // set up file lists;
 	populateDirListerIDMap();
 	load(); // load xml
-	parseXML(); // make model from xml (and validate against size/date
+	parseXML(); // make map from xml
+	
+	// Check that the map contains valid files (replace with temp fakes if it doesnt)
+	// throws JungleException if some files can't be fixed that should cause a crash since we can't go on at all.
+	// OPTIONALLY:	We could look at "validFile" key when we create the model and not add that sequence,
+	//				that way we still run, but 
+	try{
+		validateMovieFileExistence();
+	}
+	catch (JungleException je) {
+		// Some files could not be fixed, 
+		// we could look at a property "ignoreInvalidSequences" and just not add
+		// those to the appModel. That way we run still, and when we get to changing
+		// to a sequence that has no file (and couldn't be fixed) 
+		// we'll just get the log error message 'no sequence seqXXa'
+		throw je; // for now we'll just consider it a hard fail and throw up.
+	}
+	
 	try{
 		validateFileMetadata();
 	}
@@ -44,6 +61,7 @@ SceneXMLParser::SceneXMLParser(string dataPath, string xmlFile) : IXMLParser(xml
 		LOG_ERROR("Require reanalysis/creation of transform files: " + message);
 		throw vec;
 	}
+	
 }
 
 
@@ -143,6 +161,7 @@ void SceneXMLParser::parseXML(){
 			
 			// save movie file name
 			_parsedData[mapKey]["filename"] = sceneName+"_"+sequenceName+".mov";
+			_parsedData[mapKey]["validFile"] = "unvalidated";
 			
 			// save all the file meta data
 			_parsedData[mapKey]["size"] = _xml.getAttribute("sequence", "size", stringType, seqNum);
@@ -193,20 +212,122 @@ void SceneXMLParser::parseXML(){
 
 	_xml.popTag(); // scenes pop
 	_xml.popTag(); // config pop
+}
+
+// checks that files referenced by sequences exist,
+// if they don't we replace them with a fake and flag the data is faked
+// throws JungleException if some files can't be fixed.
+void SceneXMLParser::validateMovieFileExistence(){
+	int fileID;
+	string fullFilePath;
 	
-	map<string, map<string, string> >::iterator iter;
-	iter = _parsedData.begin();
-	while (iter != _parsedData.end()) {
-		printf("%s =| \n", (iter->first).c_str());
-		map<string, string>::iterator iter2;
-		iter2 = iter->second.begin();
-		while(iter2 != iter->second.end()){
-			printf("\t%s => %s\n", (iter2->first).c_str(), (iter2->second).c_str());
-			iter2++;
+	vector<string> invalids;
+	
+	// Check for any non existing files
+	map<string, map<string, string> >::iterator parsedDataIter;
+	for(parsedDataIter = _parsedData.begin(); parsedDataIter != _parsedData.end(); parsedDataIter++){
+		map<string, string> & kvmap = (parsedDataIter->second); // syntax convenience
+		if(kvmap["type"] == "scene" || kvmap["type"] == "transform"){
+			continue;
 		}
-		iter++;
-			
+		if(kvmap.find("filename") == kvmap.end() ){
+			throw JungleException("Required one of kvmap keys filename missing for " + parsedDataIter->first);
+		}
+		// get the file
+		try{
+			fileID = findFileIDForLister(kvmap["filename"]); // throws exception on file not found
+			kvmap["validFile"] = "valid";
+		}
+		catch (JungleException je) {
+			// caught exception, meaning no file found, 
+			// save to check later. We check later so we can be sure we 
+			// assign the fake movie from a valid sequence and not just
+			// make this one using another invalid file 
+			// (incase this is the first and we haven't checked any othersr)
+			kvmap["validFile"] = "invalid";
+			invalids.push_back(parsedDataIter->first);
+		}
 	}
+	
+	// Now actually fix up invalid files.
+	for (vector<string>::iterator iter = invalids.begin(); iter != invalids.end(); iter++) {
+		// check for keys that are similar to the key we have
+		LOG_WARNING("Fixing non existant movie for " + *iter);
+		
+		// build our regex
+		vector<string> invalidKeySplit;
+		boost::split(invalidKeySplit, *iter, boost::is_any_of(":"));
+		string regexPattern = invalidKeySplit[0]+":seq\\d+"; // our scene, any sequence
+		if(regex_search(invalidKeySplit[1], regex("_loop"))){
+			regexPattern = regexPattern + ".+?_loop$"; // we are a loop, so find another loop, must be at end of key
+		}
+		else{
+			regexPattern = regexPattern + "$"; // must be at end of key
+		}
+		regex similarTo = regex(regexPattern);
+		LOG_VERBOSE("Searching for key similar to " + regexPattern);
+		
+		// iterate over parsed data, comparing keys
+		for(parsedDataIter = _parsedData.begin(); parsedDataIter != _parsedData.end(); parsedDataIter++){
+			if(regex_search(parsedDataIter->first, similarTo)){
+				// found a similar key, copy values, make sure it is valid
+				string bad = *iter;
+				string good = parsedDataIter->first;
+				
+				if(_parsedData[good]["validFile"] != "valid"){
+					continue; // similar key, but this keys files are invalid anyway, keep looking.
+				}
+				LOG_WARNING("Copying values: " + good + " => " + bad);
+				
+				// copy movie stuff
+				_parsedData[bad]["filename"] = _parsedData[good]["filename"];
+				_parsedData[bad]["size"] = _parsedData[good]["size"];
+				_parsedData[bad]["dateModified"] = _parsedData[good]["dateModified"];
+				_parsedData[bad]["dateCreated"] = _parsedData[good]["dateCreated"];
+				
+				// copy transform stuff
+				// remove the ones for bad
+				_parsedData.erase(bad+":vic1");
+				_parsedData.erase(bad+":atk1");
+				_parsedData.erase(bad+":atk2");
+				// recreate with good
+				if(_parsedData.find(good+":vic1") != _parsedData.end()){
+					_parsedData[bad+":vic1"] = _parsedData[good+":vic1"];
+				}
+				if(_parsedData.find(good+":atk1") != _parsedData.end()){
+					_parsedData[bad+":atk1"] = _parsedData[good+":atk1"];
+				}
+				if(_parsedData.find(good+":atk2") != _parsedData.end()){
+					_parsedData[bad+":atk2"] = _parsedData[good+":atk2"];
+				}
+				
+				// flag the data as faked
+				_parsedData[bad]["validFile"] = "fake";
+				// would remove "bad" from list of invalids now but shouldn't modify while iterating.
+				break; // stop looking
+			}
+		}
+	}
+	
+	// once again, iterate over the invalids, check for any that are still "invalid"
+	// and add them to a new vector which we'll throw as an exception
+	vector<string> couldNotFix;
+	for (vector<string>::iterator iter = invalids.begin(); iter != invalids.end(); iter++) {
+		if(_parsedData[*iter]["validFile"] == "invalid"){
+			couldNotFix.push_back(*iter);
+		}
+	}
+	if(couldNotFix.size() != 0){
+		string message = "";
+		for(vector<string>::iterator iter = couldNotFix.begin(); iter != couldNotFix.end(); iter++){
+			message = message + *iter + ", ";
+		}
+		message[message.length()-1] = ' ';
+		message = "No movies for these keys " + message + ", attempted fix but failed. " 
+				+ "Either there was no other sequences for scene or all other sequences were invalid too.";
+		throw JungleException(message);
+	}
+	
 }
 
 // Checks that dateCreated, dateModified and size are the same on disk and in xml
@@ -216,17 +337,18 @@ void SceneXMLParser::validateFileMetadata(){
 	int fileID;
 	set<string> invalidFiles; // use set first, don't want duplicates
 	vector<string> invalidFilesVector; // convert to vector on return.
-	map<string, map<string, string> >::iterator parseDataIter;
-	for(parseDataIter = _parsedData.begin(); parseDataIter != _parsedData.end(); parseDataIter++){
-		map<string, string> & kvmap = (parseDataIter->second); // syntax convenience
+	map<string, map<string, string> >::iterator parsedDataIter;
+	for(parsedDataIter = _parsedData.begin(); parsedDataIter != _parsedData.end(); parsedDataIter++){
+		map<string, string> & kvmap = (parsedDataIter->second); // syntax convenience
 		if(kvmap["type"] == "scene"){
 			continue;
 		}
 		// check that the map has the right keys
 		if(kvmap.find("size") == kvmap.end() ||
 		   kvmap.find("dateModified") == kvmap.end() ||
-		   kvmap.find("dateCreated") == kvmap.end()){
-			throw JungleException("Required one of kvmap keys filename, size, dateModified or dateCreated missing for " + parseDataIter->first);
+		   kvmap.find("dateCreated") == kvmap.end() ||
+		   kvmap.find("filename") == kvmap.end() ){
+			throw JungleException("Required one of kvmap keys filename, size, dateModified or dateCreated missing for " + parsedDataIter->first);
 		}
 		
 		fileID = findFileIDForLister(kvmap["filename"]);
@@ -272,16 +394,16 @@ void SceneXMLParser::validateMovieTransformLengths(){
 	vector<string> transformFilesRequired;
 	
 	// iterate over the whole parsed data map
-	map<string, map<string, string> >::iterator parseDataIter;
-	for(parseDataIter = _parsedData.begin(); parseDataIter != _parsedData.end(); parseDataIter++){
-		map<string, string> & kvmap = (parseDataIter->second); // syntax convenience
-		LOG_VERBOSE("Checking files for " + parseDataIter->first);
+	map<string, map<string, string> >::iterator parsedDataIter;
+	for(parsedDataIter = _parsedData.begin(); parsedDataIter != _parsedData.end(); parsedDataIter++){
+		map<string, string> & kvmap = (parsedDataIter->second); // syntax convenience
+		LOG_VERBOSE("Checking files for " + parsedDataIter->first);
 		
 		// make sure filename is exists
 		if(kvmap["type"] == "sequence" || kvmap["type"] == "transform"){			
 			if(kvmap.find("filename") == kvmap.end()){
 				LOG_ERROR("No filename attribute in kvmap for " + kvmap["name"]);
-				throw JungleException("No filename attribute in kvmap for " + parseDataIter->first);
+				throw JungleException("No filename attribute in kvmap for " + parsedDataIter->first);
 			}
 		}
 			
@@ -298,13 +420,10 @@ void SceneXMLParser::validateMovieTransformLengths(){
 				movie->loadMovie(fullFilePath);
 			}
 			catch (JungleException je) {
-				// No file existed for the file, so what?
-				// find best replacement (eg, another sequence/transform?
-				// that means we have to know what ones we traded in
-				// also if that fails on the first one we have to look forward
-				// to ones we've not checked yet.
-				// will just flag that a file is bad here, and deal with it post checks
-				kvmap["filesOK"] = "false";
+				// No file existed, we expect that when we run this function
+				// we've already run validateFileExistence() 
+				// so if no file exists here, then we're screwed and should throw
+				throw je;
 			}
 		}
 		else if(kvmap["type"] == "transform"){
@@ -316,7 +435,7 @@ void SceneXMLParser::validateMovieTransformLengths(){
 			catch(JungleException je){
 				// transform file did not exist.
 				// cant continue with check, so we need to rebuild that.
-				transformFilesRequired.push_back(parseDataIter->first);
+				transformFilesRequired.push_back(parsedDataIter->first);
 				continue; // can't check the rest of this stuff
 			}
 
@@ -324,7 +443,7 @@ void SceneXMLParser::validateMovieTransformLengths(){
 			if(movie == NULL){
 				//throw JungleException("No movie loaded, can not check vector vs frames for " + kvmap["filename"]);
 				LOG_WARNING("No movie loaded (movie file didn't exist?), can not check frame count transform vs movie for "
-							+ parseDataIter->first + ", assuming that video will get replaced later on,"
+							+ parsedDataIter->first + ", assuming that video will get replaced later on,"
 							+ "including valid transform data");
 				continue; // can't check without a movie
 																												
@@ -340,7 +459,7 @@ void SceneXMLParser::validateMovieTransformLengths(){
 				LOG_WARNING("Frame count mismatch for " + kvmap["filename"] 
 							+ "(transform " + ofToString((int)(transform.size())) + " vs movie " 
 							+ ofToString(movie->getTotalNumFrames())+")");
-				transformFilesRequired.push_back(parseDataIter->first);
+				transformFilesRequired.push_back(parsedDataIter->first);
 			}				
 			
 		}
@@ -538,7 +657,7 @@ void SceneXMLParser::parseXML1(){
 int SceneXMLParser::findFileIDForLister(string filename){
 	if(_filenameToDirListerIDMap.find(filename) == _filenameToDirListerIDMap.end()){
 	   LOG_ERROR("No lister id for filename " + filename);
-	   throw JungleException("No lister id for filename" + filename);
+	   throw JungleException("File not found in dirlist: " + filename);
 	}
 	return _filenameToDirListerIDMap.find(filename)->second;
 }

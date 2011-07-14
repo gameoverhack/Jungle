@@ -17,6 +17,11 @@ using std::map;
 using std::set;
 
 #include <boost/algorithm/string.hpp> // string splitting
+#include <boost/regex.hpp> // regex
+using boost::regex;
+using boost::cmatch;
+using boost::regex_search;
+using boost::regex_match;
 
 #include "IXMLParser.h"
 #include "AppModel.h"
@@ -28,9 +33,13 @@ using std::set;
 class SceneXMLParser : public IXMLParser {
 public:
 	SceneXMLParser(string dataPath, string xmlFile);
+	
 	void parseXML();
+
+	void validateMovieFileExistence();
 	void validateMovieTransformLengths();
 	void validateFileMetadata();
+
 	void parseXML1();
 	
 private:
@@ -47,6 +56,7 @@ private:
 	bool compareFileinfo(string filename, map<string, string> fileInfo);
 	void checkTagAttributesExist(string xmltag, vector<string> attributes, int which);	
 	int findFileIDForLister(string filename);
+
 };
 
 #endif
