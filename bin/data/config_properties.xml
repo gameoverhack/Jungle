@@ -9,6 +9,7 @@
         <property name="shaderGammaCorrection" type="float">2.000000</property>
         <property name="shaderVertPath" type="string">vertex</property>
         <property name="showDebugView" type="bool">true</property>
+		<property name="showUnmaskedTextures" type="bool">false</property>		
         <property name="width" type="float">1280.000000</property>
     </properties>
 </config>

@@ -28,7 +28,6 @@ void AppController::setup() {
 	// register pointers to textures from cams on the model
 	_appModel->setCameraTextures(_camControllers[0]->getCamTextureRef(), _camControllers[1]->getCamTextureRef());
 	
-	_appModel->setProperty("showUnmaskedTextures", 0);
 	_appModel->setProperty("userAction", kNoUserAction);
 	
 	_appView = new AppView(1280, 720);
@@ -123,7 +122,7 @@ void AppController::keyPressed(int key){
 	
 	float gamma = boost::any_cast<float>(_appModel->getProperty("shaderGammaCorrection"));
 	float blend = boost::any_cast<float>(_appModel->getProperty("shaderBlendRatio"));
-	int showUnmask = boost::any_cast<int>(_appModel->getProperty("showUnmaskedTextures"));
+	bool showUnmask = boost::any_cast<bool>(_appModel->getProperty("showUnmaskedTextures"));
 	
 	switch (key) {
 		case 'x':
@@ -163,7 +162,7 @@ void AppController::keyPressed(int key){
 			_appModel->getSequenceMovie()->nextFrame();
 			break;
 		case 'h':
-			_appModel->setProperty("showUnmaskedTextures", (showUnmask == 1 ? 0 : 1));
+			_appModel->setProperty("showUnmaskedTextures", (showUnmask ? false : true));
 			break;
 		default:
 			break;
