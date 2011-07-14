@@ -59,6 +59,8 @@ public:
 	Sequence(){
 		_movie = NULL;
 		_isInteractive = false;
+		_isMovieFaked = false;
+		_movieFullFilePath = "";
 	};
 	
 	~Sequence(){
@@ -92,6 +94,22 @@ public:
 	}
 	string getVictimResult(){
 		return _victimResult;
+	}
+	
+	void setMovieFullFilePath(string path){
+		_movieFullFilePath = path;
+	}
+	
+	string getMovieFullFilePath(){
+		return _movieFullFilePath;
+	}
+	
+	void setIsMovieFaked(bool b){
+		_isMovieFaked = b;
+	}
+	
+	bool getIsMovieFaked(){
+		return _isMovieFaked;
 	}
 	
 	void setTransform(string key, vector<CamTransform> * transform){
@@ -179,6 +197,8 @@ private:
 	string					_attackerResult;
 	string					_victimResult;
 	bool					_isInteractive;
+	bool					_isMovieFaked;
+	string					_movieFullFilePath;
 
 public:
 
