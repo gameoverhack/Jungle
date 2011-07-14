@@ -83,6 +83,7 @@ void SceneXMLBuilder::scanFiles(){
 	// iterate all files, discovering what we want to know about them
 	for(int fileNum = 0; fileNum < _numFiles; fileNum++){
 		fullname = _lister.getName(fileNum);
+		LOG_VERBOSE("Scanning file: " + fullname);
 		// strip extension
 		fullname = fullname.substr(0, fullname.find_last_of(".")); // remove ext
 		
@@ -128,19 +129,24 @@ void SceneXMLBuilder::scanFiles(){
 			else{
 				// not a loop movie, just a or b
 				// find out if its a b sequence
-				if(regex_search(fullname, regex(".+seq\\d+b"))){
+				if(regex_search(fullname, regex(".+?seq\\d+b$"))){
 					// is b sequence
 					fileInfo.insert(make_pair("type", "b"));
 					fileInfo.insert(make_pair("nextSequence", "__FINAL_SEQUENCE__")); // nothing comes after a b sequence in the scene
 					fileInfo.insert(make_pair("interactivity", "none"));
 				}
-				else{
+				else if(regex_search(fullname, regex(".+?seq\\d+a$"))){
 					// is a sequence
 					fileInfo.insert(make_pair("type", "a"));
 					// seq01a -> seq01a_loop
 					fileInfo.insert(make_pair("nextSequence", substrings[1]+"_loop"));
 					fileInfo.insert(make_pair("interactivity", "victim"));
 				}
+				else{
+					LOG_ERROR("Found a file, but name does not describe type!: " + fullname);
+					continue; // skip the rest
+				}
+				
 				   
 			}
 		}

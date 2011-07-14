@@ -19,6 +19,9 @@ DataController::DataController(string configFilePath)
 //	PropertyXMLBuilder propertyXMLBuilder(_configFilePath);
 
 	bool attemptParse = true;
+	SceneXMLBuilder sceneXMLBuilder(boost::any_cast<string>(_appModel->getProperty("scenesDataPath")),
+									boost::any_cast<string>(_appModel->getProperty("scenesXMLFile")));			
+
 	
 	while(attemptParse){
 		try {

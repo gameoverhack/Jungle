@@ -205,8 +205,10 @@ void SceneXMLParser::parseXML(){
 				_parsedData[mapKey]["dateModified"] = _xml.getAttribute("transform", "dateModified", stringType, transNum);															
 			}
 			_xml.popTag(); // pop sequence
+			LOG_VERBOSE("Finished xml=>map sequence: " + sequenceName);
 		}
 		_xml.popTag(); // pop scene
+		LOG_VERBOSE("Currently xml=>map scene: " + sceneName);	
 	}
 	
 
