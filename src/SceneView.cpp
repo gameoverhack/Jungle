@@ -67,11 +67,11 @@ void SceneView::update() {
 	if(currentSequenceVideo->isFrameNew()){
 		// draw characters faces to new positions
 		// TODO: This needs to be smarter
-		drawCharacter(&_vic1FBO, _appModel->getVictimCamTexRef(), &(_appModel->getCurrentSequence()->getTransformVector(0)->at(currentFrame)));
-		drawCharacter(&_atk1FBO, _appModel->getAttackCamTexRef(), &(_appModel->getCurrentSequence()->getTransformVector(1)->at(currentFrame)));
+		drawCharacter(&_vic1FBO, _appModel->getVictimCamTexRef(), &(_appModel->getCurrentSequence()->getTransformVector("vic1")->at(currentFrame)));
+		drawCharacter(&_atk1FBO, _appModel->getAttackCamTexRef(), &(_appModel->getCurrentSequence()->getTransformVector("atk1")->at(currentFrame)));
 		
 		if (_appModel->getCurrentSequence()->getTransformCount() > 2) {
-			drawCharacter(&_atk2FBO, _appModel->getAttackCamTexRef(), &(_appModel->getCurrentSequence()->getTransformVector(2)->at(currentFrame)));
+			drawCharacter(&_atk2FBO, _appModel->getAttackCamTexRef(), &(_appModel->getCurrentSequence()->getTransformVector("atk2")->at(currentFrame)));
 		}
 	}
 	

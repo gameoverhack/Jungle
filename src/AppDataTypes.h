@@ -94,32 +94,34 @@ public:
 		return _victimResult;
 	}
 	
-	void addTransform(vector<CamTransform> * trans){
-		_transforms.push_back(trans);
+	void setTransform(string key, vector<CamTransform> * transform){
+		_transforms.insert(make_pair(key, transform));
 	}	
 	
 	int	getTransformCount() {
 		return _transforms.size();
 	}
 	
-	vector<CamTransform> * getTransformVector(int i){
-		if(i > _transforms.size() || i < 0){
-			LOG_ERROR("Attempted to get transform for " + ofToString(i));
+	vector<CamTransform> * getTransformVector(string key){
+		map<string, vector<CamTransform> *>::iterator iter;
+		iter = _transforms.find(key);
+		if(iter == _transforms.end()){
+			LOG_ERROR("Attempted to get transform for " + key);
 			abort();
 		}
-		return _transforms.at(i);
+		return iter->second;
 	}
 	
-	string getTransformAsString(int i, int f) {
-		vector<CamTransform> * t = getTransformVector(i);
-		string tranString = "f: " + ofToString(f) + 
-							" x: " + ofToString(t->at(f).x) + 
-							" y: " + ofToString(t->at(f).y) + 
-							" w: " + ofToString(t->at(f).w) + 
-							" h: " + ofToString(t->at(f).h) +
-							" r: " + ofToString(t->at(f).rotation) + 
-							" sX: " + ofToString(t->at(f).scaleX) + 
-							" sY: " + ofToString(t->at(f).scaleY) +
+	string getTransformAsString(string key, int frame) {
+		vector<CamTransform> * t = getTransformVector(key);
+		string tranString = "f: " + ofToString(frame) + 
+							" x: " + ofToString(t->at(frame).x) + 
+							" y: " + ofToString(t->at(frame).y) + 
+							" w: " + ofToString(t->at(frame).w) + 
+							" h: " + ofToString(t->at(frame).h) +
+							" r: " + ofToString(t->at(frame).rotation) + 
+							" sX: " + ofToString(t->at(frame).scaleX) + 
+							" sY: " + ofToString(t->at(frame).scaleY) +
 							" zz: " + ofToString((int)t->size());
 		return tranString;
 	}
@@ -181,8 +183,8 @@ private:
 public:
 
 	goVideoPlayer		* _movie;
-	 
-	vector< vector<CamTransform>* > _transforms; 
+	
+	map<string, vector<CamTransform> *> _transforms;
 };
 
 
