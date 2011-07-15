@@ -33,6 +33,7 @@ void AppController::setup() {
 	_appView = new AppView(1280, 720);
 	
 	LOG_NOTICE("Initialisation complete");
+	abort();
 }
 
 void AppController::swapCameras() {

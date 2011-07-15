@@ -11,7 +11,13 @@
 #include "JungleExceptions.h"
 
 SceneXMLParser::SceneXMLParser(string dataPath, string xmlFile) : IXMLParser(xmlFile){
+	LOG_VERBOSE("Initialising with datapath: " + dataPath + " and config: " + xmlFile);
 	_dataPath = dataPath;
+	_state = kINIT;
+	LOG_VERBOSE("SceneXMLParser Initialised");
+}
+
+void SceneXMLParser::update(){
 	int timeA, timeB;
 	
 	setupDirLister(); // set up file lists;
@@ -62,7 +68,7 @@ SceneXMLParser::SceneXMLParser(string dataPath, string xmlFile) : IXMLParser(xml
 	}
 	timeA = ofGetElapsedTimeMillis() - timeA;
 	printf("TIMER metadata: %dms\n", timeA);
-
+	
 	timeA = ofGetElapsedTimeMillis();
 	// Validate that transform and movie lengths are the same
 	try{
@@ -82,29 +88,29 @@ SceneXMLParser::SceneXMLParser(string dataPath, string xmlFile) : IXMLParser(xml
 	}
 	timeA = ofGetElapsedTimeMillis() - timeA;
 	printf("TIMER lengths: %dms\n", timeA);
-
 	
-
-//	UNCOMMENT THIS TO SEE THE MAP STRUCTURE.
-	map<string, map<string, string> >::iterator iter;
-	iter = _parsedData.begin();	
-	while (iter != _parsedData.end()) {
-		printf("%s =| \n", (iter->first).c_str());
-		map<string, string>::iterator iter2;
-		iter2 = iter->second.begin();
-		while(iter2 != iter->second.end()){
-			printf("\t%s => %s\n", (iter2->first).c_str(), (iter2->second).c_str());
-			iter2++;
-		}
-		iter++;
-	}
+	
+	
+	//	UNCOMMENT THIS TO SEE THE MAP STRUCTURE.
+	//	map<string, map<string, string> >::iterator iter;
+	//	iter = _parsedData.begin();	
+	//	while (iter != _parsedData.end()) {
+	//		printf("%s =| \n", (iter->first).c_str());
+	//		map<string, string>::iterator iter2;
+	//		iter2 = iter->second.begin();
+	//		while(iter2 != iter->second.end()){
+	//			printf("\t%s => %s\n", (iter2->first).c_str(), (iter2->second).c_str());
+	//			iter2++;
+	//		}
+	//		iter++;
+	//	}
 	timeA = ofGetElapsedTimeMillis();
 	// Checked file existence, checked metadata, checked transforms, OK to map => app model
 	createAppModel();
 	timeA = ofGetElapsedTimeMillis() - timeA;
 	printf("TIMER CREATE: %dms\n", timeA);
-
-	LOG_VERBOSE("SceneXMLParser finished");
+	
+	
 }
 
 

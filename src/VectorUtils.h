@@ -1,11 +1,14 @@
 /*
- *  VectorLoader.h
+ *  VectorUtils.h
  *  Jungle
  *
  *  Created by ollie on 12/07/11.
  *  Copyright 2011 Oliver Marriott. All rights reserved.
  *
  */
+
+#ifndef _H_VECTORUTILS
+#define	_H_VECTORUTILS
 
 template <class vectorType>
 bool loadVector(string filePath, vector< vectorType > * vec) {
@@ -19,3 +22,20 @@ bool loadVector(string filePath, vector< vectorType > * vec) {
     ia >> (*vec);
 	return true;
 }
+
+string concatenateVectorOfStrings(vector<string> strings, string seperator, bool addSpace = true){
+	string str = "";
+
+	for(vector<string>::iterator iter = strings.begin(); iter != strings.end(); iter++){
+		str = *iter + seperator + (addSpace ? " " : "") + str;
+	}
+
+	// remove last char
+	if(str.size () > 0){
+		str.resize (str.size () - 1);
+	}  
+
+	return str;
+}
+
+#endif

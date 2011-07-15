@@ -26,9 +26,11 @@ using boost::regex_match;
 #include "IXMLParser.h"
 #include "AppModel.h"
 #include "AppDataTypes.h"
-#include "VectorLoader.h"
+//#include "VectorUtils.h"
 #include "goDirList.h"
 #include "goVideoPlayer.h"
+
+
 
 class SceneXMLParser : public IXMLParser {
 public:
@@ -41,8 +43,19 @@ public:
 	void validateFileMetadata();
 	void createAppModel();
 	
+	void update();
+	
 private:
 	string _dataPath;
+
+	enum SceneXMLParserState{
+		kINIT,
+		kVALIDATING_MOVIE_FILE_EXISTENCE,
+		kVALIDATING_MOVIE_TRANSFORM_LEGNTHS,
+		kVALIDATING_FILE_METADATA,
+		kCREATING_APPMODEL
+	};	
+	SceneXMLParserState _state;
 
 	goDirList _dirLister;
 	int _numFiles;
@@ -56,6 +69,7 @@ private:
 	void checkTagAttributesExist(string xmltag, vector<string> attributes, int which);	
 	int findFileIDForLister(string filename);
 	string findFullFilePathForFilename(string filename);
+
 };
 
 #endif
