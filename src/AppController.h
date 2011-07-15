@@ -16,6 +16,7 @@
 
 #include "DataController.h"
 #include "CamController.h"
+#include "Constants.h"
 
 class AppController : public ofBaseApp {
 	
@@ -41,13 +42,19 @@ public:
 	
 private:
 	
-	AppView		*_appView;
+	// state
+	AppControllerState	_state;
+	string				_stateMessage;
+	
+	// data controller stuff
+	DataController	*_dataController;
+	
+	// View stuff
+	AppView			*_appView;
 	
 	CamController	*_camControllers[2];
 	
-	bool		isFullScreen;
-	
-	//void loadVector(string filePath, vector< CamTransform > & vec);
+	bool			isFullScreen;
 	
 protected:
 	

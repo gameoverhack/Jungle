@@ -32,6 +32,8 @@ using std::string;
 #include "PropertyXMLParser.h"
 #include "PropertyXMLBuilder.h"
 
+
+
 class DataController {
 
 public:
@@ -39,9 +41,19 @@ public:
 	DataController(string configFilePath);
 	~DataController();
 	
+	void update();
+	
+	DataControllerState getState();
+	string getStateMessage();
 	
 private:
-	string _configFilePath;
+	
+	string					_stateMessage;
+	DataControllerState		_state;
+	
+	string					_configFilePath;
+	
+	SceneXMLParser			*_sceneParser;
 	
 };
 

@@ -23,19 +23,22 @@ bool loadVector(string filePath, vector< vectorType > * vec) {
 	return true;
 }
 
-string concatenateVectorOfStrings(vector<string> strings, string seperator, bool addSpace = true){
-	string str = "";
+// This causes duplicate symbols error. I have nooooo idea why. Cleaning everything (even manually doesnt fix it.
+// This file is only included by SceneXMLParser (once)....
 
-	for(vector<string>::iterator iter = strings.begin(); iter != strings.end(); iter++){
-		str = *iter + seperator + (addSpace ? " " : "") + str;
-	}
-
-	// remove last char
-	if(str.size () > 0){
-		str.resize (str.size () - 1);
-	}  
-
-	return str;
-}
+//string concatenateVectorOfStrings(vector<string> strings, string seperator, bool addSpace = true){
+//	string str = "";
+//
+//	for(vector<string>::iterator iter = strings.begin(); iter != strings.end(); iter++){
+//		str = *iter + seperator + (addSpace ? " " : "") + str;
+//	}
+//
+//	// remove last char
+//	if(str.size () > 0){
+//		str.resize (str.size () - 1);
+//	}  
+//
+//	return str;
+//}
 
 #endif

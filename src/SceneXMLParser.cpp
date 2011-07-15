@@ -12,105 +12,143 @@
 
 SceneXMLParser::SceneXMLParser(string dataPath, string xmlFile) : IXMLParser(xmlFile){
 	LOG_VERBOSE("Initialising with datapath: " + dataPath + " and config: " + xmlFile);
+	_state = kSCENEXMLPARSER_INIT;
 	_dataPath = dataPath;
-	_state = kINIT;
+	_state = kSCENEXMLPARSER_SETUP;
+	_stateMessage = "Setting up dirList, populating file list map, loading XML file into memory...";
 	LOG_VERBOSE("SceneXMLParser Initialised");
+	updateAppLoadingState();
 }
 
 void SceneXMLParser::update(){
-	int timeA, timeB;
-	
-	setupDirLister(); // set up file lists;
-	populateDirListerIDMap();
-	timeA = ofGetElapsedTimeMillis();
-	load(); // load xml
-	timeA = ofGetElapsedTimeMillis() - timeA;
-	printf("TIMER Load: %dms\n", timeA);
-	
-	// make map (map<string, map<string, string> _parsedData) from xml
-	parseXML(); 
-	
-	// Check that the map contains valid files (replace with temp fakes if it doesnt)
-	// throws JungleException if some files can't be fixed that should cause a crash since we can't go on at all.
-	// OPTIONALLY:	We could look at "validFile" key when we create the model and not add that sequence,
-	//				that way we still run, but 
-	timeA = ofGetElapsedTimeMillis();
-	try{
-		validateMovieFileExistence();
+	switch (_state) {
+		case kSCENEXMLPARSER_SETUP:
+			setupDirLister(); // set up file lists;
+			populateDirListerIDMap();
+			load(); // load xml file
+			_state = kSCENEXMLPARSER_PARSE_XML;
+			_stateMessage = "Parsing XML...";
+			break;
+		case kSCENEXMLPARSER_PARSE_XML:			
+			// make map (map<string, map<string, string> _parsedData) from xml
+			parseXML(); 
+			_state = kSCENEXMLPARSER_VALIDATING_MOVIE_FILE_EXISTENCE;
+			_stateMessage = "Validating movie file existance...";
+			break;
+		case kSCENEXMLPARSER_VALIDATING_MOVIE_FILE_EXISTENCE:
+			// Check that the map contains valid files (replace with temp fakes if it doesnt)
+			// throws JungleException if some files can't be fixed that should cause a crash since we can't go on at all.
+			try{
+				validateMovieFileExistence();
+			}
+			catch (JungleException je) {
+				// Some files could not be fixed, 
+				// we could look at a property "ignoreInvalidSequences" and just not add
+				// those to the appModel. That way we run still, and when we get to changing
+				// to a sequence that has no file (and couldn't be fixed) 
+				// we'll just get the log error message 'no sequence seqXXa'
+				throw je; // for now we'll just consider it a hard fail and throw up.
+			}
+			_state = kSCENEXMLPARSER_VALIDATING_FILE_METADATA;
+			_stateMessage = "Validating file metadata (size, dateCreated, dateModified)...";
+			break;
+		case kSCENEXMLPARSER_VALIDATING_FILE_METADATA:
+			try{
+				validateFileMetadata();
+			}
+			catch(vector<string> vec){
+				// Some files were invalid, we should report this, and throw an exception
+				// who ever caled us should created a SceneXMLBuilder and rebuild the xml
+				string message = "";
+				for(vector<string>::iterator iter = vec.begin(); iter != vec.end(); iter++){
+					message = *iter + ", " + message;
+				}
+				message[message.length()-1] = ' ';
+				message = "Metadata xml vs hdd mismatch for files: " + message;
+				LOG_ERROR(message);
+				throw MetadataMismatchException(message);
+			}
+			_state = kSCENEXMLPARSER_VALIDATING_MOVIE_TRANSFORM_LENGTHS;			
+			_stateMessage = "Validating movie and transform frame counts...";
+			break;			
+		case kSCENEXMLPARSER_VALIDATING_MOVIE_TRANSFORM_LENGTHS:
+			// Validate that transform and movie lengths are the same
+			try{
+				validateMovieTransformLengths();
+			}
+			catch (vector<string> vec) {
+				// Some files were either missing or invalid (length mismatch), 
+				// log an error and pass the missing files back up so whoever called us
+				// can make the files with the analyser.
+				string message = "";
+				for(vector<string>::iterator iter = vec.begin(); iter != vec.end(); iter++){
+					message = *iter + ", " + message;
+				}
+				message[message.length()-1] = ' ';
+				LOG_ERROR("Require reanalysis/creation of transform files: " + message);
+				//throw vec;
+			}
+			_state = kSCENEXMLPARSER_CREATING_APPMODEL;
+			_stateMessage = "Creating app model from validated data...";
+			break;
+		case kSCENEXMLPARSER_CREATING_APPMODEL:
+			//	UNCOMMENT THIS TO SEE THE MAP STRUCTURE.
+			//	map<string, map<string, string> >::iterator iter;
+			//	iter = _parsedData.begin();	
+			//	while (iter != _parsedData.end()) {
+			//		printf("%s =| \n", (iter->first).c_str());
+			//		map<string, string>::iterator iter2;
+			//		iter2 = iter->second.begin();
+			//		while(iter2 != iter->second.end()){
+			//			printf("\t%s => %s\n", (iter2->first).c_str(), (iter2->second).c_str());
+			//			iter2++;
+			//		}
+			//		iter++;
+			//	}
+			// Checked file existence, checked metadata, checked transforms, OK to map => app model
+			createAppModel();
+			_state = kSCENEXMLPARSER_FINISHED;
+			_stateMessage = "Parser finished.";
+			break;
+		case kSCENEXMLPARSER_FINISHED:			
+			break;
+		default:
+			_stateMessage = "UNKNOWN STATE";
+			break;
 	}
-	catch (JungleException je) {
-		// Some files could not be fixed, 
-		// we could look at a property "ignoreInvalidSequences" and just not add
-		// those to the appModel. That way we run still, and when we get to changing
-		// to a sequence that has no file (and couldn't be fixed) 
-		// we'll just get the log error message 'no sequence seqXXa'
-		throw je; // for now we'll just consider it a hard fail and throw up.
+	updateAppLoadingState();
+}
+
+void SceneXMLParser::updateAppLoadingState(){
+	_appModel->setProperty("loadingMessage", _stateMessage);
+	switch (_state) {
+		case kSCENEXMLPARSER_INIT:
+			_appModel->setProperty("loadingProgress", 0.1f);
+			break;
+		case kSCENEXMLPARSER_SETUP:
+			_appModel->setProperty("loadingProgress", 0.2f);
+			break;			
+		case kSCENEXMLPARSER_PARSE_XML:
+			_appModel->setProperty("loadingProgress", 0.3f);
+			break;
+		case kSCENEXMLPARSER_VALIDATING_MOVIE_FILE_EXISTENCE:
+			_appModel->setProperty("loadingProgress", 0.4f);
+			break;
+		case kSCENEXMLPARSER_VALIDATING_FILE_METADATA:
+			_appModel->setProperty("loadingProgress", 0.5f);
+			break;
+		case kSCENEXMLPARSER_VALIDATING_MOVIE_TRANSFORM_LENGTHS:
+			_appModel->setProperty("loadingProgress", 0.6f);
+			break;
+		case kSCENEXMLPARSER_CREATING_APPMODEL:
+			_appModel->setProperty("loadingProgress", 0.7f);
+			break;
+		case kSCENEXMLPARSER_FINISHED:
+			_appModel->setProperty("loadingProgress", 1.0f);
+			break;
+		default:
+			break;
 	}
-	timeA = ofGetElapsedTimeMillis() - timeA;
-	printf("TIMER validateMovieFileExistence: %dms\n", timeA);
-	
-	timeA = ofGetElapsedTimeMillis();
-	// Validate size,dateCreated,dateModified with values from xml vs hdd
-	try{
-		validateFileMetadata();
-	}
-	catch(vector<string> vec){
-		// Some files were invalid, we should report this, and throw an exception
-		// who ever caled us should created a SceneXMLBuilder and rebuild the xml
-		string message = "";
-		for(vector<string>::iterator iter = vec.begin(); iter != vec.end(); iter++){
-			message = *iter + ", " + message;
-		}
-		message[message.length()-1] = ' ';
-		message = "Metadata xml vs hdd mismatch for files: " + message;
-		LOG_ERROR(message);
-		throw MetadataMismatchException(message);
-	}
-	timeA = ofGetElapsedTimeMillis() - timeA;
-	printf("TIMER metadata: %dms\n", timeA);
-	
-	timeA = ofGetElapsedTimeMillis();
-	// Validate that transform and movie lengths are the same
-	try{
-		validateMovieTransformLengths();
-	}
-	catch (vector<string> vec) {
-		// Some files were either missing or invalid (length mismatch), 
-		// log an error and pass the missing files back up so whoever called us
-		// can make the files with the analyser.
-		string message = "";
-		for(vector<string>::iterator iter = vec.begin(); iter != vec.end(); iter++){
-			message = *iter + ", " + message;
-		}
-		message[message.length()-1] = ' ';
-		LOG_ERROR("Require reanalysis/creation of transform files: " + message);
-		//throw vec;
-	}
-	timeA = ofGetElapsedTimeMillis() - timeA;
-	printf("TIMER lengths: %dms\n", timeA);
-	
-	
-	
-	//	UNCOMMENT THIS TO SEE THE MAP STRUCTURE.
-	//	map<string, map<string, string> >::iterator iter;
-	//	iter = _parsedData.begin();	
-	//	while (iter != _parsedData.end()) {
-	//		printf("%s =| \n", (iter->first).c_str());
-	//		map<string, string>::iterator iter2;
-	//		iter2 = iter->second.begin();
-	//		while(iter2 != iter->second.end()){
-	//			printf("\t%s => %s\n", (iter2->first).c_str(), (iter2->second).c_str());
-	//			iter2++;
-	//		}
-	//		iter++;
-	//	}
-	timeA = ofGetElapsedTimeMillis();
-	// Checked file existence, checked metadata, checked transforms, OK to map => app model
-	createAppModel();
-	timeA = ofGetElapsedTimeMillis() - timeA;
-	printf("TIMER CREATE: %dms\n", timeA);
-	
-	
 }
 
 
@@ -172,7 +210,6 @@ void SceneXMLParser::createAppModel(){
 			}
 			
 			// set interactivity
-			LOG_WARNING("TODO: INTERACTIVITY that isn't 'both' is ignored! Need to update Sequence class so its not just a bool value");
 			sequence->setInteractivity(kvmap["interactivity"]);
 			
 			// set whether we faked movie data
@@ -186,7 +223,6 @@ void SceneXMLParser::createAppModel(){
 			sequence->setMovieFullFilePath(fullFilePath);
 
 			LOG_WARNING("TODO: Load movie should be done else where, change this from loadMovie, remove these calls");			
-			LOG_WARNING("TODO: Also might as well change setSequenceMovie to just setMovie (if its still used) since the name is a hold over from having _sequenceMovie and _loopMovie");			
 			movie = new goVideoPlayer();
 			movie->loadMovie(fullFilePath);
 			sequence->setMovie(movie);
@@ -675,6 +711,14 @@ void SceneXMLParser::populateDirListerIDMap(){
 	for(int fileNum = 0; fileNum < _numFiles; fileNum++){
 		_filenameToDirListerIDMap.insert(make_pair(_dirLister.getName(fileNum), fileNum));
 	}
+}
+
+string SceneXMLParser::getStateMessage(){
+	return _stateMessage;
+}
+
+SceneXMLParserState SceneXMLParser::getState(){
+	return _state;
 }
 
 

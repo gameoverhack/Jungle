@@ -12,6 +12,7 @@
 
 #include "BaseView.h"
 #include "SceneView.h"
+#include "LoadingView.h"
 #include "DebugView.h"
 
 class AppView : public BaseView {
@@ -25,7 +26,7 @@ public:
 	void draw();
 	
 private:
-	
+	LoadingView *_loadingView;
 	SceneView *_sceneView;
 	DebugView *_debugView;
 	

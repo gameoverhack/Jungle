@@ -16,6 +16,7 @@
 		07545BA513BDF80200325443 /* DataController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07545BA413BDF80200325443 /* DataController.cpp */; };
 		075EDAA213CD8F14009C6288 /* goVideoGrabber.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 075EDAA013CD8F14009C6288 /* goVideoGrabber.cpp */; };
 		075EDAA913CD8F3D009C6288 /* ofxQTKitVideoGrabber.mm in Sources */ = {isa = PBXBuildFile; fileRef = 075EDAA813CD8F3D009C6288 /* ofxQTKitVideoGrabber.mm */; };
+		075EE27C13CFFC8B009C6288 /* LoadingView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 075EE27B13CFFC8B009C6288 /* LoadingView.cpp */; };
 		07B2036513CBE2B500FF66CB /* SceneXMLBuilder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07B2036413CBE2B500FF66CB /* SceneXMLBuilder.cpp */; };
 		07B204F313CC304000FF66CB /* libboost_regex-xgcc42-mt-1_46_1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 07B204F213CC304000FF66CB /* libboost_regex-xgcc42-mt-1_46_1.a */; };
 		07B2061613CC5A6100FF66CB /* SceneXMLParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07B2061513CC5A6100FF66CB /* SceneXMLParser.cpp */; };
@@ -141,6 +142,8 @@
 		075EDAA113CD8F14009C6288 /* goVideoGrabber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = goVideoGrabber.h; sourceTree = "<group>"; };
 		075EDAA713CD8F3D009C6288 /* ofxQTKitVideoGrabber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxQTKitVideoGrabber.h; sourceTree = "<group>"; };
 		075EDAA813CD8F3D009C6288 /* ofxQTKitVideoGrabber.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ofxQTKitVideoGrabber.mm; sourceTree = "<group>"; };
+		075EE27A13CFFC8B009C6288 /* LoadingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadingView.h; sourceTree = "<group>"; };
+		075EE27B13CFFC8B009C6288 /* LoadingView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LoadingView.cpp; sourceTree = "<group>"; };
 		07B2019113CAD52500FF66CB /* config_properties.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = config_properties.xml; path = bin/data/config_properties.xml; sourceTree = SOURCE_ROOT; };
 		07B2019213CAD52500FF66CB /* config_scenes.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = config_scenes.xml; path = bin/data/config_scenes.xml; sourceTree = SOURCE_ROOT; };
 		07B2036313CBE2B500FF66CB /* SceneXMLBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneXMLBuilder.h; sourceTree = "<group>"; };
@@ -762,6 +765,8 @@
 				072CF9D113BD864E000DBD67 /* DebugView.h */,
 				072CF9D213BD864E000DBD67 /* SceneView.cpp */,
 				072CF9D313BD864E000DBD67 /* SceneView.h */,
+				075EE27A13CFFC8B009C6288 /* LoadingView.h */,
+				075EE27B13CFFC8B009C6288 /* LoadingView.cpp */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1228,6 +1233,7 @@
 				77F0332313CD6F6C00D7811A /* CamController.cpp in Sources */,
 				075EDAA213CD8F14009C6288 /* goVideoGrabber.cpp in Sources */,
 				075EDAA913CD8F3D009C6288 /* ofxQTKitVideoGrabber.mm in Sources */,
+				075EE27C13CFFC8B009C6288 /* LoadingView.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

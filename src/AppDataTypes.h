@@ -130,6 +130,7 @@ public:
 	
 	string getTransformAsString(string key, int frame) {
 		vector<CamTransform> * t = getTransformVector(key);
+		printf("t.size() = %d\n", t->size());
 		string tranString = "f: " + ofToString(frame) + 
 							" x: " + ofToString(t->at(frame).x) + 
 							" y: " + ofToString(t->at(frame).y) + 

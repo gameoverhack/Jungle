@@ -25,9 +25,8 @@ DataController::DataController(string configFilePath)
 	
 	while(attemptParse){
 		try {
-			// also fire and forget
-			SceneXMLParser sceneXMLParser(boost::any_cast<string>(_appModel->getProperty("scenesDataPath")),
-										  boost::any_cast<string>(_appModel->getProperty("scenesXMLFile")));	
+			_sceneParser = new SceneXMLParser(boost::any_cast<string>(_appModel->getProperty("scenesDataPath")),
+											  boost::any_cast<string>(_appModel->getProperty("scenesXMLFile")));
 		}
 		catch(MetadataMismatchException ex){
 			LOG_NOTICE("Caught exception: " + ex._message);
@@ -50,5 +49,25 @@ DataController::DataController(string configFilePath)
 }
 
 DataController::~DataController(){
+	delete _sceneParser;
 	
 }
+
+void DataController::update(){
+	_stateMessage = _sceneParser->getStateMessage();
+	_sceneParser->update();
+	if(_sceneParser->getState() == kSCENEXMLPARSER_FINISHED){
+		_state = kDATACONTROLLER_FINISHED;
+	}
+}
+
+
+DataControllerState DataController::getState(){
+	return _state;
+}
+string DataController::getStateMessage(){
+	return _stateMessage;
+}
+
+
+

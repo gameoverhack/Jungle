@@ -10,26 +10,41 @@
 #include "AppView.h"
 
 AppView::AppView(float width, float height) : BaseView(width ,height) {
+	_loadingView = new LoadingView(width, height);
 	_sceneView = new SceneView(width, height);
 	_debugView = new DebugView(width, height);
 }
 
 void AppView::update() {
-	_sceneView->update();
-	_debugView->update();
+	if(boost::any_cast<int>(_appModel->getProperty("appState")) == kAPPCONTROLLER_LOADING){
+		_loadingView->update();
+	}
+	else{
+		_sceneView->update();
+		if(boost::any_cast<bool>(_appModel->getProperty("showDebugView"))){
+			_debugView->update();
+		}
+	}
 }
 
 void AppView::draw() {
 	
-	// composite all views
-	
-	_sceneView->draw();
-	
-	// draw Mic view
-	// draw smasher view
-	// draw diagnositc view
-	if(boost::any_cast<bool>(_appModel->getProperty("showDebugView"))){
-		_debugView->draw();
+	if(boost::any_cast<int>(_appModel->getProperty("appState")) == kAPPCONTROLLER_LOADING){
+		_loadingView->draw();
 	}
-}
+	else{
+			
+		// composite all views
+		
+		_sceneView->draw();
+		
+		// draw Mic view
+		// draw smasher view
+		// draw diagnositc view
+		if(boost::any_cast<bool>(_appModel->getProperty("showDebugView"))){
+			_debugView->draw();
+		}
+	}
+
+	}
 

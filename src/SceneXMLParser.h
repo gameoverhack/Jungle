@@ -26,45 +26,45 @@ using boost::regex_match;
 #include "IXMLParser.h"
 #include "AppModel.h"
 #include "AppDataTypes.h"
-//#include "VectorUtils.h"
+#include "VectorUtils.h"
 #include "goDirList.h"
 #include "goVideoPlayer.h"
-
 
 
 class SceneXMLParser : public IXMLParser {
 public:
 	SceneXMLParser(string dataPath, string xmlFile);
 	
-	void parseXML();
+	void parseXML();	
+	void update();
+	
+	string getStateMessage();
+	SceneXMLParserState getState();
+	
+	void updateAppLoadingState();
+	
+private:
+	string					_dataPath;
 
+	string					_stateMessage;
+	SceneXMLParserState		_state;
+
+	goDirList				_dirLister;
+	int						_numFiles;
+	map<string, int>		_filenameToDirListerIDMap; // maps filenames to _dirLister.getX(ID)
+
+	// scene/sequence or scene/sequence/transformname, map of values for end type (seq or transfrorm)
+	map<string, map<string, string> > _parsedData; 
+
+	// "doing" functions
+	void setupDirLister();
+	void populateDirListerIDMap();
 	void validateMovieFileExistence();
 	void validateMovieTransformLengths();
 	void validateFileMetadata();
 	void createAppModel();
 	
-	void update();
-	
-private:
-	string _dataPath;
-
-	enum SceneXMLParserState{
-		kINIT,
-		kVALIDATING_MOVIE_FILE_EXISTENCE,
-		kVALIDATING_MOVIE_TRANSFORM_LEGNTHS,
-		kVALIDATING_FILE_METADATA,
-		kCREATING_APPMODEL
-	};	
-	SceneXMLParserState _state;
-
-	goDirList _dirLister;
-	int _numFiles;
-	map<string, int> _filenameToDirListerIDMap; // maps filenames to _dirLister.getX(ID)
-
-	map<string, map<string, string> > _parsedData; // scene/sequence or scene/sequence/transformname, map of values for end type (seq or trans
-	
-	void setupDirLister();
-	void populateDirListerIDMap();
+	// Helper functions
 	bool compareFileinfo(string filename, map<string, string> fileInfo);
 	void checkTagAttributesExist(string xmltag, vector<string> attributes, int which);	
 	int findFileIDForLister(string filename);
