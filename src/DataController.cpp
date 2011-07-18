@@ -17,6 +17,11 @@ DataController::DataController(string configFilePath)
 	// fire and forget
 	PropertyXMLParser propertyXMLParser(_configFilePath);
 
+	if(boost::any_cast<bool>(_appModel->getProperty("parseForceInitialBuildXML"))){
+		LOG_WARNING("Building XML due to force-on-run property");
+		rebuildXML();
+	}
+	
 	_sceneParser = new SceneXMLParser(boost::any_cast<string>(_appModel->getProperty("scenesDataPath")),
 									  boost::any_cast<string>(_appModel->getProperty("scenesXMLFile")));	
 	

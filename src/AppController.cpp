@@ -36,7 +36,9 @@ void AppController::setup() {
 	// set default for user action, temporary way to handle this stuff!
 	_appModel->setProperty("userAction", kNoUserAction);
 	
-	_appView = new AppView(1280, 720);
+	// setup main app view
+	_appView = new AppView(boost::any_cast<float>(_appModel->getProperty("appViewWidth")),
+						   boost::any_cast<float>(_appModel->getProperty("appViewHeight")));
 	
 	
 	_state = kAPPCONTROLLER_LOADING;
@@ -133,7 +135,7 @@ void AppController::update() {
 					// TODO:	This needs a method, can just use the key order since our keys are alpha ordered, 
 					//			i feel odd about doing that though. I guess it is guarenteed though.
 					//				currentScene->setCurrentSequence(0); 
-					LOG_WARNING("Scene ended, but no method to rewind scene to first sequence. Loading next scene anyway");
+					LOG_WARNING("Current scene ended, but no method to rewind current scene to first sequence. Loading next scene anyway");
 					// load next scene
 					_appModel->nextScene();
 					currentScene = _appModel->getCurrentScene();
