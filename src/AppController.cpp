@@ -13,12 +13,15 @@
 //--------------------------------------------------------------
 void AppController::setup() {
 	
+	// set up logger (should be first thing.)
 	LOGGER->setLogLevel(JU_LOG_VERBOSE);
 	
 	LOG_NOTICE("Initialising");
 	
+	// initial app state
 	_state = kAPPCONTROLLER_INIT;
 
+	// set up datacontroller
 	_dataController = new DataController(ofToDataPath("config_properties.xml"));
 
 	// setup cameras
@@ -30,6 +33,7 @@ void AppController::setup() {
 	// register pointers to textures from cams on the model
 	_appModel->setCameraTextures(_camControllers[0]->getCamTextureRef(), _camControllers[1]->getCamTextureRef());
 	
+	// set default for user action, temporary way to handle this stuff!
 	_appModel->setProperty("userAction", kNoUserAction);
 	
 	_appView = new AppView(1280, 720);
@@ -37,9 +41,12 @@ void AppController::setup() {
 	
 	_state = kAPPCONTROLLER_LOADING;
 	// set app state;
-	_appModel->setProperty("appState", (int)_state);
+	_appModel->setProperty("appState", (int)_state); // Generally (always should be?) set to AppController's _state
 	_appModel->setProperty("loadingMessage", string("AppController loading"));
 	_appModel->setProperty("loadingProgress", 0.1f);
+	
+	// scene parsing properties
+	_appModel->setProperty("requireTransformReanalysis", false);
 	
 	LOG_NOTICE("Initialisation complete");
 }

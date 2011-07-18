@@ -14,26 +14,25 @@ SceneXMLParser::SceneXMLParser(string dataPath, string xmlFile) : IXMLParser(xml
 	LOG_VERBOSE("Initialising with datapath: " + dataPath + " and config: " + xmlFile);
 	_state = kSCENEXMLPARSER_INIT;
 	_dataPath = dataPath;
-	_state = kSCENEXMLPARSER_SETUP;
-	_stateMessage = "Setting up dirList, populating file list map, loading XML file into memory...";
+	updateLoadingState();
 	LOG_VERBOSE("SceneXMLParser Initialised");
-	updateAppLoadingState();
 }
 
 void SceneXMLParser::update(){
 	switch (_state) {
+		case kSCENEXMLPARSER_INIT:
+			_state = kSCENEXMLPARSER_SETUP;
+			break;
 		case kSCENEXMLPARSER_SETUP:
 			setupDirLister(); // set up file lists;
 			populateDirListerIDMap();
 			load(); // load xml file
 			_state = kSCENEXMLPARSER_PARSE_XML;
-			_stateMessage = "Parsing XML...";
 			break;
 		case kSCENEXMLPARSER_PARSE_XML:			
 			// make map (map<string, map<string, string> _parsedData) from xml
 			parseXML(); 
 			_state = kSCENEXMLPARSER_VALIDATING_MOVIE_FILE_EXISTENCE;
-			_stateMessage = "Validating movie file existance...";
 			break;
 		case kSCENEXMLPARSER_VALIDATING_MOVIE_FILE_EXISTENCE:
 			// Check that the map contains valid files (replace with temp fakes if it doesnt)
@@ -50,7 +49,6 @@ void SceneXMLParser::update(){
 				throw je; // for now we'll just consider it a hard fail and throw up.
 			}
 			_state = kSCENEXMLPARSER_VALIDATING_FILE_METADATA;
-			_stateMessage = "Validating file metadata (size, dateCreated, dateModified)...";
 			break;
 		case kSCENEXMLPARSER_VALIDATING_FILE_METADATA:
 			try{
@@ -68,8 +66,7 @@ void SceneXMLParser::update(){
 				LOG_ERROR(message);
 				throw MetadataMismatchException(message);
 			}
-			_state = kSCENEXMLPARSER_VALIDATING_MOVIE_TRANSFORM_LENGTHS;			
-			_stateMessage = "Validating movie and transform frame counts...";
+			_state = kSCENEXMLPARSER_VALIDATING_MOVIE_TRANSFORM_LENGTHS;
 			break;			
 		case kSCENEXMLPARSER_VALIDATING_MOVIE_TRANSFORM_LENGTHS:
 			// Validate that transform and movie lengths are the same
@@ -86,10 +83,15 @@ void SceneXMLParser::update(){
 				}
 				message[message.length()-1] = ' ';
 				LOG_ERROR("Require reanalysis/creation of transform files: " + message);
-				//throw vec;
+				if(boost::any_cast<bool>(_appModel->getProperty("requireTransformReanalysis"))){
+					throw vec;	// Datacontroller should catch this, and make a TransformAnalyser(),
+								// then either
+								// reset _sceneParser to begin from the beginning (no point?)
+								// Call update on _scenePaser again, which should restart from
+								// this state, and keep going.
+				}
 			}
 			_state = kSCENEXMLPARSER_CREATING_APPMODEL;
-			_stateMessage = "Creating app model from validated data...";
 			break;
 		case kSCENEXMLPARSER_CREATING_APPMODEL:
 			//	UNCOMMENT THIS TO SEE THE MAP STRUCTURE.
@@ -107,8 +109,7 @@ void SceneXMLParser::update(){
 			//	}
 			// Checked file existence, checked metadata, checked transforms, OK to map => app model
 			createAppModel();
-			_state = kSCENEXMLPARSER_FINISHED;
-			_stateMessage = "Parser finished.";
+			_state = kSCENEXMLPARSER_FINISHED;			
 			break;
 		case kSCENEXMLPARSER_FINISHED:			
 			break;
@@ -116,35 +117,43 @@ void SceneXMLParser::update(){
 			_stateMessage = "UNKNOWN STATE";
 			break;
 	}
-	updateAppLoadingState();
+	updateLoadingState();
 }
 
-void SceneXMLParser::updateAppLoadingState(){
-	_appModel->setProperty("loadingMessage", _stateMessage);
+// Convenience function
+void SceneXMLParser::updateLoadingState(){
+	// loading messave is just the apps state.
 	switch (_state) {
 		case kSCENEXMLPARSER_INIT:
-			_appModel->setProperty("loadingProgress", 0.1f);
+			_loadingProgress = 0.1f;
 			break;
 		case kSCENEXMLPARSER_SETUP:
-			_appModel->setProperty("loadingProgress", 0.2f);
+			_loadingProgress = 0.2f;
+			_stateMessage = "Setting up dirList, populating file list map, loading XML file into memory...";			
 			break;			
 		case kSCENEXMLPARSER_PARSE_XML:
-			_appModel->setProperty("loadingProgress", 0.3f);
+			_loadingProgress = 0.3f;
+			_stateMessage = "Parsing XML...";			
 			break;
 		case kSCENEXMLPARSER_VALIDATING_MOVIE_FILE_EXISTENCE:
-			_appModel->setProperty("loadingProgress", 0.4f);
+			_loadingProgress = 0.4f;
+			_stateMessage = "Validating movie file existance...";			
 			break;
 		case kSCENEXMLPARSER_VALIDATING_FILE_METADATA:
-			_appModel->setProperty("loadingProgress", 0.5f);
+			_loadingProgress = 0.5f;
+			_stateMessage = "Validating file metadata (size, dateCreated, dateModified)...";			
 			break;
 		case kSCENEXMLPARSER_VALIDATING_MOVIE_TRANSFORM_LENGTHS:
-			_appModel->setProperty("loadingProgress", 0.6f);
+			_loadingProgress = 0.6f;
+			_stateMessage = "Validating movie and transform frame counts...";
 			break;
 		case kSCENEXMLPARSER_CREATING_APPMODEL:
-			_appModel->setProperty("loadingProgress", 0.7f);
+			_loadingProgress = 0.7f;
+			_stateMessage = "Creating app model from validated data...";
 			break;
 		case kSCENEXMLPARSER_FINISHED:
-			_appModel->setProperty("loadingProgress", 1.0f);
+			_stateMessage = "Parser finished.";
+			_loadingProgress = 1.0f;
 			break;
 		default:
 			break;
@@ -248,25 +257,6 @@ void SceneXMLParser::createAppModel(){
 }
 
 
-// Expects to be pushed/popped into the correct level
-void SceneXMLParser::checkTagAttributesExist(string xmltag, vector<string> attributes, int which){
-	string message = "";
-	for(vector<string>::iterator iter = attributes.begin(); iter != attributes.end(); iter++){
-		if(!_xml.attributeExists(xmltag, *iter, which)){
-			message = message + *iter + ","; // build list of missing
-		}
-	}
-	
-	// if we've added to message, it has a length
-	if(message.length() != 0){
-		// remove last comma
-		message[message.length()-1] = ' ';
-		message = "Tag " + xmltag + " missing attributes " + message;
-		// throw exception
-		LOG_ERROR(message);
-		throw JungleException(message);
-	}
-}
 
 // Parse xml into a map structure which we can then build the model from in populateAppModel
 void SceneXMLParser::parseXML(){
@@ -540,6 +530,8 @@ void SceneXMLParser::validateFileMetadata(){
 	map<string, map<string, string> >::iterator parsedDataIter;
 	for(parsedDataIter = _parsedData.begin(); parsedDataIter != _parsedData.end(); parsedDataIter++){
 		map<string, string> & kvmap = (parsedDataIter->second); // syntax convenience
+		LOG_VERBOSE("Validating file metadata for " + parsedDataIter->first);
+		
 		if(kvmap["type"] == "scene"){
 			continue;
 		}
@@ -597,7 +589,7 @@ void SceneXMLParser::validateMovieTransformLengths(){
 	map<string, map<string, string> >::iterator parsedDataIter;
 	for(parsedDataIter = _parsedData.begin(); parsedDataIter != _parsedData.end(); parsedDataIter++){
 		map<string, string> & kvmap = (parsedDataIter->second); // syntax convenience
-		LOG_VERBOSE("Checking files for " + parsedDataIter->first);
+		LOG_VERBOSE("Validating movie+transform length for " + parsedDataIter->first);
 		
 		// make sure filename is exists
 		if(kvmap["type"] == "sequence" || kvmap["type"] == "transform"){			
@@ -661,32 +653,20 @@ void SceneXMLParser::validateMovieTransformLengths(){
 				LOG_WARNING("Frame count mismatch for " + kvmap["filename"] 
 							+ "(transform " + ofToString((int)(transform.size())) + " vs movie " 
 							+ ofToString(movie->getTotalNumFrames())+")");
+				// Store a list of broken pairs
 				transformFilesRequired.push_back(parsedDataIter->first);
 			}				
 			
 		}
 	}
 	
+	// Check if we saved any broken pairs
 	if(transformFilesRequired.size() != 0){
 		throw transformFilesRequired; // missing transform files, throw that vector back
 	}
 	
 }
 
-
-int SceneXMLParser::findFileIDForLister(string filename){
-	if(_filenameToDirListerIDMap.find(filename) == _filenameToDirListerIDMap.end()){
-	   LOG_ERROR("No lister id for filename " + filename);
-	   throw JungleException("File not found in dirlist: " + filename);
-	}
-	return _filenameToDirListerIDMap.find(filename)->second;
-}
-		   
-
-string SceneXMLParser::findFullFilePathForFilename(string filename){
-	int fileID = findFileIDForLister(filename);
-	return _dirLister.getPath(fileID);
-}
 
 // Set up file lister
 // resets state so it can be called whenever you want to start fresh
@@ -706,13 +686,58 @@ void SceneXMLParser::setupDirLister(){
 	
 }
 
+// iterate over all files, put its name and the id for that file in the map
+// name => id
+// This is so we can find file names from the XML, and match them to a goDirLister
+// id, and then use that ID to find file meta data. 
 void SceneXMLParser::populateDirListerIDMap(){
-	// iterate over all files, put its name and the id for that file in the map
 	for(int fileNum = 0; fileNum < _numFiles; fileNum++){
 		_filenameToDirListerIDMap.insert(make_pair(_dirLister.getName(fileNum), fileNum));
 	}
 }
 
+// Used to loop up a filename from the lister map
+// Wrapped in a function instead of just doing _lister[filename]
+// so we can throw exceptions for it consistently
+int SceneXMLParser::findFileIDForLister(string filename){
+	if(_filenameToDirListerIDMap.find(filename) == _filenameToDirListerIDMap.end()){
+		LOG_ERROR("No lister id for filename " + filename);
+		throw JungleException("File not found in dirlist: " + filename);
+	}
+	return _filenameToDirListerIDMap.find(filename)->second;
+}
+
+// convenience. 
+string SceneXMLParser::findFullFilePathForFilename(string filename){
+	int fileID = findFileIDForLister(filename);
+	return _dirLister.getPath(fileID);
+}
+
+
+// Expects to be pushed/popped into the correct level
+// checks that the given attribute exist for the given tag.
+// Throws JungleException with a message containing which attributes were missing
+void SceneXMLParser::checkTagAttributesExist(string xmltag, vector<string> attributes, int which){
+	string message = "";
+	for(vector<string>::iterator iter = attributes.begin(); iter != attributes.end(); iter++){
+		if(!_xml.attributeExists(xmltag, *iter, which)){
+			message = message + *iter + ","; // build list of missing
+		}
+	}
+	
+	// if we've added to message, it has a length
+	if(message.length() != 0){
+		// remove last comma
+		message[message.length()-1] = ' ';
+		message = "Tag '" + xmltag + "'("+ofToString(which)+") missing attributes: " + message;
+		// throw exception
+		LOG_ERROR(message);
+		throw JungleException(message);
+	}
+}
+
+
+// Only getters, state shouldn't be set from outside (so far)
 string SceneXMLParser::getStateMessage(){
 	return _stateMessage;
 }
@@ -721,4 +746,8 @@ SceneXMLParserState SceneXMLParser::getState(){
 	return _state;
 }
 
+
+float SceneXMLParser::getLoadingProgress(){
+	return _loadingProgress;
+}
 

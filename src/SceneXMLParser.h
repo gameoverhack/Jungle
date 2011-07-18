@@ -40,12 +40,13 @@ public:
 	
 	string getStateMessage();
 	SceneXMLParserState getState();
+	float getLoadingProgress();
 	
-	void updateAppLoadingState();
 	
 private:
 	string					_dataPath;
 
+	float					_loadingProgress;
 	string					_stateMessage;
 	SceneXMLParserState		_state;
 
@@ -69,6 +70,7 @@ private:
 	void checkTagAttributesExist(string xmltag, vector<string> attributes, int which);	
 	int findFileIDForLister(string filename);
 	string findFullFilePathForFilename(string filename);
+	void updateLoadingState();	
 
 };
 

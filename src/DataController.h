@@ -54,6 +54,8 @@ private:
 	string					_configFilePath;
 	
 	SceneXMLParser			*_sceneParser;
+
+	void updateAppLoadingState();
 	
 };
 
