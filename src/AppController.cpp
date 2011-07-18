@@ -14,7 +14,7 @@
 void AppController::setup() {
 	
 	// set up logger (should be first thing.)
-	LOGGER->setLogLevel(JU_LOG_VERBOSE);
+	LOGGER->setLogLevel(JU_LOG_WARNING);
 	
 	LOG_NOTICE("Initialising");
 	
@@ -46,7 +46,9 @@ void AppController::setup() {
 	_appModel->setProperty("loadingProgress", 0.1f);
 	
 	// scene parsing properties
-	_appModel->setProperty("requireTransformReanalysis", false);
+	_appModel->setProperty("parseRequiresTransformReanalysis", false);
+	_appModel->setProperty("parseRebuildXML", true);
+	
 	
 	LOG_NOTICE("Initialisation complete");
 }
@@ -184,6 +186,9 @@ void AppController::keyPressed(int key){
 			break;
 		case 'p':
 			_appModel->setProperty("userAction", kAttackerAction);
+			break;
+		case 'P':
+			_dataController->saveProperties();
 			break;
 		case 'm':
 			swapCameras();

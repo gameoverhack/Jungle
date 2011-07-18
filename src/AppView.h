@@ -27,8 +27,8 @@ public:
 	
 private:
 	LoadingView *_loadingView;
-	SceneView *_sceneView;
-	DebugView *_debugView;
+	SceneView	*_sceneView;
+	DebugView	*_debugView;
 	
 protected:
 	

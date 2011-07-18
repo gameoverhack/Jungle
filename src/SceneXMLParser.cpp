@@ -20,20 +20,24 @@ SceneXMLParser::SceneXMLParser(string dataPath, string xmlFile) : IXMLParser(xml
 
 void SceneXMLParser::update(){
 	switch (_state) {
+			
 		case kSCENEXMLPARSER_INIT:
 			_state = kSCENEXMLPARSER_SETUP;
 			break;
+
 		case kSCENEXMLPARSER_SETUP:
 			setupDirLister(); // set up file lists;
 			populateDirListerIDMap();
 			load(); // load xml file
 			_state = kSCENEXMLPARSER_PARSE_XML;
 			break;
+
 		case kSCENEXMLPARSER_PARSE_XML:			
 			// make map (map<string, map<string, string> _parsedData) from xml
-			parseXML(); 
+			parseXML();
 			_state = kSCENEXMLPARSER_VALIDATING_MOVIE_FILE_EXISTENCE;
 			break;
+
 		case kSCENEXMLPARSER_VALIDATING_MOVIE_FILE_EXISTENCE:
 			// Check that the map contains valid files (replace with temp fakes if it doesnt)
 			// throws JungleException if some files can't be fixed that should cause a crash since we can't go on at all.
@@ -50,6 +54,7 @@ void SceneXMLParser::update(){
 			}
 			_state = kSCENEXMLPARSER_VALIDATING_FILE_METADATA;
 			break;
+
 		case kSCENEXMLPARSER_VALIDATING_FILE_METADATA:
 			try{
 				validateFileMetadata();
@@ -68,31 +73,37 @@ void SceneXMLParser::update(){
 			}
 			_state = kSCENEXMLPARSER_VALIDATING_MOVIE_TRANSFORM_LENGTHS;
 			break;			
+
 		case kSCENEXMLPARSER_VALIDATING_MOVIE_TRANSFORM_LENGTHS:
 			// Validate that transform and movie lengths are the same
 			try{
 				validateMovieTransformLengths();
 			}
-			catch (vector<string> vec) {
+			catch (TransformMovieLengthMismatchException ex) {
 				// Some files were either missing or invalid (length mismatch), 
 				// log an error and pass the missing files back up so whoever called us
 				// can make the files with the analyser.
 				string message = "";
-				for(vector<string>::iterator iter = vec.begin(); iter != vec.end(); iter++){
+				for(vector<string>::iterator iter = ex._names.begin(); iter != ex._names.end(); iter++){
 					message = *iter + ", " + message;
 				}
 				message[message.length()-1] = ' ';
 				LOG_ERROR("Require reanalysis/creation of transform files: " + message);
-				if(boost::any_cast<bool>(_appModel->getProperty("requireTransformReanalysis"))){
-					throw vec;	// Datacontroller should catch this, and make a TransformAnalyser(),
-								// then either
-								// reset _sceneParser to begin from the beginning (no point?)
-								// Call update on _scenePaser again, which should restart from
+				
+				// This if is here instead of DataController because we want to  
+				// continue onto the next state if we're not going to reanalyse the transforms
+				if(boost::any_cast<bool>(_appModel->getProperty("parseRequiresTransformReanalysis"))){
+					throw ex;	// Datacontroller should catch this, and make a TransformAnalyser(),
+								// then call update on _scenePaser again, which should restart from
 								// this state, and keep going.
+				}
+				else{
+					LOG_WARNING("Continuing without recreation of transform files");
 				}
 			}
 			_state = kSCENEXMLPARSER_CREATING_APPMODEL;
 			break;
+
 		case kSCENEXMLPARSER_CREATING_APPMODEL:
 			//	UNCOMMENT THIS TO SEE THE MAP STRUCTURE.
 			//	map<string, map<string, string> >::iterator iter;
@@ -111,12 +122,16 @@ void SceneXMLParser::update(){
 			createAppModel();
 			_state = kSCENEXMLPARSER_FINISHED;			
 			break;
+
 		case kSCENEXMLPARSER_FINISHED:			
 			break;
+
 		default:
-			_stateMessage = "UNKNOWN STATE";
+			_stateMessage = "UNKNOWN STATE" + ofToString(_state);
 			break;
 	}
+	
+	// update internal loading state (datacontroller will use this to set app messages)
 	updateLoadingState();
 }
 
@@ -195,6 +210,8 @@ void SceneXMLParser::createAppModel(){
 	
 	map<string, map<string, string> >::iterator parsedDataIter;
 	for(parsedDataIter = _parsedData.begin(); parsedDataIter != _parsedData.end(); parsedDataIter++){
+		int ttime = ofGetElapsedTimeMillis();
+		
 		map<string, string> & kvmap = (parsedDataIter->second); // syntax convenience
 		LOG_VERBOSE("Converting " + kvmap["name"] + " ("+kvmap["type"]+")");
 		if(kvmap["type"] == "scene"){
@@ -233,9 +250,11 @@ void SceneXMLParser::createAppModel(){
 
 			LOG_WARNING("TODO: Load movie should be done else where, change this from loadMovie, remove these calls");			
 			movie = new goVideoPlayer();
+			int mtime = ofGetElapsedTimeMillis();
 			movie->loadMovie(fullFilePath);
 			sequence->setMovie(movie);
 			sequence->prepareMovie();
+			printf("\n\t\tMovie time: %dms\n\n", ofGetElapsedTimeMillis() - mtime);
 
 			// completed sequence, insert to scene
 			scene->setSequence(sequence->getName(), sequence);
@@ -253,6 +272,7 @@ void SceneXMLParser::createAppModel(){
 			boost::split(keyParts, parsedDataIter->first, boost::is_any_of(":"));
 			sequence->setTransform(keyParts[2], transform);
 		}
+		printf("\n\tTotal time: %dms\n", ofGetElapsedTimeMillis() - ttime);
 	}
 }
 
@@ -267,13 +287,13 @@ void SceneXMLParser::parseXML(){
 	// Set up _xml root node
 	if(!_xml.tagExists("config")){ // quick check
 		LOG_ERROR("No config node in xml");
-		throw JungleException("No config and scenes node in xml");
+		throw GenericXMLParseException("No config and scenes node in xml");
 	}
 	_xml.pushTag("config");
 	LOG_VERBOSE("Parsing scene data");
 	if(!_xml.tagExists("scenes")){ // quick check
 		LOG_ERROR("No scenes node in xml!");
-		throw JungleException("No scenes node in xml");
+		throw GenericXMLParseException("No scenes node in xml");
 	}
 	_xml.pushTag("scenes");
 	// document root acceptable
@@ -281,7 +301,7 @@ void SceneXMLParser::parseXML(){
 	// sanity check
 	if(_xml.getNumTags("scene") == 0){
 		LOG_ERROR("No scene nodes in xml");
-		throw JungleException("No scene nodes to xml");
+		throw GenericXMLParseException("No scene nodes to xml");
 	}
 	
 	// push into each scene node
@@ -307,7 +327,7 @@ void SceneXMLParser::parseXML(){
 		// sanity check
 		if(_xml.getNumTags("sequence") == 0){
 			LOG_ERROR("No sequence nodes for scene in xml");
-			throw JungleException("No sequence nodes for scene in xml");
+			throw GenericXMLParseException("No sequence nodes for scene in xml");
 		}
 		// iterate over all the sequences
 		for(int seqNum = 0; seqNum < _xml.getNumTags("sequence"); seqNum++){
@@ -365,7 +385,7 @@ void SceneXMLParser::parseXML(){
 			// sanity check
 			if(_xml.getNumTags("transform") == 0){
 				LOG_ERROR("No transform nodes for sequence in xml");
-				throw JungleException("No transform nodes for sequence in xml");
+				throw GenericXMLParseException("No transform nodes for sequence in xml");
 			}
 			for(int transNum = 0; transNum < _xml.getNumTags("transform"); transNum++){
 				// check attributes
@@ -662,7 +682,8 @@ void SceneXMLParser::validateMovieTransformLengths(){
 	
 	// Check if we saved any broken pairs
 	if(transformFilesRequired.size() != 0){
-		throw transformFilesRequired; // missing transform files, throw that vector back
+		// missing transform files, throw exception
+		throw TransformMovieLengthMismatchException("Transform and movie lengths mismatch", transformFilesRequired);
 	}
 	
 }
@@ -716,7 +737,7 @@ string SceneXMLParser::findFullFilePathForFilename(string filename){
 
 // Expects to be pushed/popped into the correct level
 // checks that the given attribute exist for the given tag.
-// Throws JungleException with a message containing which attributes were missing
+// Throws GenericXMLParseException with a message containing which attributes were missing
 void SceneXMLParser::checkTagAttributesExist(string xmltag, vector<string> attributes, int which){
 	string message = "";
 	for(vector<string>::iterator iter = attributes.begin(); iter != attributes.end(); iter++){
@@ -732,7 +753,7 @@ void SceneXMLParser::checkTagAttributesExist(string xmltag, vector<string> attri
 		message = "Tag '" + xmltag + "'("+ofToString(which)+") missing attributes: " + message;
 		// throw exception
 		LOG_ERROR(message);
-		throw JungleException(message);
+		throw GenericXMLParseException(message);
 	}
 }
 

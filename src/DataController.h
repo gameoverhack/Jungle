@@ -45,7 +45,9 @@ public:
 	
 	DataControllerState getState();
 	string getStateMessage();
-	
+
+	void saveProperties();
+
 private:
 	
 	string					_stateMessage;
@@ -54,8 +56,12 @@ private:
 	string					_configFilePath;
 	
 	SceneXMLParser			*_sceneParser;
+	bool					_hasAttemptedReparse;
 
 	void updateAppLoadingState();
+	void rebuildXML();
+	void restartParseXML();				
+
 	
 };
 
