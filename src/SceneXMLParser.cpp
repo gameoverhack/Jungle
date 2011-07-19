@@ -37,7 +37,6 @@ void SceneXMLParser::update(){
 			parseXML();
 			_state = kSCENEXMLPARSER_VALIDATING_MOVIE_FILE_EXISTENCE;
 			break;
-
 		case kSCENEXMLPARSER_VALIDATING_MOVIE_FILE_EXISTENCE:
 			// Check that the map contains valid files (replace with temp fakes if it doesnt)
 			// throws JungleException if some files can't be fixed that should cause a crash since we can't go on at all.
@@ -77,7 +76,12 @@ void SceneXMLParser::update(){
 		case kSCENEXMLPARSER_VALIDATING_MOVIE_TRANSFORM_LENGTHS:
 			// Validate that transform and movie lengths are the same
 			try{
-				validateMovieTransformLengths();
+				if(validateMovieTransformLengths()){
+					// reset completedKeys set
+					_completedKeys.clear();
+					// done, goto next state
+					_state = kSCENEXMLPARSER_CREATING_APPMODEL;
+				}
 			}
 			catch (TransformMovieLengthMismatchException ex) {
 				// Some files were either missing or invalid (length mismatch), 
@@ -101,7 +105,6 @@ void SceneXMLParser::update(){
 					LOG_WARNING("Continuing without recreation of transform files");
 				}
 			}
-			_state = kSCENEXMLPARSER_CREATING_APPMODEL;
 			break;
 
 		case kSCENEXMLPARSER_CREATING_APPMODEL:
@@ -160,7 +163,8 @@ void SceneXMLParser::updateLoadingState(){
 			break;
 		case kSCENEXMLPARSER_VALIDATING_MOVIE_TRANSFORM_LENGTHS:
 			_loadingProgress = 0.6f;
-			_stateMessage = "Validating movie and transform frame counts...";
+			// state message set inside validateMovieTransformLenths method
+//			_stateMessage = "Validating movie and transform frame counts...";
 			break;
 		case kSCENEXMLPARSER_CREATING_APPMODEL:
 			_loadingProgress = 0.7f;
@@ -596,7 +600,7 @@ void SceneXMLParser::validateFileMetadata(){
 // checks that transform lengths are the same as their movies
 // might throw a vector<string> as an exception with the list of 
 // transforms which need to be recompiled
-void SceneXMLParser::validateMovieTransformLengths(){
+bool SceneXMLParser::validateMovieTransformLengths(){
 	goVideoPlayer *movie = NULL;
 	vector<CamTransform> transform;
 
@@ -605,9 +609,20 @@ void SceneXMLParser::validateMovieTransformLengths(){
 	
 	vector<string> transformFilesRequired;
 	
+	// check if total number of parsed keys matches total number of completed keys
+	if(_parsedData.size() == _completedKeys.size()){
+		return true; //we've checked all the keys
+	}
+	
 	// iterate over the whole parsed data map
 	map<string, map<string, string> >::iterator parsedDataIter;
 	for(parsedDataIter = _parsedData.begin(); parsedDataIter != _parsedData.end(); parsedDataIter++){
+		// Check if we've already processed
+		if(_completedKeys.find(parsedDataIter->first) != _completedKeys.end()){
+			continue; // already done this key
+		}
+		_stateMessage = "Validating movie and transform lengths: " + parsedDataIter->first;
+		
 		map<string, string> & kvmap = (parsedDataIter->second); // syntax convenience
 		LOG_VERBOSE("Validating movie+transform length for " + parsedDataIter->first);
 		
@@ -618,8 +633,16 @@ void SceneXMLParser::validateMovieTransformLengths(){
 				throw JungleException("No filename attribute in kvmap for " + parsedDataIter->first);
 			}
 		}
+		
+		if (kvmap["type"] == "scene") {
+			// bit of a hack, so we can do the parsedData.size == completedKeys.size, we have to
+			// add in the scenes too. We could be smarter are iterate the whole map, find out if they are
+			// sequenes or transforms, then check them vs the completedKeys, and then set a final state
+			// variable as "finished" if they're all present.
+			_completedKeys.insert(parsedDataIter->first);
+		}
 			
-		// handle each type (sequence, transfom or scene)
+		// Only care about sequences
 		if(kvmap["type"] == "sequence"){
 			try {
 				fileID = findFileIDForLister(kvmap["filename"]);
@@ -628,9 +651,11 @@ void SceneXMLParser::validateMovieTransformLengths(){
 				if(movie != NULL){
 					delete movie;
 				}
+				int timea = ofGetElapsedTimeMillis();
 				movie = new goVideoPlayer();
 				movie->setUseTexture(false);
 				movie->loadMovie(fullFilePath);
+				printf("check movie time: %d\n", ofGetElapsedTimeMillis() - timea);
 				
 			}
 			catch (JungleException je) {
@@ -639,44 +664,51 @@ void SceneXMLParser::validateMovieTransformLengths(){
 				// so if no file exists here, then we're screwed and should throw
 				throw je;
 			}
-		}
-		else if(kvmap["type"] == "transform"){
-			try {
-				// get file details
-				fileID = findFileIDForLister(kvmap["filename"]); // excepts on missing file
-				fullFilePath = _dirLister.getPath(fileID);
-			}
-			catch(JungleException je){
-				// transform file did not exist.
-				// cant continue with check, so we need to rebuild that.
-				transformFilesRequired.push_back(parsedDataIter->first);
-				continue; // can't check the rest of this stuff
+			
+			// find all the keys which are like this sequence key
+			// scene:sequence => scene:sequence:atk1 etc
+			regex similarPattern(parsedDataIter->first + ":.+?$");
+			map<string, map<string, string> >::iterator innerIter;
+			for(innerIter = _parsedData.begin(); innerIter != _parsedData.end(); innerIter++){
+				if(!regex_search(innerIter->first, similarPattern)){
+					continue; // NOT matched, keep looking
+				}
+				
+				// DID match, so check stuff 
+				map<string, string> & maptransform = (innerIter->second); // syntax convenience
+				try {
+					// get file details
+					fileID = findFileIDForLister(maptransform["filename"]); // excepts on missing file
+					fullFilePath = _dirLister.getPath(fileID);
+				}
+				catch(JungleException je){
+					// transform file did not exist.
+					// cant continue with check, so we need to rebuild that.
+					transformFilesRequired.push_back(innerIter->first);
+					continue; // can't check the rest of this stuff
+				}
+				
+				// load vector
+				transform.clear();
+				loadVector(fullFilePath, &transform);
+				//check vs movie
+				if(transform.size() != movie->getTotalNumFrames()){
+					// mismatch, need to regen
+					LOG_WARNING("Frame count mismatch for " + kvmap["filename"] 
+								+ "(transform " + ofToString((int)(transform.size())) + " vs movie " 
+								+ ofToString(movie->getTotalNumFrames())+")");
+					// Store a list of broken pairs
+					transformFilesRequired.push_back(parsedDataIter->first);
+				}
+				// save key as processesd
+				_completedKeys.insert(innerIter->first);
 			}
 
-			// if movie is null, then we have not loaded a movie to compare with, so fail
-			if(movie == NULL){
-				//throw JungleException("No movie loaded, can not check vector vs frames for " + kvmap["filename"]);
-				LOG_WARNING("No movie loaded (movie file didn't exist?), can not check frame count transform vs movie for "
-							+ parsedDataIter->first + ", assuming that video will get replaced later on,"
-							+ "including valid transform data");
-				continue; // can't check without a movie
-																												
-			}			
-			
-			// load vector
-			transform.clear();
-			loadVector(fullFilePath, &transform);
-			
-			//check vs movie
-			if(transform.size() != movie->getTotalNumFrames()){
-				// mismatch, need to regen
-				LOG_WARNING("Frame count mismatch for " + kvmap["filename"] 
-							+ "(transform " + ofToString((int)(transform.size())) + " vs movie " 
-							+ ofToString(movie->getTotalNumFrames())+")");
-				// Store a list of broken pairs
-				transformFilesRequired.push_back(parsedDataIter->first);
-			}				
-			
+			// save the key as processed
+			_completedKeys.insert(parsedDataIter->first);
+			break;	// break out of the iteration because we've done one check
+					// we should get recalled, which will cause us to check
+					// against the completed keys set, and we'll skip any we've done already
 		}
 	}
 	
@@ -686,6 +718,7 @@ void SceneXMLParser::validateMovieTransformLengths(){
 		throw TransformMovieLengthMismatchException("Transform and movie lengths mismatch", transformFilesRequired);
 	}
 	
+	return false; // still got keys to check
 }
 
 

@@ -54,14 +54,19 @@ private:
 	int						_numFiles;
 	map<string, int>		_filenameToDirListerIDMap; // maps filenames to _dirLister.getX(ID)
 
-	// scene/sequence or scene/sequence/transformname, map of values for end type (seq or transfrorm)
-	map<string, map<string, string> > _parsedData; 
-
+	// scene:sequence or scene:sequence:transformname, map of values for end type (seq or transfrorm)
+	map<string, map<string, string> >	_parsedData; 
+	
+	// convenience, save keys we've processed in some update methods 
+	// so we can re-enter and not re-process the same keys
+	set<string>							_completedKeys; 
+	
+	
 	// "doing" functions
 	void setupDirLister();
 	void populateDirListerIDMap();
 	void validateMovieFileExistence();
-	void validateMovieTransformLengths();
+	bool validateMovieTransformLengths();
 	void validateFileMetadata();
 	void createAppModel();
 	
