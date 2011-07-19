@@ -68,7 +68,7 @@ private:
 	void validateMovieFileExistence();
 	bool validateMovieTransformLengths();
 	void validateFileMetadata();
-	void createAppModel();
+	bool createAppModel();
 	
 	// Helper functions
 	bool compareFileinfo(string filename, map<string, string> fileInfo);

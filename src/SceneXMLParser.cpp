@@ -122,8 +122,11 @@ void SceneXMLParser::update(){
 			//		iter++;
 			//	}
 			// Checked file existence, checked metadata, checked transforms, OK to map => app model
-			createAppModel();
-			_state = kSCENEXMLPARSER_FINISHED;			
+			
+			if(createAppModel()){
+				_completedKeys.clear();
+				_state = kSCENEXMLPARSER_FINISHED;			
+			};
 			break;
 
 		case kSCENEXMLPARSER_FINISHED:			
@@ -168,7 +171,7 @@ void SceneXMLParser::updateLoadingState(){
 			break;
 		case kSCENEXMLPARSER_CREATING_APPMODEL:
 			_loadingProgress = 0.7f;
-			_stateMessage = "Creating app model from validated data...";
+//			_stateMessage = "Creating app model from validated data...";
 			break;
 		case kSCENEXMLPARSER_FINISHED:
 			_stateMessage = "Parser finished.";
@@ -195,7 +198,7 @@ void SceneXMLParser::updateLoadingState(){
 // The map is sorted alphabetically, so scenes are not in the order they are in the
 // xml, but there is a scene["orderInXML"] => int (eg: 0, 1, 2) which could be
 // checked when deciding what to use for the first scene.
-void SceneXMLParser::createAppModel(){
+bool SceneXMLParser::createAppModel(){
 
 	// used for object construction
 	Scene *scene = NULL;
@@ -210,74 +213,133 @@ void SceneXMLParser::createAppModel(){
 	bool hasCurrentScene = false; // used to set scene 0 to first current scene
 	bool hasCurrentSequence = false;
 	
+	// check if total number of parsed keys matches total number of completed keys
+	if(_parsedData.size() == _completedKeys.size()){
+		return true; //we've checked all the keys
+	}	
+	
 	LOG_VERBOSE("Creating map => model");
 	
+	// Initial iteration, find all scenes, add them to app model
+	// We have to do this separately beause we want per-sequence
+	// update message granularity
 	map<string, map<string, string> >::iterator parsedDataIter;
 	for(parsedDataIter = _parsedData.begin(); parsedDataIter != _parsedData.end(); parsedDataIter++){
-		int ttime = ofGetElapsedTimeMillis();
+		
+		if(_completedKeys.find(parsedDataIter->first) != _completedKeys.end()){
+			continue; // already done this key
+		}
 		
 		map<string, string> & kvmap = (parsedDataIter->second); // syntax convenience
 		LOG_VERBOSE("Converting " + kvmap["name"] + " ("+kvmap["type"]+")");
 		if(kvmap["type"] == "scene"){
 			scene = new Scene();
 			scene->setName(kvmap["name"]);
+			_appModel->setScene(scene->getName(), scene);
 			if(hasCurrentScene == false){
-				_appModel->setScene(scene->getName(), scene);
 				_appModel->setCurrentScene(scene->getName());
 				hasCurrentScene = true;
 			}
+			_completedKeys.insert(parsedDataIter->first); // key done, save it
 		}
-		if(kvmap["type"] == "sequence"){			
-			sequence = new Sequence();
-			sequence->setName(kvmap["name"]);
-			sequence->setNextSequenceName(kvmap["nextSequence"]);
-			LOG_VERBOSE("Set " + sequence->getName() + " nextSeq to " + sequence->getNextSequenceName());
-			// loop only stuff
-			regex isLoopRegex("_loop$");
-			if(regex_search(sequence->getName(), isLoopRegex)){
-				sequence->setAttackerResult(kvmap["attackerResult"]);
-				sequence->setVictimResult(kvmap["victimResult"]);
-			}
-			
-			// set interactivity
-			sequence->setInteractivity(kvmap["interactivity"]);
-			
-			// set whether we faked movie data
-			if(kvmap["validFile"] == "fake"){
-				sequence->setIsMovieFaked(true);
-			}
+	}
 
-			// Load movie stuff
-			fileID = findFileIDForLister(kvmap["filename"]);
-			fullFilePath = _dirLister.getPath(fileID);			
-			sequence->setMovieFullFilePath(fullFilePath);
+	// loop over all the keys, find which are sequences (scene:sequence, so two parts)
+	for(parsedDataIter = _parsedData.begin(); parsedDataIter != _parsedData.end(); parsedDataIter++){
 
-			LOG_WARNING("TODO: Load movie should be done else where, change this from loadMovie, remove these calls");			
-			movie = new goVideoPlayer();
-			int mtime = ofGetElapsedTimeMillis();
-			movie->loadMovie(fullFilePath);
-			sequence->setMovie(movie);
-			sequence->prepareMovie();
-			printf("\n\t\tMovie time: %dms\n\n", ofGetElapsedTimeMillis() - mtime);
+		if(_completedKeys.find(parsedDataIter->first) != _completedKeys.end()){
+			continue; // already done this key
+		}		
+		_stateMessage = "Creating app model for: " + parsedDataIter->first;
 
-			// completed sequence, insert to scene
-			scene->setSequence(sequence->getName(), sequence);
-			
-			// check if we're first sequence for this scene, if we are, set us to be current (ie first)
-			if(hasCurrentSequence == false){
-				scene->setCurrentSequence(sequence->getName());
-				hasCurrentSequence = true;
-			}
+		// split
+		vector<string> keyParts;
+		boost::split(keyParts, parsedDataIter->first, boost::is_any_of(":"));
+		
+		if(keyParts.size() != 2){
+			continue; // not a sequence
 		}
-		if(kvmap["type"] == "transform"){
+		
+		// is a sequence, so get the scene for this sequence
+		scene = _appModel->getScene(keyParts[0]);
+		
+		// Set up this sequence (including the transforms)			
+		map<string, string> & kvmap = (parsedDataIter->second); // syntax convenience
+		
+		// should be a sequence but check anyway
+		if(kvmap["type"] != "sequence"){
+			throw JungleException("Thought " + parsedDataIter->first + " was  sequence but its type was " + kvmap["type"]);
+		}
+		
+		// actually build the sequence parts
+		sequence = new Sequence();
+		sequence->setName(kvmap["name"]);
+		sequence->setNextSequenceName(kvmap["nextSequence"]);
+		LOG_VERBOSE("Set " + sequence->getName() + " nextSeq to " + sequence->getNextSequenceName());
+		// loop only stuff
+		regex isLoopRegex("_loop$");
+		if(regex_search(sequence->getName(), isLoopRegex)){
+			sequence->setAttackerResult(kvmap["attackerResult"]);
+			sequence->setVictimResult(kvmap["victimResult"]);
+		}
+		
+		// set interactivity
+		sequence->setInteractivity(kvmap["interactivity"]);
+		
+		// set whether we faked movie data
+		if(kvmap["validFile"] == "fake"){
+			sequence->setIsMovieFaked(true);
+		}
+		
+		// Load movie stuff
+		fileID = findFileIDForLister(kvmap["filename"]);
+		fullFilePath = _dirLister.getPath(fileID);			
+		sequence->setMovieFullFilePath(fullFilePath);
+		
+		LOG_WARNING("TODO: Load movie should be done else where, change this from loadMovie, remove these calls");			
+		movie = new goVideoPlayer();
+		int mtime = ofGetElapsedTimeMillis();
+		movie->loadMovie(fullFilePath);
+		sequence->setMovie(movie);
+		sequence->prepareMovie(); // THIS CALL TAKES ~ 300-400 ms
+		printf("\n\t\tMovie time: %dms\n\n", ofGetElapsedTimeMillis() - mtime);
+		
+		// completed sequence, insert to scene
+		scene->setSequence(sequence->getName(), sequence);
+		
+		// check if we're first sequence for this scene, if we are, set us to be current (ie first)
+		if(!scene->hasCurrentSequence()){
+			scene->setCurrentSequence(sequence->getName());
+			
+		}
+		
+		// Find the transforms for this sequence
+		regex transformPattern("^"+parsedDataIter->first + ":[^:]+?$");
+		map<string, map<string, string> >::iterator transformIter;
+		for(transformIter = _parsedData.begin(); transformIter != _parsedData.end(); transformIter++){
+			if(!regex_search(transformIter->first, transformPattern)){
+				continue; // NOT matched, keep looking
+			}
+			
+			kvmap = transformIter->second; // convenience
+			
+			// should be a transform but check
+			if(kvmap["type"] != "transform"){
+				throw JungleException("Thought " + transformIter->first + " was  transform but its type was " + kvmap["type"]);
+			}
+			
+			// do the transform stuff
 			transform = new vector<CamTransform>();
 			loadVector(findFullFilePathForFilename(kvmap["filename"]), transform);
 			vector<string> keyParts;
-			boost::split(keyParts, parsedDataIter->first, boost::is_any_of(":"));
+			boost::split(keyParts, transformIter->first, boost::is_any_of(":"));
 			sequence->setTransform(keyParts[2], transform);
+			_completedKeys.insert(transformIter->first); // key done, save it
 		}
-		printf("\n\tTotal time: %dms\n", ofGetElapsedTimeMillis() - ttime);
+		_completedKeys.insert(parsedDataIter->first); // key done, save it
+		break; // break out of the loop
 	}
+	return false;
 }
 
 
