@@ -25,6 +25,16 @@ void AppModel::setScene(string sceneName, Scene * scene){
 	_scenes.insert(pair<string, Scene *>(sceneName, scene));
 }
 
+Scene *AppModel::getScene(string sceneName){
+	map<string, Scene *>::iterator iter;
+	iter = _scenes.find(sceneName);
+	if(iter == _scenes.end()){
+		LOG_ERROR("Attempted to get invalid scene name " + sceneName);
+		abort();
+	}
+	return iter->second;
+}
+
 bool AppModel::setCurrentScene(string sceneName){
 	map<string, Scene *>::iterator iter;
 	iter = _scenes.find(sceneName);

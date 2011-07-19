@@ -279,6 +279,13 @@ public:
 		return _currentSequence;
 	}
 	
+	bool hasCurrentSequence(){
+		if(_currentSequence == NULL){
+			return false;
+		}
+		return true;
+	}
+	
 	// increments the current sequence to the next sequence (of the current sequence)
 	bool nextSequence(){
 		Sequence * seq = getCurrentSequence();

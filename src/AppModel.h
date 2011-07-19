@@ -40,6 +40,8 @@ public:
 	Scene			* getCurrentScene();
 	goVideoPlayer	* getSequenceMovie();
 	
+	Scene			*getScene(string sceneName);
+	
 	void		setCameraTextures(ofTexture * victimCamTex, ofTexture * attackCamTex);
 	ofTexture * getVictimCamTexRef();
 	ofTexture * getAttackCamTexRef();
