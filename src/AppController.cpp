@@ -14,16 +14,16 @@
 void AppController::setup() {
 	
 	// set up logger (should be first thing.)
-	LOGGER->setLogLevel(JU_LOG_WARNING);
+	LOGGER->setLogLevel(JU_LOG_VERBOSE);
 	
 	LOG_NOTICE("Initialising");
 	
 	// initial app state
 	_state = kAPPCONTROLLER_INIT;
-
+	
 	// set up datacontroller
 	_dataController = new DataController(ofToDataPath("config_properties.xml"));
-
+	
 	// setup cameras
 	_camControllers[0] = new CamController();
 	_camControllers[1] = new CamController();
@@ -63,7 +63,7 @@ void AppController::swapCameras() {
 
 //--------------------------------------------------------------
 void AppController::update() {
-//	LOG_VERBOSE("Updating");
+	//	LOG_VERBOSE("Updating");
 	
 	// if we're loading, update datacontroller
 	if(_state == kAPPCONTROLLER_LOADING){
@@ -74,7 +74,7 @@ void AppController::update() {
 			_appModel->setProperty("appState", (int)kAPPCONTROLLER_RUNNING);
 		}
 	}
-
+	
 	// running, so update scenes, etc
 	if(_state == kAPPCONTROLLER_RUNNING){
 		
@@ -93,26 +93,24 @@ void AppController::update() {
 		// else continue playing this video
 		movie = currentSequence->getMovie();
 		
-		// update the movie
-		movie->update();
-		
 		// check if sequence was interactive
-		if(currentSequence->getInteractivity() == "both"){
+		if (currentSequence->getInteractivity() == "both"){
 			// Check for interactive event
 			// this->hasInteractiveEventFlag()
 			// we have had an interactive event
 			int userAction = boost::any_cast<int>(_appModel->getProperty("userAction"));
-			if( userAction == kAttackerAction){
+			if (userAction == kAttackerAction){
 				LOG_VERBOSE("Interactive action: Attacker");	
 				_appModel->setProperty("userAction", kNoUserAction);
 				currentScene->setCurrentSequence(currentSequence->getAttackerResult());
-			}
-			else if(userAction == kVictimAction){
+			} else if (userAction == kVictimAction){
 				LOG_VERBOSE("Interactive action: Victim");	
 				_appModel->setProperty("userAction", kNoUserAction);
 				currentScene->setCurrentSequence(currentSequence->getVictimResult());
 			}
-		} else if(currentSequence->getInteractivity() == "victim"){
+		}
+		
+		if (currentSequence->getInteractivity() == "victim") {
 			int userAction = boost::any_cast<int>(_appModel->getProperty("userAction"));
 			if(userAction == kVictimAction){
 				LOG_VERBOSE("Interactive action: Victim");
@@ -121,30 +119,39 @@ void AppController::update() {
 				Sequence *loopseq = currentScene->getSequence(currentSequence->getNextSequenceName());
 				currentScene->setCurrentSequence(loopseq->getVictimResult());
 			}
-		} else {
-			// Not interactive movie
-			
-			if(movie->getIsMovieDone()){
-				// at end of non interactive movie, change to next sequence
-				if(currentScene->nextSequence()){
-					// loaded next sequence in this scene, keep going
-				}
-				else{
-					// couldn't load next sequence, there isn't one etc
-					// set this scenes sequence to first sequence (for when we get back to it)
-					// TODO:	This needs a method, can just use the key order since our keys are alpha ordered, 
-					//			i feel odd about doing that though. I guess it is guarenteed though.
-					//				currentScene->setCurrentSequence(0); 
-					LOG_WARNING("Current scene ended, but no method to rewind current scene to first sequence. Loading next scene anyway");
-					// load next scene
-					_appModel->nextScene();
-					currentScene = _appModel->getCurrentScene();
-					currentSequence = currentScene->getCurrentSequence();
-				}
+		} 
+		
+		
+		// TODO: we just hacked this back to working order!!!
+		
+		// Not interactive movie
+		LOG_VERBOSE(ofToString(movie->getCurrentFrame()));
+		if(movie->getIsMovieDone()){
+			LOG_VERBOSE("It is done, Luke");
+			// at end of non interactive movie, change to next sequence
+			if(currentScene->nextSequence()){
+				// loaded next sequence in this scene, keep going
+				LOG_VERBOSE("Should have gone to next sequence");
+			} else {
+				// couldn't load next sequence, there isn't one etc
+				// set this scenes sequence to first sequence (for when we get back to it)
+				// TODO:	This needs a method, can just use the key order since our keys are alpha ordered, 
+				//			i feel odd about doing that though. I guess it is guarenteed though.
+				//				currentScene->setCurrentSequence(0); 
+				LOG_WARNING("Current scene ended, but no method to rewind current scene to first sequence. Loading next scene anyway");
+				// load next scene
+				_appModel->nextScene();
+				currentScene = _appModel->getCurrentScene();
+				currentSequence = currentScene->getCurrentSequence();
 			}
-			// have to call this incase it changed
-			movie = currentSequence->getMovie();
 		}
+		// have to call this incase it changed
+		movie = currentSequence->getMovie();
+		
+		
+		// update the movie
+		movie->update();
+		
 	}
 	
 	// always update the view
@@ -153,7 +160,7 @@ void AppController::update() {
 
 //--------------------------------------------------------------
 void AppController::draw() {
-//	LOG_VERBOSE("Drawing");
+	//	LOG_VERBOSE("Drawing");
 	ofSetColor(255, 255, 255, 255);
 	_appView->draw();
 	
@@ -213,7 +220,7 @@ void AppController::keyPressed(int key){
 		default:
 			break;
 	}
-
+	
 	_appModel->setProperty("shaderBlendRatio", blend);
 	_appModel->setProperty("shaderGammaCorrection", gamma);
 	

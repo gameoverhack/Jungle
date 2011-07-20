@@ -69,7 +69,6 @@ void DataController::update(){
 				if(!boost::any_cast<bool>(_appModel->getProperty("parseRequiresTransformReanalysis"))){
 					LOG_WARNING("Continuing without rebuilding transforms");
 				}
-				
 				LOG_ERROR("PUT START ANALYSE CODE HERE");
 				abort();
 

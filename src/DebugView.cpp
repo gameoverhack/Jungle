@@ -28,6 +28,8 @@ void DebugView::update(){
 	int currentFrame	= currentMovie->getCurrentFrame();
 	int totalFrames		= currentMovie->getTotalNumFrames();
 	
+	currentFrame = CLAMP(currentFrame, 0, totalFrames-1); // why are you so cruel?
+	
 	msg += "vic1 Transform: " + currentSequence->getTransformAsString("vic1", currentFrame) + "\n";
 	msg += "atk1 Transform: " + currentSequence->getTransformAsString("atk1", currentFrame) + "\n";
 	if (currentSequence->getTransformCount() > 2) {

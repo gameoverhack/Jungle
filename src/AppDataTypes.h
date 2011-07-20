@@ -288,7 +288,9 @@ public:
 	
 	// increments the current sequence to the next sequence (of the current sequence)
 	bool nextSequence(){
+		
 		Sequence * seq = getCurrentSequence();
+		LOG_VERBOSE(seq->getName());
 		/*
 			we're on the last sequence of this scene if
 				- sequence is not interactive
@@ -303,9 +305,10 @@ public:
 		 */
 		
 		if(_currentSequence->getNextSequenceName()== kLAST_SEQUENCE_TOKEN){
+			LOG_VERBOSE("It's not true");
 			return false;
 		}
-		
+		LOG_VERBOSE("It is true");
 		// not last sequence, so set next
 		setCurrentSequence(_currentSequence->getNextSequenceName());
 		return true;

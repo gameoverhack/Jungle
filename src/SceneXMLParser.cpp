@@ -18,7 +18,8 @@ SceneXMLParser::SceneXMLParser(string dataPath, string xmlFile) : IXMLParser(xml
 	LOG_VERBOSE("SceneXMLParser Initialised");
 }
 
-void SceneXMLParser::update(){
+void SceneXMLParser::update() {
+	
 	switch (_state) {
 			
 		case kSCENEXMLPARSER_INIT:
