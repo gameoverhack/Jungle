@@ -98,7 +98,7 @@ void DataController::update(){
 			abort();
 
 		default:
-			LOG_ERROR("Unknown state " + _state);
+			LOG_ERROR("Unknown state " + ofToString(_state));
 	}
 	updateAppLoadingState();
 }

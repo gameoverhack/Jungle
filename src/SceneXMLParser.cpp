@@ -11,17 +11,17 @@
 #include "JungleExceptions.h"
 
 void SceneXMLParser::listParsedData(){	
-	map<string, map<string, string> >::iterator iter;
-	iter = _parsedData.begin();	
-	while (iter != _parsedData.end()) {
-		printf("%s =| \n", (iter->first).c_str());
+	map<string, map<string, string> >::iterator invalidIter;
+	invalidIter = _parsedData.begin();	
+	while (invalidIter != _parsedData.end()) {
+		printf("%s =| \n", (invalidIter->first).c_str());
 		map<string, string>::iterator iter2;
-		iter2 = iter->second.begin();
-		while(iter2 != iter->second.end()){
+		iter2 = invalidIter->second.begin();
+		while(iter2 != invalidIter->second.end()){
 			printf("\t%s => %s\n", (iter2->first).c_str(), (iter2->second).c_str());
 			iter2++;
 		}
-		iter++;
+		invalidIter++;
 	}
 }
 
@@ -52,7 +52,7 @@ void SceneXMLParser::update() {
 			// make map (map<string, map<string, string> _parsedData) from xml
 			parseXML();
 			_state = kSCENEXMLPARSER_VALIDATING_MOVIE_FILE_EXISTENCE;
-			listParsedData();
+			//listParsedData();
 			break;
 		case kSCENEXMLPARSER_VALIDATING_MOVIE_FILE_EXISTENCE:
 			validateSequenceExistence();
@@ -80,8 +80,8 @@ void SceneXMLParser::update() {
 				// Some files were invalid, we should report this, and throw an exception
 				// who ever caled us should created a SceneXMLBuilder and rebuild the xml
 				string message = "";
-				for(vector<string>::iterator iter = vec.begin(); iter != vec.end(); iter++){
-					message = *iter + ", " + message;
+				for(vector<string>::iterator invalidIter = vec.begin(); invalidIter != vec.end(); invalidIter++){
+					message = *invalidIter + ", " + message;
 				}
 				message[message.length()-1] = ' ';
 				message = "Metadata xml vs hdd mismatch for files: " + message;
@@ -106,8 +106,8 @@ void SceneXMLParser::update() {
 				// log an error and pass the missing files back up so whoever called us
 				// can make the files with the analyser.
 				string message = "";
-				for(vector<string>::iterator iter = ex._names.begin(); iter != ex._names.end(); iter++){
-					message = *iter + ", " + message;
+				for(vector<string>::iterator invalidIter = ex._names.begin(); invalidIter != ex._names.end(); invalidIter++){
+					message = *invalidIter + ", " + message;
 				}
 				message[message.length()-1] = ' ';
 				LOG_ERROR("Require reanalysis/creation of transform files: " + message);
@@ -128,21 +128,8 @@ void SceneXMLParser::update() {
 		case kSCENEXMLPARSER_CREATING_APPMODEL:
 		{
 			//	UNCOMMENT THIS TO SEE THE MAP STRUCTURE.
-			printf("%d\n", _parsedData.size());
-			
-			map<string, map<string, string> >::iterator iter;
-			iter = _parsedData.begin();	
-			while (iter != _parsedData.end()) {
-				printf("%s =| \n", (iter->first).c_str());
-				map<string, string>::iterator iter2;
-				iter2 = iter->second.begin();
-				while(iter2 != iter->second.end()){
-					printf("\t%s => %s\n", (iter2->first).c_str(), (iter2->second).c_str());
-					iter2++;
-				}
-				iter++;
-			}
-			abort();			// Checked file existence, checked metadata, checked transforms, OK to map => app model
+			//listParsedData();
+			// Checked file existence, checked metadata, checked transforms, OK to map => app model
 			
 			if(createAppModel()){
 				_completedKeys.clear();
@@ -526,7 +513,7 @@ void SceneXMLParser::parseXML(){
 }
 
 void SceneXMLParser::validateSequenceExistence(){
-	set<string> > invalids;
+	set<string> invalids;
 	
 	// iterate over all the keys
 	map<string, map<string, string> >::iterator parsedDataIter;
@@ -535,6 +522,8 @@ void SceneXMLParser::validateSequenceExistence(){
 		if(kvmap["type"] == "scene" || kvmap["type"] == "transform"){
 			continue;
 		}
+		
+		
 		
 		// find type,
 		// if loop, check attackerResult, check victimResult
@@ -556,7 +545,7 @@ void SceneXMLParser::validateSequenceExistence(){
 			if(_parsedData.find(checkKey) == _parsedData.end()){
 				LOG_VERBOSE("\t\tDid not find! Adding to invalids");
 				// is invalid, so store in invalid vector
-				invalids.insert(make_pair(checkKey, );
+				invalids.insert(checkKey);
 			}
 			checkKey = keySplit[0] + ":" +  kvmap["victimResult"];
 			LOG_VERBOSE("\tfind "+checkKey);
@@ -564,7 +553,7 @@ void SceneXMLParser::validateSequenceExistence(){
 				LOG_VERBOSE("\t\tDid not find! Adding to invalids");
 				// is invalid, so store in invalid vector
 				invalids.insert(checkKey);
-			}			
+			}
 		}
 		if(kvmap["sequenceType"] == "a_sequence"){
 						LOG_VERBOSE("\ta seq type");
@@ -586,22 +575,54 @@ void SceneXMLParser::validateSequenceExistence(){
 				invalids.insert(checkKey);
 			}			
 		}
-		if(kvmap["sequence_type"] == "b_sequence"){
+		if(kvmap["sequenceType"] == "b_sequence"){
 			LOG_VERBOSE("\b seq type");
-			if(kvmap["nextSequence"] != "__FINAL_SEQUENCE__"){
-				LOG_WARNING(kvmap["name"] + " nextSequence was not __FINAL_SEQUENCE_, was " + kvmap["nextSequence"] + ", Fixing");
-				kvmap["nextSequence"] = "__FINAL_SEQUENCE__";
+			if(kvmap["nextSequence"] != kLAST_SEQUENCE_TOKEN){
+				LOG_WARNING(kvmap["name"] + " nextSequence was not "+kLAST_SEQUENCE_TOKEN+", was " + kvmap["nextSequence"] + ", Fixing");
+				kvmap["nextSequence"] = kLAST_SEQUENCE_TOKEN;
 			}
 		}
 	}
 	
 	printf("Invalids: \n");
-	for(set<string>::iterator iter = invalids.begin(); iter != invalids.end(); iter++){
-		// check invalids key type and clone over an existing
+	for(set<string>::iterator invalidIter = invalids.begin(); invalidIter != invalids.end(); invalidIter++){
+		printf("Checking: %s\n", (*invalidIter).c_str());
+		// check invalids key type and clone over an existing sequence of the same type
+		// check for loop type
+
+		// build our regex
+		vector<string> invalidKeySplit;
+		boost::split(invalidKeySplit, *invalidIter, boost::is_any_of(":"));
+		string regexPattern = invalidKeySplit[0]+":seq\\d+"; // our scene, any sequence
+		if(regex_search(invalidKeySplit[1], regex("_loop"))){
+			regexPattern = regexPattern + ".+?_loop$"; // we are a loop, so find another loop, must be at end of key
+		}
+		else{
+			// find a type sequences for invalid a type sequences, b for b's.
+			if(regex_search(invalidKeySplit[1], regex("a$"))){
+				regexPattern = regexPattern + "a$";
+			}
+			else{
+				regexPattern = regexPattern + "b$";
+			}
+		}
 		
-		printf("%s\n", (*iter).c_str());
+		regex similarTo = regex(regexPattern);
+		LOG_VERBOSE("\tSearching for key similar to " + regexPattern);
+		
+		// iterate over parsed data, comparing keys
+		for(parsedDataIter = _parsedData.begin(); parsedDataIter != _parsedData.end(); parsedDataIter++){
+			if(regex_search(parsedDataIter->first, similarTo)){
+				// we have to construct some parts by guessing
+				// name, next sequence for loops/type a sequences.
+				string saveName = _parsedData[*invalidIter]["name"]; // save the name
+				
+				_parsedData[*invalidIter] = _parsedData[parsedDataIter->first];
+				break;
+			}
+		}
 	}
-	abort();
+	//listParsedData();
 }
 
 
@@ -641,25 +662,25 @@ void SceneXMLParser::validateMovieFileExistence(){
 	}
 	
 	printf("Invalids");
-	for(vector<string>::iterator iter = invalids.begin(); iter != invalids.end(); iter++){
-		printf("%s\n", (*iter).c_str());
+	for(vector<string>::iterator invalidIter = invalids.begin(); invalidIter != invalids.end(); invalidIter++){
+		printf("%s\n", (*invalidIter).c_str());
 	}
-	abort();
 	
 	// Now actually fix up invalid files.
-	for (vector<string>::iterator iter = invalids.begin(); iter != invalids.end(); iter++) {
+	for (vector<string>::iterator invalidIter = invalids.begin(); invalidIter != invalids.end(); invalidIter++) {
 		// check for keys that are similar to the key we have
-		LOG_WARNING("Fixing non existant movie for " + *iter);
+		LOG_WARNING("Fixing non existant movie for " + *invalidIter);
 		
 		// build our regex
 		vector<string> invalidKeySplit;
-		boost::split(invalidKeySplit, *iter, boost::is_any_of(":"));
+		boost::split(invalidKeySplit, *invalidIter, boost::is_any_of(":"));
 		string regexPattern = invalidKeySplit[0]+":seq\\d+"; // our scene, any sequence
 		if(regex_search(invalidKeySplit[1], regex("_loop"))){
 			regexPattern = regexPattern + ".+?_loop$"; // we are a loop, so find another loop, must be at end of key
 		}
 		else{
-			regexPattern = regexPattern + "$"; // must be at end of key
+			LOG_ERROR("TODO: CHECK THIS REGEX! CHECK THIS REGEX! CHECK THIS REGEX! CHECK THIS REGEX! CHECK THIS REGEX");
+			regexPattern = regexPattern + "[a|b]$"; // must be at end of key
 		}
 		regex similarTo = regex(regexPattern);
 		LOG_VERBOSE("Searching for key similar to " + regexPattern);
@@ -668,7 +689,7 @@ void SceneXMLParser::validateMovieFileExistence(){
 		for(parsedDataIter = _parsedData.begin(); parsedDataIter != _parsedData.end(); parsedDataIter++){
 			if(regex_search(parsedDataIter->first, similarTo)){
 				// found a similar key, copy values, make sure it is valid
-				string bad = *iter;
+				string bad = *invalidIter;
 				string good = parsedDataIter->first;
 				
 				if(_parsedData[good]["validFile"] != "valid"){
@@ -709,15 +730,15 @@ void SceneXMLParser::validateMovieFileExistence(){
 	// once again, iterate over the invalids, check for any that are still "invalid"
 	// and add them to a new vector which we'll throw as an exception
 	vector<string> couldNotFix;
-	for (vector<string>::iterator iter = invalids.begin(); iter != invalids.end(); iter++) {
-		if(_parsedData[*iter]["validFile"] == "invalid"){
-			couldNotFix.push_back(*iter);
+	for (vector<string>::iterator invalidIter = invalids.begin(); invalidIter != invalids.end(); invalidIter++) {
+		if(_parsedData[*invalidIter]["validFile"] == "invalid"){
+			couldNotFix.push_back(*invalidIter);
 		}
 	}
 	if(couldNotFix.size() != 0){
 		string message = "";
-		for(vector<string>::iterator iter = couldNotFix.begin(); iter != couldNotFix.end(); iter++){
-			message = message + *iter + ", ";
+		for(vector<string>::iterator invalidIter = couldNotFix.begin(); invalidIter != couldNotFix.end(); invalidIter++){
+			message = message + *invalidIter + ", ";
 		}
 		message[message.length()-1] = ' ';
 		message = "No movies for these keys " + message + ", attempted fix but failed. " 
@@ -773,8 +794,8 @@ void SceneXMLParser::validateFileMetadata(){
 	
 	if(invalidFiles.size() != 0){
 		// have invalids, make vector of them
-		for(set<string>::iterator iter = invalidFiles.begin(); iter != invalidFiles.end(); iter++){
-			invalidFilesVector.push_back(*iter);
+		for(set<string>::iterator invalidIter = invalidFiles.begin(); invalidIter != invalidFiles.end(); invalidIter++){
+			invalidFilesVector.push_back(*invalidIter);
 		}
 		throw invalidFilesVector;
 	}
@@ -960,9 +981,9 @@ string SceneXMLParser::findFullFilePathForFilename(string filename){
 // Throws GenericXMLParseException with a message containing which attributes were missing
 void SceneXMLParser::checkTagAttributesExist(string xmltag, vector<string> attributes, int which){
 	string message = "";
-	for(vector<string>::iterator iter = attributes.begin(); iter != attributes.end(); iter++){
-		if(!_xml.attributeExists(xmltag, *iter, which)){
-			message = message + *iter + ","; // build list of missing
+	for(vector<string>::iterator invalidIter = attributes.begin(); invalidIter != attributes.end(); invalidIter++){
+		if(!_xml.attributeExists(xmltag, *invalidIter, which)){
+			message = message + *invalidIter + ","; // build list of missing
 		}
 	}
 	
