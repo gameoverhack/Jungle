@@ -127,22 +127,9 @@ void SceneXMLParser::update() {
 
 		case kSCENEXMLPARSER_CREATING_APPMODEL:
 		{
-			//	UNCOMMENT THIS TO SEE THE MAP STRUCTURE.
-//			printf("%d\n", _parsedData.size());
-//			map<string, map<string, string> >::iterator iter;
-//			iter = _parsedData.begin();	
-//			while (iter != _parsedData.end()) {
-//				printf("%s =| \n", (iter->first).c_str());
-//				map<string, string>::iterator iter2;
-//				iter2 = iter->second.begin();
-//				while(iter2 != iter->second.end()){
-//					printf("\t%s => %s\n", (iter2->first).c_str(), (iter2->second).c_str());
-//					iter2++;
-//				}
-//				iter++;
-//			}
-//			abort();			// Checked file existence, checked metadata, checked transforms, OK to map => app model
-			
+			// Checked file existence, checked metadata, checked transforms, OK to map => app model
+//			listParsedData();
+
 			if(createAppModel()){
 				_completedKeys.clear();
 				_state = kSCENEXMLPARSER_FINISHED;			
@@ -236,9 +223,7 @@ bool SceneXMLParser::createAppModel(){
 	// check if total number of parsed keys matches total number of completed keys
 	if(_parsedData.size() == _completedKeys.size()){
 		return true; //we've checked all the keys
-	}	
-	
-	LOG_VERBOSE("Creating map => model");
+	}
 	
 	// Initial iteration, find all scenes, add them to app model
 	// We have to do this separately beause we want per-sequence
@@ -251,8 +236,8 @@ bool SceneXMLParser::createAppModel(){
 		}
 		
 		map<string, string> & kvmap = (parsedDataIter->second); // syntax convenience
-		LOG_VERBOSE("Converting " + kvmap["name"] + " ("+kvmap["type"]+")");
 		if(kvmap["type"] == "scene"){
+			LOG_VERBOSE("xml => model for " + kvmap["name"] + " ("+kvmap["type"]+")");
 			scene = new Scene();
 			scene->setName(kvmap["name"]);
 			_appModel->setScene(scene->getName(), scene);
@@ -291,18 +276,19 @@ bool SceneXMLParser::createAppModel(){
 			throw JungleException("Thought " + parsedDataIter->first + " was  sequence but its type was " + kvmap["type"]);
 		}
 		
+		LOG_VERBOSE("xml => model for " + kvmap["name"] + " ("+kvmap["type"]+")");		
+
 		// actually build the sequence parts
 		sequence = new Sequence();
 		sequence->setName(kvmap["name"]);
 		sequence->setNextSequenceName(kvmap["nextSequence"]);
-		LOG_VERBOSE("Set " + sequence->getName() + " nextSeq to " + sequence->getNextSequenceName());
 		// loop only stuff
-		regex isLoopRegex("_loop$");
-		if(regex_search(sequence->getName(), isLoopRegex)){
+		if(kvmap["sequenceType"] == "loop"){
 			sequence->setAttackerResult(kvmap["attackerResult"]);
 			sequence->setVictimResult(kvmap["victimResult"]);
+		} else if(kvmap["sequenceType"] == "a"){
+			sequence->setVictimResult(kvmap["victimResult"]);
 		}
-
 		
 		// set if sequence is faked
 		if(kvmap["fakedSequence"] == "true"){
@@ -355,6 +341,8 @@ bool SceneXMLParser::createAppModel(){
 			if(kvmap["type"] != "transform"){
 				throw JungleException("Thought " + transformIter->first + " was  transform but its type was " + kvmap["type"]);
 			}
+			
+			LOG_VERBOSE("xml => model for " + kvmap["name"] + " ("+kvmap["type"]+")");
 			
 			// do the transform stuff
 			transform = new vector<CamTransform>();
@@ -767,7 +755,7 @@ bool SceneXMLParser::validateMovieTransformLengths(){
 				movie = new goVideoPlayer();
 				movie->setUseTexture(false);
 				movie->loadMovie(fullFilePath);
-				printf("check movie load time: %d\n", ofGetElapsedTimeMillis() - timea);
+				//printf("check movie load time: %d\n", ofGetElapsedTimeMillis() - timea);
 				
 			}
 			catch (JungleException je) {
