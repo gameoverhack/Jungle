@@ -102,7 +102,9 @@ void DataController::update(){
 		case kDATACONTROLLER_SCENE_ANALYSING:
 			LOG_ERROR("MAKE DATA ANYALYSER HERE.");
 			abort();
-
+		case kDATACONTROLLER_FINISHED:
+			LOG_VERBOSE("Data controller is finished.");
+			break;
 		default:
 			LOG_ERROR("Unknown state " + _state);
 	}
