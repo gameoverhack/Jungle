@@ -120,6 +120,8 @@ void AppController::update() {
 		// get current scene
 		currentScene = _appModel->getCurrentScene();	
 		
+		currentScene->print();
+		
 		// get current sequence
 		currentSequence = currentScene->getCurrentSequence();
 		
