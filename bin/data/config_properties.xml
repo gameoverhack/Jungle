@@ -5,7 +5,7 @@
         <property name="appViewWidth" type="float">1280.000000</property>
         <property name="loadingMessage" type="string">Parser finished.</property>
         <property name="loadingProgress" type="float">1.000000</property>
-		<property name="xmlForceSceneBuildOnLoad" type="bool">false</property>
+		<property name="xmlForceSceneBuildOnLoad" type="bool">true</property>
         <property name="parseRebuildXML" type="bool">true</property>
         <property name="parseRequiresTransformReanalysis" type="bool">false</property>
         <property name="scenesDataPath" type="string">scenes</property>
