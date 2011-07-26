@@ -141,6 +141,13 @@ void SceneXMLBuilder::scanFiles(){
 					// seq01a -> seq01a_loop
 					fileInfo.insert(make_pair("nextSequence", substrings[1]+"_loop"));
 					fileInfo.insert(make_pair("interactivity", "victim"));
+
+					// seq01a -> seq02b
+					string resultSeqName = substrings[1]; // seq01a (ignores loop part which is substrings[2] if present
+					resultSeqName = createNextSequenceString(resultSeqName); // seq01a to seq02a
+					LOG_WARNING("MUST CONFIRM a_type sequence victimResult name is seq02b  (and not seq01b, probably isnt.)");
+					resultSeqName[resultSeqName.length()-1] = 'b'; // make seq02a into seq02b TODO: this might be wrong name
+					fileInfo.insert(make_pair("victimResult", resultSeqName));
 				}
 				else{
 					LOG_ERROR("Found a file, but name does not describe type!: " + fullname);
@@ -222,6 +229,9 @@ void SceneXMLBuilder::buildXML(){
 			}
 			// every sequence has this stuff
 			_xml.setAttribute("sequence", "interactivity", fileInfo["interactivity"], which);
+			if(fileInfo["interactivity"] == "victim"){
+				_xml.setAttribute("sequence", "victimResult", fileInfo["victimResult"], which);
+			}
 			// seq01a -> seq01a_loop
 			// seq01a_loop N-> seq01a_loop
 			_xml.addAttribute("sequence", "nextSequence", fileInfo["nextSequence"], which);

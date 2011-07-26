@@ -65,12 +65,14 @@ private:
 	// "doing" functions
 	void setupDirLister();
 	void populateDirListerIDMap();
+	void validateSequenceExistence();
 	void validateMovieFileExistence();
 	bool validateMovieTransformLengths();
 	void validateFileMetadata();
 	bool createAppModel();
 	
 	// Helper functions
+	void listParsedData();
 	bool compareFileinfo(string filename, map<string, string> fileInfo);
 	void checkTagAttributesExist(string xmltag, vector<string> attributes, int which);	
 	int findFileIDForLister(string filename);

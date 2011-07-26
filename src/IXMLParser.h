@@ -26,7 +26,7 @@ public:
 		// quick check
 		if(!_xml.loadFile(ofToDataPath(_xmlFile))){
 			LOG_ERROR("Could not load scene config: " + ofToDataPath(_xmlFile) + ". Is there XML in it?");
-			throw JungleException("Could not load XML file " + _xmlFile);
+			throw GenericXMLParseException("Could not load XML file " + _xmlFile);
 		}
 	}
 
