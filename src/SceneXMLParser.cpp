@@ -526,7 +526,7 @@ void SceneXMLParser::parseXML(){
 }
 
 void SceneXMLParser::validateSequenceExistence(){
-	set<string> > invalids;
+	set<string> invalids;
 	
 	// iterate over all the keys
 	map<string, map<string, string> >::iterator parsedDataIter;
@@ -556,7 +556,7 @@ void SceneXMLParser::validateSequenceExistence(){
 			if(_parsedData.find(checkKey) == _parsedData.end()){
 				LOG_VERBOSE("\t\tDid not find! Adding to invalids");
 				// is invalid, so store in invalid vector
-				invalids.insert(make_pair(checkKey, );
+				invalids.insert(checkKey);
 			}
 			checkKey = keySplit[0] + ":" +  kvmap["victimResult"];
 			LOG_VERBOSE("\tfind "+checkKey);

@@ -22,6 +22,8 @@ using boost::regex_match;
 #include <map>
 #include <string>
 #include <vector>
+#include <set>
+using std::set;
 using std::map;
 using std::vector;
 using std::string;
@@ -30,6 +32,8 @@ using std::string;
 #include "goDirList.h"
 #include "Logger.h"
 #include "IXMLBuilder.h"
+#include "JungleExceptions.h"
+#include "Constants.h"
 
 // Some rules about scenes
 // -> = "leads to", N - no action, V - victim action, A - attacker action
@@ -69,6 +73,7 @@ private:
 	map<string, map<string, string> > _info; // filename, map
 
 	void setupLister();
+	void findAndFixInvalidSequences();
 	string createNextSequenceString(string seq);
 	int findSequenceWhich(string seqKey); // find 'which' value for key, see function for better explanation
 	int findSceneWhich(string sceneKey);
