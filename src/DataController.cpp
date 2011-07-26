@@ -17,8 +17,8 @@ DataController::DataController(string configFilePath)
 	// fire and forget
 	PropertyXMLParser propertyXMLParser(_configFilePath);
 
-	if(boost::any_cast<bool>(_appModel->getProperty("parseForceInitialBuildXML"))){
-		LOG_WARNING("Building XML due to force-on-run property");
+	if(boost::any_cast<bool>(_appModel->getProperty("xmlForceSceneBuildOnLoad"))){
+		LOG_WARNING("Building XML due to property xmlForceSceneBuildOnLoad = true");
 		rebuildXML();
 	}
 	
@@ -86,6 +86,12 @@ void DataController::update(){
 				LOG_WARNING("Rebuilding generic XML parse exception");
 				rebuildXML();
 				restartParseXML();
+			}
+			catch (JungleException ex){
+				// most likely get here if we can't fix a missing file issue
+				LOG_ERROR("Caught JungleException: " + ex._message);
+				LOG_ERROR("Don't know what to do, aborting.");
+				abort();
 			}
 			// if the parser is done, update our state
 			if(_sceneParser->getState() == kSCENEXMLPARSER_FINISHED){

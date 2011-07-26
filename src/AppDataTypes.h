@@ -60,6 +60,7 @@ public:
 		_movie = new goThreadedVideo();
 		//_movie = NULL;
 		_isMovieFaked = false;
+		_isSequenceFaked = false;
 	};
 	
 	~Sequence() {
@@ -109,6 +110,14 @@ public:
 	
 	bool getIsMovieFaked() {
 		return _isMovieFaked;
+	}
+	
+	void setIsSequenceFaked(bool b){
+		_isSequenceFaked = b;
+	}
+	
+	bool getIsSequenceFaked(){
+		return _isSequenceFaked;
 	}
 	
 	void setTransform(string key, vector<CamTransform> * transform){
@@ -219,6 +228,7 @@ private:
 	string					_victimResult;
 	string					_interactivity;
 	bool					_isMovieFaked;
+	bool					_isSequenceFaked;
 	string					_movieFullFilePath;
 
 public:

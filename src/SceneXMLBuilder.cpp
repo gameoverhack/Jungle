@@ -40,16 +40,14 @@ SceneXMLBuilder::SceneXMLBuilder(string dataPath, string xmlFile) : IXMLBuilder(
 	// Now check for any references to invalid sequences
 	findAndFixInvalidSequences();
 
-	printf("!!! Fixed files\n");
-	listStuff(_info);
+//	printf("!!! Fixed files\n");
+//	listStuff(_info);
 
 	buildXML();		// build xml
 	if(!save()){	// save xml
 		LOG_ERROR("Could not save XML");
 		abort();
-	}; 
-	exit(1);
-
+	};
 }
 
 // Set up file lister
@@ -443,7 +441,7 @@ void SceneXMLBuilder::buildXML(){
 			// add the transform node and its info
 			which = _xml.addTag("transform");
 			// set attributes for this transform
-			_xml.addAttribute("sequence", "faked", fileInfo["faked"], which);
+			_xml.addAttribute("transform", "faked", fileInfo["faked"], which);
 			_xml.addAttribute("transform", "filename", fileInfo["filename"], which);
 			_xml.addAttribute("transform", "size", fileInfo["size"], which);
 			_xml.addAttribute("transform", "dateCreated", fileInfo["dateCreated"], which);
@@ -453,6 +451,7 @@ void SceneXMLBuilder::buildXML(){
 			
 		}
 		else{
+			_xml.addAttribute("sequence", "sequenceType", fileInfo["type"], which);
 			if(fileInfo["type"] == "loop"){	
 				// loop specific stuff
 				// seq01a_loop V-> seq02b

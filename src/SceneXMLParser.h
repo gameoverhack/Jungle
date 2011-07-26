@@ -65,7 +65,6 @@ private:
 	// "doing" functions
 	void setupDirLister();
 	void populateDirListerIDMap();
-	void validateSequenceExistence();
 	void validateMovieFileExistence();
 	bool validateMovieTransformLengths();
 	void validateFileMetadata();

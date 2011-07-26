@@ -38,10 +38,12 @@ void SceneXMLParser::update() {
 	switch (_state) {
 			
 		case kSCENEXMLPARSER_INIT:
+			// nothing to do for init, move on to next state.
 			_state = kSCENEXMLPARSER_SETUP;
 			break;
-
+			
 		case kSCENEXMLPARSER_SETUP:
+			// setup whats needed to parse
 			setupDirLister(); // set up file lists;
 			populateDirListerIDMap();
 			load(); // load xml file
@@ -52,10 +54,8 @@ void SceneXMLParser::update() {
 			// make map (map<string, map<string, string> _parsedData) from xml
 			parseXML();
 			_state = kSCENEXMLPARSER_VALIDATING_MOVIE_FILE_EXISTENCE;
-			listParsedData();
 			break;
 		case kSCENEXMLPARSER_VALIDATING_MOVIE_FILE_EXISTENCE:
-			validateSequenceExistence();
 			// Check that the map contains valid files (replace with temp fakes if it doesnt)
 			// throws JungleException if some files can't be fixed that should cause a crash since we can't go on at all.
 			try{
@@ -120,7 +120,7 @@ void SceneXMLParser::update() {
 								// this state, and keep going.
 				}
 				else{
-					LOG_WARNING("Continuing without recreation of transform files");
+					LOG_WARNING("Continuing without recreation of transform files even though they are broken!");
 				}
 			}
 			break;
@@ -128,21 +128,20 @@ void SceneXMLParser::update() {
 		case kSCENEXMLPARSER_CREATING_APPMODEL:
 		{
 			//	UNCOMMENT THIS TO SEE THE MAP STRUCTURE.
-			printf("%d\n", _parsedData.size());
-			
-			map<string, map<string, string> >::iterator iter;
-			iter = _parsedData.begin();	
-			while (iter != _parsedData.end()) {
-				printf("%s =| \n", (iter->first).c_str());
-				map<string, string>::iterator iter2;
-				iter2 = iter->second.begin();
-				while(iter2 != iter->second.end()){
-					printf("\t%s => %s\n", (iter2->first).c_str(), (iter2->second).c_str());
-					iter2++;
-				}
-				iter++;
-			}
-			abort();			// Checked file existence, checked metadata, checked transforms, OK to map => app model
+//			printf("%d\n", _parsedData.size());
+//			map<string, map<string, string> >::iterator iter;
+//			iter = _parsedData.begin();	
+//			while (iter != _parsedData.end()) {
+//				printf("%s =| \n", (iter->first).c_str());
+//				map<string, string>::iterator iter2;
+//				iter2 = iter->second.begin();
+//				while(iter2 != iter->second.end()){
+//					printf("\t%s => %s\n", (iter2->first).c_str(), (iter2->second).c_str());
+//					iter2++;
+//				}
+//				iter++;
+//			}
+//			abort();			// Checked file existence, checked metadata, checked transforms, OK to map => app model
 			
 			if(createAppModel()){
 				_completedKeys.clear();
@@ -303,6 +302,13 @@ bool SceneXMLParser::createAppModel(){
 			sequence->setAttackerResult(kvmap["attackerResult"]);
 			sequence->setVictimResult(kvmap["victimResult"]);
 		}
+
+		
+		// set if sequence is faked
+		if(kvmap["fakedSequence"] == "true"){
+			sequence->setIsSequenceFaked(true);
+		}
+		
 		
 		// set interactivity
 		sequence->setInteractivity(kvmap["interactivity"]);
@@ -401,7 +407,7 @@ void SceneXMLParser::parseXML(){
 		checkTagAttributesExist("scene", attributesToCheck, sceneNum);
 
 		// Remember the name
-		sceneName = _xml.getAttribute("scene", "name",stringType, sceneNum);
+		sceneName = _xml.getAttribute("scene", "name", stringType, sceneNum);
 		LOG_VERBOSE("Parsing xml=>map scene: " + sceneName);
 
 		mapKey = sceneName;
@@ -428,19 +434,23 @@ void SceneXMLParser::parseXML(){
 			attributesToCheck.push_back("dateCreated");
 			attributesToCheck.push_back("interactivity");
 			attributesToCheck.push_back("nextSequence");
+			attributesToCheck.push_back("faked");
+			attributesToCheck.push_back("sequenceType");
+			attributesToCheck.push_back("filename");
 			checkTagAttributesExist("sequence", attributesToCheck, seqNum);			
 						
-			// Remember the name
+			// Remember the sequence name
 			sequenceName = _xml.getAttribute("sequence", "name", stringType, seqNum);
 			LOG_VERBOSE("Parsing xml=>map sequence: " + sequenceName);
 
 			// check for loop only attributes
-			regex isLoopRegex("_loop$");
-			if(regex_search(sequenceName, isLoopRegex)){
+			if(_xml.getAttribute("sequence", "sequenceType", stringType, seqNum) == "loop"){
 				attributesToCheck.push_back("attackerResult");
 				attributesToCheck.push_back("victimResult");
 				checkTagAttributesExist("sequence", attributesToCheck, seqNum);			
 			}
+			
+			// done checking, sequence node has all we'll need so build it up
 			
 			// construct key for parsed data map, rebuild instead of just append to be clearer
 			mapKey = sceneName+":"+sequenceName;
@@ -448,29 +458,28 @@ void SceneXMLParser::parseXML(){
 			// save some details
 			_parsedData[mapKey]["name"] = sequenceName;
 			_parsedData[mapKey]["type"] = "sequence";
+			_parsedData[mapKey]["fakedSequence"] = _xml.getAttribute("sequence", "faked", stringType, seqNum);
+			_parsedData[mapKey]["sequenceType"] = _xml.getAttribute("sequence", "sequenceType", stringType, seqNum);
 			_parsedData[mapKey]["nextSequence"] = _xml.getAttribute("sequence", "nextSequence", stringType, seqNum);
-			if(regex_search(sequenceName, isLoopRegex)){
+			
+			if(_parsedData[mapKey]["sequenceType"] == "loop"){
 				_parsedData[mapKey]["attackerResult"] = _xml.getAttribute("sequence", "attackerResult", stringType, seqNum);
 				_parsedData[mapKey]["victimResult"] = _xml.getAttribute("sequence", "victimResult", stringType, seqNum);
-				_parsedData[mapKey]["sequenceType"] = "loop";
 			} else{
 				// check if its an a or b
-				if(regex_search(sequenceName, regex("a$"))){
-					_parsedData[mapKey]["sequenceType"] = "a_sequence";
+				if(_parsedData[mapKey]["sequenceType"] == "a"){
 					// a type sequences have a victim result
 					attributesToCheck.push_back("victimResult");
 					checkTagAttributesExist("sequence", attributesToCheck, seqNum);
 					_parsedData[mapKey]["victimResult"] = _xml.getAttribute("sequence", "victimResult", stringType, seqNum);
 				} else {
-					_parsedData[mapKey]["sequenceType"] = "b_sequence";
+					// b type, nothing to set.
 				}
 			}
-				
-
 			   
 			// save movie file name
-			_parsedData[mapKey]["filename"] = sceneName+"_"+sequenceName+".mov";
-			_parsedData[mapKey]["validFile"] = "unvalidated";
+			_parsedData[mapKey]["filename"] = _xml.getAttribute("sequence", "filename", stringType, seqNum);
+			_parsedData[mapKey]["validFile"] = "unvalidated"; // haven't checked file yet
 			
 			// save all the file meta data
 			_parsedData[mapKey]["size"] = _xml.getAttribute("sequence", "size", stringType, seqNum);
@@ -497,6 +506,7 @@ void SceneXMLParser::parseXML(){
 				attributesToCheck.push_back("dateCreated");
 				checkTagAttributesExist("transform", attributesToCheck, transNum);
 				
+				// get atk1/2/vic1 from filename.
 				transformName = _xml.getAttribute("transform", "filename", stringType, transNum);
 				vector<string> splitName; 
 				boost::split(splitName, transformName, boost::is_any_of("_"));
@@ -517,91 +527,12 @@ void SceneXMLParser::parseXML(){
 			LOG_VERBOSE("Finished xml=>map sequence: " + sequenceName);
 		}
 		_xml.popTag(); // pop scene
-		LOG_VERBOSE("Currently xml=>map scene: " + sceneName);	
+		LOG_VERBOSE("Finishsed xml=>map scene: " + sceneName);	
 	}
 	
 
 	_xml.popTag(); // scenes pop
 	_xml.popTag(); // config pop
-}
-
-void SceneXMLParser::validateSequenceExistence(){
-	set<string> invalids;
-	
-	// iterate over all the keys
-	map<string, map<string, string> >::iterator parsedDataIter;
-	for(parsedDataIter = _parsedData.begin(); parsedDataIter != _parsedData.end(); parsedDataIter++){
-		map<string, string> & kvmap = (parsedDataIter->second); // syntax convenience
-		if(kvmap["type"] == "scene" || kvmap["type"] == "transform"){
-			continue;
-		}
-		
-		// find type,
-		// if loop, check attackerResult, check victimResult
-		// if a type seq, check victimResult, nextSEquence
-		// if b type, check that nextSequence == "__FINAL_SEQUENCE__"
-
-		// split up the key so we can check parts
-		vector<string> keySplit;
-		boost::split(keySplit, parsedDataIter->first, boost::is_any_of(":"));
-		string checkKey;
-		LOG_VERBOSE("Checking: " + parsedDataIter->first +" "+ kvmap["sequenceType"]);
-		
-		if(kvmap["sequenceType"] == "loop"){
-			LOG_VERBOSE("\tLoop type");
-			// loop checks
-			checkKey = keySplit[0] + ":" + kvmap["attackerResult"];
-			LOG_VERBOSE("\tfind "+checkKey);
-			// do the find
-			if(_parsedData.find(checkKey) == _parsedData.end()){
-				LOG_VERBOSE("\t\tDid not find! Adding to invalids");
-				// is invalid, so store in invalid vector
-				invalids.insert(checkKey);
-			}
-			checkKey = keySplit[0] + ":" +  kvmap["victimResult"];
-			LOG_VERBOSE("\tfind "+checkKey);
-			if(_parsedData.find(checkKey) == _parsedData.end()){
-				LOG_VERBOSE("\t\tDid not find! Adding to invalids");
-				// is invalid, so store in invalid vector
-				invalids.insert(checkKey);
-			}			
-		}
-		if(kvmap["sequenceType"] == "a_sequence"){
-						LOG_VERBOSE("\ta seq type");
-			// check victimResult and next sequence
-			// loop checks
-			checkKey = keySplit[0] + ":" +  kvmap["victimResult"];
-			LOG_VERBOSE("\tfind "+checkKey);
-			// do the find
-			if(_parsedData.find(checkKey) == _parsedData.end()){
-				LOG_VERBOSE("\t\tDid not find! Adding to invalids");
-				// is invalid, so store in invalid vector
-				invalids.insert(checkKey);
-			}
-			checkKey = keySplit[0] + ":" +  kvmap["nextSequence"];
-			LOG_VERBOSE("\tfind "+checkKey);
-			if(_parsedData.find(checkKey) == _parsedData.end()){
-				LOG_VERBOSE("\t\tDid not find! Adding to invalids");
-				// is invalid, so store in invalid vector
-				invalids.insert(checkKey);
-			}			
-		}
-		if(kvmap["sequence_type"] == "b_sequence"){
-			LOG_VERBOSE("\b seq type");
-			if(kvmap["nextSequence"] != "__FINAL_SEQUENCE__"){
-				LOG_WARNING(kvmap["name"] + " nextSequence was not __FINAL_SEQUENCE_, was " + kvmap["nextSequence"] + ", Fixing");
-				kvmap["nextSequence"] = "__FINAL_SEQUENCE__";
-			}
-		}
-	}
-	
-	printf("Invalids: \n");
-	for(set<string>::iterator iter = invalids.begin(); iter != invalids.end(); iter++){
-		// check invalids key type and clone over an existing
-		
-		printf("%s\n", (*iter).c_str());
-	}
-	abort();
 }
 
 
@@ -639,13 +570,7 @@ void SceneXMLParser::validateMovieFileExistence(){
 			invalids.push_back(parsedDataIter->first);
 		}
 	}
-	
-	printf("Invalids");
-	for(vector<string>::iterator iter = invalids.begin(); iter != invalids.end(); iter++){
-		printf("%s\n", (*iter).c_str());
-	}
-	abort();
-	
+		
 	// Now actually fix up invalid files.
 	for (vector<string>::iterator iter = invalids.begin(); iter != invalids.end(); iter++) {
 		// check for keys that are similar to the key we have
@@ -659,7 +584,12 @@ void SceneXMLParser::validateMovieFileExistence(){
 			regexPattern = regexPattern + ".+?_loop$"; // we are a loop, so find another loop, must be at end of key
 		}
 		else{
-			regexPattern = regexPattern + "$"; // must be at end of key
+			if(regex_search(invalidKeySplit[1], regex("a$"))){
+				regexPattern = regexPattern + "a$";
+			}
+			else{
+				regexPattern = regexPattern + "b$";
+			}
 		}
 		regex similarTo = regex(regexPattern);
 		LOG_VERBOSE("Searching for key similar to " + regexPattern);
@@ -674,7 +604,7 @@ void SceneXMLParser::validateMovieFileExistence(){
 				if(_parsedData[good]["validFile"] != "valid"){
 					continue; // similar key, but this keys files are invalid anyway, keep looking.
 				}
-				LOG_WARNING("Copying values: " + good + " => " + bad);
+				LOG_WARNING("Copying movie from " + good + " to " + bad);
 				
 				// copy movie stuff
 				_parsedData[bad]["filename"] = _parsedData[good]["filename"];
@@ -724,7 +654,6 @@ void SceneXMLParser::validateMovieFileExistence(){
 				+ "Either there was no other sequences for scene or all other sequences were invalid too.";
 		throw JungleException(message);
 	}
-	
 }
 
 // Checks that dateCreated, dateModified and size are the same on disk and in xml
