@@ -78,8 +78,8 @@ Sequence * AppModel::getCurrentSequence() {
 	return seq;
 }
 
-goVideoPlayer * AppModel::getSequenceMovie() {
-	goVideoPlayer * vid;
+goThreadedVideo * AppModel::getSequenceMovie() {
+	goThreadedVideo * vid;
 	vid = getCurrentSequence()->getMovie();
 	return vid;
 }

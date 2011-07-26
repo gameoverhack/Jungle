@@ -19,7 +19,7 @@
 using std::map;
 using std::pair;
 
-#include "goVideoPlayer.h"
+#include "goThreadedVideo.h"
 #include "Logger.h"
 #include "Constants.h"
 
@@ -56,57 +56,58 @@ class Sequence {
 
 public:
 	
-	Sequence(){
-		_movie = NULL;
+	Sequence() {
+		_movie = new goThreadedVideo();
+		//_movie = NULL;
 		_isMovieFaked = false;
 	};
 	
-	~Sequence(){
+	~Sequence() {
 		delete _movie;
 	};
 
-	string getName(){
+	string getName() {
 		return _name;
 	}
-	void setName(string name){
+	void setName(string name) {
 		_name = name;
 	}
 	
-	void setNextSequenceName(string ns){
+	void setNextSequenceName(string ns) {
 		_nextSequenceName = ns;
 	}
 	
-	string getNextSequenceName(){
+	string getNextSequenceName() {
 		return _nextSequenceName;
 	}
 	
-	void setAttackerResult(string str){
+	void setAttackerResult(string str) {
 		_attackerResult = str;
 	}
-	string getAttackerResult(){
+	string getAttackerResult() {
 		return _attackerResult;
 	}
 	
-	void setVictimResult(string str){
+	void setVictimResult(string str) {
 		_victimResult = str;
 	}
-	string getVictimResult(){
+	string getVictimResult() {
 		return _victimResult;
 	}
 	
-	void setMovieFullFilePath(string path){
+	void setMovieFullFilePath(string path) {
 		_movieFullFilePath = path;
 	}
 	
-	string getMovieFullFilePath(){
+	string getMovieFullFilePath() {
 		return _movieFullFilePath;
 	}
 	
-	void setIsMovieFaked(bool b){
+	void setIsMovieFaked(bool b) {
 		_isMovieFaked = b;
 	}
 	
-	bool getIsMovieFaked(){
+	bool getIsMovieFaked() {
 		return _isMovieFaked;
 	}
 	
@@ -118,7 +119,7 @@ public:
 		return _transforms.size();
 	}
 	
-	vector<CamTransform> * getTransformVector(string key){
+	vector<CamTransform> * getTransformVector(string key) {
 		map<string, vector<CamTransform> *>::iterator iter;
 		iter = _transforms.find(key);
 		if(iter == _transforms.end()){
@@ -142,22 +143,16 @@ public:
 		return tranString;
 	}
 	
-	void setMovie(goVideoPlayer *video){
-		if(_movie != NULL){
-			delete _movie;
-		}
-		_movie = video;
-	}
-	
-	goVideoPlayer * getMovie(){
+	goThreadedVideo * getMovie() {
+		//cout << _isMovieFaked << endl;
 		return _movie;
 	}
 	
-	void setInteractivity(string s){
+	void setInteractivity(string s) {
 		_interactivity = s;
 	}
 
-	string getInteractivity(){
+	string getInteractivity() {
 		return _interactivity;
 	}
 	
@@ -165,27 +160,55 @@ public:
 		_movie->setPaused(b);
 	}
 	
+	/*void setMovie(goThrededVideo *video){
+	 if(_movie != NULL){
+	 _movie->close();
+	 delete _movie;
+	 }
+	 _movie = video;
+	 }*/
+	
+	void loadMovie() {
+		/*if(_movie != NULL){
+			_movie->close();
+			//delete _movie;
+		}*/
+		resetMovie();
+		//_movie = new goThreadedVideo();
+		_movie->loadMovie(_movieFullFilePath);
+	}
+	
 	void prepareMovie() {
-		_movie->play();
-		// must be set after play ?
+		_movie->setPosition(0.0);
+		//_movie->play();
+		//_movie->psuedoUpdate();
+		//_movie->psuedoDraw();
+		// must be set after play ? // handled inside goThreaded
 		if(_interactivity == "both") {
 			// loop on interactive movies
 			_movie->setLoopState(OF_LOOP_NORMAL);
 		} else {
 			_movie->setLoopState(OF_LOOP_NONE);
 		}
-		setPaused(true);
+		
+		
+		
+		//setPaused(true);
 	}
 	
 	void resetMovie() {
 		if(_movie != NULL) {
-			//_movie->stop();
-			_movie->setPaused(true);
-			_movie->setPosition(0.0);
+			_movie->close();
+			//_movie->setPaused(true);
+			//_movie->setPosition(0.0);
 		} else {
+			//_movie = new goThreadedVideo();
+		}
+
+		/*else {
 			LOG_ERROR("Could not reset sequence movie, movie == NULL");
 			abort();
-		}
+		}*/
 	}
 	
 private:
@@ -200,7 +223,7 @@ private:
 
 public:
 
-	goVideoPlayer		* _movie;
+	goThreadedVideo		* _movie;
 	
 	map<string, vector<CamTransform> *> _transforms;
 };
@@ -250,13 +273,13 @@ public:
 		if(iter != _sequences.end()){
 			if(_currentSequence != NULL){
 				// reset video state for current sequence
-				_currentSequence->resetMovie();
+				//_currentSequence->resetMovie();
 			}
 
 			// set new current sequence
 			_currentSequence = iter->second;
 			// play new current sequence movie
-			_currentSequence->setPaused(false);
+			//_currentSequence->setPaused(false);
 			
 			LOG_NOTICE("Set current sequence to " + seq);
 			return true;

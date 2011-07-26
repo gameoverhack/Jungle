@@ -69,9 +69,35 @@ void AppController::update() {
 	if(_state == kAPPCONTROLLER_LOADING){
 		_dataController->update();
 		if(_dataController->getState() == kDATACONTROLLER_FINISHED){
-			// dc finished, update app controller state;
-			_state = kAPPCONTROLLER_RUNNING;
-			_appModel->setProperty("appState", (int)kAPPCONTROLLER_RUNNING);
+			
+			// dc finished load first movie
+			Scene			* currentScene;
+			Sequence		* currentSequence;
+			goThreadedVideo * movie;
+			
+			// get current scene
+			currentScene = _appModel->getCurrentScene();	
+			
+			// get current sequence
+			currentSequence = currentScene->getCurrentSequence();
+
+			if (currentSequence->getMovie()->getCurrentlyPlaying() == "") {
+				currentSequence->loadMovie();
+			} 
+			
+			// (re)get current movie
+			movie = currentSequence->getMovie();
+			
+			if (!movie->isLoaded()) {
+				movie->psuedoUpdate();
+				movie->psuedoDraw();
+			} else {
+				currentSequence->prepareMovie();
+				// first movie loaded, update app controller state;
+				_state = kAPPCONTROLLER_RUNNING;
+				_appModel->setProperty("appState", (int)kAPPCONTROLLER_RUNNING);	// this seems clunky???
+			}
+			
 		}
 	}
 	
@@ -81,20 +107,82 @@ void AppController::update() {
 		_camControllers[0]->update();
 		_camControllers[1]->update();
 		
-		Scene * currentScene;
-		Sequence * currentSequence;
-		goVideoPlayer * movie;
+		Scene			* currentScene;
+		Sequence		* currentSequence;
+		Sequence		* loopSequence;
+		Sequence		* attackSequence;
+		Sequence		* victimSequence;
+		goThreadedVideo * currentMovie;
+		goThreadedVideo * loopMovie;
+		goThreadedVideo * attackerMovie;
+		goThreadedVideo * victimMovie;
 		
 		// get current scene
 		currentScene = _appModel->getCurrentScene();	
+		
 		// get current sequence
 		currentSequence = currentScene->getCurrentSequence();
 		
-		// else continue playing this video
-		movie = currentSequence->getMovie();
+		// get current movie refs
+		currentMovie	= currentSequence->getMovie();
+		
+		//cout << currentSequence->getAttackerResult() << " " << currentSequence->getVictimResult() << endl;
+		
+		if (currentSequence->getNextSequenceName() != "") {
+			//cout << "loopCheckSeq" << endl;
+			loopSequence	= currentScene->getSequence(currentSequence->getNextSequenceName());
+			loopMovie		= loopSequence->getMovie();
+			
+			if (loopMovie->getCurrentlyPlaying() == "") {
+				cout << "loopLoad" << endl;
+				loopSequence->loadMovie();
+			}
+			/*if (!loopMovie->isLoaded()) {
+				loopMovie->psuedoUpdate();
+				loopMovie->psuedoDraw();
+			}*/
+		}
+		
+		if (currentSequence->getAttackerResult() != "") {
+			cout << "attkCheckSeq" << endl;
+			attackSequence	= currentScene->getSequence(currentSequence->getAttackerResult());
+			attackerMovie	= attackSequence->getMovie();
+			cout << attackerMovie << " " << attackerMovie->isLoading() << endl;
+			if (attackerMovie->getCurrentlyPlaying() == "") {
+				cout << "attackLoad" << endl;
+				attackSequence->loadMovie();
+			}
+			/*if (!attackerMovie->isLoaded()) {
+				attackerMovie->psuedoUpdate();
+				attackerMovie->psuedoDraw();
+			}*/
+		}
+		
+		if (currentSequence->getVictimResult() != "") {
+			cout << "vikkCheckSeq" << endl;
+			victimSequence	= currentScene->getSequence(currentSequence->getVictimResult());
+			victimMovie		= victimSequence->getMovie();
+			
+			if (victimMovie->getCurrentlyPlaying() == "") {
+				cout << "victimLoad" << endl;
+				victimSequence->loadMovie();
+			}
+			/*if (!victimSequence->isLoaded()) {
+				victimSequence->psuedoUpdate();
+				victimSequence->psuedoDraw();
+			}*/
+		}
+		
+		
+		/*if(currentMovie->getLoopState() ==  && currentSequence->getInteractivity() == "both") {
+			currentMovie->setLoopState(OF_LOOP_NORMAL);
+		} else {
+			currentMovie->setLoopState(OF_LOOP_NONE);
+		}*/
 		
 		// check if sequence was interactive
-		if (currentSequence->getInteractivity() == "both"){
+		if (currentSequence->getInteractivity() == "both") {
+
 			// Check for interactive event
 			// this->hasInteractiveEventFlag()
 			// we have had an interactive event
@@ -103,14 +191,23 @@ void AppController::update() {
 				LOG_VERBOSE("Interactive action: Attacker");	
 				_appModel->setProperty("userAction", kNoUserAction);
 				currentScene->setCurrentSequence(currentSequence->getAttackerResult());
+				//attackerMovie->setPosition(0);
+				attackerMovie->psuedoUpdate();
+				attackerMovie->psuedoDraw();
+				currentSequence->prepareMovie();
 			} else if (userAction == kVictimAction){
 				LOG_VERBOSE("Interactive action: Victim");	
 				_appModel->setProperty("userAction", kNoUserAction);
 				currentScene->setCurrentSequence(currentSequence->getVictimResult());
+				//victimMovie->setPosition(0);
+				victimMovie->psuedoUpdate();
+				victimMovie->psuedoDraw();
+				currentSequence->prepareMovie();
 			}
 		}
 		
 		if (currentSequence->getInteractivity() == "victim") {
+			
 			int userAction = boost::any_cast<int>(_appModel->getProperty("userAction"));
 			if(userAction == kVictimAction){
 				LOG_VERBOSE("Interactive action: Victim");
@@ -118,6 +215,10 @@ void AppController::update() {
 				// TODO Have to check how this works, but for now we'll try to get the next loop, then the victim result of that
 				Sequence *loopseq = currentScene->getSequence(currentSequence->getNextSequenceName());
 				currentScene->setCurrentSequence(loopseq->getVictimResult());
+				//victimMovie->setPosition(0);
+				victimMovie->psuedoUpdate();
+				victimMovie->psuedoDraw();
+				currentSequence->prepareMovie();
 			}
 		} 
 		
@@ -125,11 +226,15 @@ void AppController::update() {
 		// TODO: we just hacked this back to working order!!!
 		
 		// Not interactive movie
-		LOG_VERBOSE(ofToString(movie->getCurrentFrame()));
-		if(movie->getIsMovieDone()){
+		if(currentMovie->getIsMovieDone()){
 			LOG_VERBOSE("It is done, Luke");
+			/*loopMovie->setPosition(0);
+			*/
 			// at end of non interactive movie, change to next sequence
-			if(currentScene->nextSequence()){
+			if(currentScene->nextSequence()) {
+				loopMovie->psuedoUpdate();
+				loopMovie->psuedoDraw();
+				loopSequence->prepareMovie();
 				// loaded next sequence in this scene, keep going
 				LOG_VERBOSE("Should have gone to next sequence");
 			} else {
@@ -145,12 +250,13 @@ void AppController::update() {
 				currentSequence = currentScene->getCurrentSequence();
 			}
 		}
+		
 		// have to call this incase it changed
-		movie = currentSequence->getMovie();
+		currentMovie = currentSequence->getMovie();
 		
 		
 		// update the movie
-		movie->update();
+		currentMovie->update();
 		
 	}
 	

@@ -1,6 +1,6 @@
 <config>
     <properties>
-        <property name="appState" type="int">2</property>
+        <!--property name="appState" type="int">2</property-->
         <property name="appViewHeight" type="float">720.000000</property>
         <property name="appViewWidth" type="float">1280.000000</property>
         <property name="loadingMessage" type="string">Parser finished.</property>

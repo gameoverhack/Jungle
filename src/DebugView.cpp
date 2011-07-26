@@ -17,7 +17,7 @@ DebugView::DebugView(float width, float height) : BaseView(width, height){
 void DebugView::update(){
 	
 	// set pointers for current Scene, Sequence Movie etc
-	goVideoPlayer	* currentMovie		= _appModel->getSequenceMovie();
+	goThreadedVideo	* currentMovie		= _appModel->getSequenceMovie();
 	Sequence		* currentSequence	= _appModel->getCurrentSequence();
 	Scene			* currentScene		= _appModel->getCurrentScene();
 

@@ -38,7 +38,7 @@ public:
 
 	Sequence		* getCurrentSequence();
 	Scene			* getCurrentScene();
-	goVideoPlayer	* getSequenceMovie();
+	goThreadedVideo	* getSequenceMovie();
 	
 	Scene			*getScene(string sceneName);
 	

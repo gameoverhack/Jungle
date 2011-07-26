@@ -53,7 +53,7 @@ SceneView::SceneView(float width, float height) : BaseView(width ,height) {
 
 void SceneView::update() {
 	
-	goVideoPlayer * currentSequenceVideo = _appModel->getCurrentSequence()->getMovie();
+	goThreadedVideo * currentSequenceVideo = _appModel->getCurrentSequence()->getMovie();
 	ofTexture *sceneTexture;
 	CamTransform *actorTransform;
 

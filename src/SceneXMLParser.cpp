@@ -297,13 +297,14 @@ bool SceneXMLParser::createAppModel(){
 		fullFilePath = _dirLister.getPath(fileID);			
 		sequence->setMovieFullFilePath(fullFilePath);
 		
-		LOG_WARNING("TODO: Load movie should be done else where, change this from loadMovie, remove these calls");			
-		movie = new goVideoPlayer();
-		int mtime = ofGetElapsedTimeMillis();
-		movie->loadMovie(fullFilePath);
-		sequence->setMovie(movie);
-		sequence->prepareMovie(); // THIS CALL TAKES ~ 300-400 ms
-		printf("\n\t\tMovie time: %dms\n\n", ofGetElapsedTimeMillis() - mtime);
+		//LOG_WARNING("TODO: Load movie should be done else where, change this from loadMovie, remove these calls");			
+		//movie = new goVideoPlayer();
+		//int mtime = ofGetElapsedTimeMillis();
+		//movie->loadMovie(fullFilePath);
+		//sequence->setMovie(movie);
+		//sequence->prepareMovie(); // THIS CALL TAKES ~ 300-400 ms
+		//sequence->loadMovie(); // use this instead when we need it...
+		//printf("\n\t\tMovie time: %dms\n\n", ofGetElapsedTimeMillis() - mtime);
 		
 		// completed sequence, insert to scene
 		scene->setSequence(sequence->getName(), sequence);
@@ -718,7 +719,7 @@ bool SceneXMLParser::validateMovieTransformLengths(){
 				movie = new goVideoPlayer();
 				movie->setUseTexture(false);
 				movie->loadMovie(fullFilePath);
-				printf("check movie time: %d\n", ofGetElapsedTimeMillis() - timea);
+				printf("check movie load time: %d\n", ofGetElapsedTimeMillis() - timea);
 				
 			}
 			catch (JungleException je) {
@@ -767,6 +768,10 @@ bool SceneXMLParser::validateMovieTransformLengths(){
 				_completedKeys.insert(innerIter->first);
 			}
 
+			// clean up the movie
+			movie->close();
+			delete movie;
+			
 			// save the key as processed
 			_completedKeys.insert(parsedDataIter->first);
 			break;	// break out of the iteration because we've done one check
