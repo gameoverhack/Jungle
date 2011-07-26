@@ -347,6 +347,38 @@ public:
 		return true;
 	}
 	
+	void print(){
+		string tabs = "\t";
+		string line = "Scene {";
+		// print details of scene
+		printf("%s\n", line.c_str());
+		tabs = "\t\t";
+		line = tabs + "_name => " + _name + "\n"+tabs+"_currentSequence => " + _currentSequence->getName();
+		printf("%s\n", line.c_str());
+		line = tabs + "sequences => {";
+		printf("%s\n", line.c_str());
+		tabs = "\t\t\t";
+		map<string, Sequence*>::iterator iter;
+		for(iter = _sequences.begin(); iter != _sequences.end(); iter++){
+			line = tabs + "Sequence {";
+			printf("%s\n", line.c_str());
+			tabs = tabs + "\t";
+			line = tabs + "name => " + iter->second->getName() + "\n";
+			line = line + tabs + "nextSequence => " + iter->second->getNextSequenceName() + "\n";
+			line = line + tabs + "victimResult => " + iter->second->getVictimResult() + "\n";
+			line = line + tabs + "attackerResult => " + iter->second->getAttackerResult() + "\n";			
+			printf("%s\n", line.c_str());
+			tabs = "\t\t\t";
+			line = tabs + "}";
+			printf("%s\n", line.c_str());
+		}
+		tabs = "\t\t";
+		line = tabs + "}";
+		printf("%s\n", line.c_str());
+		printf("}\n");
+		
+	}
+	
 private:
 	
 	string					_name;
