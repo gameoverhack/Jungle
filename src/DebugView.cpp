@@ -54,8 +54,18 @@ void DebugView::update(){
 	float progressionHeight = 20;
 	ofSetColor(50, 50, 50, 220);
 	ofRect(5, _viewHeight-progressionHeight-10, progressionWidth+4, progressionHeight+2);
-	// valid movie file stuff
-	currentSequence->getIsMovieFaked() ? ofSetColor(255, 50, 50, 220) : ofSetColor(50, 220, 50, 220);
+	
+	// valid movie file/sequence stuff
+	if(currentSequence->getIsSequenceFaked()){
+		ofSetColor(255, 50, 50, 220);
+	}
+	else if(currentSequence->getIsMovieFaked()){
+		ofSetColor(255, 120, 0, 220);
+	}
+	else{
+		ofSetColor(50, 220, 50, 220);
+	}
+
 	//	ofSetColor(200, 50, 50, 220);
 	ofRect(5+1, _viewHeight-progressionHeight-9, progressionWidth*progressionPercentage, progressionHeight);
 	
