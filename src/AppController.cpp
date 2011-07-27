@@ -120,7 +120,7 @@ void AppController::update() {
 		// get current scene
 		currentScene = _appModel->getCurrentScene();	
 		
-		currentScene->print();
+		//currentScene->print();
 		
 		// get current sequence
 		currentSequence = currentScene->getCurrentSequence();
@@ -130,7 +130,7 @@ void AppController::update() {
 		
 		//cout << currentSequence->getAttackerResult() << " " << currentSequence->getVictimResult() << endl;
 		
-		if (currentSequence->getNextSequenceName() != "") {
+		if (currentSequence->getNextSequenceName() != "" && currentSequence->getNextSequenceName() != "__FINAL_SEQUENCE__") {
 			//cout << "loopCheckSeq" << endl;
 			loopSequence	= currentScene->getSequence(currentSequence->getNextSequenceName());
 			loopMovie		= loopSequence->getMovie();
@@ -145,7 +145,7 @@ void AppController::update() {
 			}*/
 		}
 		
-		if (currentSequence->getAttackerResult() != "") {
+		if (currentSequence->getAttackerResult() != "" && currentSequence->getAttackerResult() != "__FINAL_SEQUENCE__") {
 			cout << "attkCheckSeq" << endl;
 			attackSequence	= currentScene->getSequence(currentSequence->getAttackerResult());
 			attackerMovie	= attackSequence->getMovie();
@@ -160,7 +160,7 @@ void AppController::update() {
 			}*/
 		}
 		
-		if (currentSequence->getVictimResult() != "") {
+		if (currentSequence->getVictimResult() != "" && currentSequence->getVictimResult() != "__FINAL_SEQUENCE__") {
 			cout << "vikkCheckSeq" << endl;
 			victimSequence	= currentScene->getSequence(currentSequence->getVictimResult());
 			victimMovie		= victimSequence->getMovie();
