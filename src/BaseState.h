@@ -7,8 +7,8 @@
  *
  */
 
-#ifndef _BASESTATE_H
-#define _BASESTATE_H
+#ifndef _H_BASESTATE
+#define _H_BASESTATE
 
 #include "Logger.h"
 

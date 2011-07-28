@@ -7,8 +7,8 @@
  *
  */
 
-#ifndef _VIDEOCONTROLLER_H
-#define _VIDEOCONTROLLER_H
+#ifndef _H_VIDEOCONTROLLER
+#define _H_VIDEOCONTROLLER
 
 #include "BaseState.h"
 #include "AppModel.h"

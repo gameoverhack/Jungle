@@ -11,6 +11,11 @@
 #include "Logger.h"
 
 //--------------------------------------------------------------
+AppController::AppController() {
+	//nothing for now (NB: I put the Logger instantiation in main.h)
+}
+
+//--------------------------------------------------------------
 AppController::~AppController() {
 	// nothing for now but we should clean up here
 }
@@ -32,9 +37,18 @@ void AppController::setup() {
 	_vidController = new VideoController();
 	_vidController->registerStates();
 	
+	// setup micController
+	_micController = new MicController();
+	_micController->registerStates();
+	
+	// setup ardController
+	_ardController = new ArdController();
+	_ardController->registerStates();
+	
 	// setup cameras
 	_camControllers[0] = new CamController();
 	_camControllers[1] = new CamController();
+	
 	_camControllers[0]->setup("Built-in iSight", 640, 480);
 	_camControllers[1]->setup("ManyCam Virtual Webcam (RGB)", 640, 480);	// NB: had to use QTKit to get ManyCam working
 	

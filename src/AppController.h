@@ -15,16 +15,18 @@
 #include "AppModel.h"
 
 #include "BaseState.h"
+#include "Constants.h"
 #include "DataController.h"
 #include "CamController.h"
 #include "VideoController.h"
-#include "Constants.h"
+#include "MicController.h"
+#include "ArdController.h"
 
 class AppController : public BaseState, public ofBaseApp {
 	
 public:
 	
-	//AppController();
+	AppController();
 	~AppController();
 	
 	void setup();
@@ -47,14 +49,15 @@ public:
 	
 private:
 	
-	// data controller stuff
-	DataController	*_dataController;
-	
-	// View stuff
+	// Views
 	AppView			*_appView;
 	
+	// Controllers
+	DataController	*_dataController;
 	CamController	*_camControllers[2];
 	VideoController *_vidController;
+	MicController	*_micController;
+	ArdController	*_ardController;
 	
 	bool			_isFullScreen;
 

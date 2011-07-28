@@ -25,6 +25,8 @@
 		77047FF213C4A8130099581A /* goQtUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77047FF013C4A8130099581A /* goQtUtils.cpp */; };
 		770AD17013DFB8E6001C7EF2 /* BaseState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 770AD16F13DFB8E6001C7EF2 /* BaseState.cpp */; };
 		770AD18113DFBD28001C7EF2 /* VideoController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 770AD18013DFBD28001C7EF2 /* VideoController.cpp */; };
+		775D752D13E1B973008137FC /* MicController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 775D752C13E1B973008137FC /* MicController.cpp */; };
+		775D753013E1B985008137FC /* ArdController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 775D752F13E1B985008137FC /* ArdController.cpp */; };
 		7776F62613DD3DA900E439F3 /* goThreadedVideo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7776F62413DD3DA900E439F3 /* goThreadedVideo.cpp */; };
 		778072F313BB4547007BAC08 /* ofxFbo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7780728413BB4547007BAC08 /* ofxFbo.cpp */; };
 		778072F413BB4547007BAC08 /* ofxShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7780728813BB4547007BAC08 /* ofxShader.cpp */; };
@@ -168,6 +170,10 @@
 		770AD16F13DFB8E6001C7EF2 /* BaseState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BaseState.cpp; sourceTree = "<group>"; };
 		770AD17F13DFBD28001C7EF2 /* VideoController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoController.h; sourceTree = "<group>"; };
 		770AD18013DFBD28001C7EF2 /* VideoController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VideoController.cpp; sourceTree = "<group>"; };
+		775D752B13E1B973008137FC /* MicController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MicController.h; sourceTree = "<group>"; };
+		775D752C13E1B973008137FC /* MicController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MicController.cpp; sourceTree = "<group>"; };
+		775D752E13E1B985008137FC /* ArdController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArdController.h; sourceTree = "<group>"; };
+		775D752F13E1B985008137FC /* ArdController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ArdController.cpp; sourceTree = "<group>"; };
 		7776F5ED13DD3DA900E439F3 /* COMMIT_EDITMSG */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COMMIT_EDITMSG; sourceTree = "<group>"; };
 		7776F5EE13DD3DA900E439F3 /* config */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = config; sourceTree = "<group>"; };
 		7776F5EF13DD3DA900E439F3 /* description */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = description; sourceTree = "<group>"; };
@@ -1029,6 +1035,10 @@
 				77F0332213CD6F6C00D7811A /* CamController.h */,
 				770AD17F13DFBD28001C7EF2 /* VideoController.h */,
 				770AD18013DFBD28001C7EF2 /* VideoController.cpp */,
+				775D752B13E1B973008137FC /* MicController.h */,
+				775D752C13E1B973008137FC /* MicController.cpp */,
+				775D752E13E1B985008137FC /* ArdController.h */,
+				775D752F13E1B985008137FC /* ArdController.cpp */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -1529,6 +1539,8 @@
 				7776F62613DD3DA900E439F3 /* goThreadedVideo.cpp in Sources */,
 				770AD17013DFB8E6001C7EF2 /* BaseState.cpp in Sources */,
 				770AD18113DFBD28001C7EF2 /* VideoController.cpp in Sources */,
+				775D752D13E1B973008137FC /* MicController.cpp in Sources */,
+				775D753013E1B985008137FC /* ArdController.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
