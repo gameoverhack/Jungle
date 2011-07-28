@@ -9,7 +9,10 @@
 
 #include "AppModel.h"
 
-//AppModel::AppModel(){}
+AppModel::AppModel(){
+	_currentScene = NULL;
+	_padLength = 1;
+}
 
 AppModel::~AppModel(){
 	map<string, Scene *>::iterator iter;
@@ -26,8 +29,6 @@ void AppModel::registerStates() {
 	registerState(kAPP_RUNNING, "kAPP_RUNNING");
 	registerState(kAPP_EXITING, "kAPP_EXITING");
 	
-	_currentScene = NULL;
-	_padLength = 1;
 }
 
 void AppModel::setScene(string sceneName, Scene * scene){

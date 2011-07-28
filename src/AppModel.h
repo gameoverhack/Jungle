@@ -36,7 +36,7 @@ class AppModel : public BaseState {
 
 public:
 	
-	//AppModel();
+	AppModel();
 	~AppModel();
 	
 	void		registerStates();

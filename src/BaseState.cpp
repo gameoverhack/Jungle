@@ -41,6 +41,8 @@ void BaseState::registerStates() {
 	 registerState(ANOTHERSTATE, "ANOTHERSTATE");
 	 registerState(YETANOTHER, "YETANOTHER");
 	 
+	 NOTE: you have to specifically call registerStates() before setting, getting etc...as I couldn't get the base class to work how i wanted :-(
+	 
 	 */
 	 
 }
@@ -56,7 +58,7 @@ int BaseState::getState() {
 
 void BaseState::setState(int state) {
 	//assert(state < _states.size()); // more checks? different warn?
-	LOG_VERBOSE("Setting STATE == " + _states.find(state)->second + " == " + ofToString(_states.find(state)->first));
+	LOG_VERBOSE("Setting STATE == " + _states.find(state)->second + " (" + ofToString(_states.find(state)->first) + ")");
 	_state = state;
 }
 
@@ -71,7 +73,7 @@ string BaseState::printState() {
 		msg = "Cannot printState() -- no states have been registered or no state has been set";
 		LOG_ERROR(msg); // maybe don't need this now?
 	} else {
-		msg = "STATE == " + it->second + " == " + ofToString(it->first);
+		msg = "STATE == " + it->second + " (" + ofToString(it->first) + ")";
 		LOG_VERBOSE(msg);
 	}
 	return msg;

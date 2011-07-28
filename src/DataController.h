@@ -44,10 +44,8 @@ class DataController : public BaseState {
 
 public:
 	
-	//DataController();
+	DataController(string configFilePath);
 	~DataController();
-	
-	void setup(string configFilePath);
 	
 	void registerStates();
 	

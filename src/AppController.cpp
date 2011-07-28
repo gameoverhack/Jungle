@@ -20,14 +20,11 @@ void AppController::setup() {
 	
 	LOG_NOTICE("Initialising");
 	_appModel->registerStates();
-	// initial app state
-	// TODO: move to the model!!
 	_appModel->setState(kAPP_INIT);
 	
 	// set up datacontroller
-	_dataController = new DataController();
+	_dataController = new DataController(ofToDataPath("config_properties.xml"));
 	_dataController->registerStates();
-	_dataController->setup(ofToDataPath("config_properties.xml"));
 	
 	// setup cameras
 	_camControllers[0] = new CamController();

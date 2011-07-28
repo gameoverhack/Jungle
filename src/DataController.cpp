@@ -9,22 +9,7 @@
 
 #include "DataController.h"
 
-DataController::~DataController(){
-	delete _sceneParser;
-	
-}
-
-void DataController::registerStates() {
-	LOG_VERBOSE("Registering States");
-
-	registerState(kDATACONTROLLER_INIT, "kDATACONTROLLER_INIT");
-	registerState(kDATACONTROLLER_SCENE_PARSING, "kDATACONTROLLER_SCENE_PARSING");
-	registerState(kDATACONTROLLER_SCENE_ANALYSING, "kDATACONTROLLER_SCENE_ANALYSING");
-	registerState(kDATACONTROLLER_FINISHED, "kDATACONTROLLER_FINISHED");
-	
-}
-
-void DataController::setup(string configFilePath) {
+DataController::DataController(string configFilePath) {
 	LOG_NOTICE("Initialising with " + configFilePath);
 	_configFilePath = configFilePath;
 	
@@ -40,8 +25,6 @@ void DataController::setup(string configFilePath) {
 									  boost::any_cast<string>(_appModel->getProperty("scenesXMLFile")));
 	_sceneParser->registerStates();
 	
-	setState(kDATACONTROLLER_SCENE_PARSING);
-	
 	// used so we don't keep rebuilding on a parse error
 	// (ie: rebuilt xml is faulty anyway, dont keep attempting)
 	// member vairable instead of toggling parseRebuildXML property so we 
@@ -49,6 +32,22 @@ void DataController::setup(string configFilePath) {
 	_hasAttemptedReparse = false; 
 	
 	LOG_NOTICE("Initialisation complete");
+}
+
+DataController::~DataController(){
+	delete _sceneParser;
+	
+}
+
+void DataController::registerStates() {
+	LOG_VERBOSE("Registering States");
+
+	registerState(kDATACONTROLLER_INIT, "kDATACONTROLLER_INIT");
+	registerState(kDATACONTROLLER_SCENE_PARSING, "kDATACONTROLLER_SCENE_PARSING");
+	registerState(kDATACONTROLLER_SCENE_ANALYSING, "kDATACONTROLLER_SCENE_ANALYSING");
+	registerState(kDATACONTROLLER_FINISHED, "kDATACONTROLLER_FINISHED");
+	
+	setState(kDATACONTROLLER_SCENE_PARSING);
 }
 
 void DataController::update(){

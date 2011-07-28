@@ -10,25 +10,9 @@
 #include "SceneXMLParser.h"
 #include "JungleExceptions.h"
 
-void SceneXMLParser::listParsedData(){	
-	map<string, map<string, string> >::iterator iter;
-	iter = _parsedData.begin();	
-	while (iter != _parsedData.end()) {
-		printf("%s =| \n", (iter->first).c_str());
-		map<string, string>::iterator iter2;
-		iter2 = iter->second.begin();
-		while(iter2 != iter->second.end()){
-			printf("\t%s => %s\n", (iter2->first).c_str(), (iter2->second).c_str());
-			iter2++;
-		}
-		iter++;
-	}
-}
-
 SceneXMLParser::SceneXMLParser(string dataPath, string xmlFile) : IXMLParser(xmlFile){
 	LOG_VERBOSE("Initialising with datapath: " + dataPath + " and config: " + xmlFile);
 	_dataPath = dataPath;
-	//updateLoadingState();
 	LOG_VERBOSE("SceneXMLParser Initialised");
 }
 
@@ -912,3 +896,17 @@ float SceneXMLParser::getLoadingProgress(){
 	return _loadingProgress;
 }
 
+void SceneXMLParser::listParsedData(){	
+	map<string, map<string, string> >::iterator iter;
+	iter = _parsedData.begin();	
+	while (iter != _parsedData.end()) {
+		printf("%s =| \n", (iter->first).c_str());
+		map<string, string>::iterator iter2;
+		iter2 = iter->second.begin();
+		while(iter2 != iter->second.end()){
+			printf("\t%s => %s\n", (iter2->first).c_str(), (iter2->second).c_str());
+			iter2++;
+		}
+		iter++;
+	}
+}
