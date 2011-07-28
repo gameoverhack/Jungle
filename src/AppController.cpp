@@ -19,6 +19,8 @@ AppController::~AppController() {
 void AppController::setup() {
 	
 	LOG_NOTICE("Initialising");
+	_isFullScreen = false; // change this when we start in fullscreen mode
+	
 	_appModel->registerStates();
 	_appModel->setState(kAPP_INIT);
 	
@@ -378,6 +380,9 @@ void AppController::keyPressed(int key){
 		case 'h':
 			_appModel->setProperty("showUnmaskedTextures", (showUnmask ? false : true));
 			break;
+		case 'f':
+			toggleFullscreen();
+			break;
 		default:
 			break;
 	}
@@ -426,6 +431,41 @@ void AppController::setFullscreen() {
 }
 
 void AppController::toggleFullscreen(){
+#ifdef TARGET_WIN32
+    if (!_isFullScreen)
+    {
+        LOG("Trying to force fullscreen on Windows 7" + ofToString(ofGetWidth()));
+        windowTitle = "imMediate";
+        ofSetWindowTitle(windowTitle);
+        int x = 0;
+        int y = 0;
+        int width = W_CONTROL_SCREEN + W_OUTPUT_SCREEN;
+        int height = H_CONTROL_SCREEN;
+        int storedWindowX, storedWindowY, storedWindowH, storedWindowW;
+        HWND vWnd  = FindWindow(NULL,  "imMediate");
+        long windowStyle = GetWindowLong(vWnd, GWL_STYLE);
+        windowStyle &= ~WS_OVERLAPPEDWINDOW;
+        windowStyle |= WS_POPUP;
+        SetWindowLong(vWnd, GWL_STYLE, windowStyle);
+        SetWindowPos(vWnd, HWND_TOP, x, y, width, height, SWP_FRAMECHANGED);
+        bCustomFullscreen = true;
+    }
+    else
+    {
+        int x = 0;
+        int y = 0;
+        int width = W_CONTROL_SCREEN;
+        int height = H_CONTROL_SCREEN;
+        HWND vWnd  = FindWindow(NULL,  "imMediate");
+        long windowStyle = GetWindowLong(vWnd, GWL_STYLE);
+        windowStyle |= WS_TILEDWINDOW;
+        SetWindowLong(vWnd, GWL_STYLE, windowStyle);
+        SetWindowPos(vWnd, HWND_TOP, x, y, width, height, SWP_FRAMECHANGED);
+        bCustomFullscreen = false;
+    }
 	
+#else
+    ofToggleFullscreen();
+#endif
 }
 

@@ -56,29 +56,22 @@ void DebugView::update(){
 	ofRect(5, _viewHeight-progressionHeight-10, progressionWidth+4, progressionHeight+2);
 	
 	// valid movie file/sequence stuff
-	if(currentSequence->getIsSequenceFaked()){
+	if(currentSequence->getIsSequenceFaked()) {
 		ofSetColor(255, 50, 50, 220);
 	}
-	else if(currentSequence->getIsMovieFaked()){
+	else if(currentSequence->getIsMovieFaked()) {
 		ofSetColor(255, 120, 0, 220);
-	}
-	else{
+	} else {
 		ofSetColor(50, 220, 50, 220);
 	}
 
-	//	ofSetColor(200, 50, 50, 220);
 	ofRect(5+1, _viewHeight-progressionHeight-9, progressionWidth*progressionPercentage, progressionHeight);
-	
-	//ofRect(5+progressionWidth+2, _viewHeight-progressionHeight-10, 20, progressionHeight+2);
-	
-	
+
 	// give us info about progression
 	msg = currentScene->getName() + "::" + currentSequence->getName() + "::" + ofToString(currentFrame) + "/" + ofToString(totalFrames);
 	
 	ofSetColor(255,255,255);
 	ofDrawBitmapString(msg, 6, _viewHeight-progressionHeight-4);
-	
-	
 
 	glPopMatrix();
 	_viewFBO.end();
@@ -86,7 +79,7 @@ void DebugView::update(){
 
 void DebugView::draw(){
 	glPushMatrix();
-	glTranslatef(0.0, _viewHeight, 0.0);
+	glTranslatef(0.0, ofGetHeight(), 0.0);
 	glScalef(1.0, -1.0, 1.0);
 	BaseView::draw();
 	glPushMatrix();

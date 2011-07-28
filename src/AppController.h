@@ -56,9 +56,8 @@ private:
 	CamController	*_camControllers[2];
 	VideoController *_vidController;
 	
-	bool			isFullScreen;
-	bool			loadNextMovies;
-	
+	bool			_isFullScreen;
+
 protected:
 	
 };
