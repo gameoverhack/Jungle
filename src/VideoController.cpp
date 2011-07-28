@@ -59,6 +59,8 @@ void VideoController::registerStates() {
 
 void VideoController::update() {
 	
+	if (_forceCurrentLoad) forceUpdate();
+	
 	// update the current currentMovie/videoplayer
 	goThreadedVideo * currentMovie		= _appModel->getCurrentVideoPlayer();
 	Scene			* currentScene		= _appModel->getCurrentScene();
@@ -75,7 +77,7 @@ void VideoController::update() {
 	//_appModel->setCurrentFrameTotal(totalFrames); // no need for now?
 	_appModel->setCurrentIsFrameNew(isFrameNew);
 	
-	if (currentFrame > totalFrames - 12 && !cachedLoopAndState) {
+	if (currentFrame > totalFrames - 12 && !_cachedLoopAndState) {
 		
 		// set loopstate
 		if (currentSequence->getInteractivity() == "both") {
@@ -83,7 +85,7 @@ void VideoController::update() {
 		} else {
 			currentMovie->setLoopState(OF_LOOP_NONE);
 		}
-		cachedLoopAndState = true;
+		_cachedLoopAndState = true;
 		
 		// 'cache' (ie., half) load loop sequence if we're on an 'a' type movie
 		
@@ -110,14 +112,20 @@ void VideoController::forceUpdate() {
 	nextMovie->psuedoDraw();
 }
 
-void VideoController::loadMovie(Sequence * seq) {
+void VideoController::loadMovie(Sequence * seq, bool forceCurrentLoad) {
 	
 	// get the full path of the movie from the sequence
 	string path = seq->getMovieFullFilePath();
+	LOG_VERBOSE("Next video start to load: " + path);
+	
+	_forceCurrentLoad = forceCurrentLoad;
+
 	goThreadedVideo * nextMovie = _appModel->getNextVideoPlayer();
 	
-	LOG_VERBOSE("Next video start to load: " + path);
+	if (_forceCurrentLoad) nextMovie->close();
+	
 	nextMovie->loadMovie(path);
+	
 	setState(kVIDCONTROLLER_NEXTVIDLOADING);
 
 }
@@ -131,7 +139,11 @@ void VideoController::toggleVideoPlayers() {
 void VideoController::loaded(string & path) {
 	LOG_VERBOSE("Next video successfully loaded: " + path);
 	setState(kVIDCONTROLLER_NEXTVIDREADY);
-	cachedLoopAndState = false;
+	_cachedLoopAndState = false;
+	if (_forceCurrentLoad) {
+		toggleVideoPlayers();
+		_forceCurrentLoad = false;
+	}
 }
 
 void VideoController::error(int & err) {

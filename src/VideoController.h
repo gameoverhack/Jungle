@@ -34,12 +34,13 @@ public:
 	void	update();
 	void	forceUpdate();
 	
-	void	loadMovie(Sequence * seq);
+	void	loadMovie(Sequence * seq, bool forceCurrentLoad = false);
 	void	toggleVideoPlayers();
 	
 private:
 	
-	bool	cachedLoopAndState;
+	bool	_cachedLoopAndState;
+	bool	_forceCurrentLoad;
 	
 	void	loaded(string & path);
 	void	error(int & err);

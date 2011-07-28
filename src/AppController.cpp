@@ -177,6 +177,39 @@ void AppController::update() {
 			_vidController->setState(kVIDCONTROLLER_READY);
 		}
 		
+		int userAction = boost::any_cast<int>(_appModel->getProperty("userAction"));
+		
+		if (currentSequence->getInteractivity() == "both") {
+			
+			// Check for interactive event
+			// this->hasInteractiveEventFlag()
+			// we have had an interactive event
+			
+			if (userAction == kAttackerAction){
+				LOG_VERBOSE("Interactive action: Attacker");	
+				_appModel->setProperty("userAction", kNoUserAction);
+				currentScene->setCurrentSequence(currentSequence->getAttackerResult());
+				_vidController->loadMovie(currentScene->getCurrentSequence(), true);
+	
+			} else if (userAction == kVictimAction){
+				LOG_VERBOSE("Interactive action: Victim");	
+				_appModel->setProperty("userAction", kNoUserAction);
+				currentScene->setCurrentSequence(currentSequence->getVictimResult());
+				_vidController->loadMovie(currentScene->getCurrentSequence(), true);
+			}
+			
+		}
+		
+		if (currentSequence->getInteractivity() == "victim") {
+			if(userAction == kVictimAction){
+				LOG_VERBOSE("Interactive action: Victim");
+				_appModel->setProperty("userAction", kNoUserAction);
+				currentScene->setCurrentSequence(currentSequence->getVictimResult());
+				_vidController->loadMovie(currentScene->getCurrentSequence(), true);
+			}
+			
+		} 
+		
 	}
 		/*Scene			* currentScene;
 		Sequence		* currentSequence;
