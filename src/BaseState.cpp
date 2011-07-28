@@ -1,5 +1,5 @@
 /*
- *  BaseController.cpp
+ *  BaseState.cpp
  *  Jungle
  *
  *  Created by gameover on 27/07/11.
@@ -7,38 +7,35 @@
  *
  */
 
-#include "BaseController.h"
+#include "BaseState.h"
 
-BaseController::BaseController() {
-	LOG_VERBOSE("Constructing a controller...");
+BaseState::BaseState() {
+	LOG_VERBOSE("Constructing a stateful class...");
 	registerStates();
 }
 
-BaseController::~BaseController() {
-	LOG_VERBOSE("Destructing a controller...");
+BaseState::~BaseState() {
+	LOG_VERBOSE("Destructing a stateful class...");
 	_states.clear();
 	//_state = -1; // ??
 }
 
-void BaseController::registerStates() {
-	LOG_VERBOSE("Registering defualt state: NONE == -1; over ride registerStates() to set your own states for this Controller");
-	enum {
-		NONE = -1
-	};
+void BaseState::registerStates() {
+	LOG_VERBOSE("Registering defualt state: NONE == -1; over ride registerStates() to set your own states for this stateful class");
 	registerState(NONE, "NONE");
 	setState(NONE);
 	/*
 	 
 	// add registerStates() to all Controllers based on :
 	
-	// defining an enum:
+	// defining an enum in the .h file for the class inheriting from BaseState:
 	enum {
 		SOMESTATE,
 		ANOTHERSTATE,
 		YETANOTHER
 	 };
 	 
-	 // and registering them with:
+	 // and registering them in registerStates() with:
 	 
 	 registerState(SOMESTATE, "SOMESTATE");
 	 registerState(ANOTHERSTATE, "ANOTHERSTATE");
@@ -48,35 +45,39 @@ void BaseController::registerStates() {
 	 
 }
 
-void BaseController::registerState(int intState, string strState) {
+void BaseState::registerState(int intState, string strState) {
 	LOG_VERBOSE("Adding STATE == " + strState + " == " + ofToString(intState));
 	_states.insert(pair<int, string>(intState, strState));	// SHOULD WE JUST USE A SET AND MAKE SURE YOU REGISTER IN ORDER???? WOULD BE SIMPLER BUT NOT FAIL SAFE??
 }
 
-int BaseController::getState() {
+int BaseState::getState() {
 	return _state;
 }
 
-void BaseController::setState(int state) {
+void BaseState::setState(int state) {
 	//assert(state < _states.size()); // more checks? different warn?
 	LOG_VERBOSE("Setting STATE == " + _states.find(state)->second + " == " + ofToString(_states.find(state)->first));
 	_state = state;
 }
 
-/*void BaseController::setState(string state) {
+/*void BaseState::setState(string state) {
 	
 }*/
 
-void BaseController::printState() {
+string BaseState::printState() {
 	map<int, string>::iterator it = _states.find(_state);
+	string msg;
 	if (it == _states.end()) {
-		LOG_ERROR("Cannot printState() -- no states have been registered or no state has been set"); // maybe don't need this now?
+		msg = "Cannot printState() -- no states have been registered or no state has been set";
+		LOG_ERROR(msg); // maybe don't need this now?
 	} else {
-		LOG_VERBOSE("STATE == " + it->second + " == " + ofToString(it->first));
+		msg = "STATE == " + it->second + " == " + ofToString(it->first);
+		LOG_VERBOSE(msg);
 	}
+	return msg;
 }
 
-bool BaseController::checkState(int state) {
+bool BaseState::checkState(int state) {
 	//assert(state < _states.size()); // more checks? different warn?
 	if (state == _state) {
 		return true;

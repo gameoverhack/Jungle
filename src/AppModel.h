@@ -10,8 +10,7 @@
 #ifndef _H_APPMODEL
 #define	_H_APPMODEL
 
-#include "ofMain.h"
-
+#include "BaseState.h"
 #include "Singleton.h"
 #include "AppDataTypes.h"
 
@@ -26,12 +25,21 @@ using std::map;
 using std::vector;
 using std::string;
 
-class AppModel {
+enum {
+	kAPP_INIT,
+	kAPP_LOADING,
+	kAPP_RUNNING,
+	kAPP_EXITING
+};
+
+class AppModel : public BaseState {
 
 public:
 	
-	AppModel();
+	//AppModel();
 	~AppModel();
+	
+	void		registerStates();
 	
 	void		setScene(string name, Scene * scene);
 	bool		setCurrentScene(string sceneName);

@@ -12,11 +12,6 @@
 void VideoController::registerStates() {
 	LOG_VERBOSE("Registering States");
 	
-	enum {
-		SOME,
-		ANOTHER
-	};
-	
 	registerState(SOME, "SOME");
 	registerState(ANOTHER, "ANOTHER");
 	

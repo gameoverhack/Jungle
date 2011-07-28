@@ -23,7 +23,7 @@ using std::string;
 #include "ofxXmlSettings.h"
 #include "goDirList.h"
 
-#include "BaseController.h"
+#include "BaseState.h"
 #include "Logger.h"
 #include "AppModel.h"
 #include "AppDataTypes.h"
@@ -33,24 +33,31 @@ using std::string;
 #include "PropertyXMLParser.h"
 #include "PropertyXMLBuilder.h"
 
-class DataController : public BaseController {
+enum {
+	kDATACONTROLLER_INIT,
+	kDATACONTROLLER_SCENE_PARSING,
+	kDATACONTROLLER_SCENE_ANALYSING,
+	kDATACONTROLLER_FINISHED
+};
+
+class DataController : public BaseState {
 
 public:
 	
-	DataController(string configFilePath);
+	//DataController();
 	~DataController();
 	
-	void update();
+	void setup(string configFilePath);
 	
-	DataControllerState getState();
-	string getStateMessage();
+	void registerStates();
+	
+	void update();
 
 	void saveProperties();
 
 private:
 	
-	string					_stateMessage;
-	DataControllerState		_state;
+	//string					_stateMessage;
 	
 	string					_configFilePath;
 	

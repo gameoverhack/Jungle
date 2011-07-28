@@ -11,18 +11,23 @@
 #include "Logger.h"
 
 //--------------------------------------------------------------
+AppController::~AppController() {
+	// nothing for now but we should clean up here
+}
+
+//--------------------------------------------------------------
 void AppController::setup() {
 	
-	// set up logger (should be first thing.)
-	LOGGER->setLogLevel(JU_LOG_VERBOSE);
-	
 	LOG_NOTICE("Initialising");
-	
+	_appModel->registerStates();
 	// initial app state
-	_state = kAPPCONTROLLER_INIT;
+	// TODO: move to the model!!
+	_appModel->setState(kAPP_INIT);
 	
 	// set up datacontroller
-	_dataController = new DataController(ofToDataPath("config_properties.xml"));
+	_dataController = new DataController();
+	_dataController->registerStates();
+	_dataController->setup(ofToDataPath("config_properties.xml"));
 	
 	// setup cameras
 	_camControllers[0] = new CamController();
@@ -41,9 +46,10 @@ void AppController::setup() {
 						   boost::any_cast<float>(_appModel->getProperty("appViewHeight")));
 	
 	
-	_state = kAPPCONTROLLER_LOADING;
+	_appModel->setState(kAPP_LOADING);
+	
 	// set app state;
-	_appModel->setProperty("appState", (int)_state); // Generally (always should be?) set to AppController's _state
+	//_appModel->setProperty("appState", (int)getState()); // Generally (always should be?) set to AppController's _state
 	_appModel->setProperty("loadingMessage", string("AppController loading"));
 	_appModel->setProperty("loadingProgress", 0.1f);
 	
@@ -66,9 +72,9 @@ void AppController::update() {
 	//	LOG_VERBOSE("Updating");
 	
 	// if we're loading, update datacontroller
-	if(_state == kAPPCONTROLLER_LOADING){
+	if(_appModel->checkState(kAPP_LOADING)){
 		_dataController->update();
-		if(_dataController->getState() == kDATACONTROLLER_FINISHED){
+		if(_dataController->checkState(kDATACONTROLLER_FINISHED)){
 			
 			// dc finished load first movie
 			Scene			* currentScene;
@@ -94,15 +100,15 @@ void AppController::update() {
 			} else {
 				currentSequence->prepareMovie();
 				// first movie loaded, update app controller state;
-				_state = kAPPCONTROLLER_RUNNING;
-				_appModel->setProperty("appState", (int)kAPPCONTROLLER_RUNNING);	// this seems clunky???
+				_appModel->setState(kAPP_RUNNING);
+				//_appModel->setProperty("appState", (int)kAPPCONTROLLER_RUNNING);	// this seems clunky???
 			}
 			
 		}
 	}
 	
 	// running, so update scenes, etc
-	if(_state == kAPPCONTROLLER_RUNNING){
+	if(_appModel->checkState(kAPP_RUNNING)) {
 		
 		_camControllers[0]->update();
 		_camControllers[1]->update();

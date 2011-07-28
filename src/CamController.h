@@ -10,7 +10,7 @@
 #ifndef _H_CAMCONTROLLER
 #define _H_CAMCONTROLLER
 
-#include "BaseController.h"
+#include "BaseState.h"
 #include "AppModel.h"
 #include "Logger.h"
 
@@ -19,7 +19,7 @@
 
 static int _instanceCount = 0;
 
-class CamController : public BaseController {
+class CamController : public BaseState {
 	
 public:
 	

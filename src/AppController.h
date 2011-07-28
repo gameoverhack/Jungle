@@ -14,15 +14,18 @@
 #include "AppView.h"
 #include "AppModel.h"
 
-#include "BaseController.h"
+#include "BaseState.h"
 #include "DataController.h"
 #include "CamController.h"
 #include "VideoController.h"
 #include "Constants.h"
 
-class AppController : public BaseController, public ofBaseApp {
+class AppController : public BaseState, public ofBaseApp {
 	
 public:
+	
+	//AppController();
+	~AppController();
 	
 	void setup();
 	void update();
@@ -43,10 +46,6 @@ public:
 	void toggleFullscreen();
 	
 private:
-	
-	// state
-	AppControllerState	_state;
-	string				_stateMessage;
 	
 	// data controller stuff
 	DataController	*_dataController;

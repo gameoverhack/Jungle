@@ -10,9 +10,14 @@
 #ifndef _VIDEOCONTROLLER_H
 #define _VIDEOCONTROLLER_H
 
-#include "BaseController.h"
+#include "BaseState.h"
 
-class VideoController : public BaseController {
+enum {
+	SOME,
+	ANOTHER
+};
+
+class VideoController : public BaseState {
 
 public:
 	

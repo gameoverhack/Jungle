@@ -27,19 +27,33 @@ void SceneXMLParser::listParsedData(){
 
 SceneXMLParser::SceneXMLParser(string dataPath, string xmlFile) : IXMLParser(xmlFile){
 	LOG_VERBOSE("Initialising with datapath: " + dataPath + " and config: " + xmlFile);
-	_state = kSCENEXMLPARSER_INIT;
 	_dataPath = dataPath;
-	updateLoadingState();
+	//updateLoadingState();
 	LOG_VERBOSE("SceneXMLParser Initialised");
+}
+
+void SceneXMLParser::registerStates() {
+	LOG_VERBOSE("Registering States");
+	
+	registerState(kSCENEXMLPARSER_INIT, "kSCENEXMLPARSER_INIT");
+	registerState(kSCENEXMLPARSER_SETUP, "kSCENEXMLPARSER_SETUP");
+	registerState(kSCENEXMLPARSER_PARSE_XML, "kSCENEXMLPARSER_PARSE_XML");
+	registerState(kSCENEXMLPARSER_VALIDATING_FILE_METADATA, "kSCENEXMLPARSER_VALIDATING_FILE_METADATA");
+	registerState(kSCENEXMLPARSER_VALIDATING_MOVIE_FILE_EXISTENCE, "kSCENEXMLPARSER_VALIDATING_MOVIE_FILE_EXISTENCE");
+	registerState(kSCENEXMLPARSER_VALIDATING_MOVIE_TRANSFORM_LENGTHS, "kSCENEXMLPARSER_VALIDATING_MOVIE_TRANSFORM_LENGTHS");
+	registerState(kSCENEXMLPARSER_CREATING_APPMODEL, "kSCENEXMLPARSER_CREATING_APPMODEL");
+	registerState(kSCENEXMLPARSER_FINISHED, "kSCENEXMLPARSER_FINISHED");
+	
+	setState(kSCENEXMLPARSER_INIT);
 }
 
 void SceneXMLParser::update() {
 	
-	switch (_state) {
+	switch (getState()) {
 			
 		case kSCENEXMLPARSER_INIT:
 			// nothing to do for init, move on to next state.
-			_state = kSCENEXMLPARSER_SETUP;
+			setState(kSCENEXMLPARSER_SETUP);
 			break;
 			
 		case kSCENEXMLPARSER_SETUP:
@@ -47,13 +61,13 @@ void SceneXMLParser::update() {
 			setupDirLister(); // set up file lists;
 			populateDirListerIDMap();
 			load(); // load xml file
-			_state = kSCENEXMLPARSER_PARSE_XML;
+			setState(kSCENEXMLPARSER_PARSE_XML);
 			break;
 			
 		case kSCENEXMLPARSER_PARSE_XML:			
 			// make map (map<string, map<string, string> _parsedData) from xml
 			parseXML();
-			_state = kSCENEXMLPARSER_VALIDATING_MOVIE_FILE_EXISTENCE;
+			setState(kSCENEXMLPARSER_VALIDATING_MOVIE_FILE_EXISTENCE);
 			break;
 		case kSCENEXMLPARSER_VALIDATING_MOVIE_FILE_EXISTENCE:
 			// Check that the map contains valid files (replace with temp fakes if it doesnt)
@@ -69,7 +83,7 @@ void SceneXMLParser::update() {
 				// we'll just get the log error message 'no sequence seqXXa'
 				throw je; // for now we'll just consider it a hard fail and throw up.
 			}
-			_state = kSCENEXMLPARSER_VALIDATING_FILE_METADATA;
+			setState(kSCENEXMLPARSER_VALIDATING_FILE_METADATA);
 			break;
 			
 		case kSCENEXMLPARSER_VALIDATING_FILE_METADATA:
@@ -88,7 +102,7 @@ void SceneXMLParser::update() {
 				LOG_ERROR(message);
 				throw MetadataMismatchException(message);
 			}
-			_state = kSCENEXMLPARSER_VALIDATING_MOVIE_TRANSFORM_LENGTHS;
+			setState(kSCENEXMLPARSER_VALIDATING_MOVIE_TRANSFORM_LENGTHS);
 			break;			
 			
 		case kSCENEXMLPARSER_VALIDATING_MOVIE_TRANSFORM_LENGTHS:
@@ -98,7 +112,7 @@ void SceneXMLParser::update() {
 					// reset completedKeys set
 					_completedKeys.clear();
 					// done, goto next state
-					_state = kSCENEXMLPARSER_CREATING_APPMODEL;
+					setState(kSCENEXMLPARSER_CREATING_APPMODEL);
 				}
 			}
 			catch (TransformMovieLengthMismatchException ex) {
@@ -132,7 +146,7 @@ void SceneXMLParser::update() {
 			
 			if(createAppModel()){
 				_completedKeys.clear();
-				_state = kSCENEXMLPARSER_FINISHED;			
+				setState(kSCENEXMLPARSER_FINISHED);			
 			};
 			break;
 		}
@@ -140,7 +154,7 @@ void SceneXMLParser::update() {
 			break;
 			
 		default:
-			_stateMessage = "UNKNOWN STATE" + ofToString(_state);
+			LOG_ERROR("Unknown state " + printState());
 			break;
 	}
 	
@@ -151,25 +165,25 @@ void SceneXMLParser::update() {
 // Convenience function
 void SceneXMLParser::updateLoadingState(){
 	// loading messave is just the apps state.
-	switch (_state) {
+	switch (getState()) {
 		case kSCENEXMLPARSER_INIT:
 			_loadingProgress = 0.1f;
 			break;
 		case kSCENEXMLPARSER_SETUP:
 			_loadingProgress = 0.2f;
-			_stateMessage = "Setting up dirList, populating file list map, loading XML file into memory...";			
+			//_stateMessage = "Setting up dirList, populating file list map, loading XML file into memory...";			
 			break;			
 		case kSCENEXMLPARSER_PARSE_XML:
 			_loadingProgress = 0.3f;
-			_stateMessage = "Parsing XML...";			
+			//_stateMessage = "Parsing XML...";			
 			break;
 		case kSCENEXMLPARSER_VALIDATING_MOVIE_FILE_EXISTENCE:
 			_loadingProgress = 0.4f;
-			_stateMessage = "Validating movie file existance...";			
+			//_stateMessage = "Validating movie file existance...";			
 			break;
 		case kSCENEXMLPARSER_VALIDATING_FILE_METADATA:
 			_loadingProgress = 0.5f;
-			_stateMessage = "Validating file metadata (size, dateCreated, dateModified)...";			
+			//_stateMessage = "Validating file metadata (size, dateCreated, dateModified)...";			
 			break;
 		case kSCENEXMLPARSER_VALIDATING_MOVIE_TRANSFORM_LENGTHS:
 			_loadingProgress = 0.6f;
@@ -181,7 +195,7 @@ void SceneXMLParser::updateLoadingState(){
 			//			_stateMessage = "Creating app model from validated data...";
 			break;
 		case kSCENEXMLPARSER_FINISHED:
-			_stateMessage = "Parser finished.";
+			//_stateMessage = "Parser finished.";
 			_loadingProgress = 1.0f;
 			break;
 		default:
@@ -255,7 +269,7 @@ bool SceneXMLParser::createAppModel(){
 		if(_completedKeys.find(parsedDataIter->first) != _completedKeys.end()){
 			continue; // already done this key
 		}		
-		_stateMessage = "Creating app model for: " + parsedDataIter->first;
+		//_stateMessage = "Creating app model for: " + parsedDataIter->first;
 		
 		// split
 		vector<string> keyParts;
@@ -721,7 +735,7 @@ bool SceneXMLParser::validateMovieTransformLengths(){
 		if(_completedKeys.find(parsedDataIter->first) != _completedKeys.end()){
 			continue; // already done this key
 		}
-		_stateMessage = "Validating movie and transform lengths: " + parsedDataIter->first;
+		//_stateMessage = "Validating movie and transform lengths: " + parsedDataIter->first;
 		
 		map<string, string> & kvmap = (parsedDataIter->second); // syntax convenience
 		LOG_VERBOSE("Validating movie+transform length for " + parsedDataIter->first);
@@ -893,17 +907,6 @@ void SceneXMLParser::checkTagAttributesExist(string xmltag, vector<string> attri
 		throw GenericXMLParseException(message);
 	}
 }
-
-
-// Only getters, state shouldn't be set from outside (so far)
-string SceneXMLParser::getStateMessage(){
-	return _stateMessage;
-}
-
-SceneXMLParserState SceneXMLParser::getState(){
-	return _state;
-}
-
 
 float SceneXMLParser::getLoadingProgress(){
 	return _loadingProgress;

@@ -9,16 +9,25 @@
 
 #include "AppModel.h"
 
-AppModel::AppModel(){
-	_currentScene = NULL;
-	_padLength = 1;
-}
+//AppModel::AppModel(){}
 
 AppModel::~AppModel(){
 	map<string, Scene *>::iterator iter;
 	for(iter = _scenes.begin(); iter != _scenes.end(); iter++){
 		delete (iter->second);
 	}
+}
+
+void AppModel::registerStates() {
+	LOG_VERBOSE("Registering States");
+	
+	registerState(kAPP_INIT, "kAPP_INIT");
+	registerState(kAPP_LOADING, "kAPP_LOADING");
+	registerState(kAPP_RUNNING, "kAPP_RUNNING");
+	registerState(kAPP_EXITING, "kAPP_EXITING");
+	
+	_currentScene = NULL;
+	_padLength = 1;
 }
 
 void AppModel::setScene(string sceneName, Scene * scene){

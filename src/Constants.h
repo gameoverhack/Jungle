@@ -15,7 +15,7 @@ const int kNoUserAction = 0;
 const int kAttackerAction = 1;
 const int kVictimAction = 2;
 
-enum AppControllerState{
+/*enum AppControllerState{
 	kAPPCONTROLLER_INIT,
 	kAPPCONTROLLER_LOADING,
 	kAPPCONTROLLER_RUNNING,
@@ -38,6 +38,6 @@ enum SceneXMLParserState{
 	kSCENEXMLPARSER_VALIDATING_MOVIE_TRANSFORM_LENGTHS,
 	kSCENEXMLPARSER_CREATING_APPMODEL,
 	kSCENEXMLPARSER_FINISHED
-};	
+};	*/
 
 #endif

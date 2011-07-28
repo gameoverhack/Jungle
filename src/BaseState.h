@@ -1,5 +1,5 @@
 /*
- *  BaseController.h
+ *  BaseState.h
  *  Jungle
  *
  *  Created by gameover on 27/07/11.
@@ -7,21 +7,32 @@
  *
  */
 
-#ifndef _BASECONTROLLER_H
-#define _BASECONTROLLER_H
+#ifndef _BASESTATE_H
+#define _BASESTATE_H
 
-#include "AppModel.h"
+#include "Logger.h"
+
 #include <map>
 #include <string>
 
-class BaseController {
+enum {
+	NONE = -1
+};
+
+class BaseState {
 	
 public:
 	
-	BaseController();
-	virtual ~BaseController();
+	BaseState();
+	virtual ~BaseState();
 	
-	virtual void registerStates();
+	virtual void	registerStates();
+	
+	int				getState();
+	void			setState(int state);
+	bool			checkState(int state);
+	
+	string			printState();
 	
 private:
 
@@ -32,13 +43,7 @@ protected:
 	
 	void	registerState(int intState, string strState);
 	
-	int		getState();
-	
-	void	setState(int state);
 	//void	setState(string state); // do we need this?
-	
-	void	printState();
-	bool	checkState(int state);
 	
 };
 

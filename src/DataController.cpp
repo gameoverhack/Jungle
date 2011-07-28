@@ -9,24 +9,39 @@
 
 #include "DataController.h"
 
-DataController::DataController(string configFilePath)
-{
+DataController::~DataController(){
+	delete _sceneParser;
+	
+}
+
+void DataController::registerStates() {
+	LOG_VERBOSE("Registering States");
+
+	registerState(kDATACONTROLLER_INIT, "kDATACONTROLLER_INIT");
+	registerState(kDATACONTROLLER_SCENE_PARSING, "kDATACONTROLLER_SCENE_PARSING");
+	registerState(kDATACONTROLLER_SCENE_ANALYSING, "kDATACONTROLLER_SCENE_ANALYSING");
+	registerState(kDATACONTROLLER_FINISHED, "kDATACONTROLLER_FINISHED");
+	
+}
+
+void DataController::setup(string configFilePath) {
 	LOG_NOTICE("Initialising with " + configFilePath);
 	_configFilePath = configFilePath;
-
+	
 	// fire and forget
 	PropertyXMLParser propertyXMLParser(_configFilePath);
-
+	
 	if(boost::any_cast<bool>(_appModel->getProperty("xmlForceSceneBuildOnLoad"))){
 		LOG_WARNING("Building XML due to property xmlForceSceneBuildOnLoad = true");
 		rebuildXML();
 	}
 	
 	_sceneParser = new SceneXMLParser(boost::any_cast<string>(_appModel->getProperty("scenesDataPath")),
-									  boost::any_cast<string>(_appModel->getProperty("scenesXMLFile")));	
+									  boost::any_cast<string>(_appModel->getProperty("scenesXMLFile")));
+	_sceneParser->registerStates();
 	
-	_state = kDATACONTROLLER_SCENE_PARSING;
-
+	setState(kDATACONTROLLER_SCENE_PARSING);
+	
 	// used so we don't keep rebuilding on a parse error
 	// (ie: rebuilt xml is faulty anyway, dont keep attempting)
 	// member vairable instead of toggling parseRebuildXML property so we 
@@ -36,15 +51,10 @@ DataController::DataController(string configFilePath)
 	LOG_NOTICE("Initialisation complete");
 }
 
-DataController::~DataController(){
-	delete _sceneParser;
-	
-}
-
 void DataController::update(){
-	switch(_state){
+
+	switch(getState()){
 		case kDATACONTROLLER_SCENE_PARSING:
-			_stateMessage = _sceneParser->getStateMessage();
 			try{
 				// run scene parser update
 				// this will look at the scene parsers internal state and perform 
@@ -94,8 +104,8 @@ void DataController::update(){
 				abort();
 			}
 			// if the parser is done, update our state
-			if(_sceneParser->getState() == kSCENEXMLPARSER_FINISHED){
-				_state = kDATACONTROLLER_FINISHED;
+			if(_sceneParser->checkState(kSCENEXMLPARSER_FINISHED)){
+				setState(kDATACONTROLLER_FINISHED);
 			}
 			break;
 
@@ -106,7 +116,7 @@ void DataController::update(){
 			LOG_VERBOSE("Data controller is finished.");
 			break;
 		default:
-			LOG_ERROR("Unknown state " + ofToString(_state));
+			LOG_ERROR("Unknown state " + printState());
 	}
 	updateAppLoadingState();
 }
@@ -119,19 +129,9 @@ void DataController::saveProperties(){
 // Convenience function
 void DataController::updateAppLoadingState(){
 	// loading messave is just the scene parser state state.
-	_appModel->setProperty("loadingMessage", _sceneParser->getStateMessage());
+	_appModel->setProperty("loadingMessage",  _sceneParser->printState());
 	_appModel->setProperty("loadingProgress", _sceneParser->getLoadingProgress());
 }
-
-
-
-DataControllerState DataController::getState(){
-	return _state;
-}
-string DataController::getStateMessage(){
-	return _stateMessage;
-}
-
 
 void DataController::rebuildXML(){
 	// rebuild

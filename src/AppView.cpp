@@ -16,7 +16,7 @@ AppView::AppView(float width, float height) : BaseView(width ,height) {
 }
 
 void AppView::update() {
-	if(boost::any_cast<int>(_appModel->getProperty("appState")) == kAPPCONTROLLER_LOADING){
+	if(_appModel->checkState(kAPP_LOADING)){
 		_loadingView->update();
 	} else {
 		_sceneView->update();
@@ -28,7 +28,7 @@ void AppView::update() {
 
 void AppView::draw() {
 	
-	if(boost::any_cast<int>(_appModel->getProperty("appState")) == kAPPCONTROLLER_LOADING){
+	if(_appModel->checkState(kAPP_LOADING)){
 		_loadingView->draw();
 	} else {
 			

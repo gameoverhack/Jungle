@@ -24,32 +24,47 @@ using boost::regex_search;
 using boost::regex_match;
 
 #include "IXMLParser.h"
+#include "BaseState.h"
 #include "AppModel.h"
 #include "AppDataTypes.h"
 #include "VectorUtils.h"
 #include "goDirList.h"
 #include "goVideoPlayer.h"
 
+enum {
+	kSCENEXMLPARSER_INIT,
+	kSCENEXMLPARSER_SETUP,
+	kSCENEXMLPARSER_PARSE_XML,
+	kSCENEXMLPARSER_VALIDATING_MOVIE_FILE_EXISTENCE,
+	kSCENEXMLPARSER_VALIDATING_FILE_METADATA,
+	kSCENEXMLPARSER_VALIDATING_MOVIE_TRANSFORM_LENGTHS,
+	kSCENEXMLPARSER_CREATING_APPMODEL,
+	kSCENEXMLPARSER_FINISHED
+};
 
-class SceneXMLParser : public IXMLParser {
+class SceneXMLParser : public BaseState, public IXMLParser {
+
 public:
+	
 	SceneXMLParser(string dataPath, string xmlFile);
+	
+	void registerStates();
 	
 	void parseXML();	
 	void update();
 	
-	string getStateMessage();
-	SceneXMLParserState getState();
+	//string getStateMessage();
+
 	float getLoadingProgress();
 	
 	
 private:
+	
 	string					_dataPath;
 
 	float					_loadingProgress;
 	string					_stateMessage;
-	SceneXMLParserState		_state;
-
+	
 	goDirList				_dirLister;
 	int						_numFiles;
 	map<string, int>		_filenameToDirListerIDMap; // maps filenames to _dirLister.getX(ID)
