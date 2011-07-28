@@ -23,6 +23,8 @@
 		07B2080813CC8A5400FF66CB /* PropertyXMLParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07B2080713CC8A5400FF66CB /* PropertyXMLParser.cpp */; };
 		07B2081113CC8BAD00FF66CB /* PropertyXMLBuilder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07B2081013CC8BAD00FF66CB /* PropertyXMLBuilder.cpp */; };
 		77047FF213C4A8130099581A /* goQtUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77047FF013C4A8130099581A /* goQtUtils.cpp */; };
+		770AD17013DFB8E6001C7EF2 /* BaseController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 770AD16F13DFB8E6001C7EF2 /* BaseController.cpp */; };
+		770AD18113DFBD28001C7EF2 /* VideoController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 770AD18013DFBD28001C7EF2 /* VideoController.cpp */; };
 		7776F62613DD3DA900E439F3 /* goThreadedVideo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7776F62413DD3DA900E439F3 /* goThreadedVideo.cpp */; };
 		778072F313BB4547007BAC08 /* ofxFbo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7780728413BB4547007BAC08 /* ofxFbo.cpp */; };
 		778072F413BB4547007BAC08 /* ofxShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7780728813BB4547007BAC08 /* ofxShader.cpp */; };
@@ -162,6 +164,10 @@
 		07B2085713CC8DAE00FF66CB /* JungleExceptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JungleExceptions.h; sourceTree = "<group>"; };
 		77047FF013C4A8130099581A /* goQtUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = goQtUtils.cpp; sourceTree = "<group>"; };
 		77047FF113C4A8130099581A /* goQtUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = goQtUtils.h; sourceTree = "<group>"; };
+		770AD16E13DFB8E6001C7EF2 /* BaseController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseController.h; sourceTree = "<group>"; };
+		770AD16F13DFB8E6001C7EF2 /* BaseController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BaseController.cpp; sourceTree = "<group>"; };
+		770AD17F13DFBD28001C7EF2 /* VideoController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoController.h; sourceTree = "<group>"; };
+		770AD18013DFBD28001C7EF2 /* VideoController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VideoController.cpp; sourceTree = "<group>"; };
 		7776F5ED13DD3DA900E439F3 /* COMMIT_EDITMSG */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COMMIT_EDITMSG; sourceTree = "<group>"; };
 		7776F5EE13DD3DA900E439F3 /* config */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = config; sourceTree = "<group>"; };
 		7776F5EF13DD3DA900E439F3 /* description */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = description; sourceTree = "<group>"; };
@@ -1021,6 +1027,10 @@
 				07545BA413BDF80200325443 /* DataController.cpp */,
 				77F0332113CD6F6C00D7811A /* CamController.cpp */,
 				77F0332213CD6F6C00D7811A /* CamController.h */,
+				770AD16E13DFB8E6001C7EF2 /* BaseController.h */,
+				770AD16F13DFB8E6001C7EF2 /* BaseController.cpp */,
+				770AD17F13DFBD28001C7EF2 /* VideoController.h */,
+				770AD18013DFBD28001C7EF2 /* VideoController.cpp */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -1517,6 +1527,8 @@
 				075EDAA913CD8F3D009C6288 /* ofxQTKitVideoGrabber.mm in Sources */,
 				075EE27C13CFFC8B009C6288 /* LoadingView.cpp in Sources */,
 				7776F62613DD3DA900E439F3 /* goThreadedVideo.cpp in Sources */,
+				770AD17013DFB8E6001C7EF2 /* BaseController.cpp in Sources */,
+				770AD18113DFBD28001C7EF2 /* VideoController.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

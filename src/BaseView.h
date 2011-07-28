@@ -18,7 +18,7 @@ class BaseView {
 public:
 	
 	BaseView(float width, float height);	//ctor
-	~BaseView();						//dtor
+	virtual ~BaseView();						//dtor
 	
 	virtual void update() = 0; // update view fbo to draw image
 

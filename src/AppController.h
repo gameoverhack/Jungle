@@ -14,11 +14,13 @@
 #include "AppView.h"
 #include "AppModel.h"
 
+#include "BaseController.h"
 #include "DataController.h"
 #include "CamController.h"
+#include "VideoController.h"
 #include "Constants.h"
 
-class AppController : public ofBaseApp {
+class AppController : public BaseController, public ofBaseApp {
 	
 public:
 	

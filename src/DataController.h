@@ -23,6 +23,7 @@ using std::string;
 #include "ofxXmlSettings.h"
 #include "goDirList.h"
 
+#include "BaseController.h"
 #include "Logger.h"
 #include "AppModel.h"
 #include "AppDataTypes.h"
@@ -32,9 +33,7 @@ using std::string;
 #include "PropertyXMLParser.h"
 #include "PropertyXMLBuilder.h"
 
-
-
-class DataController {
+class DataController : public BaseController {
 
 public:
 	
