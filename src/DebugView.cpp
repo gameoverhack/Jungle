@@ -17,7 +17,7 @@ DebugView::DebugView(float width, float height) : BaseView(width, height){
 void DebugView::update(){
 	
 	// set pointers for current Scene, Sequence Movie etc
-	goThreadedVideo	* currentMovie		= _appModel->getSequenceMovie();
+	//goThreadedVideo	* currentMovie		= _appModel->get();
 	Sequence		* currentSequence	= _appModel->getCurrentSequence();
 	Scene			* currentScene		= _appModel->getCurrentScene();
 
@@ -25,10 +25,10 @@ void DebugView::update(){
 	string msg = "ABC: " + ofToString(ofGetFrameRate()) + "\n";
 	
 	// get transform info and current movie frame
-	int currentFrame	= currentMovie->getCurrentFrame();
-	int totalFrames		= currentMovie->getTotalNumFrames();
+	int currentFrame	= _appModel->getCurrentFrame(); //currentMovie->getCurrentFrame();
+	int totalFrames		= _appModel->getCurrentFrameTotal(); //currentMovie->getTotalNumFrames();
 	
-	currentFrame = CLAMP(currentFrame, 0, totalFrames-1); // why are you so cruel?
+	//currentFrame = CLAMP(currentFrame, 0, totalFrames-1); // why are you so cruel?
 	
 	msg += "vic1 Transform: " + currentSequence->getTransformAsString("vic1", currentFrame) + "\n";
 	msg += "atk1 Transform: " + currentSequence->getTransformAsString("atk1", currentFrame) + "\n";

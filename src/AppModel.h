@@ -46,7 +46,6 @@ public:
 
 	Sequence		* getCurrentSequence();
 	Scene			* getCurrentScene();
-	goThreadedVideo	* getSequenceMovie();
 	
 	Scene			*getScene(string sceneName);
 	
@@ -64,8 +63,19 @@ public:
 	
 	boost::any	getProperty(string propName);
 
-	string	getAllPropsAsList();
+	string		getAllPropsAsList();
 	map<string, string> getAllPropsNameTypeAsMap();
+	
+	goThreadedVideo *	getCurrentVideoPlayer();
+	goThreadedVideo *	getNextVideoPlayer();
+	void				toggleVideoPlayers();
+	
+	void				setCurrentFrame(int frame);
+	int					getCurrentFrame();
+	int					getCurrentFrameTotal();
+	
+	void				setCurrentIsFrameNew(bool isFrameNew);
+	bool				getCurrentIsFrameNew();
 	
 private:
 	
@@ -86,6 +96,10 @@ private:
 	
 	ofTexture *					_victimCamTex;
 	ofTexture *					_attackCamTex;
+	
+	goThreadedVideo *			_videoPlayers[2];
+	int							_frame;
+	bool						_isFrameNew;
 	
 protected:
 

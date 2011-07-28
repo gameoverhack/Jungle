@@ -11,19 +11,38 @@
 #define _VIDEOCONTROLLER_H
 
 #include "BaseState.h"
+#include "AppModel.h"
 
 enum {
-	SOME,
-	ANOTHER
+	//kVIDCONTROLLER_UNREADY,
+	kVIDCONTROLLER_READY,
+	kVIDCONTROLLER_CURRENTVIDONE,
+	kVIDCONTROLLER_NEXTVIDLOADING,
+	kVIDCONTROLLER_NEXTVIDREADY,
+	kVIDCONTROLLER_NEXTVIDERROR
 };
 
 class VideoController : public BaseState {
 
 public:
 	
+	VideoController();
+	~VideoController();
+	
 	void	registerStates();
 	
+	void	update();
+	void	forceUpdate();
+	
+	void	loadMovie(Sequence * seq);
+	void	toggleVideoPlayers();
+	
 private:
+	
+	bool	cachedLoopAndState;
+	
+	void	loaded(string & path);
+	void	error(int & err);
 	
 };
 

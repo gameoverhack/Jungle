@@ -53,18 +53,18 @@ SceneView::SceneView(float width, float height) : BaseView(width ,height) {
 
 void SceneView::update() {
 	
-	goThreadedVideo * currentSequenceVideo = _appModel->getCurrentSequence()->getMovie();
-	ofTexture *sceneTexture;
-	CamTransform *actorTransform;
+	goThreadedVideo * currentMovie = _appModel->getCurrentVideoPlayer(); //getCurrentSequence()->getMovie();
+	ofTexture		* sceneTexture;
+	CamTransform	* actorTransform;
 
 	// get the video texture
-	sceneTexture = &(currentSequenceVideo->getTextureReference());
-	currentFrame = currentSequenceVideo->getCurrentFrame();
+	sceneTexture = &(currentMovie->getTextureReference());
+	currentFrame = _appModel->getCurrentFrame(); //currentMovie->getCurrentFrame();
 	
 	glClearColor(0.0, 0.0, 0.0, 0.0); // transparent clear colour
 	ofSetColor(255,255,255); // no tinting
 
-	if(currentSequenceVideo->isFrameNew()){
+	if(_appModel->getCurrentIsFrameNew()){
 		// draw characters faces to new positions
 		// TODO: This needs to be smarter
 		drawCharacter(&_vic1FBO, _appModel->getVictimCamTexRef(), &(_appModel->getCurrentSequence()->getTransformVector("vic1")->at(currentFrame)));
@@ -132,6 +132,8 @@ void SceneView::drawCharacter(ofxFbo * targetFBO,
 		rot = -rot;
 	}
 
+	rot = -rot; // $%^%$!!??
+	
 	glScalef(sclX, sclY, 1.0f);
 	
 	// rotate the head

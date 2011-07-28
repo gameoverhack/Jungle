@@ -9,9 +9,15 @@
 
 #include "AppModel.h"
 
+// ctor & dtor
+//--------------------------------------------------------------
 AppModel::AppModel(){
 	_currentScene = NULL;
 	_padLength = 1;
+	
+	// setup video players
+	_videoPlayers[0] = new goThreadedVideo();
+	_videoPlayers[1] = new goThreadedVideo();
 }
 
 AppModel::~AppModel(){
@@ -19,8 +25,14 @@ AppModel::~AppModel(){
 	for(iter = _scenes.begin(); iter != _scenes.end(); iter++){
 		delete (iter->second);
 	}
+	
+	// clean up video players
+	delete _videoPlayers[0];
+	delete _videoPlayers[1];
 }
 
+// state registration
+//--------------------------------------------------------------
 void AppModel::registerStates() {
 	LOG_VERBOSE("Registering States");
 	
@@ -31,6 +43,8 @@ void AppModel::registerStates() {
 	
 }
 
+// scene getters and setters
+//--------------------------------------------------------------
 void AppModel::setScene(string sceneName, Scene * scene){
 	_scenes.insert(pair<string, Scene *>(sceneName, scene));
 }
@@ -75,11 +89,14 @@ bool AppModel::nextScene(){
 	}
 	return false; // should never get here, can probably just be void return
 }
+
 Scene * AppModel::getCurrentScene(){
 	assert(_currentScene != NULL);
 	return _currentScene;
 }
 
+// sequence getters and setters
+//--------------------------------------------------------------
 Sequence * AppModel::getCurrentSequence() {
 	Sequence * seq;
 	assert(_currentScene != NULL); // make sure _currentSequence is set (is this enough?)
@@ -88,12 +105,8 @@ Sequence * AppModel::getCurrentSequence() {
 	return seq;
 }
 
-goThreadedVideo * AppModel::getSequenceMovie() {
-	goThreadedVideo * vid;
-	vid = getCurrentSequence()->getMovie();
-	return vid;
-}
-
+// camera texture getters and setters
+//--------------------------------------------------------------
 void AppModel::setCameraTextures(ofTexture * victimCamTex, ofTexture * attackCamTex) {
 	_victimCamTex = victimCamTex;
 	_attackCamTex = attackCamTex;
@@ -105,6 +118,43 @@ ofTexture * AppModel::getVictimCamTexRef() {
 
 ofTexture * AppModel::getAttackCamTexRef() {
 	return _attackCamTex;
+}
+
+// videoplayer getters and setters
+//--------------------------------------------------------------
+goThreadedVideo * AppModel::getCurrentVideoPlayer() {
+	return _videoPlayers[0]; // always make 0 the current...
+}
+
+goThreadedVideo * AppModel::getNextVideoPlayer() {
+	return _videoPlayers[1]; // ... and 1 the next or cached video player
+}
+
+void AppModel::toggleVideoPlayers() {
+	_videoPlayers[1]->setPosition(0.0f);
+	swap(_videoPlayers[0], _videoPlayers[1]);
+	_videoPlayers[0]->psuedoUpdate(); // here? or in controller?
+	_videoPlayers[1]->close();
+}
+
+void AppModel::setCurrentFrame(int frame) {
+	_frame = CLAMP(frame, 0, getCurrentFrameTotal()-1);//frame clamped to one less than total number;
+}
+
+int AppModel::getCurrentFrame() {
+	return _frame;
+}
+
+int AppModel::getCurrentFrameTotal() { // for now no setter just do it on the actual movie....
+	return _videoPlayers[0]->getTotalNumFrames();
+}
+
+void AppModel::setCurrentIsFrameNew(bool isFrameNew) {
+	_isFrameNew = isFrameNew;
+}
+
+bool AppModel::getCurrentIsFrameNew() {
+	return _isFrameNew;
 }
 
 /********************************************************

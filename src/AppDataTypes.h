@@ -23,6 +23,23 @@ using std::pair;
 #include "Logger.h"
 #include "Constants.h"
 
+//class VideoPlayer : public goThreadedVideo {
+//	
+//public:
+//	
+//	VideoPlayer(){};
+//	~VideoPlayer(){};
+//	
+//	void	setCurrentFrame(int frame) {_currentFrame == frame;};
+//	int		getCurrentFrame() {return _currentFrame;};
+//		
+//	
+//private:
+//
+//	int					_currentFrame;
+//	
+//};
+
 class CamTransform {
 private:
 	friend class boost::serialization::access;
@@ -57,14 +74,12 @@ class Sequence {
 public:
 	
 	Sequence() {
-		_movie = new goThreadedVideo();
-		//_movie = NULL;
 		_isMovieFaked = false;
 		_isSequenceFaked = false;
 	};
 	
 	~Sequence() {
-		delete _movie;
+		// nothing for now
 	};
 
 	string getName() {
@@ -152,72 +167,12 @@ public:
 		return tranString;
 	}
 	
-	goThreadedVideo * getMovie() {
-		//cout << _isMovieFaked << endl;
-		return _movie;
-	}
-	
 	void setInteractivity(string s) {
 		_interactivity = s;
 	}
 
 	string getInteractivity() {
 		return _interactivity;
-	}
-	
-	void setPaused(bool b) {
-		_movie->setPaused(b);
-	}
-	
-	/*void setMovie(goThrededVideo *video){
-	 if(_movie != NULL){
-	 _movie->close();
-	 delete _movie;
-	 }
-	 _movie = video;
-	 }*/
-	
-	void loadMovie() {
-		/*if(_movie != NULL){
-			_movie->close();
-			//delete _movie;
-		}*/
-		resetMovie();
-		//_movie = new goThreadedVideo();
-		_movie->loadMovie(_movieFullFilePath);
-	}
-	
-	void prepareMovie() {
-		_movie->setPosition(0.0);
-		//_movie->play();
-		//_movie->psuedoUpdate();
-		//_movie->psuedoDraw();
-		// must be set after play ? // handled inside goThreaded
-		if(_interactivity == "both") {
-			// loop on interactive movies
-			_movie->setLoopState(OF_LOOP_NORMAL);
-		} else {
-			_movie->setLoopState(OF_LOOP_NONE);
-		}
-		
-		
-		
-		//setPaused(true);
-	}
-	
-	void resetMovie() {
-		if(_movie != NULL) {
-			_movie->close();
-			//_movie->setPaused(true);
-			//_movie->setPosition(0.0);
-		} else {
-			//_movie = new goThreadedVideo();
-		}
-
-		/*else {
-			LOG_ERROR("Could not reset sequence movie, movie == NULL");
-			abort();
-		}*/
 	}
 	
 private:
@@ -232,8 +187,6 @@ private:
 	string					_movieFullFilePath;
 
 public:
-
-	goThreadedVideo		* _movie;
 	
 	map<string, vector<CamTransform> *> _transforms;
 };

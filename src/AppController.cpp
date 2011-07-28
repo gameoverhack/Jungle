@@ -26,6 +26,10 @@ void AppController::setup() {
 	_dataController = new DataController(ofToDataPath("config_properties.xml"));
 	_dataController->registerStates();
 	
+	// setup videoController
+	_vidController = new VideoController();
+	_vidController->registerStates();
+	
 	// setup cameras
 	_camControllers[0] = new CamController();
 	_camControllers[1] = new CamController();
@@ -46,7 +50,6 @@ void AppController::setup() {
 	_appModel->setState(kAPP_LOADING);
 	
 	// set app state;
-	//_appModel->setProperty("appState", (int)getState()); // Generally (always should be?) set to AppController's _state
 	_appModel->setProperty("loadingMessage", string("AppController loading"));
 	_appModel->setProperty("loadingProgress", 0.1f);
 	
@@ -70,10 +73,12 @@ void AppController::update() {
 	
 	// if we're loading, update datacontroller
 	if(_appModel->checkState(kAPP_LOADING)){
+		
 		_dataController->update();
+		
 		if(_dataController->checkState(kDATACONTROLLER_FINISHED)){
 			
-			// dc finished load first movie
+			// DC finished...let's load the first movie
 			Scene			* currentScene;
 			Sequence		* currentSequence;
 			goThreadedVideo * movie;
@@ -84,7 +89,24 @@ void AppController::update() {
 			// get current sequence
 			currentSequence = currentScene->getCurrentSequence();
 
-			if (currentSequence->getMovie()->getCurrentlyPlaying() == "") {
+			if (_vidController->checkState(kVIDCONTROLLER_READY)) {
+				_vidController->loadMovie(currentSequence);
+			} else {
+				// we have to do this to make sure the threaded movie loads when we're not updating/drawing anything
+				_vidController->forceUpdate();
+			}
+
+			
+			if (_vidController->checkState(kVIDCONTROLLER_NEXTVIDREADY)) {
+				_appModel->setState(kAPP_RUNNING);
+				_vidController->toggleVideoPlayers();
+				_vidController->setState(kVIDCONTROLLER_READY);
+			}
+			
+			
+			
+			
+			/*if (currentSequence->getMovie()->getCurrentlyPlaying() == "") {
 				currentSequence->loadMovie();
 			} 
 			
@@ -99,7 +121,7 @@ void AppController::update() {
 				// first movie loaded, update app controller state;
 				_appModel->setState(kAPP_RUNNING);
 				//_appModel->setProperty("appState", (int)kAPPCONTROLLER_RUNNING);	// this seems clunky???
-			}
+			}*/
 			
 		}
 	}
@@ -107,10 +129,40 @@ void AppController::update() {
 	// running, so update scenes, etc
 	if(_appModel->checkState(kAPP_RUNNING)) {
 		
+		Scene			* currentScene		= _appModel->getCurrentScene();
+		Sequence		* currentSequence	= currentScene->getCurrentSequence();
+		
 		_camControllers[0]->update();
 		_camControllers[1]->update();
 		
-		Scene			* currentScene;
+		_vidController->update();
+		
+		if (_vidController->checkState(kVIDCONTROLLER_CURRENTVIDONE)) {
+			// the video just finished and we toggled to next video if there is one
+			
+			if(currentScene->nextSequence()) {
+				// loaded next sequence in this scene, keep going
+				LOG_VERBOSE("Should have gone to next sequence");
+			} else {
+				// couldn't load next sequence, there isn't one etc
+				// set this scenes sequence to first sequence (for when we get back to it)
+				// TODO:	This needs a method, can just use the key order since our keys are alpha ordered, 
+				//			i feel odd about doing that though. I guess it is guarenteed though.
+				//				currentScene->setCurrentSequence(0); 
+				LOG_WARNING("Current scene ended, but no method to rewind current scene to first sequence. Loading next scene anyway");
+				// load next scene
+				_appModel->nextScene();
+				currentScene = _appModel->getCurrentScene();
+				currentSequence = currentScene->getCurrentSequence();
+			}
+			
+			// re call update on vidcontroller so everything is sweet and seq, scene and movs all match
+			_vidController->update();
+			_vidController->setState(kVIDCONTROLLER_READY);
+		}
+		
+	}
+		/*Scene			* currentScene;
 		Sequence		* currentSequence;
 		Sequence		* loopSequence;
 		Sequence		* attackSequence;
@@ -145,7 +197,7 @@ void AppController::update() {
 			/*if (!loopMovie->isLoaded()) {
 				loopMovie->psuedoUpdate();
 				loopMovie->psuedoDraw();
-			}*/
+			}
 		}
 		
 		if (currentSequence->getAttackerResult() != "" && currentSequence->getAttackerResult() != "__FINAL_SEQUENCE__") {
@@ -160,7 +212,7 @@ void AppController::update() {
 			/*if (!attackerMovie->isLoaded()) {
 				attackerMovie->psuedoUpdate();
 				attackerMovie->psuedoDraw();
-			}*/
+			}
 		}
 		
 		if (currentSequence->getVictimResult() != "" && currentSequence->getVictimResult() != "__FINAL_SEQUENCE__") {
@@ -175,7 +227,7 @@ void AppController::update() {
 			/*if (!victimSequence->isLoaded()) {
 				victimSequence->psuedoUpdate();
 				victimSequence->psuedoDraw();
-			}*/
+			}
 		}
 		
 		
@@ -183,7 +235,7 @@ void AppController::update() {
 			currentMovie->setLoopState(OF_LOOP_NORMAL);
 		} else {
 			currentMovie->setLoopState(OF_LOOP_NONE);
-		}*/
+		}
 		
 		// check if sequence was interactive
 		if (currentSequence->getInteractivity() == "both") {
@@ -234,7 +286,7 @@ void AppController::update() {
 		if(currentMovie->getIsMovieDone()){
 			LOG_VERBOSE("It is done, Luke");
 			/*loopMovie->setPosition(0);
-			*/
+			
 			// at end of non interactive movie, change to next sequence
 			if(currentScene->nextSequence()) {
 				loopMovie->psuedoUpdate();
@@ -263,7 +315,7 @@ void AppController::update() {
 		// update the movie
 		currentMovie->update();
 		
-	}
+	}*/
 	
 	// always update the view
 	_appView->update();
@@ -274,8 +326,6 @@ void AppController::draw() {
 	//	LOG_VERBOSE("Drawing");
 	ofSetColor(255, 255, 255, 255);
 	_appView->draw();
-	
-	
 }
 
 //--------------------------------------------------------------
@@ -314,16 +364,16 @@ void AppController::keyPressed(int key){
 			swapCameras();
 			break;
 		case ' ':
-			_appModel->getSequenceMovie()->togglePaused();
+			_appModel->getCurrentVideoPlayer()->togglePaused();
 			break;
 		case '>':
-			_appModel->getSequenceMovie()->setFrame(_appModel->getSequenceMovie()->getTotalNumFrames()-24);
+			_appModel->getCurrentVideoPlayer()->setFrame(_appModel->getCurrentFrameTotal()-24);
 			break;
 		case 356: // left arrow
-			_appModel->getSequenceMovie()->previousFrame();
+			_appModel->getCurrentVideoPlayer()->previousFrame();
 			break;
 		case 358: // right arrow
-			_appModel->getSequenceMovie()->nextFrame();
+			_appModel->getCurrentVideoPlayer()->nextFrame();
 			break;
 		case 'h':
 			_appModel->setProperty("showUnmaskedTextures", (showUnmask ? false : true));
