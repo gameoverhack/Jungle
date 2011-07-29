@@ -131,11 +131,14 @@ goThreadedVideo * AppModel::getNextVideoPlayer() {
 }
 
 void AppModel::toggleVideoPlayers() {
-	LOG_VERBOSE("Toggling Video Players");
+	LOG_VERBOSE("Swap Video Player pointers");
 	_videoPlayers[1]->setPosition(0.0f);
+	_videoPlayers[1]->update();
 	swap(_videoPlayers[0], _videoPlayers[1]);
 	_videoPlayers[0]->psuedoUpdate(); // here? or in controller?
 	_videoPlayers[1]->close();
+	delete _videoPlayers[1];
+	_videoPlayers[1] = new goThreadedVideo();
 }
 
 void AppModel::setCurrentFrame(int frame) {

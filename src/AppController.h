@@ -50,16 +50,18 @@ public:
 private:
 	
 	// Views
-	AppView			*_appView;
+	AppView			* _appView;
 	
 	// Controllers
-	DataController	*_dataController;
-	CamController	*_camControllers[2];
-	VideoController *_vidController;
-	MicController	*_micController;
-	ArdController	*_ardController;
+	DataController	* _dataController;
+	CamController	* _camControllers[2];
+	VideoController * _vidController;
+	MicController	* _micController;
+	ArdController	* _ardController;
 	
-	bool			_isFullScreen;
+	bool			  _isFullScreen;
+	
+	Sequence		* _switchToSequence;
 
 protected:
 	

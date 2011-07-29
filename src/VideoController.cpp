@@ -14,14 +14,14 @@ VideoController::VideoController() {
 	
 	LOG_VERBOSE("Constructing VideoController and adding listeners");
 	
-	// setup listeners for error and loadDone
+	/* setup listeners for error and loadDone
 	goThreadedVideo * nextMovie = _appModel->getNextVideoPlayer();
 	goThreadedVideo * currentMovie = _appModel->getCurrentVideoPlayer();
 	
 	ofAddListener(nextMovie->loadDone, this, &VideoController::loaded);
 	ofAddListener(nextMovie->error, this, &VideoController::error);
 	ofAddListener(currentMovie->loadDone, this, &VideoController::loaded);
-	ofAddListener(currentMovie->error, this, &VideoController::error);
+	ofAddListener(currentMovie->error, this, &VideoController::error);*/
 	
 }
 
@@ -29,18 +29,18 @@ VideoController::~VideoController() {
 	
 	LOG_VERBOSE("Destroying VideoController and removing listeners");
 	
-	// remove listeners for error and loadDone
+	/* remove listeners for error and loadDone
 	goThreadedVideo * nextMovie = _appModel->getNextVideoPlayer();
 	goThreadedVideo * currentMovie = _appModel->getCurrentVideoPlayer();
 	
 	ofRemoveListener(nextMovie->loadDone, this, &VideoController::loaded);
 	ofRemoveListener(nextMovie->error, this, &VideoController::error);
 	ofRemoveListener(currentMovie->loadDone, this, &VideoController::loaded);
-	ofRemoveListener(currentMovie->error, this, &VideoController::error);
+	ofRemoveListener(currentMovie->error, this, &VideoController::error);*/
 	
 	// close any open movies
-	nextMovie->close();
-	currentMovie->close();
+	//nextMovie->close();
+	//currentMovie->close();
 	
 }
 
@@ -116,7 +116,7 @@ void VideoController::loadMovie(Sequence * seq, bool forceCurrentLoad) {
 	
 	// get the full path of the movie from the sequence
 	string path = seq->getMovieFullFilePath();
-	LOG_VERBOSE("Next video start to load: " + path);
+	LOG_VERBOSE("Next video start to load: " + path + (string)(_forceCurrentLoad ? " FORCED" : " NORMAL"));
 	
 	_forceCurrentLoad = forceCurrentLoad;
 
@@ -125,25 +125,34 @@ void VideoController::loadMovie(Sequence * seq, bool forceCurrentLoad) {
 	if (_forceCurrentLoad) nextMovie->close();
 	
 	nextMovie->loadMovie(path);
+	ofAddListener(nextMovie->loadDone, this, &VideoController::loaded);
+	ofAddListener(nextMovie->error, this, &VideoController::error);
 	
 	setState(kVIDCONTROLLER_NEXTVIDLOADING);
 
 }
 
 void VideoController::toggleVideoPlayers() {
-	// switch current and next pointers on the model
-	_appModel->toggleVideoPlayers();
-	//setState(kVIDCONTROLLER_READY);
+	LOG_VERBOSE("Toggling Video Players");
+//	goThreadedVideo * nextMovie = _appModel->getNextVideoPlayer();
+//	goThreadedVideo * currentMovie = _appModel->getCurrentVideoPlayer();
+//	nextMovie->setPosition(0.0f);
+	//swap(nextMovie, currentMovie); // why not for?
+	_appModel->toggleVideoPlayers(); // swap(_videoPlayers[0], _videoPlayers[1]); should work with (nextMovie, currentMovie) but doesn't!?!?
+//	nextMovie->psuedoUpdate();	// now it's the currentMovie...
+//	currentMovie->close();		// and this is the last movie!
+	
+
 }
 
 void VideoController::loaded(string & path) {
 	LOG_VERBOSE("Next video successfully loaded: " + path);
+	goThreadedVideo * nextMovie = _appModel->getNextVideoPlayer();
+	ofRemoveListener(nextMovie->loadDone, this, &VideoController::loaded);
+	ofRemoveListener(nextMovie->error, this, &VideoController::error);
 	setState(kVIDCONTROLLER_NEXTVIDREADY);
 	_cachedLoopAndState = false;
-	if (_forceCurrentLoad) {
-		toggleVideoPlayers();
-		_forceCurrentLoad = false;
-	}
+	_forceCurrentLoad = false;
 }
 
 void VideoController::error(int & err) {

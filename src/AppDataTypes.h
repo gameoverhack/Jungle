@@ -220,6 +220,10 @@ public:
 		_name = name;
 	}
 	
+	void rewindSequences() {
+		_currentSequence = _sequences.begin()->second;
+	}
+	
 	void setSequence(string key, Sequence * value){
 		_sequences.insert(pair<string, Sequence *>(key, value));
 	}
