@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Jungle" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="release">
+				<Option output="bin\$(PROJECT_NAME)" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="bin" />
+				<Option object_output="obj\release" />
+				<Option external_deps="..\..\..\libs\openFrameworksCompiled\lib\win_cb\openFrameworks.lib;" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="../../../libs/openFrameworksCompiled/lib/win_cb/openFrameworks.lib" />
+				</Linker>
+			</Target>
+			<Target title="debug">
+				<Option output="bin\$(PROJECT_NAME)_DEBUG" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="bin" />
+				<Option object_output="obj\debug\" />
+				<Option external_deps="..\..\..\libs\openFrameworksCompiled\lib\win_cb\openFrameworksDebug.lib;" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+				<Linker>
+					<Add option="../../../libs/openFrameworksCompiled/lib/win_cb/openFrameworksDebug.lib" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wno-multichar" />
+			<Add directory="..\..\..\libs\glu\include" />
+			<Add directory="..\..\..\libs\freetype\include" />
+			<Add directory="..\..\..\libs\freetype\include\freetype2" />
+			<Add directory="..\..\..\libs\FreeImage\include" />
+			<Add directory="..\..\..\libs\quicktime\include" />
+			<Add directory="..\..\..\libs\rtAudio\include" />
+			<Add directory="..\..\..\libs\fmodex\include" />
+			<Add directory="..\..\..\libs\videoInput\include" />
+			<Add directory="..\..\..\libs\glee\include" />
+			<Add directory="..\..\..\libs\glut\include" />
+			<Add directory="..\..\..\libs\openFrameworks" />
+			<Add directory="..\..\..\libs\openFrameworks\app" />
+			<Add directory="..\..\..\libs\openFrameworks\events" />
+			<Add directory="..\..\..\libs\openFrameworks\graphics" />
+			<Add directory="..\..\..\libs\openFrameworks\utils" />
+			<Add directory="..\..\..\libs\openFrameworks\sound" />
+			<Add directory="..\..\..\libs\openFrameworks\video" />
+			<Add directory="..\..\..\libs\openFrameworks\communication" />
+			<Add directory="..\..\..\libs\poco\include" />
+			<Add directory="..\..\..\addons\goDirList\src" />
+			<Add directory="..\..\..\addons\goThreadedVideo\src" />
+			<Add directory="..\..\..\addons\goUtils\src" />
+			<Add directory="..\..\..\addons\goVideoGrabber\src" />
+			<Add directory="..\..\..\addons\goVideoPlayer\src" />
+			<Add directory="..\..\..\addons\ofxOpenCv\src" />
+			<Add directory="..\..\..\addons\ofxThread\src" />
+			<Add directory="..\..\..\addons\ofxXmlSettings\src" />
+			<Add directory="..\..\..\addons\ofxOpenCv\libs\opencv\include" />
+			<Add directory="..\..\..\addons\ofxXmlSettings\libs" />
+		</Compiler>
+		<Linker>
+			<Add option="../../../libs/FreeImage/lib/win_cb/FreeImage.lib" />
+			<Add option="../../../libs/rtAudio/lib/win_cb/RtAudio.a" />
+			<Add option="../../../libs/quicktime/lib/win_cb/qtmlClient.lib" />
+			<Add option="../../../libs/freetype/lib/win_cb/libfreetype.a" />
+			<Add option="../../../libs/glut/lib/win_cb/libglut.a" />
+			<Add option="../../../libs/videoInput/lib/win_cb/videoInputLib.a" />
+			<Add option="../../../libs/fmodex/lib/win_cb/libfmodex.a" />
+			<Add option="../../../libs/glee/lib/win_cb/GLee.lib" />
+			<Add option="../../../libs/glu/lib/win_cb/glu32.lib" />
+			<Add option="../../../libs/poco/lib/win_cb/libPocoNetmt.a" />
+			<Add option="../../../libs/poco/lib/win_cb/libPocoUtilmt.a" />
+			<Add option="../../../libs/poco/lib/win_cb/libPocoXMLmt.a" />
+			<Add option="../../../libs/poco/lib/win_cb/libPocoFoundationmt.a" />
+			<Add option="-lopengl32" />
+			<Add option="-lglu32" />
+			<Add option="-ldsound" />
+			<Add option="-lwinmm" />
+			<Add option="-ldxguid" />
+			<Add option="-lstrmbase" />
+			<Add option="-lstrmiids" />
+			<Add option="-lz" />
+			<Add option="-luuid" />
+			<Add option="-lole32" />
+			<Add option="-loleaut32" />
+			<Add option="-lsetupapi" />
+			<Add option="-lwsock32" />
+			<Add option="-lws2_32" />
+			<Add option="-lIphlpapi" />
+			<Add library="..\..\..\addons\ofxOpenCv\libs\opencv\lib\win_cb\libcv.a" />
+			<Add library="..\..\..\addons\ofxOpenCv\libs\opencv\lib\win_cb\libcvaux.a" />
+			<Add library="..\..\..\addons\ofxOpenCv\libs\opencv\lib\win_cb\libcxcore.a" />
+		</Linker>
+		<ExtraCommands>
+			<Add after='xcopy /e /i /y &quot;$(PROJECT_DIR)..\..\..\export\win_cb\*.dll&quot;  &quot;$(PROJECT_DIR)bin&quot;' />
+			<Add after='cmd /c if not exist &quot;$(PROJECT_DIR)bin/data&quot; mkdir &quot;$(PROJECT_DIR)bin/data&quot;' />
+			<Mode after="always" />
+		</ExtraCommands>
+		<Unit filename="..\..\..\addons\goDirList\src\goDirList.cpp" />
+		<Unit filename="..\..\..\addons\goDirList\src\goDirList.h" />
+		<Unit filename="..\..\..\addons\goThreadedVideo\src\goThreadedVideo.cpp" />
+		<Unit filename="..\..\..\addons\goThreadedVideo\src\goThreadedVideo.h" />
+		<Unit filename="..\..\..\addons\goUtils\src\goUtils.cpp" />
+		<Unit filename="..\..\..\addons\goUtils\src\goUtils.h" />
+		<Unit filename="..\..\..\addons\goVideoGrabber\src\goVideoGrabber.cpp" />
+		<Unit filename="..\..\..\addons\goVideoGrabber\src\goVideoGrabber.h" />
+		<Unit filename="..\..\..\addons\goVideoPlayer\src\goQtUtils.cpp" />
+		<Unit filename="..\..\..\addons\goVideoPlayer\src\goQtUtils.h" />
+		<Unit filename="..\..\..\addons\goVideoPlayer\src\goVideoPlayer.cpp" />
+		<Unit filename="..\..\..\addons\goVideoPlayer\src\goVideoPlayer.h" />
+		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxCvBlob.h" />
+		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxCvColorImage.cpp" />
+		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxCvColorImage.h" />
+		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxCvConstants.h" />
+		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxCvContourFinder.cpp" />
+		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxCvContourFinder.h" />
+		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxCvFloatImage.cpp" />
+		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxCvFloatImage.h" />
+		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxCvGrayscaleImage.cpp" />
+		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxCvGrayscaleImage.h" />
+		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxCvImage.cpp" />
+		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxCvImage.h" />
+		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxCvMain.h" />
+		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxCvShortImage.cpp" />
+		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxCvShortImage.h" />
+		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxOpenCv.h" />
+		<Unit filename="..\..\..\addons\ofxThread\src\ofxThread.cpp" />
+		<Unit filename="..\..\..\addons\ofxThread\src\ofxThread.h" />
+		<Unit filename="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.cpp" />
+		<Unit filename="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.h" />
+		<Unit filename="src\AppController.cpp" />
+		<Unit filename="src\AppController.h" />
+		<Unit filename="src\AppDataTypes.h" />
+		<Unit filename="src\AppModel.cpp" />
+		<Unit filename="src\AppModel.h" />
+		<Unit filename="src\AppView.cpp" />
+		<Unit filename="src\AppView.h" />
+		<Unit filename="src\ArdController.cpp" />
+		<Unit filename="src\ArdController.h" />
+		<Unit filename="src\BaseState.cpp" />
+		<Unit filename="src\BaseState.h" />
+		<Unit filename="src\BaseView.cpp" />
+		<Unit filename="src\BaseView.h" />
+		<Unit filename="src\CamController.cpp" />
+		<Unit filename="src\CamController.h" />
+		<Unit filename="src\Constants.h" />
+		<Unit filename="src\DataController.cpp" />
+		<Unit filename="src\DataController.h" />
+		<Unit filename="src\DebugView.cpp" />
+		<Unit filename="src\DebugView.h" />
+		<Unit filename="src\IXMLBuilder.h" />
+		<Unit filename="src\IXMLParser.h" />
+		<Unit filename="src\JungleException.cpp" />
+		<Unit filename="src\JungleExceptions.h" />
+		<Unit filename="src\LoadingView.cpp" />
+		<Unit filename="src\LoadingView.h" />
+		<Unit filename="src\Logger.cpp" />
+		<Unit filename="src\Logger.h" />
+		<Unit filename="src\MicController.cpp" />
+		<Unit filename="src\MicController.h" />
+		<Unit filename="src\PropertyXMLBuilder.cpp" />
+		<Unit filename="src\PropertyXMLBuilder.h" />
+		<Unit filename="src\PropertyXMLParser.cpp" />
+		<Unit filename="src\PropertyXMLParser.h" />
+		<Unit filename="src\SceneView.cpp" />
+		<Unit filename="src\SceneView.h" />
+		<Unit filename="src\SceneXMLBuilder.cpp" />
+		<Unit filename="src\SceneXMLBuilder.h" />
+		<Unit filename="src\SceneXMLParser.cpp" />
+		<Unit filename="src\SceneXMLParser.h" />
+		<Unit filename="src\Singleton.h" />
+		<Unit filename="src\VectorUtils.h" />
+		<Unit filename="src\VideoController.cpp" />
+		<Unit filename="src\VideoController.h" />
+		<Unit filename="src\main.cpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+			<envvars />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
