@@ -143,7 +143,8 @@ void AppModel::toggleVideoPlayers() {
 }
 
 void AppModel::setCurrentFrame(int frame) {
-	_frame = CLAMP(frame, 0, getCurrentFrameTotal()-1);//frame clamped to one less than total number;
+	//_frame = CLAMP(frame, 0, getCurrentFrameTotal()-1); //frame clamped to one less than total number;
+	_frame = CLAMP(frame, 0, _currentScene->getCurrentSequence()->getTransformVector("atk1")->size()-1); // to be sure, to be sure!
 }
 
 int AppModel::getCurrentFrame() {

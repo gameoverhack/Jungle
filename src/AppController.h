@@ -62,6 +62,8 @@ private:
 	bool			  _isFullScreen;
 	
 	Sequence		* _switchToSequence;
+	
+	int				_lastAutoActionTime;
 
 protected:
 	

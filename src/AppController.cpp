@@ -25,7 +25,7 @@ void AppController::setup() {
 	
 	LOG_NOTICE("Initialising");
 	
-	ofSetFrameRate(30);
+	//ofSetFrameRate(30);
 	ofSetVerticalSync(true);
 	
 	_isFullScreen		= false; // change this when we start in fullscreen mode
@@ -78,6 +78,7 @@ void AppController::setup() {
 	_appModel->setProperty("parseRequiresTransformReanalysis", false);
 	_appModel->setProperty("parseRebuildXML", true);
 	
+	_appModel->setProperty("autoTest", false);
 	
 	LOG_NOTICE("Initialisation complete");
 }
@@ -112,6 +113,7 @@ void AppController::update() {
 			_switchToSequence = currentScene->getCurrentSequence();
 			_vidController->loadMovie(_switchToSequence, true);
 			_appModel->setState(kAPP_RUNNING);
+			_lastAutoActionTime = ofGetElapsedTimeMillis();
 			
 		}
 	}
@@ -160,45 +162,74 @@ void AppController::update() {
 		// check user actions and que movies and the sequece to _switchTo...
 		int userAction = boost::any_cast<int>(_appModel->getProperty("userAction"));
 		
-		if (currentSequence->getInteractivity() == "both" && _switchToSequence == NULL) {
+		if (_switchToSequence == NULL && !_vidController->isPreRolling()) {
 			
-			// Check for interactive event
-			// this->hasInteractiveEventFlag()
-			// we have had an interactive event
+			//LOG_VERBOSE("Checking interactivity...");
 			
-			if (userAction == kAttackerAction) {
-				LOG_VERBOSE("Interactive action: Attacker");	
-				_appModel->setProperty("userAction", kNoUserAction);
-				_switchToSequence = currentScene->getSequence(currentSequence->getAttackerResult());
-				_vidController->loadMovie(_switchToSequence, true);
+			if (currentSequence->getInteractivity() == "both") {
 				
-	
-			} else if (userAction == kVictimAction){
-				LOG_VERBOSE("Interactive action: Victim");	
-				_appModel->setProperty("userAction", kNoUserAction);
-				_switchToSequence = currentScene->getSequence(currentSequence->getVictimResult());
-				_vidController->loadMovie(_switchToSequence, true);
+				// Check for interactive event
+				// this->hasInteractiveEventFlag()
+				// we have had an interactive event
+				
+				if (userAction == kAttackerAction) {
+					LOG_VERBOSE("Interactive action: Attacker");	
+					_appModel->setProperty("userAction", kNoUserAction);
+					_switchToSequence = currentScene->getSequence(currentSequence->getAttackerResult());
+					_vidController->loadMovie(_switchToSequence, true);
+					
+					
+				} else if (userAction == kVictimAction){
+					LOG_VERBOSE("Interactive action: Victim");	
+					_appModel->setProperty("userAction", kNoUserAction);
+					_switchToSequence = currentScene->getSequence(currentSequence->getVictimResult());
+					_vidController->loadMovie(_switchToSequence, true);
+				}
+				
 			}
 			
+			if (currentSequence->getInteractivity() == "victim") {
+				if(userAction == kVictimAction){
+					LOG_VERBOSE("Interactive action: Victim");
+					_appModel->setProperty("userAction", kNoUserAction);
+					_switchToSequence = currentScene->getSequence(currentSequence->getVictimResult());
+					_vidController->loadMovie(_switchToSequence, true);
+				}
+				
+			}
+		} else {
+			// force reset of action if we're preRolling...
+			_appModel->setProperty("userAction", kNoUserAction);
 		}
-		
-		if (currentSequence->getInteractivity() == "victim" && _switchToSequence == NULL) {
-			if(userAction == kVictimAction){
-				LOG_VERBOSE("Interactive action: Victim");
-				_appModel->setProperty("userAction", kNoUserAction);
-				_switchToSequence = currentScene->getSequence(currentSequence->getVictimResult());
-				_vidController->loadMovie(_switchToSequence, true);
-			}
-			
-		} 
-		
+
 		// catch _switchToSequence when a movie is loaded completely
-		if (_vidController->checkState(kVIDCONTROLLER_NEXTVIDREADY) && _switchToSequence != NULL) {
+		if (_switchToSequence != NULL && _vidController->checkState(kVIDCONTROLLER_NEXTVIDREADY)) {
 			_vidController->toggleVideoPlayers();
 			_vidController->update();
 			_vidController->setState(kVIDCONTROLLER_READY);
 			currentScene->setCurrentSequence(_switchToSequence);
 			_switchToSequence = NULL;
+		}
+		
+		// AUTO TESTING USER INTERACTION CODE
+		if (ofGetElapsedTimeMillis() - _lastAutoActionTime > 20000 && boost::any_cast<bool>(_appModel->getProperty("autoTest"))) {
+			_lastAutoActionTime = ofGetElapsedTimeMillis();
+			int opt = (int)ofRandom(0, 10);
+			switch (opt) {
+				case 0:
+					LOG_VERBOSE("AUTO ACTION: kVictimAction");
+					_appModel->setProperty("userAction", kVictimAction);
+					break;
+				case 1:
+					LOG_VERBOSE("AUTO ACTION: Fast-forward movie (13 frames from end)");
+					_appModel->getCurrentVideoPlayer()->setFrame(_appModel->getCurrentFrameTotal()-13);
+					break;
+				default:
+					LOG_VERBOSE("AUTO ACTION: kAttackerAction");
+					_appModel->setProperty("userAction", kAttackerAction);
+					break;
+			}
+
 		}
 		
 	}
@@ -217,6 +248,7 @@ void AppController::keyPressed(int key){
 	float gamma = boost::any_cast<float>(_appModel->getProperty("shaderGammaCorrection"));
 	float blend = boost::any_cast<float>(_appModel->getProperty("shaderBlendRatio"));
 	bool showUnmask = boost::any_cast<bool>(_appModel->getProperty("showUnmaskedTextures"));
+	bool autoTest = boost::any_cast<bool>(_appModel->getProperty("autoTest"));
 	
 	switch (key) {
 		case 'x':
@@ -233,6 +265,9 @@ void AppController::keyPressed(int key){
 			break;
 		case 'd':
 			_appModel->setProperty("showDebugView", !boost::any_cast<bool>(_appModel->getProperty("showDebugView")));
+			break;
+		case 't':
+			_appModel->setProperty("autoTest", !boost::any_cast<bool>(_appModel->getProperty("autoTest")));
 			break;
 		case 'q':
 			_appModel->setProperty("userAction", kVictimAction);

@@ -37,9 +37,11 @@ public:
 	void	loadMovie(Sequence * seq, bool forceCurrentLoad = false);
 	void	toggleVideoPlayers();
 	
+	bool	isPreRolling();
+	
 private:
 	
-	bool	_cachedLoopAndState;
+	bool	_preRolling;
 	bool	_forceCurrentLoad;
 	
 	void	loaded(string & path);

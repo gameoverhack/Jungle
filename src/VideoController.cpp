@@ -14,6 +14,8 @@ VideoController::VideoController() {
 	
 	LOG_VERBOSE("Constructing VideoController and adding listeners");
 	
+	_preRolling = false;
+	_forceCurrentLoad = false;
 	/* setup listeners for error and loadDone
 	goThreadedVideo * nextMovie = _appModel->getNextVideoPlayer();
 	goThreadedVideo * currentMovie = _appModel->getCurrentVideoPlayer();
@@ -76,7 +78,7 @@ void VideoController::update() {
 	//_appModel->setCurrentFrameTotal(totalFrames); // no need for now?
 	_appModel->setCurrentIsFrameNew(isFrameNew);
 	
-	if (currentFrame > totalFrames - 12 && !_cachedLoopAndState) {
+	if (currentFrame > totalFrames - 12 && !_preRolling) {
 		
 		// set loopstate
 		if (currentSequence->getInteractivity() == "both") {
@@ -84,22 +86,23 @@ void VideoController::update() {
 		} else {
 			currentMovie->setLoopState(OF_LOOP_NONE);
 		}
-		_cachedLoopAndState = true;
 		
 		// 'cache' (ie., half) load loop sequence if we're on an 'a' type movie
 		
 		string nextSequenceName = currentSequence->getNextSequenceName();
-		if (nextSequenceName != "" && nextSequenceName != "__FINAL_SEQUENCE__") {
+		if (nextSequenceName != "" && nextSequenceName != "__FINAL_SEQUENCE__" && nextSequenceName != currentSequence->getName()) {
 			loadMovie(currentScene->getSequence(nextSequenceName));
+			_preRolling = true;
 		} else if (nextSequenceName == "__FINAL_SEQUENCE__") {
 			// end of SCENE? which seq to cache?
+			_preRolling = false;
 		}
 
 	}
 	
 	if (currentMovie->getIsMovieDone()) {
-		LOG_VERBOSE("HEREEEEEE");
 		toggleVideoPlayers();
+		_preRolling = false;
 		setState(kVIDCONTROLLER_CURRENTVIDONE);
 	}
 	
@@ -121,11 +124,6 @@ void VideoController::loadMovie(Sequence * seq, bool forceCurrentLoad) {
 	_forceCurrentLoad = forceCurrentLoad;
 
 	goThreadedVideo * nextMovie			= _appModel->getNextVideoPlayer();
-	
-	if (_forceCurrentLoad) {
-		//nextMovie->close();
-		//currentMovie->close();
-	}
 	
 	nextMovie->loadMovie(path);
 	
@@ -154,9 +152,9 @@ void VideoController::loaded(string & path) {
 	goThreadedVideo * nextMovie = _appModel->getNextVideoPlayer();
 	ofRemoveListener(nextMovie->loadDone, this, &VideoController::loaded);
 	ofRemoveListener(nextMovie->error, this, &VideoController::error);
-	setState(kVIDCONTROLLER_NEXTVIDREADY);
-	_cachedLoopAndState = false;
+	_preRolling = false;
 	_forceCurrentLoad = false;
+	setState(kVIDCONTROLLER_NEXTVIDREADY);
 }
 
 void VideoController::error(int & err) {
@@ -164,4 +162,8 @@ void VideoController::error(int & err) {
 	setState(kVIDCONTROLLER_NEXTVIDERROR);
 	goThreadedVideo * nextMovie			= _appModel->getNextVideoPlayer();
 	nextMovie->close();
+}
+
+bool VideoController::isPreRolling() {
+	return _preRolling;
 }
