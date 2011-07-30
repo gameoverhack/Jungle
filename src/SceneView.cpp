@@ -115,13 +115,10 @@ void SceneView::drawCharacter(ofxFbo * targetFBO,
 
 	glClear(GL_COLOR_BUFFER_BIT); // clear frame
 	
-	// do the transfor m
+	// do the transform
 	
 	// translate to the right place
 	glTranslatef(transform->x, transform->y, 0.0);
-	
-	// scale to transform size
-	glScalef(-1.0f, 1.0f, 1.0f);
 
 	// magic transform shenanigans -> move to flash analyze functions eventually
 	float rot = transform->rotation;
@@ -133,7 +130,9 @@ void SceneView::drawCharacter(ofxFbo * targetFBO,
 		rot = -rot;
 	}
 
-	rot = -rot; // $%^%$!!??
+	// flip the camera requires scale and rot to be negativised...
+	//glScalef(-1.0f, 1.0f, 1.0f);
+	//rot = -rot;
 	
 	glScalef(sclX, sclY, 1.0f);
 	
