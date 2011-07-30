@@ -135,8 +135,9 @@ void AppModel::toggleVideoPlayers() {
 	_videoPlayers[1]->setPosition(0.0f);
 	_videoPlayers[1]->update();
 	swap(_videoPlayers[0], _videoPlayers[1]);
-	_videoPlayers[0]->psuedoUpdate(); // here? or in controller?
 	_videoPlayers[1]->close();
+	_videoPlayers[0]->psuedoUpdate(); // here? or in controller?
+	
 	delete _videoPlayers[1];
 	_videoPlayers[1] = new goThreadedVideo();
 }

@@ -47,7 +47,6 @@ VideoController::~VideoController() {
 void VideoController::registerStates() {
 	LOG_VERBOSE("Registering States");
 	
-	//registerState(kVIDCONTROLLER_UNREADY, "kVIDCONTROLLER_UNREADY");
 	registerState(kVIDCONTROLLER_READY, "kVIDCONTROLLER_READY");
 	registerState(kVIDCONTROLLER_CURRENTVIDONE, "kVIDCONTROLLER_CURRENTVIDONE");
 	registerState(kVIDCONTROLLER_NEXTVIDLOADING, "kVIDCONTROLLER_NEXTVIDLOADING");
@@ -99,6 +98,7 @@ void VideoController::update() {
 	}
 	
 	if (currentMovie->getIsMovieDone()) {
+		LOG_VERBOSE("HEREEEEEE");
 		toggleVideoPlayers();
 		setState(kVIDCONTROLLER_CURRENTVIDONE);
 	}
@@ -116,15 +116,19 @@ void VideoController::loadMovie(Sequence * seq, bool forceCurrentLoad) {
 	
 	// get the full path of the movie from the sequence
 	string path = seq->getMovieFullFilePath();
-	LOG_VERBOSE("Next video start to load: " + path + (string)(_forceCurrentLoad ? " FORCED" : " NORMAL"));
+	LOG_VERBOSE("Next video start to load: " + path + (string)(forceCurrentLoad ? " FORCED" : " NORMAL"));
 	
 	_forceCurrentLoad = forceCurrentLoad;
 
-	goThreadedVideo * nextMovie = _appModel->getNextVideoPlayer();
+	goThreadedVideo * nextMovie			= _appModel->getNextVideoPlayer();
 	
-	if (_forceCurrentLoad) nextMovie->close();
+	if (_forceCurrentLoad) {
+		//nextMovie->close();
+		//currentMovie->close();
+	}
 	
 	nextMovie->loadMovie(path);
+	
 	ofAddListener(nextMovie->loadDone, this, &VideoController::loaded);
 	ofAddListener(nextMovie->error, this, &VideoController::error);
 	
@@ -158,4 +162,6 @@ void VideoController::loaded(string & path) {
 void VideoController::error(int & err) {
 	LOG_ERROR("Next video error during load: " + ofToString(err));
 	setState(kVIDCONTROLLER_NEXTVIDERROR);
+	goThreadedVideo * nextMovie			= _appModel->getNextVideoPlayer();
+	nextMovie->close();
 }

@@ -25,6 +25,7 @@ void AppController::setup() {
 	
 	LOG_NOTICE("Initialising");
 	
+	ofSetFrameRate(30);
 	ofSetVerticalSync(true);
 	
 	_isFullScreen		= false; // change this when we start in fullscreen mode
@@ -91,6 +92,8 @@ void AppController::swapCameras() {
 void AppController::update() {
 	//	LOG_VERBOSE("Updating");
 	
+	_appView->update();
+	
 	// if we're loading, update datacontroller
 	if(_appModel->checkState(kAPP_LOADING)){
 		
@@ -104,7 +107,7 @@ void AppController::update() {
 			
 			// get current scene
 			currentScene = _appModel->getCurrentScene();
-			
+
 			// force load using _switchToSequence var which will be caught below when the movie is fully loaded...
 			_switchToSequence = currentScene->getCurrentSequence();
 			_vidController->loadMovie(_switchToSequence, true);
@@ -124,12 +127,18 @@ void AppController::update() {
 		
 		_vidController->update();
 		
+		if (_vidController->checkState(kVIDCONTROLLER_NEXTVIDERROR) && _switchToSequence != NULL) {
+			LOG_VERBOSE("ERROR on load. Try again? This is super-inelegant but does seem to let us keep running");
+			_vidController->loadMovie(_switchToSequence, true);
+		}
+		
 		if (_vidController->checkState(kVIDCONTROLLER_CURRENTVIDONE)) {
 			// the video just finished and we toggled to next video if there is one
 			
 			if(currentScene->nextSequence()) {
 				// loaded next sequence in this scene, keep going
 				LOG_VERBOSE("Gone to next sequence");
+				_vidController->setState(kVIDCONTROLLER_READY);
 			} else {
 				LOG_WARNING("Current scene ended, rewind current scene to first sequence. Loading next scene.");
 				
@@ -145,7 +154,7 @@ void AppController::update() {
 			
 			// re call update on vidcontroller so everything is sweet and seq, scene and movs all match
 			_vidController->update();
-			_vidController->setState(kVIDCONTROLLER_READY);
+			//_vidController->setState(kVIDCONTROLLER_READY);
 		}
 		
 		// check user actions and que movies and the sequece to _switchTo...
@@ -193,8 +202,6 @@ void AppController::update() {
 		}
 		
 	}
-
-	_appView->update();
 }
 
 //--------------------------------------------------------------
@@ -243,7 +250,8 @@ void AppController::keyPressed(int key){
 			_appModel->getCurrentVideoPlayer()->togglePaused();
 			break;
 		case '>':
-			_appModel->getCurrentVideoPlayer()->setFrame(_appModel->getCurrentFrameTotal()-24);
+		case '.':
+			_appModel->getCurrentVideoPlayer()->setFrame(_appModel->getCurrentFrameTotal()-13);
 			break;
 		case 356: // left arrow
 			_appModel->getCurrentVideoPlayer()->previousFrame();

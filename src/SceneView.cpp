@@ -58,6 +58,7 @@ void SceneView::update() {
 	CamTransform	* actorTransform;
 
 	// get the video texture
+	//currentMovie->draw(0, 0);
 	sceneTexture = &(currentMovie->getTextureReference());
 	currentFrame = _appModel->getCurrentFrame(); //currentMovie->getCurrentFrame();
 	
