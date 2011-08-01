@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="release" />
+	<File name="..\..\..\addons\goDirList\src\goDirList.h" open="0" top="0" tabpos="0">
+		<Cursor position="165" topLine="0" />
+	</File>
+	<File name="..\..\..\addons\goThreadedVideo\src\goThreadedVideo.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="503" topLine="4" />
+	</File>
+	<File name="..\..\..\addons\goVideoGrabber\src\goVideoGrabber.h" open="1" top="0" tabpos="10">
+		<Cursor position="699" topLine="2" />
+	</File>
+	<File name="..\..\..\addons\goVideoPlayer\src\goVideoPlayer.h" open="1" top="0" tabpos="2">
+		<Cursor position="381" topLine="16" />
+	</File>
+	<File name="..\..\..\addons\ofxOpenCv\src\ofxCvConstants.h" open="0" top="0" tabpos="12">
+		<Cursor position="60" topLine="0" />
+	</File>
+	<File name="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.cpp" open="1" top="0" tabpos="7">
+		<Cursor position="2250" topLine="71" />
+	</File>
+	<File name="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.h" open="1" top="0" tabpos="8">
+		<Cursor position="1999" topLine="38" />
+	</File>
+	<File name="bin\data\config_properties.xml" open="1" top="0" tabpos="15">
+		<Cursor position="594" topLine="0" />
+	</File>
+	<File name="src\AppController.cpp" open="1" top="1" tabpos="11">
+		<Cursor position="12592" topLine="114" />
+	</File>
+	<File name="src\AppController.h" open="1" top="0" tabpos="14">
+		<Cursor position="1317" topLine="43" />
+	</File>
+	<File name="src\AppDataTypes.h" open="1" top="0" tabpos="4">
+		<Cursor position="195" topLine="0" />
+	</File>
+	<File name="src\CamController.h" open="1" top="0" tabpos="9">
+		<Cursor position="1026" topLine="21" />
+	</File>
+	<File name="src\IXMLBuilder.h" open="1" top="0" tabpos="6">
+		<Cursor position="505" topLine="11" />
+	</File>
+	<File name="src\main.cpp" open="1" top="0" tabpos="13">
+		<Cursor position="494" topLine="0" />
+	</File>
+</CodeBlocks_layout_file>

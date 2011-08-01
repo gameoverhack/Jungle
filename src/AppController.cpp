@@ -11,9 +11,9 @@
 #include "Logger.h"
 
 //--------------------------------------------------------------
-AppController::AppController(ofAppBaseWindow * windowPtr) {
+AppController::AppController() {
 	//nothing for now (NB: I put the Logger instantiation in main.h)
-	_windowPtr = windowPtr;
+	//_windowPtr = windowPtr;
 }
 
 //--------------------------------------------------------------
@@ -376,8 +376,8 @@ void AppController::toggleFullscreen(){
         ofSetWindowTitle(_windowTitle);
         int x = 0;
         int y = 0;
-        int width = _windowPtr->getScreenSize().x*2; // TODO: set in config
-        int height = _windowPtr->getScreenSize().y; // TODO: set in config
+        int width = 1920 * 2; //_windowPtr->getScreenSize().x*2; // TODO: set in config
+        int height = 1080; //_windowPtr->getScreenSize().y; // TODO: set in config
         int storedWindowX, storedWindowY, storedWindowH, storedWindowW;
         HWND vWnd  = FindWindow(NULL, _windowTitle);
         long windowStyle = GetWindowLong(vWnd, GWL_STYLE);
