@@ -46,14 +46,14 @@ void DebugView::update(){
 	
 	// draw strings
 	ofSetColor(0, 255, 0, 255);
-	ofDrawBitmapString(msg, 20, 20); // this gets rendered upside down for some reason ?*/
+	ofDrawBitmapString(msg, 20, ofGetHeight()-ofSplitString(msg, "\n").size()*15); // this gets rendered upside down for some reason ?*/
 	
 	// draw scene progression
 	float progressionPercentage = (float)currentFrame/(float)(totalFrames);
 	float progressionWidth = 300;
 	float progressionHeight = 20;
 	ofSetColor(50, 50, 50, 220);
-	ofRect(5, _viewHeight-progressionHeight-10, progressionWidth+4, progressionHeight+2);
+	ofRect(20, 20, progressionWidth+4, progressionHeight+2);
 	
 	// valid movie file/sequence stuff
 	if(currentSequence->getIsSequenceFaked()) {
@@ -65,22 +65,22 @@ void DebugView::update(){
 		ofSetColor(50, 220, 50, 220);
 	}
 
-	ofRect(5+1, _viewHeight-progressionHeight-9, progressionWidth*progressionPercentage, progressionHeight);
+	ofRect(20, 21, progressionWidth*progressionPercentage, progressionHeight);
 
 	// give us info about progression
 	msg = currentScene->getName() + "::" + currentSequence->getName() + "::" + ofToString(currentFrame) + "/" + ofToString(totalFrames);
 	
-	ofSetColor(255,255,255);
-	ofDrawBitmapString(msg, 6, _viewHeight-progressionHeight-4);
+	ofSetColor(255,255,255,255);
+	ofDrawBitmapString(msg, progressionWidth-150, progressionHeight+15);
 
 	glPopMatrix();
 	_viewFBO.end();
 }
 
-void DebugView::draw(){
+/*void DebugView::draw(){
 	glPushMatrix();
 	glTranslatef(0.0, ofGetHeight(), 0.0);
 	glScalef(1.0, -1.0, 1.0);
 	BaseView::draw();
 	glPushMatrix();
-}
+}*/

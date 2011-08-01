@@ -15,32 +15,32 @@ BaseView::BaseView(float width, float height) {
 	_viewHeight = height;
 	
 	// Create black pixels for inital texture, TODO: Potentially not required
-	unsigned char * black = (unsigned char *)calloc(_viewWidth * _viewHeight * 4, sizeof(unsigned char));
+	//unsigned char * black = (unsigned char *)calloc(_viewWidth * _viewHeight * 4, sizeof(unsigned char));
 	
 	// allocate the fbo texture
-	_viewFBOTexture.allocate(_viewWidth, _viewHeight, GL_RGBA);
-	_viewFBOTexture.loadData(black, _viewWidth, _viewHeight, GL_RGBA);
+	//_viewFBOTexture.allocate(_viewWidth, _viewHeight, GL_RGBA);
+	//_viewFBOTexture.loadData(black, _viewWidth, _viewHeight, GL_RGBA);
 	
 	// set up fbo and attach texture
-	_viewFBO.setup(_viewWidth, _viewHeight);
-	_viewFBO.attach(_viewFBOTexture);
+	_viewFBO.allocate(_viewWidth, _viewHeight);
+	//_viewFBO.attach(_viewFBOTexture);
 	
 	// Free black pixels
-	free(black);
+	//free(black);
 }
 
 BaseView::~BaseView() {
-	_viewFBO.detach(0);
-	_viewFBOTexture.clear();
+	//_viewFBO.destroy();
+	//_viewFBOTexture.clear();
 }
 
 // Returns the views fbo 
-ofxFbo * BaseView::getViewFBO(){
+ofFbo * BaseView::getViewFBO(){
 	return &_viewFBO;
 }
 
 ofTexture * BaseView::getViewFBOTexture(){
-	return &_viewFBOTexture;
+	return &_viewFBO.getTextureReference();
 }
 
 void BaseView::draw() {

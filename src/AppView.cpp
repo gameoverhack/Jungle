@@ -31,16 +31,11 @@ void AppView::update() {
 
 void AppView::draw() {
 	
-	glPushMatrix();
+//	glPushMatrix();
 	
 	// scale to window or fullscreen size
-	float renderWidth = boost::any_cast<float>(_appModel->getProperty("appViewWidth"));
-	float renderHeight = boost::any_cast<float>(_appModel->getProperty("appViewHeight"));
-	float screenScale = (float)ofGetWidth()/renderWidth;
-	float offsetY = ((float)ofGetHeight() - (renderHeight*screenScale))/2.0;
-	glTranslatef(0, offsetY, 0);
-	glScalef(screenScale, screenScale, 0.0f);
-	
+
+	ofEnableAlphaBlending();
 	if(_appModel->checkState(kAPP_LOADING)){
 		_loadingView->draw();
 		glPopMatrix();
@@ -50,8 +45,7 @@ void AppView::draw() {
 
 		
 		_sceneView->draw();
-		
-		glPopMatrix();
+
 		
 		// draw Mic view
 		// draw smasher view
@@ -60,5 +54,5 @@ void AppView::draw() {
 			_debugView->draw();
 		}
 	}
-	
+	ofDisableAlphaBlending();
 }

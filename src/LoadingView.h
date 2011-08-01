@@ -20,7 +20,7 @@ public:
 	//SceneView();							//dtor
 	
 	void update();
-	void draw();
+	//void draw();
 
 private:
 	
