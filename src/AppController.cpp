@@ -11,8 +11,9 @@
 #include "Logger.h"
 
 //--------------------------------------------------------------
-AppController::AppController() {
+AppController::AppController(ofAppBaseWindow * windowPtr) {
 	//nothing for now (NB: I put the Logger instantiation in main.h)
+	_windowPtr = windowPtr;
 }
 
 //--------------------------------------------------------------
@@ -54,8 +55,13 @@ void AppController::setup() {
 	_camControllers[0] = new CamController();
 	_camControllers[1] = new CamController();
 
+#ifdef TARGET_OSX
 	_camControllers[0]->setup("Built-in iSight", 640, 480);
 	_camControllers[1]->setup("ManyCam Virtual Webcam (RGB)", 640, 480);	// NB: had to use QTKit to get ManyCam working
+#else
+	_camControllers[0]->setup(0, 640, 480);
+	_camControllers[1]->setup(1, 640, 480);
+#endif
 
 	// register pointers to textures from cams on the model
 	_appModel->setCameraTextures(_camControllers[0]->getCamTextureRef(), _camControllers[1]->getCamTextureRef());
@@ -79,6 +85,7 @@ void AppController::setup() {
 	_appModel->setProperty("parseRebuildXML", true);
 
 	_appModel->setProperty("autoTest", false);
+	_appModel->setProperty("fullScreen", false);
 
 	LOG_NOTICE("Initialisation complete");
 }
@@ -124,11 +131,6 @@ void AppController::update() {
 		Scene			* currentScene		= _appModel->getCurrentScene();
 		Sequence		* currentSequence	= currentScene->getCurrentSequence();
 
-		_camControllers[0]->update();
-		_camControllers[1]->update();
-
-		_vidController->update();
-
 		if (_vidController->checkState(kVIDCONTROLLER_NEXTVIDERROR) && _switchToSequence != NULL) {
 			LOG_VERBOSE("ERROR on load. Try again? This is super-inelegant but does seem to let us keep running");
 			_vidController->loadMovie(_switchToSequence, true);
@@ -142,20 +144,11 @@ void AppController::update() {
 				LOG_VERBOSE("Gone to next sequence");
 				_vidController->setState(kVIDCONTROLLER_READY);
 			} else {
-				LOG_WARNING("Current scene ended, rewind current scene to first sequence. Loading next scene.");
-
-				// rewind last scene
-				currentScene->rewindSequences();
-
-				// load next scene
-				_appModel->nextScene();
-				currentScene = _appModel->getCurrentScene();
-				_switchToSequence = currentScene->getCurrentSequence();
-				_vidController->loadMovie(_switchToSequence, true);
+                nextScene();
 			}
 
 			// re call update on vidcontroller so everything is sweet and seq, scene and movs all match
-			_vidController->update();
+			//_vidController->update();
 			//_vidController->setState(kVIDCONTROLLER_READY);
 		}
 
@@ -175,25 +168,33 @@ void AppController::update() {
 				if (userAction == kAttackerAction) {
 					LOG_VERBOSE("Interactive action: Attacker");
 					_appModel->setProperty("userAction", kNoUserAction);
-					_switchToSequence = currentScene->getSequence(currentSequence->getAttackerResult());
-					_vidController->loadMovie(_switchToSequence, true);
-
-
-				} else if (userAction == kVictimAction){
-					LOG_VERBOSE("Interactive action: Victim");
-					_appModel->setProperty("userAction", kNoUserAction);
-					_switchToSequence = currentScene->getSequence(currentSequence->getVictimResult());
-					_vidController->loadMovie(_switchToSequence, true);
+					string res = currentSequence->getAttackerResult();
+					if (res != kLAST_SEQUENCE_TOKEN) {
+                        _switchToSequence = currentScene->getSequence(res);
+                        _vidController->loadMovie(_switchToSequence, true);
+					} else nextScene();
 				}
 
+				if (userAction == kVictimAction){
+					LOG_VERBOSE("Interactive action: Victim");
+					_appModel->setProperty("userAction", kNoUserAction);
+					string res = currentSequence->getVictimResult();
+					if (res != kLAST_SEQUENCE_TOKEN) {
+                        _switchToSequence = currentScene->getSequence(res);
+                        _vidController->loadMovie(_switchToSequence, true);
+                    } else nextScene();
+				}
 			}
 
 			if (currentSequence->getInteractivity() == "victim") {
-				if(userAction == kVictimAction){
+				if (userAction == kVictimAction){
 					LOG_VERBOSE("Interactive action: Victim");
 					_appModel->setProperty("userAction", kNoUserAction);
-					_switchToSequence = currentScene->getSequence(currentSequence->getVictimResult());
-					_vidController->loadMovie(_switchToSequence, true);
+					string res = currentSequence->getVictimResult();
+					if (res != kLAST_SEQUENCE_TOKEN) {
+                        _switchToSequence = currentScene->getSequence(res);
+                        _vidController->loadMovie(_switchToSequence, true);
+                    } else nextScene();
 				}
 
 			}
@@ -232,7 +233,25 @@ void AppController::update() {
 
 		}
 
+        _camControllers[0]->update();
+		_camControllers[1]->update();
+
+		_vidController->update();
+
 	}
+}
+
+void AppController::nextScene() {
+    LOG_VERBOSE("Current scene ended, rewind current scene to first sequence. Loading next scene.");
+
+    Scene			* currentScene		= _appModel->getCurrentScene();
+    // rewind last scene
+    currentScene->rewindSequences();
+    // load next scene
+    _appModel->nextScene();
+    currentScene = _appModel->getCurrentScene();
+    _switchToSequence = currentScene->getCurrentSequence();
+    _vidController->loadMovie(_switchToSequence, true);
 }
 
 //--------------------------------------------------------------
@@ -349,23 +368,24 @@ void AppController::setFullscreen() {
 
 void AppController::toggleFullscreen(){
 #ifdef TARGET_WIN32
-    if (!_isFullScreen)
+    if (!boost::any_cast<bool>(_appModel->getProperty("fullScreen")))
     {
-        LOG_VERBOSE("Trying to force fullscreen on Windows 7" + ofToString(ofGetWidth()));
+        int currentWidth = ofGetWidth();
+        LOG_VERBOSE("Trying to force fullscreen on Windows 7: " + ofToString(currentWidth));
         _windowTitle = "Jungle";
         ofSetWindowTitle(_windowTitle);
         int x = 0;
         int y = 0;
-        int width = 1920; // TODO: set in config
-        int height = 1280; // TODO: set in config
+        int width = _windowPtr->getScreenSize().x*2; // TODO: set in config
+        int height = _windowPtr->getScreenSize().y; // TODO: set in config
         int storedWindowX, storedWindowY, storedWindowH, storedWindowW;
-        HWND vWnd  = FindWindow(NULL,  "imMediate");
+        HWND vWnd  = FindWindow(NULL, _windowTitle);
         long windowStyle = GetWindowLong(vWnd, GWL_STYLE);
         windowStyle &= ~WS_OVERLAPPEDWINDOW;
         windowStyle |= WS_POPUP;
         SetWindowLong(vWnd, GWL_STYLE, windowStyle);
         SetWindowPos(vWnd, HWND_TOP, x, y, width, height, SWP_FRAMECHANGED);
-        _isFullScreen = true;
+        //_isFullScreen = true;
     }
     else
     {
@@ -378,11 +398,13 @@ void AppController::toggleFullscreen(){
         windowStyle |= WS_TILEDWINDOW;
         SetWindowLong(vWnd, GWL_STYLE, windowStyle);
         SetWindowPos(vWnd, HWND_TOP, x, y, width, height, SWP_FRAMECHANGED);
-        _isFullScreen = false;
+        //_isFullScreen = false;
     }
-
 #else
     ofToggleFullscreen();
 #endif
+
+    _appModel->setProperty("fullScreen", !boost::any_cast<bool>(_appModel->getProperty("fullScreen")));
+
 }
 

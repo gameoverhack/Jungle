@@ -30,7 +30,9 @@ public:
 	~CamController();
 
 	bool		setup(int deviceID, int x, int y);
+#ifdef TARGET_OSX
 	bool		setup(string deviceID, int x, int y);
+#endif
 
 	void		update();
 
