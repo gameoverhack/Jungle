@@ -54,8 +54,13 @@ void AppController::setup() {
 	_camControllers[0] = new CamController();
 	_camControllers[1] = new CamController();
 
+#ifdef TARGET_OSX
 	_camControllers[0]->setup("Built-in iSight", 640, 480);
 	_camControllers[1]->setup("ManyCam Virtual Webcam (RGB)", 640, 480);	// NB: had to use QTKit to get ManyCam working
+#else
+	_camControllers[0]->setup(0, 640, 480);
+	_camControllers[1]->setup(1, 640, 480);
+#endif
 
 	// register pointers to textures from cams on the model
 	_appModel->setCameraTextures(_camControllers[0]->getCamTextureRef(), _camControllers[1]->getCamTextureRef());
@@ -124,11 +129,6 @@ void AppController::update() {
 		Scene			* currentScene		= _appModel->getCurrentScene();
 		Sequence		* currentSequence	= currentScene->getCurrentSequence();
 
-		_camControllers[0]->update();
-		_camControllers[1]->update();
-
-		_vidController->update();
-
 		if (_vidController->checkState(kVIDCONTROLLER_NEXTVIDERROR) && _switchToSequence != NULL) {
 			LOG_VERBOSE("ERROR on load. Try again? This is super-inelegant but does seem to let us keep running");
 			_vidController->loadMovie(_switchToSequence, true);
@@ -142,20 +142,11 @@ void AppController::update() {
 				LOG_VERBOSE("Gone to next sequence");
 				_vidController->setState(kVIDCONTROLLER_READY);
 			} else {
-				LOG_WARNING("Current scene ended, rewind current scene to first sequence. Loading next scene.");
-
-				// rewind last scene
-				currentScene->rewindSequences();
-
-				// load next scene
-				_appModel->nextScene();
-				currentScene = _appModel->getCurrentScene();
-				_switchToSequence = currentScene->getCurrentSequence();
-				_vidController->loadMovie(_switchToSequence, true);
+                nextScene();
 			}
 
 			// re call update on vidcontroller so everything is sweet and seq, scene and movs all match
-			_vidController->update();
+			//_vidController->update();
 			//_vidController->setState(kVIDCONTROLLER_READY);
 		}
 
@@ -175,25 +166,33 @@ void AppController::update() {
 				if (userAction == kAttackerAction) {
 					LOG_VERBOSE("Interactive action: Attacker");
 					_appModel->setProperty("userAction", kNoUserAction);
-					_switchToSequence = currentScene->getSequence(currentSequence->getAttackerResult());
-					_vidController->loadMovie(_switchToSequence, true);
-
-
-				} else if (userAction == kVictimAction){
-					LOG_VERBOSE("Interactive action: Victim");
-					_appModel->setProperty("userAction", kNoUserAction);
-					_switchToSequence = currentScene->getSequence(currentSequence->getVictimResult());
-					_vidController->loadMovie(_switchToSequence, true);
+					string res = currentSequence->getAttackerResult();
+					if (res != kLAST_SEQUENCE_TOKEN) {
+                        _switchToSequence = currentScene->getSequence(res);
+                        _vidController->loadMovie(_switchToSequence, true);
+					} else nextScene();
 				}
 
+				if (userAction == kVictimAction){
+					LOG_VERBOSE("Interactive action: Victim");
+					_appModel->setProperty("userAction", kNoUserAction);
+					string res = currentSequence->getVictimResult();
+					if (res != kLAST_SEQUENCE_TOKEN) {
+                        _switchToSequence = currentScene->getSequence(res);
+                        _vidController->loadMovie(_switchToSequence, true);
+                    } else nextScene();
+				}
 			}
 
 			if (currentSequence->getInteractivity() == "victim") {
-				if(userAction == kVictimAction){
+				if (userAction == kVictimAction){
 					LOG_VERBOSE("Interactive action: Victim");
 					_appModel->setProperty("userAction", kNoUserAction);
-					_switchToSequence = currentScene->getSequence(currentSequence->getVictimResult());
-					_vidController->loadMovie(_switchToSequence, true);
+					string res = currentSequence->getVictimResult();
+					if (res != kLAST_SEQUENCE_TOKEN) {
+                        _switchToSequence = currentScene->getSequence(res);
+                        _vidController->loadMovie(_switchToSequence, true);
+                    } else nextScene();
 				}
 
 			}
@@ -232,7 +231,25 @@ void AppController::update() {
 
 		}
 
+        _camControllers[0]->update();
+		_camControllers[1]->update();
+
+		_vidController->update();
+
 	}
+}
+
+void AppController::nextScene() {
+    LOG_VERBOSE("Current scene ended, rewind current scene to first sequence. Loading next scene.");
+
+    Scene			* currentScene		= _appModel->getCurrentScene();
+    // rewind last scene
+    currentScene->rewindSequences();
+    // load next scene
+    _appModel->nextScene();
+    currentScene = _appModel->getCurrentScene();
+    _switchToSequence = currentScene->getCurrentSequence();
+    _vidController->loadMovie(_switchToSequence, true);
 }
 
 //--------------------------------------------------------------

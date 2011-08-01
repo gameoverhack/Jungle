@@ -31,17 +31,15 @@ bool CamController::setup(int deviceID, int x, int y){
 	_cam.initGrabber(x, y, true);
 }
 
+#ifdef TARGET_OSX
 bool CamController::setup(string deviceID, int x, int y){
 	LOG_NOTICE("Attemptimg to set instance " + ofToString(_instanceID) + " cam to deviceID: " + deviceID);
 	_cam.close();					// to be sure, to be sure
-#ifdef TARGET_OSX
     // TODO: make this work on WINDOZE
 	_cam.setDeviceID(deviceID);
-#else
-    LOG_WARNING("You need to write some code to actually select cam by string form of device ID on Windows 7!! For now ignoring...");
-#endif
 	_cam.initGrabber(x, y, true);
 }
+#endif
 
 void CamController::update() {
 	_cam.update();

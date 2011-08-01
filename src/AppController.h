@@ -49,6 +49,8 @@ public:
 
 private:
 
+    void              nextScene();
+
 	// Views
 	AppView			* _appView;
 
