@@ -13,6 +13,6 @@ int main( ){
 	// can be OF_WINDOW or OF_FULLSCREEN
 	// pass in width and height too:
 	LOGGER->setLogLevel(JU_LOG_VERBOSE);
-	ofRunApp( new AppController());
+	ofRunApp( new AppController() ); //&window));
 
 }

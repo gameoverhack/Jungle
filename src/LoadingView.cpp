@@ -37,17 +37,17 @@ void LoadingView::update() {
 	
 	
 	ofSetColor(0,255,0);
-	ofDrawBitmapString(message, x, y+progressionHeight+2);
+	ofDrawBitmapString(message, x, y-progressionHeight-2);
 	
 	glPopMatrix();
 	_viewFBO.end();
 	
 }
 
-void LoadingView::draw(){
+/*void LoadingView::draw(){
 	glPushMatrix();
 	glTranslatef(0.0, _viewHeight, 0.0);
 	glScalef(1.0, -1.0, 1.0);
 	BaseView::draw();
 	glPushMatrix();
-}
+}*/

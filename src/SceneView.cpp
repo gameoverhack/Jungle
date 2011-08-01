@@ -3,7 +3,7 @@
  *  Jungle
  *
  *  Created by gameover on 29/06/11.
- *  Copyright 2011 trace media. All rights reserved.
+ *  Copyright 2011 Matthew Gingold & Olie Marriott. All rights reserved.
  *
  */
 
@@ -31,24 +31,27 @@ SceneView::SceneView(float width, float height) : BaseView(width ,height) {
 	// set up fbos
 	
 	// Allocate texture and attach*/
-	_vic1Tex.allocate(_viewWidth, _viewHeight, GL_RGBA);
-	_vic1FBO.setup(_viewWidth, _viewHeight);
-	_vic1FBO.attach(_vic1Tex);
+	//_vic1Tex.allocate(_viewWidth, _viewHeight, GL_RGBA);
+	_vic1FBO.allocate(_viewWidth, _viewHeight);
+	//_vic1FBO.attach(_vic1Tex);
 	
-	_atk1Tex.allocate(_viewWidth, _viewHeight, GL_RGBA);
-	_atk1FBO.setup(_viewWidth, _viewHeight);
-	_atk1FBO.attach(_atk1Tex);
+	//_atk1Tex.allocate(_viewWidth, _viewHeight, GL_RGBA);
+	_atk1FBO.allocate(_viewWidth, _viewHeight);
+	//_atk1FBO.attach(_atk1Tex);
 	
-	_atk2Tex.allocate(_viewWidth, _viewHeight, GL_RGBA);
-	_atk2FBO.setup(_viewWidth, _viewHeight);
-	_atk2FBO.attach(_atk2Tex);
+	//_atk2Tex.allocate(_viewWidth, _viewHeight, GL_RGBA);
+	_atk2FBO.allocate(_viewWidth, _viewHeight);
+	//_atk2FBO.attach(_atk2Tex);
 	
 	// set up shader
 	string vertPath = boost::any_cast<string>(_appModel->getProperty("shaderVertPath"));
 	string fragPath = boost::any_cast<string>(_appModel->getProperty("shaderFragPath"));
 	
-	_shader.setup(ofToDataPath(vertPath), ofToDataPath(fragPath));
-	
+	_shader.setupShaderFromFile(GL_VERTEX_SHADER, ofToDataPath(vertPath));
+	_shader.setupShaderFromFile(GL_FRAGMENT_SHADER, ofToDataPath(fragPath));
+	_shader.load(ofToDataPath(vertPath), ofToDataPath(fragPath));
+	//_shader.setGeometryInputType(GL_TRIANGLE_STRIP);
+	_shader.setGeometryOutputType(GL_TRIANGLE_STRIP);
 }
 
 void SceneView::update() {
@@ -77,22 +80,24 @@ void SceneView::update() {
 	}
 	
 	_viewFBO.begin();
-	
+	//sceneTexture->draw(0, 0, 0);
+	//_vic1FBO.getTextureReference().draw(100, 0, 0);
 	// set up shader stuff
 	_shader.begin();
-	_shader.setTexture("textures[0]", *sceneTexture, 10);
-	_shader.setTexture("textures[1]", _vic1Tex, 11);
-	_shader.setTexture("textures[2]", _atk1Tex, 12);
+	_shader.setUniformTexture("textures[0]", *sceneTexture, 10);
+	_shader.setUniformTexture("textures[1]", _vic1FBO.getTextureReference(), 11);
+	_shader.setUniformTexture("textures[2]", _atk1FBO.getTextureReference(), 12);
 	
 	int numTextures = 3;
 	if (_appModel->getCurrentSequence()->getTransformCount() > 2) {
-		_shader.setTexture("textures[3]", _atk2Tex, 13);
+		_shader.setUniformTexture("textures[3]", _atk2FBO.getTextureReference(), 13);
 		numTextures++;
 	}
 	_shader.setUniform1i("numTextures", numTextures);
 	_shader.setUniform1i("showUnmaskedTextures", (int)(boost::any_cast<bool>(_appModel->getProperty("showUnmaskedTextures"))));
 	_shader.setUniform1f("blendRatio", boost::any_cast<float>(_appModel->getProperty("shaderBlendRatio")));
 	_shader.setUniform1f("gammaCorrection", boost::any_cast<float>(_appModel->getProperty("shaderGammaCorrection")));
+	
 	
 	glBegin(GL_TRIANGLE_STRIP);
 	glTexCoord2f(0, 0);	glVertex2f(0, 0);
@@ -106,7 +111,7 @@ void SceneView::update() {
 	
 }
 
-void SceneView::drawCharacter(ofxFbo * targetFBO, 
+void SceneView::drawCharacter(ofFbo * targetFBO, 
 							  ofTexture * faceTexture, 
 							  CamTransform *transform) {
 	// set up draw state

@@ -11,7 +11,7 @@
 #define _H_SCENEVIEW
 
 #include "BaseView.h"
-#include "ofxShader.h"
+//#include "ofxShader.h"
 
 class SceneView : public BaseView {
 	
@@ -23,7 +23,7 @@ public:
 	void update();
 	//void draw();
 	
-	void drawCharacter(ofxFbo * targetFBO, 
+	void drawCharacter(ofFbo * targetFBO, 
 					   ofTexture * faceTexture, 
 					   CamTransform *transform);
 	
@@ -34,11 +34,11 @@ private:
 	ofTexture _cameraTwo;
 	
 	// fbo stuff
-	ofTexture _vic1Tex, _atk1Tex, _atk2Tex;
-	ofxFbo _vic1FBO, _atk1FBO, _atk2FBO;
+	//ofTexture _vic1Tex, _atk1Tex, _atk2Tex;
+	ofFbo _vic1FBO, _atk1FBO, _atk2FBO;
 	
 	// Shader stuff
-	ofxShader _shader;
+	ofShader _shader;
 	
 protected:
 	
