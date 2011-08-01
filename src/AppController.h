@@ -26,7 +26,7 @@ class AppController : public BaseState, public ofBaseApp {
 
 public:
 
-	AppController();
+	AppController(ofAppBaseWindow * windowPtr);
 	~AppController();
 
 	void setup();
@@ -49,6 +49,8 @@ public:
 
 private:
 
+    void              nextScene();
+
 	// Views
 	AppView			* _appView;
 
@@ -59,6 +61,7 @@ private:
 	MicController	* _micController;
 	ArdController	* _ardController;
 
+    ofAppBaseWindow * _windowPtr;
 	bool			  _isFullScreen;
 #ifdef TARGET_WIN32
     char            * _windowTitle;
