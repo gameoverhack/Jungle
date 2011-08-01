@@ -11,8 +11,9 @@
 #include "Logger.h"
 
 //--------------------------------------------------------------
-AppController::AppController() {
+AppController::AppController(ofAppBaseWindow * windowPtr) {
 	//nothing for now (NB: I put the Logger instantiation in main.h)
+	_windowPtr = windowPtr;
 }
 
 //--------------------------------------------------------------
@@ -84,6 +85,7 @@ void AppController::setup() {
 	_appModel->setProperty("parseRebuildXML", true);
 
 	_appModel->setProperty("autoTest", false);
+	_appModel->setProperty("fullScreen", false);
 
 	LOG_NOTICE("Initialisation complete");
 }
@@ -366,23 +368,24 @@ void AppController::setFullscreen() {
 
 void AppController::toggleFullscreen(){
 #ifdef TARGET_WIN32
-    if (!_isFullScreen)
+    if (!boost::any_cast<bool>(_appModel->getProperty("fullScreen")))
     {
-        LOG_VERBOSE("Trying to force fullscreen on Windows 7" + ofToString(ofGetWidth()));
+        int currentWidth = ofGetWidth();
+        LOG_VERBOSE("Trying to force fullscreen on Windows 7: " + ofToString(currentWidth));
         _windowTitle = "Jungle";
         ofSetWindowTitle(_windowTitle);
         int x = 0;
         int y = 0;
-        int width = 1920; // TODO: set in config
-        int height = 1280; // TODO: set in config
+        int width = _windowPtr->getScreenSize().x*2; // TODO: set in config
+        int height = _windowPtr->getScreenSize().y; // TODO: set in config
         int storedWindowX, storedWindowY, storedWindowH, storedWindowW;
-        HWND vWnd  = FindWindow(NULL,  "imMediate");
+        HWND vWnd  = FindWindow(NULL, _windowTitle);
         long windowStyle = GetWindowLong(vWnd, GWL_STYLE);
         windowStyle &= ~WS_OVERLAPPEDWINDOW;
         windowStyle |= WS_POPUP;
         SetWindowLong(vWnd, GWL_STYLE, windowStyle);
         SetWindowPos(vWnd, HWND_TOP, x, y, width, height, SWP_FRAMECHANGED);
-        _isFullScreen = true;
+        //_isFullScreen = true;
     }
     else
     {
@@ -395,11 +398,13 @@ void AppController::toggleFullscreen(){
         windowStyle |= WS_TILEDWINDOW;
         SetWindowLong(vWnd, GWL_STYLE, windowStyle);
         SetWindowPos(vWnd, HWND_TOP, x, y, width, height, SWP_FRAMECHANGED);
-        _isFullScreen = false;
+        //_isFullScreen = false;
     }
-
 #else
     ofToggleFullscreen();
 #endif
+
+    _appModel->setProperty("fullScreen", !boost::any_cast<bool>(_appModel->getProperty("fullScreen")));
+
 }
 
