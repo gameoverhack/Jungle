@@ -14,33 +14,40 @@
 #include "AppModel.h"
 #include "Logger.h"
 
-//#include "goVideoGrabber.h"			// X-platform and will work with multiple cams but not with ManyCam for some reason...
+#ifdef TARGET_OSX
 #include "ofxQTKitVideoGrabber.h"	// better quality allows recording but OSX only....
+#else
+#include "goVideoGrabber.h"			// X-platform and will work with multiple cams but not with ManyCam for some reason...
+#endif
 
 static int _instanceCount = 0;
 
 class CamController : public BaseState {
-	
+
 public:
-	
+
 	CamController();
 	~CamController();
-	
+
 	bool		setup(int deviceID, int x, int y);
 	bool		setup(string deviceID, int x, int y);
-	
+
 	void		update();
-	
+
 	int			getInstanceID();
 	void		setInstanceID(int instanceID);
-	
+
 	ofTexture	* getCamTextureRef();
-	
+
 private:
 
+#ifdef TARGET_OSX
 	ofxQTKitVideoGrabber	_cam;			// this is not X-platform but of/goVideoPlayer does not play well with ManyCam
+#else
+    goVideoGrabber	        _cam;
+#endif
 	int						_instanceID;
-	
+
 };
 
 

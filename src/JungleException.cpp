@@ -7,5 +7,5 @@
  *
  */
 
-#include "JungleException.h"
+#include "JungleExceptions.h"
 

@@ -5,6 +5,7 @@
 		<Option title="Jungle" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
+		<Option virtualFolders="src\;" />
 		<Build>
 			<Target title="release">
 				<Option output="bin\$(PROJECT_NAME)" prefix_auto="1" extension_auto="1" />
@@ -20,6 +21,8 @@
 				<Linker>
 					<Add option="-s" />
 					<Add option="../../../libs/openFrameworksCompiled/lib/win_cb/openFrameworks.lib" />
+					<Add library="..\..\..\addons\ofxBoost\lib\win\libboost_serialization-mgw44-mt-1_47.a" />
+					<Add library="..\..\..\addons\ofxBoost\lib\win\libboost_regex-mgw44-mt-1_47.a" />
 				</Linker>
 			</Target>
 			<Target title="debug">
@@ -35,6 +38,8 @@
 				</Compiler>
 				<Linker>
 					<Add option="../../../libs/openFrameworksCompiled/lib/win_cb/openFrameworksDebug.lib" />
+					<Add library="..\..\..\addons\ofxBoost\lib\win\libboost_regex-mgw44-mt-d-1_47.a" />
+					<Add library="..\..\..\addons\ofxBoost\lib\win\libboost_serialization-mgw44-mt-d-1_47.a" />
 				</Linker>
 			</Target>
 		</Build>
@@ -69,6 +74,9 @@
 			<Add directory="..\..\..\addons\ofxXmlSettings\src" />
 			<Add directory="..\..\..\addons\ofxOpenCv\libs\opencv\include" />
 			<Add directory="..\..\..\addons\ofxXmlSettings\libs" />
+			<Add directory="..\..\..\addons\ofxBoost\src\lib" />
+			<Add directory="..\..\..\addons\ofxFbo\src" />
+			<Add directory="..\..\..\addons\ofxShader\src" />
 		</Compiler>
 		<Linker>
 			<Add option="../../../libs/FreeImage/lib/win_cb/FreeImage.lib" />
@@ -84,6 +92,9 @@
 			<Add option="../../../libs/poco/lib/win_cb/libPocoUtilmt.a" />
 			<Add option="../../../libs/poco/lib/win_cb/libPocoXMLmt.a" />
 			<Add option="../../../libs/poco/lib/win_cb/libPocoFoundationmt.a" />
+			<Add option="../../../addons/ofxOpenCv/libs/opencv/lib/win_cb/libcv.a" />
+			<Add option="../../../addons/ofxOpenCv/libs/opencv/lib/win_cb/libcxcore.a" />
+			<Add option="../../../addons/ofxOsc/libs/oscpack/lib/win_cb/oscpack.a" />
 			<Add option="-lopengl32" />
 			<Add option="-lglu32" />
 			<Add option="-ldsound" />
@@ -120,6 +131,8 @@
 		<Unit filename="..\..\..\addons\goVideoPlayer\src\goQtUtils.h" />
 		<Unit filename="..\..\..\addons\goVideoPlayer\src\goVideoPlayer.cpp" />
 		<Unit filename="..\..\..\addons\goVideoPlayer\src\goVideoPlayer.h" />
+		<Unit filename="..\..\..\addons\ofxFbo\src\ofxFbo.cpp" />
+		<Unit filename="..\..\..\addons\ofxFbo\src\ofxFbo.h" />
 		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxCvBlob.h" />
 		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxCvColorImage.cpp" />
 		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxCvColorImage.h" />
@@ -136,55 +149,154 @@
 		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxCvShortImage.cpp" />
 		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxCvShortImage.h" />
 		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxOpenCv.h" />
+		<Unit filename="..\..\..\addons\ofxShader\src\ofxShader.cpp" />
+		<Unit filename="..\..\..\addons\ofxShader\src\ofxShader.h" />
 		<Unit filename="..\..\..\addons\ofxThread\src\ofxThread.cpp" />
 		<Unit filename="..\..\..\addons\ofxThread\src\ofxThread.h" />
+		<Unit filename="..\..\..\addons\ofxXmlSettings\libs\tinyxml.cpp" />
+		<Unit filename="..\..\..\addons\ofxXmlSettings\libs\tinyxml.h" />
+		<Unit filename="..\..\..\addons\ofxXmlSettings\libs\tinyxmlerror.cpp" />
+		<Unit filename="..\..\..\addons\ofxXmlSettings\libs\tinyxmlparser.cpp" />
 		<Unit filename="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.cpp" />
 		<Unit filename="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.h" />
-		<Unit filename="src\AppController.cpp" />
-		<Unit filename="src\AppController.h" />
-		<Unit filename="src\AppDataTypes.h" />
-		<Unit filename="src\AppModel.cpp" />
-		<Unit filename="src\AppModel.h" />
-		<Unit filename="src\AppView.cpp" />
-		<Unit filename="src\AppView.h" />
-		<Unit filename="src\ArdController.cpp" />
-		<Unit filename="src\ArdController.h" />
-		<Unit filename="src\BaseState.cpp" />
-		<Unit filename="src\BaseState.h" />
-		<Unit filename="src\BaseView.cpp" />
-		<Unit filename="src\BaseView.h" />
-		<Unit filename="src\CamController.cpp" />
-		<Unit filename="src\CamController.h" />
-		<Unit filename="src\Constants.h" />
-		<Unit filename="src\DataController.cpp" />
-		<Unit filename="src\DataController.h" />
-		<Unit filename="src\DebugView.cpp" />
-		<Unit filename="src\DebugView.h" />
-		<Unit filename="src\IXMLBuilder.h" />
-		<Unit filename="src\IXMLParser.h" />
-		<Unit filename="src\JungleException.cpp" />
-		<Unit filename="src\JungleExceptions.h" />
-		<Unit filename="src\LoadingView.cpp" />
-		<Unit filename="src\LoadingView.h" />
-		<Unit filename="src\Logger.cpp" />
-		<Unit filename="src\Logger.h" />
-		<Unit filename="src\MicController.cpp" />
-		<Unit filename="src\MicController.h" />
-		<Unit filename="src\PropertyXMLBuilder.cpp" />
-		<Unit filename="src\PropertyXMLBuilder.h" />
-		<Unit filename="src\PropertyXMLParser.cpp" />
-		<Unit filename="src\PropertyXMLParser.h" />
-		<Unit filename="src\SceneView.cpp" />
-		<Unit filename="src\SceneView.h" />
-		<Unit filename="src\SceneXMLBuilder.cpp" />
-		<Unit filename="src\SceneXMLBuilder.h" />
-		<Unit filename="src\SceneXMLParser.cpp" />
-		<Unit filename="src\SceneXMLParser.h" />
-		<Unit filename="src\Singleton.h" />
-		<Unit filename="src\VectorUtils.h" />
-		<Unit filename="src\VideoController.cpp" />
-		<Unit filename="src\VideoController.h" />
-		<Unit filename="src\main.cpp" />
+		<Unit filename="bin\data\config_properties.xml" />
+		<Unit filename="bin\data\config_scenes.xml" />
+		<Unit filename="bin\data\multitexturemerge.frag" />
+		<Unit filename="src\AppController.cpp">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\AppController.h">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\AppDataTypes.h">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\AppModel.cpp">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\AppModel.h">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\AppView.cpp">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\AppView.h">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\ArdController.cpp">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\ArdController.h">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\BaseState.cpp">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\BaseState.h">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\BaseView.cpp">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\BaseView.h">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\CamController.cpp">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\CamController.h">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\Constants.h">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\DataController.cpp">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\DataController.h">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\DebugView.cpp">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\DebugView.h">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\IXMLBuilder.h">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\IXMLParser.h">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\JungleException.cpp">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\JungleExceptions.h">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\LoadingView.cpp">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\LoadingView.h">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\Logger.cpp">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\Logger.h">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\MicController.cpp">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\MicController.h">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\PropertyXMLBuilder.cpp">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\PropertyXMLBuilder.h">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\PropertyXMLParser.cpp">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\PropertyXMLParser.h">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\SceneView.cpp">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\SceneView.h">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\SceneXMLBuilder.cpp">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\SceneXMLBuilder.h">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\SceneXMLParser.cpp">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\SceneXMLParser.h">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\Singleton.h">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\VectorUtils.h">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\VideoController.cpp">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\VideoController.h">
+			<Option virtualFolder="src\" />
+		</Unit>
+		<Unit filename="src\main.cpp">
+			<Option virtualFolder="src\" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<debugger />

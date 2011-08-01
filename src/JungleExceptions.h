@@ -10,35 +10,39 @@
 #ifndef _H_JUNGLEEXCEPTIONS
 #define _H_JUNGLEEXCEPTIONS
 
+#include <string>
+#include <vector>
+using namespace std;
+
 // Jungle execption super class
 class JungleException {
 
 public:
-	
-	JungleException(string message){
+
+	JungleException(string message) {
 		_message = message;
 	}
-	
+
 	string _message;
 };
 
 // Thrown when we can't parse the xml for whatever reason
 // used to know when we should try a xml rebuild
-class GenericXMLParseException : public JungleException{
+class GenericXMLParseException : public JungleException {
 
 public:
 
-	GenericXMLParseException(string message) : JungleException(message){
+	GenericXMLParseException(string message) : JungleException(message) {
 		// nothing?
 	}
 };
 
 // Thrown when metadata (dates,sizes) don't match between the xml and hdd
-class MetadataMismatchException : public JungleException{
+class MetadataMismatchException : public JungleException {
 
 public:
-	
-	MetadataMismatchException(string message) : JungleException(message){
+
+	MetadataMismatchException(string message) : JungleException(message) {
 		// nothing
 	}
 };

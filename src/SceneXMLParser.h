@@ -45,38 +45,38 @@ enum {
 class SceneXMLParser : public BaseState, public IXMLParser {
 
 public:
-	
+
 	SceneXMLParser(string dataPath, string xmlFile);
-	
+
 	void registerStates();
-	
-	void parseXML();	
+
+	void parseXML();
 	void update();
-	
+
 	//string getStateMessage();
 
 	float getLoadingProgress();
-	
-	
+
+
 private:
-	
+
 	string					_dataPath;
 
 	float					_loadingProgress;
 	string					_stateMessage;
-	
+
 	goDirList				_dirLister;
 	int						_numFiles;
 	map<string, int>		_filenameToDirListerIDMap; // maps filenames to _dirLister.getX(ID)
 
 	// scene:sequence or scene:sequence:transformname, map of values for end type (seq or transfrorm)
-	map<string, map<string, string> >	_parsedData; 
-	
-	// convenience, save keys we've processed in some update methods 
+	map<string, map<string, string> >	_parsedData;
+
+	// convenience, save keys we've processed in some update methods
 	// so we can re-enter and not re-process the same keys
-	set<string>							_completedKeys; 
-	
-	
+	set<string>							_completedKeys;
+	goVideoPlayer                       *_movie;
+
 	// "doing" functions
 	void setupDirLister();
 	void populateDirListerIDMap();
@@ -84,14 +84,14 @@ private:
 	bool validateMovieTransformLengths();
 	void validateFileMetadata();
 	bool createAppModel();
-	
+
 	// Helper functions
 	void listParsedData();
 	bool compareFileinfo(string filename, map<string, string> fileInfo);
-	void checkTagAttributesExist(string xmltag, vector<string> attributes, int which);	
+	void checkTagAttributesExist(string xmltag, vector<string> attributes, int which);
 	int findFileIDForLister(string filename);
 	string findFullFilePathForFilename(string filename);
-	void updateLoadingState();	
+	void updateLoadingState();
 
 };
 

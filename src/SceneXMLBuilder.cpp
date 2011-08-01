@@ -11,7 +11,7 @@
 
 void listStuff(map<string, map<string, string> > m){
 	map<string, map<string, string> >::iterator iter;
-	iter = m.begin();	
+	iter = m.begin();
 	while (iter != m.end()) {
 		printf("%s =| \n", (iter->first).c_str());
 		map<string, string>::iterator iter2;
@@ -21,7 +21,7 @@ void listStuff(map<string, map<string, string> > m){
 			iter2++;
 		}
 		iter++;
-	}	
+	}
 }
 
 SceneXMLBuilder::SceneXMLBuilder(string dataPath, string xmlFile) : IXMLBuilder(xmlFile){
@@ -31,12 +31,12 @@ SceneXMLBuilder::SceneXMLBuilder(string dataPath, string xmlFile) : IXMLBuilder(
 	setupLister();	// set up lister
 	santiseFiles();	// make sure files are ok
 
-	// scan the files we have, inserting any data about them we 
+	// scan the files we have, inserting any data about them we
 	// can discover from the files themselves (names, metadata, etc)
 	scanFiles();	// build info map
 //	printf("!!! Scanned files\n");
 //	listStuff(_info);
-	
+
 	// Now check for any references to invalid sequences
 	findAndFixInvalidSequences();
 
@@ -54,7 +54,7 @@ SceneXMLBuilder::SceneXMLBuilder(string dataPath, string xmlFile) : IXMLBuilder(
 // resets state so it can be called whenever you want to start fresh
 void SceneXMLBuilder::setupLister(){
 	_lister.reset();
-	_lister.addDir(ofToDataPath(_dataPath, true));
+	_lister.addDir(_dataPath);
 	_lister.allowExt("mov");
 	_lister.allowExt("MOV");
 	_lister.allowExt("bin");
@@ -65,7 +65,7 @@ void SceneXMLBuilder::setupLister(){
 		LOG_ERROR("Could not build scene config, goDirList reported 0 files found.");
 		abort();
 	}
-	
+
 }
 
 // Makes sure our files are in good order
@@ -75,7 +75,7 @@ void SceneXMLBuilder::santiseFiles(){
 	string filename;
 	string filenameLower;
 	string path, pathLower;
-	
+
 	for(int fileNum = 0; fileNum < _numFiles; fileNum++){
 		// get the file name
 		filename = _lister.getName(fileNum);
@@ -83,10 +83,7 @@ void SceneXMLBuilder::santiseFiles(){
 		std::transform(filenameLower.begin(), filenameLower.end(), filenameLower.begin(), ::tolower);
 		path = _lister.getPath(fileNum);
 		pathLower = path;
-#ifdef TARGET_WIN32
-		LOG_ERROR("SANTISE FILES DOES NOT HANDLE WINDOWS PATHS, can propbaly just use same code though. Requires testing");
-		abort();
-#endif
+
 		pathLower.replace(pathLower.find_last_of(filename)-filename.length()+1, filename.length(), filenameLower);
 		rename(path.c_str(), pathLower.c_str());
 	}
@@ -104,7 +101,7 @@ void SceneXMLBuilder::santiseFiles(){
 void SceneXMLBuilder::scanFiles(){
 	string fullname;
 	vector<string> substrings; // stores split string parts
-	
+
 	// iterate all files, discovering what we want to know about them
 	for(int fileNum = 0; fileNum < _numFiles; fileNum++){
 		fullname = _lister.getName(fileNum); // Used to work out types etc
@@ -114,10 +111,10 @@ void SceneXMLBuilder::scanFiles(){
 		fullname = fullname.substr(0, fullname.find_last_of(".")); // remove ext
 
 		map<string, string> fileInfo; // temp map to put props into.
-		
+
 		// split filename
-		boost::split(substrings, fullname, boost::is_any_of("_")); 
-		
+		boost::split(substrings, fullname, boost::is_any_of("_"));
+
 		// save some basic stuff
 		fileInfo.insert(make_pair("scene", substrings[0])); // scene name
 		// need to know if its a loop file to get the right sequence name
@@ -128,7 +125,7 @@ void SceneXMLBuilder::scanFiles(){
 		else{
 			fileInfo.insert(make_pair("sequence", substrings[1])); // not loop
 		}
-		
+
 		// find what kind of file it is and save specific details for those types
 		if (regex_search (fullname, regex("_transform"))){
 			// transform file
@@ -179,8 +176,8 @@ void SceneXMLBuilder::scanFiles(){
 					LOG_ERROR("Found a file, but name does not describe type!: " + fullname);
 					continue; // skip the rest
 				}
-				
-				   
+
+
 			}
 		}
 
@@ -198,21 +195,21 @@ void SceneXMLBuilder::scanFiles(){
 //			printf("\t%s\t\t\t=\t%s\n", iter->first.c_str(), iter->second.c_str());
 //			iter++;
 //		}
-		
+
 		string key = fileInfo["scene"] + ":" + fileInfo["sequence"];
 		if(fileInfo["type"] == "transform"){
 			string transformName = fileInfo["filename"];
-			vector<string> splitName; 
+			vector<string> splitName;
 			boost::split(splitName, transformName, boost::is_any_of("_"));
 			transformName = splitName[splitName.size() -1]; // just use atk1/vic etc
 			transformName = transformName.substr(0, transformName.find_last_of(".")); // remove ext
 			key = key + ":" + transformName;
-			
+
 		}
 		// save info
 		_info.insert(pair<string, map<string, string> >(key, fileInfo));
 	}
-	
+
 	// Find last seq__a and set its following sequences to kLAST_SEQUENCE_TOKEN
 	map<string, string> * lastA = NULL;
 	for(map<string, map<string, string> >::iterator iter = _info.begin(); iter != _info.end(); iter++){
@@ -222,25 +219,25 @@ void SceneXMLBuilder::scanFiles(){
 			lastA = &kvmap;
 		}
 	}
-	
+
 	// check that we actually found one (almost certainly did)
 	if(lastA == NULL){
-		LOG_WARNING("Did not find last a type sequence to set to kLAST_SEQUENCE_TOKEN, are there any seq___a.mov files?!");		
+		LOG_WARNING("Did not find last a type sequence to set to kLAST_SEQUENCE_TOKEN, are there any seq___a.mov files?!");
 	} else{
 		// set as last in sequence
 		(*lastA)["nextSequence"] = kLAST_SEQUENCE_TOKEN;
 		(*lastA)["victimResult"] = kLAST_SEQUENCE_TOKEN;
 	}
-	
+
 }
 
 void SceneXMLBuilder::findAndFixInvalidSequences(){
 	set<string> invalids;
-	
+
 	map<string, map<string, string> >::iterator iter = _info.begin();
 	while(iter != _info.end()){
 		map<string, string> & kvmap = (iter->second); // syntax convenience
-		
+
 		string scene = kvmap["scene"];
 		string checkKey;
 		LOG_VERBOSE("FindFixInvalid: " + iter->first);
@@ -260,9 +257,9 @@ void SceneXMLBuilder::findAndFixInvalidSequences(){
 				LOG_VERBOSE("\t\tDid not find! Adding to invalids");
 				// is invalid, so store in invalid vector
 				invalids.insert(checkKey);
-			}			
+			}
 		}
-		
+
 		// Note, we ignore things when they are set to kLAST_SEQUENCE_TOKEN
 		// this is because the last a sequence doesn't have a loop after it
 		// We can be certain that the data in kvmap isn't corrupt because we've
@@ -299,7 +296,7 @@ void SceneXMLBuilder::findAndFixInvalidSequences(){
 		}
 		iter++;
 	}
-	
+
 	// We now have a list of invalid sequence references,
 	// so we'll try to construct some of these by cloning similar things.
 	// we also have to clone the transforms for whatever we copy
@@ -307,10 +304,10 @@ void SceneXMLBuilder::findAndFixInvalidSequences(){
 		string fullInvalidKey = *iter;
 		vector<string> invalidKeyParts;
 		boost::split(invalidKeyParts, fullInvalidKey, boost::is_any_of(":"));
-		
+
 		// set up the regex
 		string regexPattern = invalidKeyParts[0] + ":seq\\d+";
-		
+
 		if(regex_search(fullInvalidKey, regex("b$"))){
 			// b key
 			regexPattern = regexPattern + "b$";
@@ -320,16 +317,16 @@ void SceneXMLBuilder::findAndFixInvalidSequences(){
 			regexPattern = regexPattern + "a$";
 		}
 		if(regex_search(fullInvalidKey, regex("_loop$"))){
-			// loop key			
+			// loop key
 			regexPattern = regexPattern + ".+?_loop$$";
 		}
-		
-		// stores our clone targets, 
+
+		// stores our clone targets,
 		// invalids => valids
 		map<string, string> matches;
-		
+
 		string match = "";
-		
+
 		// iterate over all the keys we have.
 		for(map<string, map<string, string> >::iterator infoiter = _info.begin(); infoiter != _info.end(); infoiter++){
 			// check this against our regex pattern
@@ -339,27 +336,27 @@ void SceneXMLBuilder::findAndFixInvalidSequences(){
 				break;
 			}
 		}
-		
+
 		// we might not find a possible fix
 		if(match == ""){
 			LOG_ERROR("Sequence " + fullInvalidKey + " does not exist, could not find target to clone for fake");
 			throw JungleException("Could not fix missing sequence");
 		}
-		
+
 		LOG_WARNING("Sequence " + fullInvalidKey + " does not exist, cloning from " + match);
 		// found a fix, so clone (with transforms)
 		// clone starting point
 		_info[fullInvalidKey] = _info[match];
 		_info[fullInvalidKey]["faked"] = "true"; // its fake now
 		_info[fullInvalidKey]["sequence"] = invalidKeyParts[1]; // set to proper sequence name
-		
+
 		// set specifics, this is things nextSequences, etc.
 		if(regex_search(fullInvalidKey, regex("b$"))){
 			// nothing?
 		}
 		if(regex_search(fullInvalidKey, regex("a$"))){
 			// a key
-			// set nextSequence to proper loop 
+			// set nextSequence to proper loop
 			_info[fullInvalidKey]["nextSequence"] = invalidKeyParts[1] + "_loop";
 
 			// set victimResult
@@ -368,7 +365,7 @@ void SceneXMLBuilder::findAndFixInvalidSequences(){
 			resultSeqName = createNextSequenceString(resultSeqName); // seq01a to seq02a
 			LOG_WARNING("MUST CONFIRM a_type sequence victimResult name is seq02b  (and not seq01b, probably isnt.)");
 			resultSeqName[resultSeqName.length()-1] = 'b'; // make seq02a into seq02b TODO: this might be wrong name
-			_info[fullInvalidKey]["victimResult"] = resultSeqName;			
+			_info[fullInvalidKey]["victimResult"] = resultSeqName;
 		}
 		if(regex_search(fullInvalidKey, regex("_loop$"))){
 			// loop key
@@ -385,7 +382,7 @@ void SceneXMLBuilder::findAndFixInvalidSequences(){
 			// set nextSequence to this sequence
 			_info[fullInvalidKey]["nextSequence"] = invalidKeyParts[1];
 		}
-		
+
 		// clone transforms if keys exist
 		if(_info.find(match+":atk1") != _info.end()){
 			// clone atk1
@@ -411,7 +408,7 @@ void SceneXMLBuilder::findAndFixInvalidSequences(){
 
 void SceneXMLBuilder::buildXML(){
 	map<string, string> fileInfo;
-	
+
 	int which; // used for ofxXmlSettings "which" params
 
 	// set up xml basics
@@ -421,7 +418,7 @@ void SceneXMLBuilder::buildXML(){
 	// note both these are popped at end of method
 	_xml.pushTag("config");
 	_xml.pushTag("scenes");
-	
+
 	map<string, map<string, string> >::iterator iter = _info.begin();
 	while(iter != _info.end()){
 		fileInfo = (iter->second); // Copy here for nicer syntax (instead of using a pointer.)
@@ -446,13 +443,13 @@ void SceneXMLBuilder::buildXML(){
 			_xml.addAttribute("transform", "size", fileInfo["size"], which);
 			_xml.addAttribute("transform", "dateCreated", fileInfo["dateCreated"], which);
 			_xml.addAttribute("transform", "dateModified", fileInfo["dateModified"], which);
-			
+
 			_xml.popTag(); // pop sequence
-			
+
 		}
 		else{
 			_xml.addAttribute("sequence", "sequenceType", fileInfo["type"], which);
-			if(fileInfo["type"] == "loop"){	
+			if(fileInfo["type"] == "loop"){
 				// loop specific stuff
 				// seq01a_loop V-> seq02b
 				// seq01a_loop A-> seq02a
@@ -472,7 +469,7 @@ void SceneXMLBuilder::buildXML(){
 			_xml.addAttribute("sequence", "size", fileInfo["size"], which);
 			_xml.addAttribute("sequence", "dateCreated", fileInfo["dateCreated"], which);
 			_xml.addAttribute("sequence", "dateModified", fileInfo["dateModified"], which);
-		} 
+		}
 		_xml.popTag(); // pop scene
 		iter++; // next file
 	}
@@ -488,11 +485,11 @@ string SceneXMLBuilder::createNextSequenceString(string seq){
 	char seqNumString[20];
 	char formatString[20];
 	string matchstring;
-	
-	
+
+
 	cmatch match;
 	string ret = seq;
-	
+
 	// pull out the sequence number from the sequence name, so we can increment it
 	if(regex_match(seq.c_str(), match, regex("seq(\\d+)a"))){
 		matchstring = string(match[1].first, match[1].second);

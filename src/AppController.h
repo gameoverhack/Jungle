@@ -23,16 +23,16 @@
 #include "ArdController.h"
 
 class AppController : public BaseState, public ofBaseApp {
-	
+
 public:
-	
+
 	AppController();
 	~AppController();
-	
+
 	void setup();
 	void update();
 	void draw();
-	
+
 	void keyPressed  (int key);
 	void keyReleased(int key);
 	void mouseMoved(int x, int y );
@@ -40,33 +40,36 @@ public:
 	void mousePressed(int x, int y, int button);
 	void mouseReleased(int x, int y, int button);
 	void windowResized(int w, int h);
-	
+
 	void swapCameras();
-	
+
 	void setWindowed();
 	void setFullscreen();
 	void toggleFullscreen();
-	
+
 private:
-	
+
 	// Views
 	AppView			* _appView;
-	
+
 	// Controllers
 	DataController	* _dataController;
 	CamController	* _camControllers[2];
 	VideoController * _vidController;
 	MicController	* _micController;
 	ArdController	* _ardController;
-	
+
 	bool			  _isFullScreen;
-	
+#ifdef TARGET_WIN32
+    char            * _windowTitle;
+#endif
+
 	Sequence		* _switchToSequence;
-	
+
 	int				_lastAutoActionTime;
 
 protected:
-	
+
 };
 
 #endif
