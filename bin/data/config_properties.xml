@@ -2,11 +2,13 @@
     <properties>
         <property name="appViewHeight" type="float">720.000000</property>
         <property name="appViewWidth" type="float">1280.000000</property>
-		<property name="xmlForceSceneBuildOnLoad" type="bool">true</property>
-        <property name="parseRebuildXML" type="bool">true</property>
-        <property name="parseRequiresTransformReanalysis" type="bool">false</property>
-        <!--property name="scenesDataPath" type="string">scenes</property-->
-		<property name="scenesDataPath" type="string">/Users/gameover/Desktop/StrangerDanger/video</property>
+
+		<property name="xmlForceSceneBuildOnLoad" type="bool">false</property>
+        <property name="xmlIgnoreErrors" type="bool">true</property>
+        <property name="xmlIgnoreTransformErrors" type="bool">true</property>
+
+        <property name="scenesDataPath" type="string">/Users/ollie/Source/Jungle/bin/data/scenes</property>
+		<!--property name="scenesDataPath" type="string">/Users/gameover/Desktop/StrangerDanger/video</property-->
 		<!--property name="scenesDataPath" type="string">G:/gameoverload/VideoProjects/Jungle/video</property-->
         <property name="scenesXMLFile" type="string">config_scenes.xml</property>
         <property name="shaderBlendRatio" type="float">0.500000</property>

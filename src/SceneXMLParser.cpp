@@ -92,35 +92,11 @@ void SceneXMLParser::update() {
 
 		case kSCENEXMLPARSER_VALIDATING_MOVIE_TRANSFORM_LENGTHS:
 			// Validate that transform and movie lengths are the same
-			try{
-				if(validateMovieTransformLengths()){
-					// reset completedKeys set
-					_completedKeys.clear();
-					// done, goto next state
-					setState(kSCENEXMLPARSER_CREATING_APPMODEL);
-				}
-			}
-			catch (TransformMovieLengthMismatchException ex) {
-				// Some files were either missing or invalid (length mismatch),
-				// log an error and pass the missing files back up so whoever called us
-				// can make the files with the analyser.
-				string message = "";
-				for(vector<string>::iterator iter = ex._names.begin(); iter != ex._names.end(); iter++){
-					message = *iter + ", " + message;
-				}
-				message[message.length()-1] = ' ';
-				LOG_ERROR("Require reanalysis/creation of transform files: " + message);
-
-				// This if is here instead of DataController because we want to
-				// continue onto the next state if we're not going to reanalyse the transforms
-				if(boost::any_cast<bool>(_appModel->getProperty("parseRequiresTransformReanalysis"))){
-					throw ex;	// Datacontroller should catch this, and make a TransformAnalyser(),
-					// then call update on _scenePaser again, which should restart from
-					// this state, and keep going.
-				}
-				else{
-					LOG_WARNING("Continuing without recreation of transform files even though they are broken!");
-				}
+			if(validateMovieTransformLengths()){
+				// reset completedKeys set
+				_completedKeys.clear();
+				// done, goto next state
+				setState(kSCENEXMLPARSER_CREATING_APPMODEL);
 			}
 			break;
 
@@ -799,11 +775,11 @@ bool SceneXMLParser::validateMovieTransformLengths(){
 				//check vs movie
 				if(transform.size() != _movie->getTotalNumFrames()){
 					// mismatch, need to regen
-					LOG_WARNING("Frame count mismatch for " + kvmap["filename"]
-								+ "(transform " + ofToString((int)(transform.size())) + " vs movie "
+					LOG_WARNING("Frame count mismatch for " + innerIter->first
+								+ "(transform " + ofToString((int)(transform.size())) + " vs "+ kvmap["filename"] +" movie "
 								+ ofToString(_movie->getTotalNumFrames())+")");
 					// Store a list of broken pairs
-					transformFilesRequired.push_back(parsedDataIter->first);
+					transformFilesRequired.push_back(innerIter->first);
 				}
 				// save key as processesd
 				_completedKeys.insert(innerIter->first);

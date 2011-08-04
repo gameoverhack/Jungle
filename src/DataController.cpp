@@ -64,37 +64,49 @@ void DataController::update(){
 				LOG_WARNING("Metadata mismatch exception: " + ex._message);
 
 				// check if we want to handle it
-				if(!boost::any_cast<bool>(_appModel->getProperty("parseRebuildXML")) &&
-				   _hasAttemptedReparse){
-					// dont rebuild, we had a parse error, cant continue.
-					abort();
+				if(boost::any_cast<bool>(_appModel->getProperty("xmlIgnoreErrors"))){
+					LOG_WARNING("xmlIgnoreErrors true, ignoring exception");
+					// ignoring issue
 				}
-				LOG_WARNING("Rebuilding XML to handle metadata mismatch exception");
-				rebuildXML();
-				restartParseXML();
+				else {
+					// try to rebuild
+					LOG_WARNING("Rebuilding XML to handle metadata mismatch exception");
+					rebuildXML();
+					restartParseXML();
+				}
+
 			}
 			catch (TransformMovieLengthMismatchException ex) {
-				LOG_WARNING("Transform movie length mismatch exception: " + ex._message);
-				if(!boost::any_cast<bool>(_appModel->getProperty("parseRequiresTransformReanalysis"))){
-					LOG_WARNING("Continuing without rebuilding transforms");
+				string message = "";
+				for(vector<string>::iterator iter = ex._names.begin(); iter != ex._names.end(); iter++){
+					message = *iter + ", " + message;
 				}
-				LOG_ERROR("PUT START ANALYSE CODE HERE");
-				abort();
+				message[message.length()-1] = ' ';
+				LOG_ERROR("Require reanalysis/creation of transform files: " + message);
+				
+				if(boost::any_cast<bool>(_appModel->getProperty("xmlIgnoreTransformErrors"))){
+					LOG_WARNING("xmlIgnoreTransformErrors true, continuing without rebuilding transforms");
+				}
+				else {
+					// _state = kDATACONTROLLER_SCENE_ANALYSING
+					LOG_ERROR("PUT START ANALYSE CODE IN case kDATACONTROLLER_SCENE_ANALYSING");
+					abort();
+				}
 
 			}
 			catch (GenericXMLParseException ex) {
 				LOG_WARNING("XML parse exception: " + ex._message);
 
 				// check if we want to handle it
-				if(!boost::any_cast<bool>(_appModel->getProperty("parseRebuildXML")) &&
-				   _hasAttemptedReparse){
-					// dont rebuild, we had a parse error, cant continue.
-					abort();
+				if(boost::any_cast<bool>(_appModel->getProperty("xmlIgnoreErrors"))){
+					LOG_WARNING("xmlIgnoreErrors true, ignoring exception");
+					// ignore issue
 				}
-
-				LOG_WARNING("Rebuilding generic XML parse exception");
-				rebuildXML();
-				restartParseXML();
+				else{
+					LOG_WARNING("Rebuilding XML to handle parse exception");
+					rebuildXML();
+					restartParseXML();
+				}
 			}
 			catch (JungleException ex){
 				// most likely get here if we can't fix a missing file issue
@@ -111,6 +123,10 @@ void DataController::update(){
 		case kDATACONTROLLER_SCENE_ANALYSING:
 			LOG_ERROR("MAKE DATA ANYALYSER HERE.");
 			abort();
+			// rebuild xml/reparse after recreating transform files
+			rebuildXML();
+			restartParseXML();
+			break;
 		case kDATACONTROLLER_FINISHED:
 			LOG_VERBOSE("Data controller is finished.");
 			break;
@@ -133,6 +149,11 @@ void DataController::updateAppLoadingState(){
 }
 
 void DataController::rebuildXML(){
+	if(_hasAttemptedReparse){
+		// we've already tried to fix this once
+		LOG_ERROR("Already attempted to rebuild XML once and failed, aborting.");
+		abort();
+	}	
 	// rebuild
 	SceneXMLBuilder sceneXMLBuilder(boost::any_cast<string>(_appModel->getProperty("scenesDataPath")),
 									boost::any_cast<string>(_appModel->getProperty("scenesXMLFile")));
