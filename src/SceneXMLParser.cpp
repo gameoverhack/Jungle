@@ -181,7 +181,6 @@ void SceneXMLParser::updateLoadingState(){
 // xml, but there is a scene["orderInXML"] => int (eg: 0, 1, 2) which could be
 // checked when deciding what to use for the first scene.
 bool SceneXMLParser::createAppModel(){
-
 	// used for object construction
 	Scene *scene = NULL;
 	Sequence *sequence = NULL;
@@ -275,7 +274,6 @@ bool SceneXMLParser::createAppModel(){
 			sequence->setIsSequenceFaked(true);
 		}
 
-
 		// set interactivity
 		sequence->setInteractivity(kvmap["interactivity"]);
 
@@ -288,15 +286,6 @@ bool SceneXMLParser::createAppModel(){
 		fileID = findFileIDForLister(kvmap["filename"]);
 		fullFilePath = _dirLister.getPath(fileID);
 		sequence->setMovieFullFilePath(fullFilePath);
-
-		//LOG_WARNING("TODO: Load movie should be done else where, change this from loadMovie, remove these calls");
-		//movie = new goVideoPlayer();
-		//int mtime = ofGetElapsedTimeMillis();
-		//movie->loadMovie(fullFilePath);
-		//sequence->setMovie(movie);
-		//sequence->prepareMovie(); // THIS CALL TAKES ~ 300-400 ms
-		//sequence->loadMovie(); // use this instead when we need it...
-		//printf("\n\t\tMovie time: %dms\n\n", ofGetElapsedTimeMillis() - mtime);
 
 		// completed sequence, insert to scene
 		scene->setSequence(sequence->getName(), sequence);
@@ -332,6 +321,127 @@ bool SceneXMLParser::createAppModel(){
 			sequence->setTransform(keyParts[2], transform);
 			_completedKeys.insert(transformIter->first); // key done, save it
 		}
+		
+		// setup interactivity stuff
+		
+		/*
+		 
+			SETTING UP FAKE DATA HERE
+		 
+		 */
+		//	class FramePair{
+		//		int _start;
+		//		int _end;
+		//	};
+		//	
+		//	class SequenceDescriptor{
+		//		int _totalFrames;  // I could work this out from loading a transform
+		//		// but maybe its cleaner if you just save it out as a member?
+		//		// I need to know it for when I malloc the array for Sequence::interactivity[totalFrames]
+		//		vector<FramePair> _victim; // = {framepair(51, 70)}
+		//		vector<FramePair> _attacker; // = {framepair(10, 50), framepair(60, 100)}
+		//		vector<FramePair> _face;
+		//	};
+		
+		FramePair framepair;
+		SequenceDescriptor seqdes;
+		seqdes._totalFrames = 100;
+		
+		// victim
+		framepair._start = 51;
+		framepair._end = 70;
+		seqdes._victim.push_back(framepair);
+		
+		// attacker
+		framepair._start = 10;
+		framepair._end = 50;
+		seqdes._attacker.push_back(framepair);
+		framepair._start = 60;
+		framepair._end = 100;
+		seqdes._attacker.push_back(framepair);
+		
+		// nothing for face
+		framepair._start = 0;
+		framepair._end = 10;
+		seqdes._face.push_back(framepair);
+		
+		/*
+		 
+			ACTUAL LOADING CODE HERE
+			
+		*/
+		
+		//SequenceDescriptor *descriptor = loadSequenceDescriptor("some/filename/path");
+		SequenceDescriptor *descriptor = &seqdes;
+		vector<FramePair>::iterator vecIter;
+		
+		interaction_t *interactionTable;
+		
+		// get total number of frames, set up array 
+		interactionTable = new interaction_t[descriptor->_totalFrames];
+		
+		// "zero" out the table with kINTERACTION_NONE
+		for(int i = 0; i < descriptor->_totalFrames; i++){
+			interactionTable[i] = kINTERACTION_NONE;
+		}
+
+		// set up face
+		for(vecIter = descriptor->_face.begin(); vecIter != descriptor->_face.end(); vecIter++){
+			FramePair fp = *vecIter;
+			for(int i = fp._start; i < fp._end; i++){
+				interactionTable[i] = kINTERACTION_FACE;
+			}
+		}
+		
+		// set up victim
+		for(vecIter = descriptor->_victim.begin(); vecIter != descriptor->_victim.end(); vecIter++){
+			FramePair fp = *vecIter;
+			for(int i = fp._start; i < fp._end; i++){
+				interactionTable[i] = kINTERACTION_VICTIM;
+			}
+		}
+		
+		// set up attacker
+		for(vecIter = descriptor->_attacker.begin(); vecIter != descriptor->_attacker.end(); vecIter++){
+			FramePair fp = *vecIter;
+			for(int i = fp._start; i < fp._end; i++){
+				if(interactionTable[i] == kINTERACTION_VICTIM){
+					interactionTable[i] = kINTERACTION_BOTH;
+				}
+				else{
+					interactionTable[i] = kINTERACTION_ATTACKER;
+				}				
+			}
+		}
+		
+		
+		// save table
+		sequence->setInteractionTable(interactionTable);
+		
+		// print out result table
+		
+//		for(int i = 0; i < descriptor->_totalFrames; i++){
+//			string s = "";
+//			if (interactionTable[i] == kINTERACTION_NONE) {
+//				s = "NONE";
+//			}
+//			if (interactionTable[i] == kINTERACTION_VICTIM) {
+//				s = "VICTIM";
+//			}
+//			if (interactionTable[i] == kINTERACTION_ATTACKER) {
+//				s = "ATTACKER";
+//			}
+//			if (interactionTable[i] == kINTERACTION_FACE) {
+//				s = "FACE";
+//			}
+//
+//			if (interactionTable[i] == kINTERACTION_BOTH) {
+//				s = "BOTH";
+//			}
+//			
+//			printf("%3d: %s\n", i, s.c_str());
+//		}
+		
 		_completedKeys.insert(parsedDataIter->first); // key done, save it
 		break; // break out of the loop
 	}
