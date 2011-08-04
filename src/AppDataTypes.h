@@ -175,9 +175,28 @@ public:
 		return _interactivity;
 	}
 	
+	string getType(){
+		return _type;
+	}
+	
+	void setType(string t){
+		_type = t;
+	}
+	
+	int getNumber(){
+		return _number;
+	}
+	
+	void setNumber(int i){
+		_number = i;
+	}
+	
+	
 private:
 	
 	string					_name;
+	string					_type;
+	int						_number;
 	string					_nextSequenceName;
 	string					_attackerResult;
 	string					_victimResult;

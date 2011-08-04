@@ -281,6 +281,11 @@ bool SceneXMLParser::createAppModel(){
 		sequence = new Sequence();
 		sequence->setName(kvmap["name"]);
 		sequence->setNextSequenceName(kvmap["nextSequence"]);
+
+		// save some meta data about the sequence
+		sequence->setType(kvmap["sequenceType"]);
+		sequence->setNumber(findSequenceNumberFromString(sequence->getName()));
+
 		// loop only stuff
 		if(kvmap["sequenceType"] == "loop"){
 			sequence->setAttackerResult(kvmap["attackerResult"]);
@@ -663,7 +668,8 @@ void SceneXMLParser::validateFileMetadata(){
 		   kvmap.find("dateModified") == kvmap.end() ||
 		   kvmap.find("dateCreated") == kvmap.end() ||
 		   kvmap.find("filename") == kvmap.end() ){
-			throw JungleException("Required one of kvmap keys filename, size, dateModified or dateCreated missing for " + parsedDataIter->first);
+			throw JungleException("Required one of kvmap keys filename, size, dateModified \
+								  or dateCreated missing for " + parsedDataIter->first);
 		}
 
 		fileID = findFileIDForLister(kvmap["filename"]);
@@ -910,4 +916,21 @@ void SceneXMLParser::listParsedData(){
 		}
 		iter++;
 	}
+}
+
+int SceneXMLParser::findSequenceNumberFromString(string str){
+	int seqNum;
+	char seqNumString[20];
+	string matchstring;
+	cmatch match;
+	
+	// pull out the sequence number from the sequence name, so we can increment it
+	if(regex_match(str.c_str(), match, regex("seq(\\d+)\\D+?"))){ // find int
+		matchstring = string(match[1].first, match[1].second);
+		sscanf(matchstring.c_str(), "%d", &seqNum); // extract int
+		return seqNum;
+	}
+	LOG_ERROR("Could not find sequence number from string: " + str);
+	abort();
+
 }
