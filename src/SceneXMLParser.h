@@ -9,6 +9,7 @@
 #ifndef _H_SCENEXMLPARSER
 #define _H_SCENEXMLPARSER
 
+#include <stdlib.h>
 #include <set>
 #include <map>
 #include <vector>
@@ -22,6 +23,7 @@ using boost::regex;
 using boost::cmatch;
 using boost::regex_search;
 using boost::regex_match;
+
 
 #include "IXMLParser.h"
 #include "BaseState.h"
@@ -92,6 +94,7 @@ private:
 	int findFileIDForLister(string filename);
 	string findFullFilePathForFilename(string filename);
 	void updateLoadingState();
+	int findSequenceNumberFromString(string name);
 
 };
 

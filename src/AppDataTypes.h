@@ -40,6 +40,32 @@ using std::pair;
 //	
 //};
 
+
+enum interaction_t {
+	kINTERACTION_FACE,
+	kINTERACTION_BOTH,
+	kINTERACTION_VICTIM,
+	kINTERACTION_ATTACKER,
+	kINTERACTION_NONE
+};
+
+class FramePair{
+public:
+	int _start;
+	int _end;
+};
+
+class SequenceDescriptor{
+public:
+	int _totalFrames;  // I could work this out from loading a transform
+	// but maybe its cleaner if you just save it out as a member?
+	// I need to know it for when I malloc the array for Sequence::interactivity[totalFrames]
+	vector<FramePair> _victim; // = {framepair(51, 70)}
+	vector<FramePair> _attacker; // = {framepair(10, 50), framepair(60, 100)}
+	vector<FramePair> _face;
+};
+
+
 class CamTransform {
 private:
 	friend class boost::serialization::access;
@@ -76,10 +102,12 @@ public:
 	Sequence() {
 		_isMovieFaked = false;
 		_isSequenceFaked = false;
+		_interactionTable = NULL;
 	};
 	
 	~Sequence() {
 		// nothing for now
+		free(_interactionTable);
 	};
 
 	string getName() {
@@ -175,9 +203,36 @@ public:
 		return _interactivity;
 	}
 	
+	string getType(){
+		return _type;
+	}
+	
+	void setType(string t){
+		_type = t;
+	}
+	
+	int getNumber(){
+		return _number;
+	}
+	
+	void setNumber(int i){
+		_number = i;
+	}
+	
+	interaction_t * getInteractionTable(){
+		return _interactionTable;
+	}
+	
+	void setInteractionTable(interaction_t *newInteractionTable){
+		_interactionTable = newInteractionTable;
+	}
+	
+	
 private:
 	
 	string					_name;
+	string					_type;
+	int						_number;
 	string					_nextSequenceName;
 	string					_attackerResult;
 	string					_victimResult;
@@ -185,6 +240,8 @@ private:
 	bool					_isMovieFaked;
 	bool					_isSequenceFaked;
 	string					_movieFullFilePath;
+	
+	interaction_t			*_interactionTable;
 
 public:
 	

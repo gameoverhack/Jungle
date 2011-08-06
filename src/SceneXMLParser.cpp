@@ -19,7 +19,7 @@ SceneXMLParser::SceneXMLParser(string dataPath, string xmlFile) : IXMLParser(xml
 
 void SceneXMLParser::registerStates() {
 	LOG_VERBOSE("Registering States");
-
+	
 	registerState(kSCENEXMLPARSER_INIT, "kSCENEXMLPARSER_INIT");
 	registerState(kSCENEXMLPARSER_SETUP, "kSCENEXMLPARSER_SETUP");
 	registerState(kSCENEXMLPARSER_PARSE_XML, "kSCENEXMLPARSER_PARSE_XML");
@@ -28,19 +28,19 @@ void SceneXMLParser::registerStates() {
 	registerState(kSCENEXMLPARSER_VALIDATING_MOVIE_TRANSFORM_LENGTHS, "kSCENEXMLPARSER_VALIDATING_MOVIE_TRANSFORM_LENGTHS");
 	registerState(kSCENEXMLPARSER_CREATING_APPMODEL, "kSCENEXMLPARSER_CREATING_APPMODEL");
 	registerState(kSCENEXMLPARSER_FINISHED, "kSCENEXMLPARSER_FINISHED");
-
+	
 	setState(kSCENEXMLPARSER_INIT);
 }
 
 void SceneXMLParser::update() {
-
+	
 	switch (getState()) {
-
+			
 		case kSCENEXMLPARSER_INIT:
 			// nothing to do for init, move on to next state.
 			setState(kSCENEXMLPARSER_SETUP);
 			break;
-
+			
 		case kSCENEXMLPARSER_SETUP:
 			// setup whats needed to parse
 			setupDirLister(); // set up file lists;
@@ -48,7 +48,7 @@ void SceneXMLParser::update() {
 			load(); // load xml file
 			setState(kSCENEXMLPARSER_PARSE_XML);
 			break;
-
+			
 		case kSCENEXMLPARSER_PARSE_XML:
 			// make map (map<string, map<string, string> _parsedData) from xml
 			parseXML();
@@ -70,7 +70,7 @@ void SceneXMLParser::update() {
 			}
 			setState(kSCENEXMLPARSER_VALIDATING_FILE_METADATA);
 			break;
-
+			
 		case kSCENEXMLPARSER_VALIDATING_FILE_METADATA:
 			try{
 				validateFileMetadata();
@@ -89,45 +89,22 @@ void SceneXMLParser::update() {
 			}
 			setState(kSCENEXMLPARSER_VALIDATING_MOVIE_TRANSFORM_LENGTHS);
 			break;
-
+			
 		case kSCENEXMLPARSER_VALIDATING_MOVIE_TRANSFORM_LENGTHS:
 			// Validate that transform and movie lengths are the same
-			try{
-				if(validateMovieTransformLengths()){
-					// reset completedKeys set
-					_completedKeys.clear();
-					// done, goto next state
-					setState(kSCENEXMLPARSER_CREATING_APPMODEL);
-				}
-			}
-			catch (TransformMovieLengthMismatchException ex) {
-				// Some files were either missing or invalid (length mismatch),
-				// log an error and pass the missing files back up so whoever called us
-				// can make the files with the analyser.
-				string message = "";
-				for(vector<string>::iterator iter = ex._names.begin(); iter != ex._names.end(); iter++){
-					message = *iter + ", " + message;
-				}
-				message[message.length()-1] = ' ';
-				LOG_ERROR("Require reanalysis/creation of transform files: " + message);
-
-				// This if is here instead of DataController because we want to
-				// continue onto the next state if we're not going to reanalyse the transforms
-				if(boost::any_cast<bool>(_appModel->getProperty("parseRequiresTransformReanalysis"))) {
-					throw ex;	// Datacontroller should catch this, and make a TransformAnalyser(),
-					// then call update on _scenePaser again, which should restart from
-					// this state, and keep going.
-				} else {
-					LOG_WARNING("Continuing without recreation of transform files even though they are broken!");
-				}
+			if(validateMovieTransformLengths()){
+				// reset completedKeys set
+				_completedKeys.clear();
+				// done, goto next state
+				setState(kSCENEXMLPARSER_CREATING_APPMODEL);
 			}
 			break;
-
+			
 		case kSCENEXMLPARSER_CREATING_APPMODEL:
 		{
 			// Checked file existence, checked metadata, checked transforms, OK to map => app model
 			//			listParsedData();
-
+			
 			if(createAppModel()){
 				_completedKeys.clear();
 				setState(kSCENEXMLPARSER_FINISHED);
@@ -136,12 +113,12 @@ void SceneXMLParser::update() {
 		}
 		case kSCENEXMLPARSER_FINISHED:
 			break;
-
+			
 		default:
 			LOG_ERROR("Unknown state " + printState());
 			break;
 	}
-
+	
 	// update internal loading state (datacontroller will use this to set app messages)
 	updateLoadingState();
 }
@@ -204,35 +181,34 @@ void SceneXMLParser::updateLoadingState(){
 // xml, but there is a scene["orderInXML"] => int (eg: 0, 1, 2) which could be
 // checked when deciding what to use for the first scene.
 bool SceneXMLParser::createAppModel(){
-
 	// used for object construction
 	Scene *scene = NULL;
 	Sequence *sequence = NULL;
 	vector<CamTransform> *transform = NULL;
 	goVideoPlayer *movie;
-
+	
 	// file retrieval
 	int fileID;
 	string fullFilePath;
-
+	
 	bool hasCurrentScene = false; // used to set scene 0 to first current scene
 	bool hasCurrentSequence = false;
-
+	
 	// check if total number of parsed keys matches total number of completed keys
 	if(_parsedData.size() == _completedKeys.size()){
 		return true; //we've checked all the keys
 	}
-
+	
 	// Initial iteration, find all scenes, add them to app model
 	// We have to do this separately beause we want per-sequence
 	// update message granularity
 	map<string, map<string, string> >::iterator parsedDataIter;
 	for(parsedDataIter = _parsedData.begin(); parsedDataIter != _parsedData.end(); parsedDataIter++){
-
+		
 		if(_completedKeys.find(parsedDataIter->first) != _completedKeys.end()){
 			continue; // already done this key
 		}
-
+		
 		map<string, string> & kvmap = (parsedDataIter->second); // syntax convenience
 		if(kvmap["type"] == "scene"){
 			LOG_VERBOSE("xml => model for " + kvmap["name"] + " ("+kvmap["type"]+")");
@@ -246,40 +222,45 @@ bool SceneXMLParser::createAppModel(){
 			_completedKeys.insert(parsedDataIter->first); // key done, save it
 		}
 	}
-
+	
 	// loop over all the keys, find which are sequences (scene:sequence, so two parts)
 	for(parsedDataIter = _parsedData.begin(); parsedDataIter != _parsedData.end(); parsedDataIter++){
-
+		
 		if(_completedKeys.find(parsedDataIter->first) != _completedKeys.end()){
 			continue; // already done this key
 		}
 		//_stateMessage = "Creating app model for: " + parsedDataIter->first;
-
+		
 		// split
 		vector<string> keyParts;
 		boost::split(keyParts, parsedDataIter->first, boost::is_any_of(":"));
-
+		
 		if(keyParts.size() != 2){
 			continue; // not a sequence
 		}
-
+		
 		// is a sequence, so get the scene for this sequence
 		scene = _appModel->getScene(keyParts[0]);
-
+		
 		// Set up this sequence (including the transforms)
 		map<string, string> & kvmap = (parsedDataIter->second); // syntax convenience
-
+		
 		// should be a sequence but check anyway
 		if(kvmap["type"] != "sequence"){
 			throw JungleException("Thought " + parsedDataIter->first + " was  sequence but its type was " + kvmap["type"]);
 		}
-
+		
 		LOG_VERBOSE("xml => model for " + kvmap["name"] + " ("+kvmap["type"]+")");
-
+		
 		// actually build the sequence parts
 		sequence = new Sequence();
 		sequence->setName(kvmap["name"]);
 		sequence->setNextSequenceName(kvmap["nextSequence"]);
+		
+		// save some meta data about the sequence
+		sequence->setType(kvmap["sequenceType"]);
+		sequence->setNumber(findSequenceNumberFromString(sequence->getName()));
+		
 		// loop only stuff
 		if(kvmap["sequenceType"] == "loop"){
 			sequence->setAttackerResult(kvmap["attackerResult"]);
@@ -287,44 +268,34 @@ bool SceneXMLParser::createAppModel(){
 		} else if(kvmap["sequenceType"] == "a"){
 			sequence->setVictimResult(kvmap["victimResult"]);
 		}
-
+		
 		// set if sequence is faked
 		if(kvmap["fakedSequence"] == "true"){
 			sequence->setIsSequenceFaked(true);
 		}
-
-
+		
 		// set interactivity
 		sequence->setInteractivity(kvmap["interactivity"]);
-
+		
 		// set whether we faked movie data
 		if(kvmap["validFile"] == "fake"){
 			sequence->setIsMovieFaked(true);
 		}
-
+		
 		// Load movie stuff
 		fileID = findFileIDForLister(kvmap["filename"]);
 		fullFilePath = _dirLister.getPath(fileID);
 		sequence->setMovieFullFilePath(fullFilePath);
-
-		//LOG_WARNING("TODO: Load movie should be done else where, change this from loadMovie, remove these calls");
-		//movie = new goVideoPlayer();
-		//int mtime = ofGetElapsedTimeMillis();
-		//movie->loadMovie(fullFilePath);
-		//sequence->setMovie(movie);
-		//sequence->prepareMovie(); // THIS CALL TAKES ~ 300-400 ms
-		//sequence->loadMovie(); // use this instead when we need it...
-		//printf("\n\t\tMovie time: %dms\n\n", ofGetElapsedTimeMillis() - mtime);
-
+		
 		// completed sequence, insert to scene
 		scene->setSequence(sequence->getName(), sequence);
-
+		
 		// check if we're first sequence for this scene, if we are, set us to be current (ie first)
 		if(!scene->hasCurrentSequence()){
 			scene->setCurrentSequence(sequence->getName());
-
+			
 		}
-
+		
 		// Find the transforms for this sequence
 		regex transformPattern("^"+parsedDataIter->first + ":[^:]+?$");
 		map<string, map<string, string> >::iterator transformIter;
@@ -332,16 +303,16 @@ bool SceneXMLParser::createAppModel(){
 			if(!regex_search(transformIter->first, transformPattern)){
 				continue; // NOT matched, keep looking
 			}
-
+			
 			kvmap = transformIter->second; // convenience
-
+			
 			// should be a transform but check
 			if(kvmap["type"] != "transform"){
 				throw JungleException("Thought " + transformIter->first + " was  transform but its type was " + kvmap["type"]);
 			}
-
+			
 			LOG_VERBOSE("xml => model for " + kvmap["name"] + " ("+kvmap["type"]+")");
-
+			
 			// do the transform stuff
 			transform = new vector<CamTransform>();
 			loadVector(findFullFilePathForFilename(kvmap["filename"]), transform);
@@ -350,6 +321,127 @@ bool SceneXMLParser::createAppModel(){
 			sequence->setTransform(keyParts[2], transform);
 			_completedKeys.insert(transformIter->first); // key done, save it
 		}
+		
+		// setup interactivity stuff
+		
+		/*
+		 
+		 SETTING UP FAKE DATA HERE
+		 
+		 */
+		//	class FramePair{
+		//		int _start;
+		//		int _end;
+		//	};
+		//	
+		//	class SequenceDescriptor{
+		//		int _totalFrames;  // I could work this out from loading a transform
+		//		// but maybe its cleaner if you just save it out as a member?
+		//		// I need to know it for when I malloc the array for Sequence::interactivity[totalFrames]
+		//		vector<FramePair> _victim; // = {framepair(51, 70)}
+		//		vector<FramePair> _attacker; // = {framepair(10, 50), framepair(60, 100)}
+		//		vector<FramePair> _face;
+		//	};
+		
+		FramePair framepair;
+		SequenceDescriptor seqdes;
+		seqdes._totalFrames = 100;
+		
+		// victim
+		framepair._start = 51;
+		framepair._end = 70;
+		seqdes._victim.push_back(framepair);
+		
+		// attacker
+		framepair._start = 10;
+		framepair._end = 50;
+		seqdes._attacker.push_back(framepair);
+		framepair._start = 60;
+		framepair._end = 100;
+		seqdes._attacker.push_back(framepair);
+		
+		// nothing for face
+		framepair._start = 0;
+		framepair._end = 10;
+		seqdes._face.push_back(framepair);
+		
+		/*
+		 
+		 ACTUAL LOADING CODE HERE
+		 
+		 */
+		
+		//SequenceDescriptor *descriptor = loadSequenceDescriptor("some/filename/path");
+		SequenceDescriptor *descriptor = &seqdes;
+		vector<FramePair>::iterator vecIter;
+		
+		interaction_t *interactionTable;
+		
+		// get total number of frames, set up array 
+		interactionTable = new interaction_t[descriptor->_totalFrames];
+		
+		// "zero" out the table with kINTERACTION_NONE
+		for(int i = 0; i < descriptor->_totalFrames; i++){
+			interactionTable[i] = kINTERACTION_NONE;
+		}
+		
+		// set up face
+		for(vecIter = descriptor->_face.begin(); vecIter != descriptor->_face.end(); vecIter++){
+			FramePair fp = *vecIter;
+			for(int i = fp._start; i < fp._end; i++){
+				interactionTable[i] = kINTERACTION_FACE;
+			}
+		}
+		
+		// set up victim
+		for(vecIter = descriptor->_victim.begin(); vecIter != descriptor->_victim.end(); vecIter++){
+			FramePair fp = *vecIter;
+			for(int i = fp._start; i < fp._end; i++){
+				interactionTable[i] = kINTERACTION_VICTIM;
+			}
+		}
+		
+		// set up attacker
+		for(vecIter = descriptor->_attacker.begin(); vecIter != descriptor->_attacker.end(); vecIter++){
+			FramePair fp = *vecIter;
+			for(int i = fp._start; i < fp._end; i++){
+				if(interactionTable[i] == kINTERACTION_VICTIM){
+					interactionTable[i] = kINTERACTION_BOTH;
+				}
+				else{
+					interactionTable[i] = kINTERACTION_ATTACKER;
+				}				
+			}
+		}
+		
+		
+		// save table
+		sequence->setInteractionTable(interactionTable);
+		
+		// print out result table
+		
+		//		for(int i = 0; i < descriptor->_totalFrames; i++){
+		//			string s = "";
+		//			if (interactionTable[i] == kINTERACTION_NONE) {
+		//				s = "NONE";
+		//			}
+		//			if (interactionTable[i] == kINTERACTION_VICTIM) {
+		//				s = "VICTIM";
+		//			}
+		//			if (interactionTable[i] == kINTERACTION_ATTACKER) {
+		//				s = "ATTACKER";
+		//			}
+		//			if (interactionTable[i] == kINTERACTION_FACE) {
+		//				s = "FACE";
+		//			}
+		//
+		//			if (interactionTable[i] == kINTERACTION_BOTH) {
+		//				s = "BOTH";
+		//			}
+		//			
+		//			printf("%3d: %s\n", i, s.c_str());
+		//		}
+		
 		_completedKeys.insert(parsedDataIter->first); // key done, save it
 		break; // break out of the loop
 	}
@@ -363,7 +455,7 @@ void SceneXMLParser::parseXML(){
 	string sceneName, sequenceName, transformName, mapKey;
 	string stringType = "default string, if you see this, getAttribute failed";
 	vector<string> attributesToCheck;
-
+	
 	// Set up _xml root node
 	if(!_xml.tagExists("config")){ // quick check
 		LOG_ERROR("No config node in xml");
@@ -377,33 +469,33 @@ void SceneXMLParser::parseXML(){
 	}
 	_xml.pushTag("scenes");
 	// document root acceptable
-
+	
 	// sanity check
 	if(_xml.getNumTags("scene") == 0){
 		LOG_ERROR("No scene nodes in xml");
 		throw GenericXMLParseException("No scene nodes to xml");
 	}
-
+	
 	// push into each scene node
 	for(int sceneNum = 0; sceneNum < _xml.getNumTags("scene"); sceneNum++){
-
+		
 		// check attributes
 		attributesToCheck.clear();
 		attributesToCheck.push_back("name");
 		checkTagAttributesExist("scene", attributesToCheck, sceneNum);
-
+		
 		// Remember the name
 		sceneName = _xml.getAttribute("scene", "name", stringType, sceneNum);
 		LOG_VERBOSE("Parsing xml=>map scene: " + sceneName);
-
+		
 		mapKey = sceneName;
 		_parsedData[mapKey]["name"] = sceneName;
 		_parsedData[mapKey]["type"] = "scene";
 		_parsedData[mapKey]["positionInXML"] = ofToString(sceneNum);
-
+		
 		// set new root
 		_xml.pushTag("scene", sceneNum);
-
+		
 		// sanity check
 		if(_xml.getNumTags("sequence") == 0){
 			LOG_ERROR("No sequence nodes for scene in xml");
@@ -411,7 +503,7 @@ void SceneXMLParser::parseXML(){
 		}
 		// iterate over all the sequences
 		for(int seqNum = 0; seqNum < _xml.getNumTags("sequence"); seqNum++){
-
+			
 			// check attributes
 			attributesToCheck.clear();
 			attributesToCheck.push_back("name");
@@ -424,30 +516,30 @@ void SceneXMLParser::parseXML(){
 			attributesToCheck.push_back("sequenceType");
 			attributesToCheck.push_back("filename");
 			checkTagAttributesExist("sequence", attributesToCheck, seqNum);
-
+			
 			// Remember the sequence name
 			sequenceName = _xml.getAttribute("sequence", "name", stringType, seqNum);
 			LOG_VERBOSE("Parsing xml=>map sequence: " + sequenceName);
-
+			
 			// check for loop only attributes
 			if(_xml.getAttribute("sequence", "sequenceType", stringType, seqNum) == "loop"){
 				attributesToCheck.push_back("attackerResult");
 				attributesToCheck.push_back("victimResult");
 				checkTagAttributesExist("sequence", attributesToCheck, seqNum);
 			}
-
+			
 			// done checking, sequence node has all we'll need so build it up
-
+			
 			// construct key for parsed data map, rebuild instead of just append to be clearer
 			mapKey = sceneName+":"+sequenceName;
-
+			
 			// save some details
 			_parsedData[mapKey]["name"] = sequenceName;
 			_parsedData[mapKey]["type"] = "sequence";
 			_parsedData[mapKey]["fakedSequence"] = _xml.getAttribute("sequence", "faked", stringType, seqNum);
 			_parsedData[mapKey]["sequenceType"] = _xml.getAttribute("sequence", "sequenceType", stringType, seqNum);
 			_parsedData[mapKey]["nextSequence"] = _xml.getAttribute("sequence", "nextSequence", stringType, seqNum);
-
+			
 			if(_parsedData[mapKey]["sequenceType"] == "loop"){
 				_parsedData[mapKey]["attackerResult"] = _xml.getAttribute("sequence", "attackerResult", stringType, seqNum);
 				_parsedData[mapKey]["victimResult"] = _xml.getAttribute("sequence", "victimResult", stringType, seqNum);
@@ -462,19 +554,19 @@ void SceneXMLParser::parseXML(){
 					// b type, nothing to set.
 				}
 			}
-
+			
 			// save movie file name
 			_parsedData[mapKey]["filename"] = _xml.getAttribute("sequence", "filename", stringType, seqNum);
 			_parsedData[mapKey]["validFile"] = "unvalidated"; // haven't checked file yet
-
+			
 			// save all the file meta data
 			_parsedData[mapKey]["size"] = _xml.getAttribute("sequence", "size", stringType, seqNum);
 			_parsedData[mapKey]["dateCreated"] = _xml.getAttribute("sequence", "dateCreated", stringType, seqNum);
 			_parsedData[mapKey]["dateModified"] = _xml.getAttribute("sequence", "dateModified", stringType, seqNum);
-
+			
 			// save interactivity info
 			_parsedData[mapKey]["interactivity"] = _xml.getAttribute("sequence", "interactivity", stringType, seqNum);
-
+			
 			// find transforms for this sequence
 			// Push into this sequence so we insert into the right one.
 			_xml.pushTag("sequence", seqNum);
@@ -491,17 +583,17 @@ void SceneXMLParser::parseXML(){
 				attributesToCheck.push_back("dateModified");
 				attributesToCheck.push_back("dateCreated");
 				checkTagAttributesExist("transform", attributesToCheck, transNum);
-
+				
 				// get atk1/2/vic1 from filename.
 				transformName = _xml.getAttribute("transform", "filename", stringType, transNum);
 				vector<string> splitName;
 				boost::split(splitName, transformName, boost::is_any_of("_"));
 				transformName = splitName[splitName.size() -1]; // just use atk1/vic etc
 				transformName = transformName.substr(0, transformName.find_last_of(".")); // remove ext
-
+				
 				// set up map key
 				mapKey = sceneName+":"+sequenceName+":"+transformName;
-
+				
 				_parsedData[mapKey]["name"] = transformName;
 				_parsedData[mapKey]["type"] = "transform";
 				_parsedData[mapKey]["filename"] = _xml.getAttribute("transform", "filename", stringType, transNum);
@@ -515,8 +607,8 @@ void SceneXMLParser::parseXML(){
 		_xml.popTag(); // pop scene
 		LOG_VERBOSE("Finishsed xml=>map scene: " + sceneName);
 	}
-
-
+	
+	
 	_xml.popTag(); // scenes pop
 	_xml.popTag(); // config pop
 }
@@ -528,9 +620,9 @@ void SceneXMLParser::parseXML(){
 void SceneXMLParser::validateMovieFileExistence(){
 	int fileID;
 	string fullFilePath;
-
+	
 	vector<string> invalids;
-
+	
 	// Check for any non existing files
 	map<string, map<string, string> >::iterator parsedDataIter;
 	for(parsedDataIter = _parsedData.begin(); parsedDataIter != _parsedData.end(); parsedDataIter++){
@@ -556,12 +648,12 @@ void SceneXMLParser::validateMovieFileExistence(){
 			invalids.push_back(parsedDataIter->first);
 		}
 	}
-
+	
 	// Now actually fix up invalid files.
 	for (vector<string>::iterator iter = invalids.begin(); iter != invalids.end(); iter++) {
 		// check for keys that are similar to the key we have
 		LOG_WARNING("Fixing non existant movie for " + *iter);
-
+		
 		// build our regex
 		vector<string> invalidKeySplit;
 		boost::split(invalidKeySplit, *iter, boost::is_any_of(":"));
@@ -579,25 +671,25 @@ void SceneXMLParser::validateMovieFileExistence(){
 		}
 		regex similarTo = regex(regexPattern);
 		LOG_VERBOSE("Searching for key similar to " + regexPattern);
-
+		
 		// iterate over parsed data, comparing keys
 		for(parsedDataIter = _parsedData.begin(); parsedDataIter != _parsedData.end(); parsedDataIter++){
 			if(regex_search(parsedDataIter->first, similarTo)){
 				// found a similar key, copy values, make sure it is valid
 				string bad = *iter;
 				string good = parsedDataIter->first;
-
+				
 				if(_parsedData[good]["validFile"] != "valid"){
 					continue; // similar key, but this keys files are invalid anyway, keep looking.
 				}
 				LOG_WARNING("Copying movie from " + good + " to " + bad);
-
+				
 				// copy movie stuff
 				_parsedData[bad]["filename"] = _parsedData[good]["filename"];
 				_parsedData[bad]["size"] = _parsedData[good]["size"];
 				_parsedData[bad]["dateModified"] = _parsedData[good]["dateModified"];
 				_parsedData[bad]["dateCreated"] = _parsedData[good]["dateCreated"];
-
+				
 				// copy transform stuff
 				// remove the ones for bad
 				_parsedData.erase(bad+":vic1");
@@ -613,7 +705,7 @@ void SceneXMLParser::validateMovieFileExistence(){
 				if(_parsedData.find(good+":atk2") != _parsedData.end()){
 					_parsedData[bad+":atk2"] = _parsedData[good+":atk2"];
 				}
-
+				
 				// flag the data as faked
 				_parsedData[bad]["validFile"] = "fake";
 				// would remove "bad" from list of invalids now but shouldn't modify while iterating.
@@ -621,7 +713,7 @@ void SceneXMLParser::validateMovieFileExistence(){
 			}
 		}
 	}
-
+	
 	// once again, iterate over the invalids, check for any that are still "invalid"
 	// and add them to a new vector which we'll throw as an exception
 	vector<string> couldNotFix;
@@ -653,7 +745,7 @@ void SceneXMLParser::validateFileMetadata(){
 	for(parsedDataIter = _parsedData.begin(); parsedDataIter != _parsedData.end(); parsedDataIter++){
 		map<string, string> & kvmap = (parsedDataIter->second); // syntax convenience
 		LOG_VERBOSE("Validating file metadata for " + parsedDataIter->first);
-
+		
 		if(kvmap["type"] == "scene"){
 			continue;
 		}
@@ -662,17 +754,18 @@ void SceneXMLParser::validateFileMetadata(){
 		   kvmap.find("dateModified") == kvmap.end() ||
 		   kvmap.find("dateCreated") == kvmap.end() ||
 		   kvmap.find("filename") == kvmap.end() ){
-			throw JungleException("Required one of kvmap keys filename, size, dateModified or dateCreated missing for " + parsedDataIter->first);
+			throw JungleException("Required one of kvmap keys filename, size, dateModified \
+								  or dateCreated missing for " + parsedDataIter->first);
 		}
-
+		
 		fileID = findFileIDForLister(kvmap["filename"]);
-
-
+		
+		
 		if(_dirLister.getCreated(fileID) != kvmap["dateCreated"]){
 			LOG_WARNING("dateCreated mismatch on " + kvmap["filename"] + "("+_dirLister.getCreated(fileID)
 						+ " hdd vs " + kvmap["dateCreated"]+" xml)");
 			invalidFiles.insert(kvmap["filename"]);
-
+			
 		}
 		if(_dirLister.getModified(fileID) != kvmap["dateModified"]){
 			LOG_WARNING("dateModified mismatch on " + kvmap["filename"] + "("+_dirLister.getCreated(fileID)
@@ -685,7 +778,7 @@ void SceneXMLParser::validateFileMetadata(){
 			invalidFiles.insert(kvmap["filename"]);
 		}
 	}
-
+	
 	if(invalidFiles.size() != 0){
 		// have invalids, make vector of them
 		for(set<string>::iterator iter = invalidFiles.begin(); iter != invalidFiles.end(); iter++){
@@ -701,17 +794,17 @@ void SceneXMLParser::validateFileMetadata(){
 bool SceneXMLParser::validateMovieTransformLengths(){
 	goVideoPlayer *movie = NULL;
 	vector<CamTransform> transform;
-
+	
 	int fileID;
 	string fullFilePath;
-
+	
 	vector<string> transformFilesRequired;
-
+	
 	// check if total number of parsed keys matches total number of completed keys
 	if(_parsedData.size() == _completedKeys.size()){
 		return true; //we've checked all the keys
 	}
-
+	
 	// iterate over the whole parsed data map
 	map<string, map<string, string> >::iterator parsedDataIter;
 	for(parsedDataIter = _parsedData.begin(); parsedDataIter != _parsedData.end(); parsedDataIter++){
@@ -720,10 +813,10 @@ bool SceneXMLParser::validateMovieTransformLengths(){
 			continue; // already done this key
 		}
 		//_stateMessage = "Validating movie and transform lengths: " + parsedDataIter->first;
-
+		
 		map<string, string> & kvmap = (parsedDataIter->second); // syntax convenience
-		LOG_VERBOSE("Validating movie + transform length for " + parsedDataIter->first);
-
+		LOG_VERBOSE("Validating movie+transform length for " + parsedDataIter->first);
+		
 		// make sure filename is exists
 		if(kvmap["type"] == "sequence" || kvmap["type"] == "transform"){
 			if(kvmap.find("filename") == kvmap.end()){
@@ -731,7 +824,7 @@ bool SceneXMLParser::validateMovieTransformLengths(){
 				throw JungleException("No filename attribute in kvmap for " + parsedDataIter->first);
 			}
 		}
-
+		
 		if (kvmap["type"] == "scene") {
 			// bit of a hack, so we can do the parsedData.size == completedKeys.size, we have to
 			// add in the scenes too. We could be smarter are iterate the whole map, find out if they are
@@ -739,7 +832,7 @@ bool SceneXMLParser::validateMovieTransformLengths(){
 			// variable as "finished" if they're all present.
 			_completedKeys.insert(parsedDataIter->first);
 		}
-
+		
 		// Only care about sequences
 		if(kvmap["type"] == "sequence"){
 			try {
@@ -754,7 +847,7 @@ bool SceneXMLParser::validateMovieTransformLengths(){
 				_movie->setUseTexture(false);
 				_movie->loadMovie(fullFilePath);
 				//printf("check movie load time: %d\n", ofGetElapsedTimeMillis() - timea);
-
+				
 			}
 			catch (JungleException je) {
 				// No file existed, we expect that when we run this function
@@ -762,7 +855,7 @@ bool SceneXMLParser::validateMovieTransformLengths(){
 				// so if no file exists here, then we're screwed and should throw
 				throw je;
 			}
-
+			
 			// find all the keys which are like this sequence key
 			// scene:sequence => scene:sequence:atk1 etc
 			regex similarPattern(parsedDataIter->first + ":.+?$");
@@ -771,7 +864,7 @@ bool SceneXMLParser::validateMovieTransformLengths(){
 				if(!regex_search(innerIter->first, similarPattern)){
 					continue; // NOT matched, keep looking
 				}
-
+				
 				// DID match, so check stuff
 				map<string, string> & maptransform = (innerIter->second); // syntax convenience
 				try {
@@ -785,27 +878,27 @@ bool SceneXMLParser::validateMovieTransformLengths(){
 					transformFilesRequired.push_back(innerIter->first);
 					continue; // can't check the rest of this stuff
 				}
-
+				
 				// load vector
 				transform.clear();
 				loadVector(fullFilePath, &transform);
 				//check vs movie
 				if(transform.size() != _movie->getTotalNumFrames()){
 					// mismatch, need to regen
-					LOG_WARNING("Frame count mismatch for " + kvmap["filename"]
-								+ "(transform " + ofToString((int)(transform.size())) + " vs movie "
+					LOG_WARNING("Frame count mismatch for " + innerIter->first
+								+ "(transform " + ofToString((int)(transform.size())) + " vs "+ kvmap["filename"] +" movie "
 								+ ofToString(_movie->getTotalNumFrames())+")");
 					// Store a list of broken pairs
-					transformFilesRequired.push_back(parsedDataIter->first);
+					transformFilesRequired.push_back(innerIter->first);
 				}
 				// save key as processesd
 				_completedKeys.insert(innerIter->first);
 			}
-
+			
 			// clean up the movie
 			_movie->close();
 			//delete movie;
-
+			
 			// save the key as processed
 			_completedKeys.insert(parsedDataIter->first);
 			break;	// break out of the iteration because we've done one check
@@ -813,13 +906,13 @@ bool SceneXMLParser::validateMovieTransformLengths(){
 			// against the completed keys set, and we'll skip any we've done already
 		}
 	}
-
+	
 	// Check if we saved any broken pairs
 	if(transformFilesRequired.size() != 0){
 		// missing transform files, throw exception
 		throw TransformMovieLengthMismatchException("Transform and movie lengths mismatch", transformFilesRequired);
 	}
-
+	
 	return false; // still got keys to check
 }
 
@@ -839,7 +932,7 @@ void SceneXMLParser::setupDirLister(){
 		LOG_ERROR("Could not build scene config, goDirList reported 0 files found.");
 		abort();
 	}
-
+	
 }
 
 // iterate over all files, put its name and the id for that file in the map
@@ -880,7 +973,7 @@ void SceneXMLParser::checkTagAttributesExist(string xmltag, vector<string> attri
 			message = message + *iter + ","; // build list of missing
 		}
 	}
-
+	
 	// if we've added to message, it has a length
 	if(message.length() != 0){
 		// remove last comma
@@ -909,4 +1002,21 @@ void SceneXMLParser::listParsedData(){
 		}
 		iter++;
 	}
+}
+
+int SceneXMLParser::findSequenceNumberFromString(string str){
+	int seqNum;
+	char seqNumString[20];
+	string matchstring;
+	cmatch match;
+	
+	// pull out the sequence number from the sequence name, so we can increment it
+	if(regex_match(str.c_str(), match, regex("seq(\\d+)\\D+?"))){ // find int
+		matchstring = string(match[1].first, match[1].second);
+		sscanf(matchstring.c_str(), "%d", &seqNum); // extract int
+		return seqNum;
+	}
+	LOG_ERROR("Could not find sequence number from string: " + str);
+	abort();
+	
 }
