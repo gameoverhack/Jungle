@@ -2,12 +2,14 @@
     <properties>
         <property name="appViewHeight" type="float">720.000000</property>
         <property name="appViewWidth" type="float">1280.000000</property>
-		<property name="xmlForceSceneBuildOnLoad" type="bool">true</property>
+        <property name="autoTest" type="bool">false</property>
+        <property name="fullScreen" type="bool">false</property>
+        <property name="loadingMessage" type="string">STATE == kSCENEXMLPARSER_FINISHED (7)</property>
+        <property name="loadingProgress" type="float">1.000000</property>
         <property name="parseRebuildXML" type="bool">true</property>
-        <property name="parseRequiresTransformReanalysis" type="bool">false</property>
-        <!--property name="scenesDataPath" type="string">scenes</property-->
-		<property name="scenesDataPath" type="string">/Users/gameover/Desktop/StrangerDanger/video</property>
-		<!--property name="scenesDataPath" type="string">G:/gameoverload/VideoProjects/Jungle/video</property-->
+        <property name="parseRequiresTransformReanalysis" type="bool">true</property>
+        <property name="scenesDataPath" type="string">/Users/gameover/Desktop/StrangerDanger/video</property>
+		<property name="flashDataPath" type="string">/Users/gameover/Desktop/StrangerDanger/flash</property>
         <property name="scenesXMLFile" type="string">config_scenes.xml</property>
         <property name="shaderBlendRatio" type="float">0.500000</property>
         <property name="shaderFragPath" type="string">multitexturemerge</property>
@@ -16,5 +18,6 @@
         <property name="showDebugView" type="bool">true</property>
         <property name="showUnmaskedTextures" type="bool">false</property>
         <property name="userAction" type="int">0</property>
+        <property name="xmlForceSceneBuildOnLoad" type="bool">true</property>
     </properties>
 </config>

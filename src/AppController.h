@@ -21,6 +21,7 @@
 #include "VideoController.h"
 #include "MicController.h"
 #include "ArdController.h"
+#include "Analyzer.h"
 
 class AppController : public BaseState, public ofBaseApp {
 

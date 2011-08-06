@@ -113,12 +113,11 @@ void SceneXMLParser::update() {
 
 				// This if is here instead of DataController because we want to
 				// continue onto the next state if we're not going to reanalyse the transforms
-				if(boost::any_cast<bool>(_appModel->getProperty("parseRequiresTransformReanalysis"))){
+				if(boost::any_cast<bool>(_appModel->getProperty("parseRequiresTransformReanalysis"))) {
 					throw ex;	// Datacontroller should catch this, and make a TransformAnalyser(),
 					// then call update on _scenePaser again, which should restart from
 					// this state, and keep going.
-				}
-				else{
+				} else {
 					LOG_WARNING("Continuing without recreation of transform files even though they are broken!");
 				}
 			}
@@ -723,7 +722,7 @@ bool SceneXMLParser::validateMovieTransformLengths(){
 		//_stateMessage = "Validating movie and transform lengths: " + parsedDataIter->first;
 
 		map<string, string> & kvmap = (parsedDataIter->second); // syntax convenience
-		LOG_VERBOSE("Validating movie+transform length for " + parsedDataIter->first);
+		LOG_VERBOSE("Validating movie + transform length for " + parsedDataIter->first);
 
 		// make sure filename is exists
 		if(kvmap["type"] == "sequence" || kvmap["type"] == "transform"){

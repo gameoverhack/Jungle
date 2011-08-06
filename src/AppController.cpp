@@ -19,6 +19,7 @@ AppController::AppController(ofAppBaseWindow * windowPtr) {
 //--------------------------------------------------------------
 AppController::~AppController() {
 	// nothing for now but we should clean up here
+	//_dataController->saveProperties();
 }
 
 //--------------------------------------------------------------
@@ -35,6 +36,8 @@ void AppController::setup() {
 	_appModel->registerStates();
 	_appModel->setState(kAPP_INIT);
 
+	_flashAnalyzer->registerStates();
+	
 	// set up datacontroller
 	_dataController = new DataController(ofToDataPath("config_properties.xml"));
 	_dataController->registerStates();
@@ -81,8 +84,8 @@ void AppController::setup() {
 	_appModel->setProperty("loadingProgress", 0.1f);
 
 	// scene parsing properties
-	_appModel->setProperty("parseRequiresTransformReanalysis", false);
-	_appModel->setProperty("parseRebuildXML", true);
+	//_appModel->setProperty("parseRequiresTransformReanalysis", false);
+	//_appModel->setProperty("parseRebuildXML", true);
 
 	_appModel->setProperty("autoTest", false);
 	_appModel->setProperty("fullScreen", false);

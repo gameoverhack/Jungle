@@ -17,10 +17,10 @@ using std::vector;
 
 template <class vectorType>
 bool loadVector(string filePath, vector< vectorType > * vec) {
-	//LOGGER->log(JU_LOG_VERBOSE, "Vectorloader", "Load vector:: " + filePath);
+	ofLog(OF_LOG_VERBOSE, "Loading serial data: " + filePath);
 	std::ifstream ifs(filePath.c_str());
 	if(ifs.fail()){
-		LOGGER->log(JU_LOG_ERROR, "VectorLoader", "Could not load vector: " + filePath);
+		ofLog(OF_LOG_VERBOSE, "Could not load vector: " + filePath);
 		abort(); // Could be a bit over zealous
 	}
 	boost::archive::text_iarchive ia(ifs);
@@ -28,6 +28,18 @@ bool loadVector(string filePath, vector< vectorType > * vec) {
 	return true;
 }
 
+template <class vectorType>
+bool saveVector(string filePath, vector< vectorType > * vec) {
+	ofLog(OF_LOG_VERBOSE, "Saving serial data: " + filePath);
+	std::ofstream ofs(filePath.c_str());
+	if(ofs.fail()){
+		ofLog(OF_LOG_VERBOSE, "Could not save vector: " + filePath);
+		abort(); // Could be a bit over zealous
+	}
+    boost::archive::text_oarchive to(ofs);
+    to << (*vec);	
+	return true;
+}
 
 // This causes duplicate symbols compiler errors
 // no idea why, I think its something to do with the loadVector function??

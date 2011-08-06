@@ -32,6 +32,7 @@ using std::string;
 #include "SceneXMLParser.h"
 #include "PropertyXMLParser.h"
 #include "PropertyXMLBuilder.h"
+#include "Analyzer.h"
 
 enum {
 	kDATACONTROLLER_INIT,

@@ -78,8 +78,14 @@ void DataController::update(){
 				if(!boost::any_cast<bool>(_appModel->getProperty("parseRequiresTransformReanalysis"))){
 					LOG_WARNING("Continuing without rebuilding transforms");
 				}
-				LOG_ERROR("PUT START ANALYSE CODE HERE");
-				abort();
+				LOG_NOTICE("Starting Analysis");
+				
+				_flashAnalyzer->setup(&ex._names, 6667);
+				setState(kDATACONTROLLER_SCENE_ANALYSING);
+				
+				
+				//LOG_ERROR("PUT START ANALYSE CODE HERE");
+				//abort();
 
 			}
 			catch (GenericXMLParseException ex) {
@@ -109,8 +115,17 @@ void DataController::update(){
 			break;
 
 		case kDATACONTROLLER_SCENE_ANALYSING:
-			LOG_ERROR("MAKE DATA ANYALYSER HERE.");
-			abort();
+			if (_flashAnalyzer->checkState(kANAL_FINISHED)) {
+				_flashAnalyzer->setState(kANAL_READY);
+				//setState(kDATACONTROLLER_SCENE_PARSING);
+				LOG_WARNING("Rebuilding XML to handle mal-transforms");
+				rebuildXML();
+				restartParseXML();
+			} else _flashAnalyzer->update();
+			
+			//LOG_ERROR("MAKE DATA ANYALYSER HERE.");
+			//abort();
+			break;
 		case kDATACONTROLLER_FINISHED:
 			LOG_VERBOSE("Data controller is finished.");
 			break;
@@ -128,7 +143,12 @@ void DataController::saveProperties(){
 // Convenience function
 void DataController::updateAppLoadingState(){
 	// loading messave is just the scene parser state state.
-	_appModel->setProperty("loadingMessage",  _sceneParser->printState());
+	if(!kDATACONTROLLER_SCENE_ANALYSING) {
+		_appModel->setProperty("loadingMessage",  _sceneParser->printState());
+	} else {
+		_appModel->setProperty("loadingMessage",  _flashAnalyzer->getMessage());
+	}
+
 	_appModel->setProperty("loadingProgress", _sceneParser->getLoadingProgress());
 }
 
