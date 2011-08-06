@@ -88,9 +88,14 @@ void DataController::update(){
 				if(boost::any_cast<bool>(_appModel->getProperty("xmlIgnoreTransformErrors"))){
 					LOG_WARNING("xmlIgnoreTransformErrors true, continuing without rebuilding transforms");
 				} else {
-					LOG_NOTICE("Starting Analysis");
-					_flashAnalyzer->setup(&ex._names, 6667);
-					setState(kDATACONTROLLER_SCENE_ANALYSING);
+					if (!_hasAttemptedReparse) {
+						LOG_NOTICE("Starting Analysis");
+						_flashAnalyzer->setup(&ex._names, 6667);
+						setState(kDATACONTROLLER_SCENE_ANALYSING);
+					} else {
+						LOG_WARNING("hasAttemptedReparse already, continuing without rebuilding transforms");
+					}
+
 				}
 				
 			}
@@ -170,6 +175,7 @@ void DataController::restartParseXML(){
 	delete _sceneParser;
 	_sceneParser = new SceneXMLParser(boost::any_cast<string>(_appModel->getProperty("scenesDataPath")),
 									  boost::any_cast<string>(_appModel->getProperty("scenesXMLFile")));
+	_sceneParser->registerStates();
 	_hasAttemptedReparse = true; // don't loop re-trying to fix an error.
 }
 
