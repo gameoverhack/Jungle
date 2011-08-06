@@ -49,16 +49,21 @@ void Analyzer::setup(vector<string> * files, int port) {
 		
 		string fileName = nameSplit[0];
 		string sceneName = nameSplit[1];
+		string typeName = nameSplit[2];
 		
-//		if (_sFiles.count(fileName) == 0) {
-//			_sFiles.insert(fileName);
-//
-//		}
-		
-		if (_sScenes.count(fileName + "_" + sceneName) == 0) {
-			_sScenes.insert(fileName + "_" + sceneName);
+		if (_sFiles.count(fileName) == 0) {
+			_sFiles.insert(fileName);
 			_files.push_back(fileName);
-			_scenes.push_back(sceneName);
+		}
+		
+		map<string, string>::iterator it;
+		
+		it = _sScenes.find(fileName + "_" + sceneName);
+		if (it == _sScenes.end()) {
+			_sScenes.insert(pair<string, string>(fileName + "_" + sceneName, typeName));
+		} else {
+			string allTypes = it->second + "-" + typeName;
+			_sScenes[fileName + "_" + sceneName] = it->second + "-" + typeName;
 		}
 		
 	}
@@ -137,6 +142,21 @@ void Analyzer::serializeMessage(string & msg) {
 			if (_sScenes.count(command[1]) == 0) {
 				doItBitch = false;
 			}
+		}
+		
+		if (command[0] == "GETCOMMAND") {
+			
+			map<string, string>::iterator it;
+			int index = 0;
+			string sendMSG;
+			
+			for ( it = _sScenes.begin(); it != _sScenes.end(); it++) {
+				cout << it->first + "," + it->second << endl;
+			}
+			
+			cout << sendMSG << endl;
+			
+			_flexComManager.sendToAll("COMMAND:"+sendMSG);
 		}
 		
 		if ((command[0] == "SERIALIZE" || command[0] == "EXIT") && doItBitch) {

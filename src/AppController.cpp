@@ -83,10 +83,6 @@ void AppController::setup() {
 	_appModel->setProperty("loadingMessage", string("AppController loading"));
 	_appModel->setProperty("loadingProgress", 0.1f);
 
-	// scene parsing properties
-	//_appModel->setProperty("parseRequiresTransformReanalysis", false);
-	//_appModel->setProperty("parseRebuildXML", true);
-
 	_appModel->setProperty("autoTest", false);
 	_appModel->setProperty("fullScreen", false);
 

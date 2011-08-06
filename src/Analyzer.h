@@ -20,6 +20,7 @@
 
 #include <vector>
 #include <set>
+#include <map>
 
 using namespace std;
 
@@ -54,7 +55,7 @@ private:
 	vector<string>		_files;
 	vector<string>		_scenes;
 	set<string>			_sFiles;
-	set<string>			_sScenes;
+	map<string, string>	_sScenes;
 	string				_currentSceneName;
 	int					_processedFiles;
 	goFlexCOM			_flexComManager;

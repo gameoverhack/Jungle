@@ -455,7 +455,7 @@ void SceneXMLParser::parseXML(){
 	string sceneName, sequenceName, transformName, mapKey;
 	string stringType = "default string, if you see this, getAttribute failed";
 	vector<string> attributesToCheck;
-	
+
 	// Set up _xml root node
 	if(!_xml.tagExists("config")){ // quick check
 		LOG_ERROR("No config node in xml");

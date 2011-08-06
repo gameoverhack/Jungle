@@ -10,6 +10,13 @@
 #include "DataController.h"
 
 DataController::DataController(string configFilePath) {
+	
+	// used so we don't keep rebuilding on a parse error
+	// (ie: rebuilt xml is faulty anyway, dont keep attempting)
+	// member vairable instead of toggling parseRebuildXML property so we
+	// accidentally saveout our change to the property.
+	_hasAttemptedReparse = false;
+	
 	LOG_NOTICE("Initialising with " + configFilePath);
 	_configFilePath = configFilePath;
 	
@@ -24,12 +31,6 @@ DataController::DataController(string configFilePath) {
 	_sceneParser = new SceneXMLParser(boost::any_cast<string>(_appModel->getProperty("scenesDataPath")),
 									  boost::any_cast<string>(_appModel->getProperty("scenesXMLFile")));
 	_sceneParser->registerStates();
-	
-	// used so we don't keep rebuilding on a parse error
-	// (ie: rebuilt xml is faulty anyway, dont keep attempting)
-	// member vairable instead of toggling parseRebuildXML property so we
-	// accidentally saveout our change to the property.
-	_hasAttemptedReparse = false;
 	
 	LOG_NOTICE("Initialisation complete");
 }
