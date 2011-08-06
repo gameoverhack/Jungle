@@ -50,19 +50,38 @@ enum interaction_t {
 };
 
 class FramePair{
+private:
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive & ar, const unsigned int version)
+	{
+		ar & _start;
+		ar & _end;
+		
+	}
+	
 public:
 	int _start;
 	int _end;
 };
 
-class SequenceDescriptor{
+class SequenceDescriptor {
+private:
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive & ar, const unsigned int version)
+	{
+		ar & _totalFrames;
+		ar & _face;
+		ar & _attacker;
+		ar & _victim;
+	}
+	
 public:
-	int _totalFrames;  // I could work this out from loading a transform
-	// but maybe its cleaner if you just save it out as a member?
-	// I need to know it for when I malloc the array for Sequence::interactivity[totalFrames]
-	vector<FramePair> _victim; // = {framepair(51, 70)}
-	vector<FramePair> _attacker; // = {framepair(10, 50), framepair(60, 100)}
+	int _totalFrames;
 	vector<FramePair> _face;
+	vector<FramePair> _attacker;
+	vector<FramePair> _victim;
 };
 
 

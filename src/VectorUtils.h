@@ -41,6 +41,32 @@ bool saveVector(string filePath, vector< vectorType > * vec) {
 	return true;
 }
 
+template <class C>
+bool loadClass(string filePath, C * someClass) {
+	ofLog(OF_LOG_NOTICE, "Loading class data: " + filePath);
+	std::ifstream ifs(filePath.c_str());
+	if(ifs.fail()){
+		ofLog(OF_LOG_ERROR, "Could not load class: " + filePath);
+		abort(); // Could be a bit over zealous
+	}
+	boost::archive::text_iarchive ia(ifs);
+	ia >> (*someClass);
+	return true;
+}
+
+template <class C>
+bool saveClass(string filePath, C * someClass) {
+	ofLog(OF_LOG_NOTICE, "Saving class data: " + filePath);
+	std::ofstream ofs(filePath.c_str());
+	if(ofs.fail()){
+		ofLog(OF_LOG_ERROR, "Could not class: " + filePath);
+		abort(); // Could be a bit over zealous
+	}
+    boost::archive::text_oarchive to(ofs);
+    to << (*someClass);	
+	return true;
+}
+
 // This causes duplicate symbols compiler errors
 // no idea why, I think its something to do with the loadVector function??
 //string concatenateVectorOfStrings(vector<string> strings, string seperator, bool addSpace = true){
