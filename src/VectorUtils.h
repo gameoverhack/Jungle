@@ -17,10 +17,10 @@ using std::vector;
 
 template <class vectorType>
 bool loadVector(string filePath, vector< vectorType > * vec) {
-	ofLog(OF_LOG_VERBOSE, "Loading serial data: " + filePath);
+	ofLog(OF_LOG_NOTICE, "Loading serial data: " + filePath);
 	std::ifstream ifs(filePath.c_str());
 	if(ifs.fail()){
-		ofLog(OF_LOG_VERBOSE, "Could not load vector: " + filePath);
+		ofLog(OF_LOG_ERROR, "Could not load vector: " + filePath);
 		abort(); // Could be a bit over zealous
 	}
 	boost::archive::text_iarchive ia(ifs);
@@ -30,10 +30,10 @@ bool loadVector(string filePath, vector< vectorType > * vec) {
 
 template <class vectorType>
 bool saveVector(string filePath, vector< vectorType > * vec) {
-	ofLog(OF_LOG_VERBOSE, "Saving serial data: " + filePath);
+	ofLog(OF_LOG_NOTICE, "Saving serial data: " + filePath);
 	std::ofstream ofs(filePath.c_str());
 	if(ofs.fail()){
-		ofLog(OF_LOG_VERBOSE, "Could not save vector: " + filePath);
+		ofLog(OF_LOG_ERROR, "Could not save vector: " + filePath);
 		abort(); // Could be a bit over zealous
 	}
     boost::archive::text_oarchive to(ofs);

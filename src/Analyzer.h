@@ -33,6 +33,15 @@ enum {
 	kANAL_ERROR
 };
 
+class FileScenes{
+public:
+	string				_fileName;
+	set<string>			_sScenes;
+	vector<string>		_scenes;
+	map<string, string>	_mTypes;
+	int					_processedScenes;
+};
+
 class Analyzer : public BaseState {
 
 public:
@@ -50,12 +59,11 @@ public:
 private:
 	
 	void serializeMessage(string & msg);
+	void finalizeSerialization();
 	
 	string				_publicMsg;
-	vector<string>		_files;
-	vector<string>		_scenes;
+	vector<FileScenes*>	_files;
 	set<string>			_sFiles;
-	map<string, string>	_sScenes;
 	string				_currentSceneName;
 	int					_processedFiles;
 	goFlexCOM			_flexComManager;
