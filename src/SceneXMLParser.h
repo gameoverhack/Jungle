@@ -61,6 +61,8 @@ public:
 
 
 private:
+	
+	vector<string>			_missingTransforms; // Holds missing transforms, instance var because we add to it in parseXML if there is no transform nodes for a sequence.
 
 	string					_dataPath;
 

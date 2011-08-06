@@ -84,7 +84,7 @@ void DataController::update(){
 				}
 				message[message.length()-1] = ' ';
 				LOG_ERROR("Require reanalysis/creation of transform files: " + message);
-				
+
 				if(boost::any_cast<bool>(_appModel->getProperty("xmlIgnoreTransformErrors"))){
 					LOG_WARNING("xmlIgnoreTransformErrors true, continuing without rebuilding transforms");
 				} else {

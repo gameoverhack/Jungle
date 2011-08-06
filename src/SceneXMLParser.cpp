@@ -95,6 +95,13 @@ void SceneXMLParser::update() {
 			if(validateMovieTransformLengths()){
 				// reset completedKeys set
 				_completedKeys.clear();
+				
+				// Check if we saved any broken pairs
+				if(_missingTransforms.size() != 0){
+					// missing transform files, throw exception
+					throw TransformMovieLengthMismatchException("Transform and movie lengths mismatch", _missingTransforms);
+				}
+				
 				// done, goto next state
 				setState(kSCENEXMLPARSER_CREATING_APPMODEL);
 			}
@@ -572,8 +579,8 @@ void SceneXMLParser::parseXML(){
 			_xml.pushTag("sequence", seqNum);
 			// sanity check
 			if(_xml.getNumTags("transform") == 0){
-				LOG_ERROR("No transform nodes for sequence in xml");
-				throw GenericXMLParseException("No transform nodes for sequence in xml");
+				LOG_ERROR("No transform nodes for sequence " + mapKey + " in xml");
+				_missingTransforms.push_back(mapKey); // save map key to rebuild
 			}
 			for(int transNum = 0; transNum < _xml.getNumTags("transform"); transNum++){
 				// check attributes
@@ -875,7 +882,7 @@ bool SceneXMLParser::validateMovieTransformLengths(){
 				catch(JungleException je){
 					// transform file did not exist.
 					// cant continue with check, so we need to rebuild that.
-					transformFilesRequired.push_back(innerIter->first);
+					_missingTransforms.push_back(innerIter->first);
 					continue; // can't check the rest of this stuff
 				}
 				
@@ -889,7 +896,7 @@ bool SceneXMLParser::validateMovieTransformLengths(){
 								+ "(transform " + ofToString((int)(transform.size())) + " vs "+ kvmap["filename"] +" movie "
 								+ ofToString(_movie->getTotalNumFrames())+")");
 					// Store a list of broken pairs
-					transformFilesRequired.push_back(innerIter->first);
+					_missingTransforms.push_back(innerIter->first);
 				}
 				// save key as processesd
 				_completedKeys.insert(innerIter->first);
@@ -905,12 +912,6 @@ bool SceneXMLParser::validateMovieTransformLengths(){
 			// we should get recalled, which will cause us to check
 			// against the completed keys set, and we'll skip any we've done already
 		}
-	}
-	
-	// Check if we saved any broken pairs
-	if(transformFilesRequired.size() != 0){
-		// missing transform files, throw exception
-		throw TransformMovieLengthMismatchException("Transform and movie lengths mismatch", transformFilesRequired);
 	}
 	
 	return false; // still got keys to check

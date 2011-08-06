@@ -9,7 +9,7 @@
 		<property name="xmlForceSceneBuildOnLoad" type="bool">true</property>
         <property name="xmlIgnoreErrors" type="bool">true</property>
         <property name="xmlIgnoreTransformErrors" type="bool">false</property>
-        <property name="scenesDataPath" type="string">/Users/gameover/Desktop/StrangerDanger/video</property>
+        <property name="scenesDataPath" type="string">/Users/ollie/Source/of_62_osx/apps/ollie/Jungle/bin/data/scenes</property>
 		<property name="flashDataPath" type="string">/Users/gameover/Desktop/StrangerDanger/flash</property>
         <property name="scenesXMLFile" type="string">config_scenes.xml</property>
         <property name="shaderBlendRatio" type="float">0.500000</property>
@@ -19,6 +19,5 @@
         <property name="showDebugView" type="bool">true</property>
         <property name="showUnmaskedTextures" type="bool">false</property>
         <property name="userAction" type="int">0</property>
-        <property name="xmlForceSceneBuildOnLoad" type="bool">true</property>
     </properties>
 </config>
