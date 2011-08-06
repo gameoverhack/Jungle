@@ -277,7 +277,7 @@ bool SceneXMLParser::createAppModel(){
 		}
 		
 		// set if sequence is faked
-		if(kvmap["fakedSequence"] == "true"){
+		if(kvmap["faked"] == "true"){
 			sequence->setIsSequenceFaked(true);
 		}
 		
@@ -543,7 +543,7 @@ void SceneXMLParser::parseXML(){
 			// save some details
 			_parsedData[mapKey]["name"] = sequenceName;
 			_parsedData[mapKey]["type"] = "sequence";
-			_parsedData[mapKey]["fakedSequence"] = _xml.getAttribute("sequence", "faked", stringType, seqNum);
+			_parsedData[mapKey]["faked"] = _xml.getAttribute("sequence", "faked", stringType, seqNum);
 			_parsedData[mapKey]["sequenceType"] = _xml.getAttribute("sequence", "sequenceType", stringType, seqNum);
 			_parsedData[mapKey]["nextSequence"] = _xml.getAttribute("sequence", "nextSequence", stringType, seqNum);
 			
@@ -580,7 +580,14 @@ void SceneXMLParser::parseXML(){
 			// sanity check
 			if(_xml.getNumTags("transform") == 0){
 				LOG_ERROR("No transform nodes for sequence " + mapKey + " in xml");
-				_missingTransforms.push_back(mapKey); // save map key to rebuild
+				// check if it was faked
+				if(_parsedData[mapKey]["faked"] == "true"){					
+					LOG_VERBOSE(mapKey + " was fake, will not try to fix");
+				}
+				else{
+					_missingTransforms.push_back(mapKey); // save map key to rebuild
+				}
+				
 			}
 			for(int transNum = 0; transNum < _xml.getNumTags("transform"); transNum++){
 				// check attributes
@@ -589,6 +596,7 @@ void SceneXMLParser::parseXML(){
 				attributesToCheck.push_back("size");
 				attributesToCheck.push_back("dateModified");
 				attributesToCheck.push_back("dateCreated");
+				attributesToCheck.push_back("faked");
 				checkTagAttributesExist("transform", attributesToCheck, transNum);
 				
 				// get atk1/2/vic1 from filename.
@@ -603,6 +611,7 @@ void SceneXMLParser::parseXML(){
 				
 				_parsedData[mapKey]["name"] = transformName;
 				_parsedData[mapKey]["type"] = "transform";
+				_parsedData[mapKey]["faked"] = _xml.getAttribute("transform", "faked", stringType, transNum);
 				_parsedData[mapKey]["filename"] = _xml.getAttribute("transform", "filename", stringType, transNum);
 				_parsedData[mapKey]["size"] = _xml.getAttribute("transform", "size", stringType, transNum);
 				_parsedData[mapKey]["dateCreated"] = _xml.getAttribute("transform", "dateCreated", stringType, transNum);
@@ -842,6 +851,13 @@ bool SceneXMLParser::validateMovieTransformLengths(){
 		
 		// Only care about sequences
 		if(kvmap["type"] == "sequence"){
+//			if(kvmap["faked"] == "true"){
+//				// don't attempt to check fake sequences
+//				LOG_VERBOSE("Not checking transforms for " + parsedDataIter->first + " because it is fake");
+//				_completedKeys.insert(parsedDataIter->first);
+//				break; //break out of for (yes this is what we want to do)
+//			}
+	
 			try {
 				fileID = findFileIDForLister(kvmap["filename"]);
 				fullFilePath = _dirLister.getPath(fileID);
@@ -874,6 +890,14 @@ bool SceneXMLParser::validateMovieTransformLengths(){
 				
 				// DID match, so check stuff
 				map<string, string> & maptransform = (innerIter->second); // syntax convenience
+				if(maptransform["faked"] == "true"){
+					// don't attempt to check fake sequences
+					LOG_VERBOSE("Not checking transforms for " + parsedDataIter->first + " because it is fake");
+					_completedKeys.insert(innerIter->first);
+					continue; //continue out of for (yes this is what we want to do)
+				}
+				
+				
 				try {
 					// get file details
 					fileID = findFileIDForLister(maptransform["filename"]); // excepts on missing file
