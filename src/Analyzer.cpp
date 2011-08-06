@@ -74,7 +74,6 @@ void Analyzer::setup(vector<string> * files, int port) {
 			}
 			
 		}
-
 		
 		if (thisFileScene->_sScenes.count(fileName + "_" + sceneName) == 0) {
 			thisFileScene->_sScenes.insert(fileName + "_" + sceneName);
@@ -200,17 +199,22 @@ void Analyzer::serializeMessage(string & msg) {
 				finalizeSerialization();
 				_flexComManager.sendToAll("EXIT");
 				command.clear();
+				chunks.clear();
 			}
 
 			
 		}
 		
-		if (command[0] == "SERIALIZE" || command[0] == "EXIT") {
+		if (command[0] == "SERIALIZE") {
 			
 			setState(kANAL_SERIALIZE);
 			finalizeSerialization();
+
+			_currentSceneName			= command[1];
+			_currentSceneInteractivity	= command[2];
 			
-			if (command.size() > 0) _currentSceneName = command[1];
+			command.clear();
+			chunks.clear();
 		}
 		
 	} // end chunks size == 1
@@ -271,7 +275,12 @@ void Analyzer::serializeMessage(string & msg) {
 
 void Analyzer::finalizeSerialization() {
 	
-	if (_currentTransformData.size() > 0 && _currentSceneName != "SKIP") {	// save the last lot of transform data
+	if (_currentTransformData.size() > 0) {	// save the last lot of transform data
+		
+		// setup path strings
+		string scenePath = boost::any_cast<string>(_appModel->getProperty("scenesDataPath")) + "/" + ofSplitString(_currentSceneName, "_")[0];
+		string fileName;
+		string fullPath;
 		
 		// iterate each 'character'
 		map< string, vector<CamTransform> >::iterator it;
@@ -279,9 +288,8 @@ void Analyzer::finalizeSerialization() {
 		for (it = _currentTransformData.begin() ; it != _currentTransformData.end(); it++ ) {
 			
 			// save each characters' vector of transforms
-			string scenePath = boost::any_cast<string>(_appModel->getProperty("scenesDataPath")) + "/" + ofSplitString(_currentSceneName, "_")[0];
-			string fileName = _currentSceneName + "_transform_" + (string)it->first + ".bin";
-			string fullPath = scenePath + "/" + fileName;
+			fileName = _currentSceneName + "_transform_" + (string)it->first + ".bin";
+			fullPath = scenePath + "/" + fileName;
 
 			saveVector(ofToDataPath(fullPath), &it->second);
 			
@@ -307,9 +315,56 @@ void Analyzer::finalizeSerialization() {
 			
 		} // end iterate each 'character'
 		
+		_currentSceneTotalFrames = _currentTransformData.size();
+		_currentTransformData.clear();
+		
+		LOG_NOTICE("Attempting to parse interactivity map:" + _currentSceneInteractivity);
+		
+		vector<string> interactivityVec = ofSplitString(_currentSceneInteractivity, "|");
+		
+		SequenceDescriptor sd;
+		
+		sd._totalFrames = _currentSceneTotalFrames;
+		
+		sd._face = convertVecStringToFramePairs(interactivityVec[0]);
+		sd._attacker = convertVecStringToFramePairs(interactivityVec[1]);
+		sd._victim = convertVecStringToFramePairs(interactivityVec[2]);
+		
+		LOG_NOTICE("Attempting to save interactivity map");
+		
+		fileName = _currentSceneName + "_interactivity" + ".bin";
+		fullPath = scenePath + "/" + fileName;
+		
+		saveClass(fullPath, &sd);
+		
 	} // end save the last lot of transform data
 	
-	_currentTransformData.clear();
+}
+
+vector<FramePair> Analyzer::convertVecStringToFramePairs(string pairsAsString) {
+	
+	vector<FramePair> framePairs;
+	
+	vector<string> pairs = ofSplitString(pairsAsString, "#");
+	
+	for (int i = 0; i < pairs.size(); i++) {
+		
+		FramePair fp;
+		
+		vector<string> fpVec = ofSplitString(pairs[i], ";");
+		
+		fp._start	= ofToInt(fpVec[0]);
+		fp._end		= ofToInt(fpVec[1]);
+		
+		if (fp._start == 0 && fp._end == -1) {
+			fp._end = _currentSceneTotalFrames;
+		}
+		
+		framePairs.push_back(fp);
+		
+	}
+	
+	return framePairs;
 	
 }
 

@@ -1,5 +1,5 @@
 /*
- *  VectorUtils.h
+ *  SerializationUtils.h
  *  Jungle
  *
  *  Created by ollie on 12/07/11.
@@ -7,8 +7,8 @@
  *
  */
 
-#ifndef _H_VECTORUTILS
-#define	_H_VECTORUTILS
+#ifndef _H_SERIALIZATIONUTILS
+#define	_H_SERIALIZATIONUTILS
 
 #include <string>
 #include <vector>
@@ -38,6 +38,32 @@ bool saveVector(string filePath, vector< vectorType > * vec) {
 	}
     boost::archive::text_oarchive to(ofs);
     to << (*vec);	
+	return true;
+}
+
+template <class C>
+bool loadClass(string filePath, C * someClass) {
+	ofLog(OF_LOG_NOTICE, "Loading class data: " + filePath);
+	std::ifstream ifs(filePath.c_str());
+	if(ifs.fail()){
+		ofLog(OF_LOG_ERROR, "Could not load class: " + filePath);
+		abort(); // Could be a bit over zealous
+	}
+	boost::archive::text_iarchive ia(ifs);
+	ia >> (*someClass);
+	return true;
+}
+
+template <class C>
+bool saveClass(string filePath, C * someClass) {
+	ofLog(OF_LOG_NOTICE, "Saving class data: " + filePath);
+	std::ofstream ofs(filePath.c_str());
+	if(ofs.fail()){
+		ofLog(OF_LOG_ERROR, "Could not class: " + filePath);
+		abort(); // Could be a bit over zealous
+	}
+    boost::archive::text_oarchive to(ofs);
+    to << (*someClass);	
 	return true;
 }
 

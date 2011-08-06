@@ -14,7 +14,7 @@
 #include "Logger.h"
 #include "AppModel.h"
 #include "BaseState.h"
-#include "VectorUtils.h"
+#include "SerializationUtils.h"
 
 #include "goFlexCOM.h"
 
@@ -58,13 +58,16 @@ public:
 	
 private:
 	
-	void serializeMessage(string & msg);
-	void finalizeSerialization();
+	void				serializeMessage(string & msg);
+	void				finalizeSerialization();
+	vector<FramePair>	convertVecStringToFramePairs(string pairsAsString);
 	
 	string				_publicMsg;
 	vector<FileScenes*>	_files;
 	set<string>			_sFiles;
 	string				_currentSceneName;
+	string				_currentSceneInteractivity;
+	int					_currentSceneTotalFrames;
 	int					_processedFiles;
 	goFlexCOM			_flexComManager;
 	
