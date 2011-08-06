@@ -132,7 +132,8 @@ void SceneXMLBuilder::scanFiles(){
 			fileInfo.insert(make_pair("type", "transform"));
 			// what do we want to know about a transform file?
 			// nothing? Have scene, sequence, file info...
-		}else{
+		}
+		else{
 			// Not a transform, must be a movie, find out what type
 			if(regex_search(fullname, regex("_loop"))){
 				fileInfo.insert(make_pair("type", "loop"));
@@ -176,9 +177,8 @@ void SceneXMLBuilder::scanFiles(){
 					LOG_ERROR("Found a file, but name does not describe type!: " + fullname);
 					continue; // skip the rest
 				}
-
-
 			}
+			fileInfo.insert(make_pair("interactivityFilename", fileInfo["scene"] + "_" + fileInfo["sequence"] + "_interactivity.bin"));
 		}
 
 		// default info for all files
@@ -469,6 +469,15 @@ void SceneXMLBuilder::buildXML(){
 			_xml.addAttribute("sequence", "size", fileInfo["size"], which);
 			_xml.addAttribute("sequence", "dateCreated", fileInfo["dateCreated"], which);
 			_xml.addAttribute("sequence", "dateModified", fileInfo["dateModified"], which);
+
+			_xml.pushTag("sequence", which);
+			
+			// add the transform node and its info
+			which = _xml.addTag("interactivity");
+			// set attributes for this transform
+			_xml.addAttribute("interactivity", "filename", fileInfo["interactivityFilename"], which);
+			_xml.popTag();
+			
 		}
 		_xml.popTag(); // pop scene
 		iter++; // next file
