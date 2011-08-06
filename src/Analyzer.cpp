@@ -74,7 +74,6 @@ void Analyzer::setup(vector<string> * files, int port) {
 			}
 			
 		}
-
 		
 		if (thisFileScene->_sScenes.count(fileName + "_" + sceneName) == 0) {
 			thisFileScene->_sScenes.insert(fileName + "_" + sceneName);
