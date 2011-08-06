@@ -136,7 +136,7 @@ void Analyzer::update() {
 		
 		LOG_NOTICE("Attempting to Load: " + filePath);
 		
-		int err = 0;//system(systemMsg.c_str());
+		int err = system(systemMsg.c_str());
 		
 		if(err != 0) { ////"open /Users/gameover/Desktop/StrangerDanger/flash/'twins 4 theory.app'");
 			setState(kANAL_ERROR);

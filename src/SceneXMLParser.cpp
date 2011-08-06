@@ -95,15 +95,15 @@ void SceneXMLParser::update() {
 			if(validateMovieTransformLengths()){
 				// reset completedKeys set
 				_completedKeys.clear();
-				
+
+				// done, goto next state
+				setState(kSCENEXMLPARSER_CREATING_APPMODEL);
+
 				// Check if we saved any broken pairs
 				if(_missingTransforms.size() != 0){
 					// missing transform files, throw exception
 					throw TransformMovieLengthMismatchException("Transform and movie lengths mismatch", _missingTransforms);
 				}
-				
-				// done, goto next state
-				setState(kSCENEXMLPARSER_CREATING_APPMODEL);
 			}
 			break;
 			

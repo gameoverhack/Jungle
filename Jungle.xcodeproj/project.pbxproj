@@ -160,7 +160,7 @@
 		07B2061113CC5A1C00FF66CB /* IXMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IXMLParser.h; sourceTree = "<group>"; };
 		07B2061413CC5A6100FF66CB /* SceneXMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneXMLParser.h; sourceTree = "<group>"; };
 		07B2061513CC5A6100FF66CB /* SceneXMLParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneXMLParser.cpp; sourceTree = "<group>"; };
-		07B2063213CC73F200FF66CB /* VectorUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VectorUtils.h; sourceTree = "<group>"; };
+		07B2063213CC73F200FF66CB /* SerializationUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SerializationUtils.h; sourceTree = "<group>"; };
 		07B2080613CC8A5400FF66CB /* PropertyXMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PropertyXMLParser.h; sourceTree = "<group>"; };
 		07B2080713CC8A5400FF66CB /* PropertyXMLParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PropertyXMLParser.cpp; sourceTree = "<group>"; };
 		07B2080F13CC8BAD00FF66CB /* PropertyXMLBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PropertyXMLBuilder.h; sourceTree = "<group>"; };
@@ -1086,7 +1086,7 @@
 				0754595413BD9C2500325443 /* Logger.cpp */,
 				0754595513BD9C2500325443 /* Logger.h */,
 				07545FA413C1768600325443 /* Constants.h */,
-				07B2063213CC73F200FF66CB /* VectorUtils.h */,
+				07B2063213CC73F200FF66CB /* SerializationUtils.h */,
 				77CFD4AD13EABB9C00AEF1C0 /* Analyzer.h */,
 				77CFD4AE13EABB9C00AEF1C0 /* Analyzer.cpp */,
 			);

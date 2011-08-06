@@ -14,7 +14,7 @@
 #include "Logger.h"
 #include "AppModel.h"
 #include "BaseState.h"
-#include "VectorUtils.h"
+#include "SerializationUtils.h"
 
 #include "goFlexCOM.h"
 

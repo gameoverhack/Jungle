@@ -29,7 +29,7 @@ using boost::regex_match;
 #include "BaseState.h"
 #include "AppModel.h"
 #include "AppDataTypes.h"
-#include "VectorUtils.h"
+#include "SerializationUtils.h"
 #include "goDirList.h"
 #include "goVideoPlayer.h"
 
