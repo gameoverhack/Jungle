@@ -28,7 +28,7 @@ void AppController::setup() {
 	LOG_NOTICE("Initialising");
 
 	//ofSetFrameRate(30);
-	ofSetVerticalSync(true);
+	//ofSetVerticalSync(true);
 
 	_isFullScreen		= false; // change this when we start in fullscreen mode
 	_switchToSequence	= NULL;
@@ -158,7 +158,7 @@ void AppController::update() {
 
 			//LOG_VERBOSE("Checking interactivity...");
 
-			if (currentSequence->getInteractivity() == "both") {
+			if (_appModel->checkCurrentInteractivity(kINTERACTION_BOTH)) { //currentSequence->getInteractivity() == "both") {
 
 				// Check for interactive event
 				// this->hasInteractiveEventFlag()
@@ -184,8 +184,20 @@ void AppController::update() {
                     } else nextScene();
 				}
 			}
-
-			if (currentSequence->getInteractivity() == "victim") {
+			
+			if (_appModel->checkCurrentInteractivity(kINTERACTION_ATTACKER)) { //currentSequence->getInteractivity() == "attacker") {
+				if (userAction == kAttackerAction){
+					LOG_VERBOSE("Interactive action: Attacker");
+					_appModel->setProperty("userAction", kNoUserAction);
+					string res = currentSequence->getAttackerResult();
+					if (res != kLAST_SEQUENCE_TOKEN) {
+                        _switchToSequence = currentScene->getSequence(res);
+                        _vidController->loadMovie(_switchToSequence, true);
+					} else nextScene();
+				}
+			}
+			
+			if (_appModel->checkCurrentInteractivity(kINTERACTION_VICTIM)) { //currentSequence->getInteractivity() == "victim") {
 				if (userAction == kVictimAction){
 					LOG_VERBOSE("Interactive action: Victim");
 					_appModel->setProperty("userAction", kNoUserAction);
@@ -195,7 +207,6 @@ void AppController::update() {
                         _vidController->loadMovie(_switchToSequence, true);
                     } else nextScene();
 				}
-
 			}
 		} else {
 			// force reset of action if we're preRolling...

@@ -70,6 +70,8 @@ public:
 	goThreadedVideo *	getNextVideoPlayer();
 	void				toggleVideoPlayers();
 	
+	bool				checkCurrentInteractivity(interaction_t interactionType);
+	
 	void				setCurrentFrame(int frame);
 	int					getCurrentFrame();
 	int					getCurrentFrameTotal();

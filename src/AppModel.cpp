@@ -142,6 +142,14 @@ void AppModel::toggleVideoPlayers() {
 	_videoPlayers[1] = new goThreadedVideo();
 }
 
+bool AppModel::checkCurrentInteractivity(interaction_t interactionType) {
+	Sequence * seq						= getCurrentSequence();
+	interaction_t * interactionTable	= seq->getInteractionTable();
+	int currentFrame					= getCurrentFrame();
+	// should i do any checks here????
+	return (interactionTable[currentFrame] == interactionType);
+}
+
 void AppModel::setCurrentFrame(int frame) {
 	//_frame = CLAMP(frame, 0, getCurrentFrameTotal()-1); //frame clamped to one less than total number;
 	_frame = CLAMP(frame, 0, _currentScene->getCurrentSequence()->getTransformVector("atk1")->size()-1); // to be sure, to be sure!
