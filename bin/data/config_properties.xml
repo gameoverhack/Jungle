@@ -8,8 +8,12 @@
         <property name="loadingProgress" type="float">1.000000</property>
 		<property name="xmlForceSceneBuildOnLoad" type="bool">true</property>
         <property name="xmlIgnoreErrors" type="bool">true</property>
-        <property name="xmlIgnoreTransformErrors" type="bool">true</property>
-        <property name="scenesDataPath" type="string">/Users/gameover/Desktop/StrangerDanger/video</property>
+        <property name="xmlIgnoreTransformErrors" type="bool">false</property>
+		<!--
+        <property name="scenesDataPath" type="string">/Users/ollie/itsa_jungle_out_there/scenes</property>
+		<property name="flashDataPath" type="string">/Users/ollie/itsa_jungle_out_there/apps</property>
+		-->
+		<property name="scenesDataPath" type="string">/Users/gameover/Desktop/StrangerDanger/video</property>
 		<property name="flashDataPath" type="string">/Users/gameover/Desktop/StrangerDanger/flash</property>
         <property name="scenesXMLFile" type="string">config_scenes.xml</property>
         <property name="shaderBlendRatio" type="float">0.500000</property>

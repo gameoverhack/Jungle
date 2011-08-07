@@ -38,7 +38,6 @@ void Analyzer::setup(vector<string> * files, int port) {
 	
 	LOG_NOTICE("Given " + ofToString((int)files->size()) + " names. Checking for duplicates...");
 	
-	
 	// there must be an easier cleaner way but the combination of flash boringness and my frustration makes me do this peice of horribleness...
 	
 	for (int i = 0; i < files->size(); i++) {
@@ -107,7 +106,7 @@ void Analyzer::setup(vector<string> * files, int port) {
 	//ofSetLogLevel(OF_LOG_VERBOSE);
 	
 	if(!_flexComManager.setup(port)) {
-		LOG_ERROR("Could not setup server on port, or something similiar");
+		LOG_ERROR("Could not setup server on port. Perhaps you broke the pipe?");
 		abort();
 	} else {
 		LOG_NOTICE("FlexCOM setup ok");
@@ -210,6 +209,7 @@ void Analyzer::serializeMessage(string & msg) {
 
 			_currentSceneName			= command[1];
 			_currentSceneInteractivity	= command[2];
+			_currentSceneTotalFrames	= ofToInt(command[3]) - 1;
 			
 			command.clear();
 			chunks.clear();
@@ -273,12 +273,41 @@ void Analyzer::serializeMessage(string & msg) {
 
 void Analyzer::finalizeSerialization() {
 	
-	if (_currentTransformData.size() > 0) {	// save the last lot of transform data
+	// setup path strings
+	string scenePath;
+	string fileName;
+	string fullPath;
+	
+	if (_currentSceneName != "") {
 		
-		// setup path strings
-		string scenePath = boost::any_cast<string>(_appModel->getProperty("scenesDataPath")) + "/" + ofSplitString(_currentSceneName, "_")[0];
-		string fileName;
-		string fullPath;
+		scenePath = boost::any_cast<string>(_appModel->getProperty("scenesDataPath")) + "/" + ofSplitString(_currentSceneName, "_")[0];
+		
+		LOG_NOTICE("Attempting to parse interactivity map:" + _currentSceneInteractivity);
+		
+		vector<string> interactivityVec = ofSplitString(_currentSceneInteractivity, "|");
+		
+		// create interactivity map using SequenceDescriptor
+		SequenceDescriptor sd;
+		
+		// set SD member values
+		sd._totalFrames = _currentSceneTotalFrames;
+		
+		// parse the interactivity frame info
+		sd._face = convertVecStringToFramePairs(interactivityVec[0]);
+		sd._attacker = convertVecStringToFramePairs(interactivityVec[1]);
+		sd._victim = convertVecStringToFramePairs(interactivityVec[2]);
+		
+		LOG_NOTICE("Attempting to save interactivity map");
+		
+		// construct filename
+		fileName = _currentSceneName + "_interactivity" + ".bin";
+		fullPath = scenePath + "/" + fileName;
+		
+		// do the save
+		saveClass(fullPath, &sd);
+	}
+	
+	if (_currentTransformData.size() > 0) {	// save the last lot of transform data
 		
 		// iterate each 'character'
 		map< string, vector<CamTransform> >::iterator it;
@@ -313,35 +342,18 @@ void Analyzer::finalizeSerialization() {
 			
 		} // end iterate each 'character'
 		
-		_currentSceneTotalFrames = _currentTransformData.size();
-		_currentTransformData.clear();
-		
-		LOG_NOTICE("Attempting to parse interactivity map:" + _currentSceneInteractivity);
-		
-		vector<string> interactivityVec = ofSplitString(_currentSceneInteractivity, "|");
-		
-		SequenceDescriptor sd;
-		
-		sd._totalFrames = _currentSceneTotalFrames;
-		
-		sd._face = convertVecStringToFramePairs(interactivityVec[0]);
-		sd._attacker = convertVecStringToFramePairs(interactivityVec[1]);
-		sd._victim = convertVecStringToFramePairs(interactivityVec[2]);
-		
-		LOG_NOTICE("Attempting to save interactivity map");
-		
-		fileName = _currentSceneName + "_interactivity" + ".bin";
-		fullPath = scenePath + "/" + fileName;
-		
-		saveClass(fullPath, &sd);
-		
 	} // end save the last lot of transform data
+	
+	// clear the transform data
+	_currentTransformData.clear();
 	
 }
 
 vector<FramePair> Analyzer::convertVecStringToFramePairs(string pairsAsString) {
 	
 	vector<FramePair> framePairs;
+	
+	framePairs.clear();
 	
 	vector<string> pairs = ofSplitString(pairsAsString, "#");
 	
@@ -354,11 +366,22 @@ vector<FramePair> Analyzer::convertVecStringToFramePairs(string pairsAsString) {
 		fp._start	= ofToInt(fpVec[0]);
 		fp._end		= ofToInt(fpVec[1]);
 		
-		if (fp._start == 0 && fp._end == -1) {
+		// n,-1 pair indicates from n to last frame
+		if (fp._start >= 0 && fp._end == -1) {
 			fp._end = _currentSceneTotalFrames;
 		}
 		
-		framePairs.push_back(fp);
+		LOG_VERBOSE("FramePair: " + ofToString(fp._start) + " to " + ofToString(fp._end));
+		
+		// -1,-1 pair (ie., anything other than -1 will be caught above) indicates no interactivity
+		if (fp._end != -1) {
+			framePairs.push_back(fp);
+			LOG_VERBOSE("Pushing FramePair");
+		} else {
+			LOG_VERBOSE("Abandon FramePair");
+			break;
+		}
+
 		
 	}
 	

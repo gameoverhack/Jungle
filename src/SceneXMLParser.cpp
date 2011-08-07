@@ -52,6 +52,7 @@ void SceneXMLParser::update() {
 		case kSCENEXMLPARSER_PARSE_XML:
 			// make map (map<string, map<string, string> _parsedData) from xml
 			parseXML();
+			listParsedData();
 			setState(kSCENEXMLPARSER_VALIDATING_MOVIE_FILE_EXISTENCE);
 			break;
 		case kSCENEXMLPARSER_VALIDATING_MOVIE_FILE_EXISTENCE:
@@ -294,6 +295,85 @@ bool SceneXMLParser::createAppModel(){
 		fullFilePath = _dirLister.getPath(fileID);
 		sequence->setMovieFullFilePath(fullFilePath);
 		
+		// load interactivity stuff
+		
+		// set up the descriptor
+		SequenceDescriptor *descriptor = new SequenceDescriptor();
+		// find and laod the file
+		loadClass(findFullFilePathForFilename(kvmap["interactivityFilename"]), descriptor);
+		vector<FramePair>::iterator vecIter;
+
+		interaction_t *interactionTable;
+		
+		// get total number of frames, set up array 
+		interactionTable = new interaction_t[descriptor->_totalFrames];
+		
+		// "zero" out the table with kINTERACTION_NONE
+		for(int i = 0; i < descriptor->_totalFrames; i++){
+			interactionTable[i] = kINTERACTION_NONE;
+		}
+		
+		// set up face
+		for(vecIter = descriptor->_face.begin(); vecIter != descriptor->_face.end(); vecIter++){
+			FramePair fp = *vecIter;
+			LOG_VERBOSE("FACE FramePair: " + ofToString(fp._start) + " to " + ofToString(fp._end));
+			for(int i = fp._start; i < fp._end; i++){
+				interactionTable[i] = kINTERACTION_FACE;
+			}
+		}
+		
+		// set up victim
+		for(vecIter = descriptor->_victim.begin(); vecIter != descriptor->_victim.end(); vecIter++){
+			FramePair fp = *vecIter;
+			LOG_VERBOSE("VIC  FramePair: " + ofToString(fp._start) + " to " + ofToString(fp._end));
+			for(int i = fp._start; i < fp._end; i++){
+				interactionTable[i] = kINTERACTION_VICTIM;
+			}
+		}
+		
+		// set up attacker
+		for(vecIter = descriptor->_attacker.begin(); vecIter != descriptor->_attacker.end(); vecIter++){
+			FramePair fp = *vecIter;
+			LOG_VERBOSE("ATK  FramePair: " + ofToString(fp._start) + " to " + ofToString(fp._end));
+			for(int i = fp._start; i < fp._end; i++){
+				if(interactionTable[i] == kINTERACTION_VICTIM){
+					interactionTable[i] = kINTERACTION_BOTH;
+				}
+				else{
+					interactionTable[i] = kINTERACTION_ATTACKER;
+				}				
+			}
+		}
+		
+		
+		// save table
+		sequence->setInteractionTable(interactionTable);
+													
+		// print out result table
+		
+for(int i = 0; i < descriptor->_totalFrames; i++){
+	string s = "";
+	if (interactionTable[i] == kINTERACTION_NONE) {
+		s = "NONE";
+	}
+	if (interactionTable[i] == kINTERACTION_VICTIM) {
+		s = "VICTIM";
+	}
+	if (interactionTable[i] == kINTERACTION_ATTACKER) {
+		s = "ATTACKER";
+	}
+	if (interactionTable[i] == kINTERACTION_FACE) {
+		s = "FACE";
+	}
+
+	if (interactionTable[i] == kINTERACTION_BOTH) {
+		s = "BOTH";
+	}
+	
+	printf("%3d: %s\n", i, s.c_str());
+}
+		
+		
 		// completed sequence, insert to scene
 		scene->setSequence(sequence->getName(), sequence);
 		
@@ -315,7 +395,7 @@ bool SceneXMLParser::createAppModel(){
 			
 			// should be a transform but check
 			if(kvmap["type"] != "transform"){
-				throw JungleException("Thought " + transformIter->first + " was  transform but its type was " + kvmap["type"]);
+				throw JungleException("Thought " + transformIter->first + " was transform but its type was " + kvmap["type"]);
 			}
 			
 			LOG_VERBOSE("xml => model for " + kvmap["name"] + " ("+kvmap["type"]+")");
@@ -328,127 +408,7 @@ bool SceneXMLParser::createAppModel(){
 			sequence->setTransform(keyParts[2], transform);
 			_completedKeys.insert(transformIter->first); // key done, save it
 		}
-		
-		// setup interactivity stuff
-		
-		/*
-		 
-		 SETTING UP FAKE DATA HERE
-		 
-		 */
-		//	class FramePair{
-		//		int _start;
-		//		int _end;
-		//	};
-		//	
-		//	class SequenceDescriptor{
-		//		int _totalFrames;  // I could work this out from loading a transform
-		//		// but maybe its cleaner if you just save it out as a member?
-		//		// I need to know it for when I malloc the array for Sequence::interactivity[totalFrames]
-		//		vector<FramePair> _victim; // = {framepair(51, 70)}
-		//		vector<FramePair> _attacker; // = {framepair(10, 50), framepair(60, 100)}
-		//		vector<FramePair> _face;
-		//	};
-		
-		FramePair framepair;
-		SequenceDescriptor seqdes;
-		seqdes._totalFrames = 100;
-		
-		// victim
-		framepair._start = 51;
-		framepair._end = 70;
-		seqdes._victim.push_back(framepair);
-		
-		// attacker
-		framepair._start = 10;
-		framepair._end = 50;
-		seqdes._attacker.push_back(framepair);
-		framepair._start = 60;
-		framepair._end = 100;
-		seqdes._attacker.push_back(framepair);
-		
-		// nothing for face
-		framepair._start = 0;
-		framepair._end = 10;
-		seqdes._face.push_back(framepair);
-		
-		/*
-		 
-		 ACTUAL LOADING CODE HERE
-		 
-		 */
-		
-		//SequenceDescriptor *descriptor = loadSequenceDescriptor("some/filename/path");
-		SequenceDescriptor *descriptor = &seqdes;
-		vector<FramePair>::iterator vecIter;
-		
-		interaction_t *interactionTable;
-		
-		// get total number of frames, set up array 
-		interactionTable = new interaction_t[descriptor->_totalFrames];
-		
-		// "zero" out the table with kINTERACTION_NONE
-		for(int i = 0; i < descriptor->_totalFrames; i++){
-			interactionTable[i] = kINTERACTION_NONE;
-		}
-		
-		// set up face
-		for(vecIter = descriptor->_face.begin(); vecIter != descriptor->_face.end(); vecIter++){
-			FramePair fp = *vecIter;
-			for(int i = fp._start; i < fp._end; i++){
-				interactionTable[i] = kINTERACTION_FACE;
-			}
-		}
-		
-		// set up victim
-		for(vecIter = descriptor->_victim.begin(); vecIter != descriptor->_victim.end(); vecIter++){
-			FramePair fp = *vecIter;
-			for(int i = fp._start; i < fp._end; i++){
-				interactionTable[i] = kINTERACTION_VICTIM;
-			}
-		}
-		
-		// set up attacker
-		for(vecIter = descriptor->_attacker.begin(); vecIter != descriptor->_attacker.end(); vecIter++){
-			FramePair fp = *vecIter;
-			for(int i = fp._start; i < fp._end; i++){
-				if(interactionTable[i] == kINTERACTION_VICTIM){
-					interactionTable[i] = kINTERACTION_BOTH;
-				}
-				else{
-					interactionTable[i] = kINTERACTION_ATTACKER;
-				}				
-			}
-		}
-		
-		
-		// save table
-		sequence->setInteractionTable(interactionTable);
-		
-		// print out result table
-		
-		//		for(int i = 0; i < descriptor->_totalFrames; i++){
-		//			string s = "";
-		//			if (interactionTable[i] == kINTERACTION_NONE) {
-		//				s = "NONE";
-		//			}
-		//			if (interactionTable[i] == kINTERACTION_VICTIM) {
-		//				s = "VICTIM";
-		//			}
-		//			if (interactionTable[i] == kINTERACTION_ATTACKER) {
-		//				s = "ATTACKER";
-		//			}
-		//			if (interactionTable[i] == kINTERACTION_FACE) {
-		//				s = "FACE";
-		//			}
-		//
-		//			if (interactionTable[i] == kINTERACTION_BOTH) {
-		//				s = "BOTH";
-		//			}
-		//			
-		//			printf("%3d: %s\n", i, s.c_str());
-		//		}
-		
+
 		_completedKeys.insert(parsedDataIter->first); // key done, save it
 		break; // break out of the loop
 	}
@@ -565,7 +525,7 @@ void SceneXMLParser::parseXML(){
 			// save movie file name
 			_parsedData[mapKey]["filename"] = _xml.getAttribute("sequence", "filename", stringType, seqNum);
 			_parsedData[mapKey]["validFile"] = "unvalidated"; // haven't checked file yet
-			
+						
 			// save all the file meta data
 			_parsedData[mapKey]["size"] = _xml.getAttribute("sequence", "size", stringType, seqNum);
 			_parsedData[mapKey]["dateCreated"] = _xml.getAttribute("sequence", "dateCreated", stringType, seqNum);
@@ -577,6 +537,28 @@ void SceneXMLParser::parseXML(){
 			// find transforms for this sequence
 			// Push into this sequence so we insert into the right one.
 			_xml.pushTag("sequence", seqNum);
+			
+			if(_xml.getNumTags("interactivity") == 0){
+				LOG_ERROR("No interactivity node for sequence " + mapKey + " in xml");
+				// check if it was faked
+				if(_parsedData[mapKey]["faked"] == "true"){					
+					LOG_VERBOSE(mapKey + " was fake, will not try to fix");
+				}
+				else{
+					_missingTransforms.push_back(mapKey); // save map key to rebuild
+				}
+				
+			}
+			else{
+				// check interactivity
+				attributesToCheck.clear();
+				attributesToCheck.push_back("filename");
+				checkTagAttributesExist("interactivity", attributesToCheck, 0);
+				
+				// create interactivity filename
+				_parsedData[mapKey]["interactivityFilename"] = _xml.getAttribute("interactivity", "filename", stringType, 0);
+			}
+			
 			// sanity check
 			if(_xml.getNumTags("transform") == 0){
 				LOG_ERROR("No transform nodes for sequence " + mapKey + " in xml");
@@ -617,6 +599,7 @@ void SceneXMLParser::parseXML(){
 				_parsedData[mapKey]["dateCreated"] = _xml.getAttribute("transform", "dateCreated", stringType, transNum);
 				_parsedData[mapKey]["dateModified"] = _xml.getAttribute("transform", "dateModified", stringType, transNum);
 			}
+			
 			_xml.popTag(); // pop sequence
 			LOG_VERBOSE("Finished xml=>map sequence: " + sequenceName);
 		}
@@ -975,7 +958,7 @@ void SceneXMLParser::populateDirListerIDMap(){
 // so we can throw exceptions for it consistently
 int SceneXMLParser::findFileIDForLister(string filename){
 	if(_filenameToDirListerIDMap.find(filename) == _filenameToDirListerIDMap.end()){
-		LOG_ERROR("No lister id for filename " + filename);
+		LOG_ERROR("No lister id for filename '" + filename +"'");
 		throw JungleException("File not found in dirlist: " + filename);
 	}
 	return _filenameToDirListerIDMap.find(filename)->second;
