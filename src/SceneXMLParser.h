@@ -38,6 +38,7 @@ enum {
 	kSCENEXMLPARSER_SETUP,
 	kSCENEXMLPARSER_PARSE_XML,
 	kSCENEXMLPARSER_VALIDATING_MOVIE_FILE_EXISTENCE,
+	kSCENEXMLPARSER_VALIDATING_INTERACTIVITY_FILE_EXISTENCE,
 	kSCENEXMLPARSER_VALIDATING_FILE_METADATA,
 	kSCENEXMLPARSER_VALIDATING_MOVIE_TRANSFORM_LENGTHS,
 	kSCENEXMLPARSER_CREATING_APPMODEL,
@@ -62,8 +63,9 @@ public:
 
 private:
 	
-	vector<string>			_missingInteractivity;
-	vector<string>			_missingTransforms; // Holds missing transforms, instance var because we add to it in parseXML if there is no transform nodes for a sequence.
+	vector<string>			_missingFiles;	// Holds missing trans/interac files.
+											// instance var because we add to it in
+											// parseXML if there is no transform nodes for a sequence.
 
 	string					_dataPath;
 
@@ -85,6 +87,7 @@ private:
 	// "doing" functions
 	void setupDirLister();
 	void populateDirListerIDMap();
+	void validateInteractivityFileExistence();
 	void validateMovieFileExistence();
 	bool validateMovieTransformLengths();
 	void validateFileMetadata();

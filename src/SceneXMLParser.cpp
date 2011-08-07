@@ -25,6 +25,7 @@ void SceneXMLParser::registerStates() {
 	registerState(kSCENEXMLPARSER_PARSE_XML, "kSCENEXMLPARSER_PARSE_XML");
 	registerState(kSCENEXMLPARSER_VALIDATING_FILE_METADATA, "kSCENEXMLPARSER_VALIDATING_FILE_METADATA");
 	registerState(kSCENEXMLPARSER_VALIDATING_MOVIE_FILE_EXISTENCE, "kSCENEXMLPARSER_VALIDATING_MOVIE_FILE_EXISTENCE");
+	registerState(kSCENEXMLPARSER_VALIDATING_INTERACTIVITY_FILE_EXISTENCE, "kSCENEXMLPARSER_VALIDATING_INTERACTIVITY_FILE_EXISTENCE");
 	registerState(kSCENEXMLPARSER_VALIDATING_MOVIE_TRANSFORM_LENGTHS, "kSCENEXMLPARSER_VALIDATING_MOVIE_TRANSFORM_LENGTHS");
 	registerState(kSCENEXMLPARSER_CREATING_APPMODEL, "kSCENEXMLPARSER_CREATING_APPMODEL");
 	registerState(kSCENEXMLPARSER_FINISHED, "kSCENEXMLPARSER_FINISHED");
@@ -69,6 +70,11 @@ void SceneXMLParser::update() {
 				// we'll just get the log error message 'no sequence seqXXa'
 				throw je; // for now we'll just consider it a hard fail and throw up.
 			}
+			setState(kSCENEXMLPARSER_VALIDATING_INTERACTIVITY_FILE_EXISTENCE);
+			break;
+		
+		case kSCENEXMLPARSER_VALIDATING_INTERACTIVITY_FILE_EXISTENCE:
+			validateInteractivityFileExistence();
 			setState(kSCENEXMLPARSER_VALIDATING_FILE_METADATA);
 			break;
 			
@@ -101,9 +107,9 @@ void SceneXMLParser::update() {
 				setState(kSCENEXMLPARSER_CREATING_APPMODEL);
 
 				// Check if we saved any broken pairs
-				if(_missingTransforms.size() != 0){
+				if(_missingFiles.size() != 0){
 					// missing transform files, throw exception
-					throw TransformMovieLengthMismatchException("Transform and movie lengths mismatch", _missingTransforms);
+					throw TransformMovieLengthMismatchException("Transform and movie lengths mismatch", _missingFiles);
 				}
 			}
 			break;
@@ -296,13 +302,13 @@ bool SceneXMLParser::createAppModel(){
 		sequence->setMovieFullFilePath(fullFilePath);
 		
 		// load interactivity stuff
-		
 		// set up the descriptor
 		SequenceDescriptor *descriptor = new SequenceDescriptor();
-		// find and laod the file
+
+		// find and load the file
 		loadClass(findFullFilePathForFilename(kvmap["interactivityFilename"]), descriptor);
 		vector<FramePair>::iterator vecIter;
-
+		
 		interaction_t *interactionTable;
 		
 		// get total number of frames, set up array 
@@ -348,32 +354,31 @@ bool SceneXMLParser::createAppModel(){
 		
 		// save table
 		sequence->setInteractionTable(interactionTable);
-													
+		
 		// print out result table
 		
-for(int i = 0; i < descriptor->_totalFrames; i++){
-	string s = "";
-	if (interactionTable[i] == kINTERACTION_NONE) {
-		s = "NONE";
-	}
-	if (interactionTable[i] == kINTERACTION_VICTIM) {
-		s = "VICTIM";
-	}
-	if (interactionTable[i] == kINTERACTION_ATTACKER) {
-		s = "ATTACKER";
-	}
-	if (interactionTable[i] == kINTERACTION_FACE) {
-		s = "FACE";
-	}
+		for(int i = 0; i < descriptor->_totalFrames; i++){
+			string s = "";
+			if (interactionTable[i] == kINTERACTION_NONE) {
+				s = "NONE";
+			}
+			if (interactionTable[i] == kINTERACTION_VICTIM) {
+				s = "VICTIM";
+			}
+			if (interactionTable[i] == kINTERACTION_ATTACKER) {
+				s = "ATTACKER";
+			}
+			if (interactionTable[i] == kINTERACTION_FACE) {
+				s = "FACE";
+			}
+			
+			if (interactionTable[i] == kINTERACTION_BOTH) {
+				s = "BOTH";
+			}
+			
+			printf("%3d: %s\n", i, s.c_str());
+		}
 
-	if (interactionTable[i] == kINTERACTION_BOTH) {
-		s = "BOTH";
-	}
-	
-	printf("%3d: %s\n", i, s.c_str());
-}
-		
-		
 		// completed sequence, insert to scene
 		scene->setSequence(sequence->getName(), sequence);
 		
@@ -545,7 +550,7 @@ void SceneXMLParser::parseXML(){
 					LOG_VERBOSE(mapKey + " was fake, will not try to fix");
 				}
 				else{
-					_missingTransforms.push_back(mapKey); // save map key to rebuild
+					_missingFiles.push_back(mapKey); // save map key to rebuild
 				}
 				
 			}
@@ -567,7 +572,7 @@ void SceneXMLParser::parseXML(){
 					LOG_VERBOSE(mapKey + " was fake, will not try to fix");
 				}
 				else{
-					_missingTransforms.push_back(mapKey); // save map key to rebuild
+					_missingFiles.push_back(mapKey); // save map key to rebuild
 				}
 				
 			}
@@ -612,6 +617,34 @@ void SceneXMLParser::parseXML(){
 	_xml.popTag(); // config pop
 }
 
+
+// checks that interactitivy files are around
+void SceneXMLParser::validateInteractivityFileExistence(){
+	map<string, map<string, string> >::iterator parsedDataIter;
+	for(parsedDataIter = _parsedData.begin(); parsedDataIter != _parsedData.end(); parsedDataIter++){
+
+		map<string, string> & kvmap = (parsedDataIter->second); // syntax convenience
+
+		if(kvmap["type"] == "scene" || kvmap["type"] == "transform"){
+			// ignore scenes and transforms
+			continue;
+		}
+		
+		// sequence type
+		try {
+			findFullFilePathForFilename(kvmap["interactivityFilename"]);
+		}
+		catch (JungleException je) {
+			// exception on file not found
+			string file = parsedDataIter->first + ":int";
+			_missingFiles.push_back(file);
+		}
+		
+
+
+		
+	}
+}
 
 // checks that files referenced by sequences exist,
 // if they don't we replace them with a fake and flag the data is faked
@@ -889,7 +922,7 @@ bool SceneXMLParser::validateMovieTransformLengths(){
 				catch(JungleException je){
 					// transform file did not exist.
 					// cant continue with check, so we need to rebuild that.
-					_missingTransforms.push_back(innerIter->first);
+					_missingFiles.push_back(innerIter->first);
 					continue; // can't check the rest of this stuff
 				}
 				
@@ -903,7 +936,7 @@ bool SceneXMLParser::validateMovieTransformLengths(){
 								+ "(transform " + ofToString((int)(transform.size())) + " vs "+ kvmap["filename"] +" movie "
 								+ ofToString(_movie->getTotalNumFrames())+")");
 					// Store a list of broken pairs
-					_missingTransforms.push_back(innerIter->first);
+					_missingFiles.push_back(innerIter->first);
 				}
 				// save key as processesd
 				_completedKeys.insert(innerIter->first);
