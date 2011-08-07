@@ -178,8 +178,6 @@ void Analyzer::serializeMessage(string & msg) {
 		
 		if (command[0] == "GETCOMMAND") {
 			
-			
-			
 			if (thisFileScene->_processedScenes < thisFileScene->_mTypes.size()) {
 				map<string, string>::iterator it;
 				
@@ -221,7 +219,7 @@ void Analyzer::serializeMessage(string & msg) {
 
 	if (chunks.size() > 1) {
 		
-		LOG_NOTICE("Serializing data");
+		//LOG_NOTICE("Serializing data");
 		
 		int	frame;
 		string scene, character;
