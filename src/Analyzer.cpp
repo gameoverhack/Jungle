@@ -158,7 +158,7 @@ void Analyzer::update() {
 //--------------------------------------------------------------
 void Analyzer::serializeMessage(string & msg) {
 	
-	LOG_VERBOSE(msg);
+	//LOG_VERBOSE(msg);
 	_publicMsg = msg;
 
 	FileScenes * thisFileScene = _files[_processedFiles - 1];
@@ -391,5 +391,5 @@ vector<FramePair> Analyzer::convertVecStringToFramePairs(string pairsAsString) {
 
 //--------------------------------------------------------------
 string Analyzer::getMessage() {
-	return printState() + " :: " + _publicMsg; 
+	return printState(false) + " :: " + _publicMsg; 
 }

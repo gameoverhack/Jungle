@@ -87,9 +87,9 @@
             </sequence>
             <sequence name="seq06a" sequenceType="a" interactivity="victim" victimResult="__FINAL_SEQUENCE__" nextSequence="__FINAL_SEQUENCE__" faked="false" filename="t_seq06a.mov" size="394271618" dateCreated="2011-07-13 06:35:32" dateModified="2011-07-13 05:15:46">
                 <interactivity filename="t_seq06a_interactivity.bin"></interactivity>
-                <transform faked="false" filename="t_seq06a_transform_atk1.bin" size="14634" dateCreated="2011-08-08 01:19:42" dateModified="2011-08-08 01:19:42"></transform>
-                <transform faked="false" filename="t_seq06a_transform_atk2.bin" size="11944" dateCreated="2011-08-08 01:19:42" dateModified="2011-08-08 01:19:42"></transform>
-                <transform faked="false" filename="t_seq06a_transform_vic1.bin" size="15331" dateCreated="2011-08-08 01:19:43" dateModified="2011-08-08 01:19:43"></transform>
+                <transform faked="false" filename="t_seq06a_transform_atk1.bin" size="14634" dateCreated="2011-08-08 01:58:40" dateModified="2011-08-08 01:58:40"></transform>
+                <transform faked="false" filename="t_seq06a_transform_atk2.bin" size="11944" dateCreated="2011-08-08 01:58:40" dateModified="2011-08-08 01:58:40"></transform>
+                <transform faked="false" filename="t_seq06a_transform_vic1.bin" size="15331" dateCreated="2011-08-08 01:58:40" dateModified="2011-08-08 01:58:40"></transform>
             </sequence>
             <sequence name="seq06b" sequenceType="b" interactivity="none" nextSequence="__FINAL_SEQUENCE__" faked="true" filename="t_seq03b.mov" size="372407225" dateCreated="2011-07-13 06:35:13" dateModified="2011-07-13 05:15:27">
                 <interactivity filename="t_seq03b_interactivity.bin"></interactivity>

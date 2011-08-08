@@ -152,7 +152,7 @@ void DataController::saveProperties(){
 void DataController::updateAppLoadingState(){
 	// loading messave is just the scene parser state state.
 	if(!kDATACONTROLLER_SCENE_ANALYSING) {
-		_appModel->setProperty("loadingMessage",  _sceneParser->printState());
+		_appModel->setProperty("loadingMessage",  _sceneParser->printState(false));
 	} else {
 		_appModel->setProperty("loadingMessage",  _flashAnalyzer->getMessage());
 	}

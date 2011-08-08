@@ -32,7 +32,7 @@ public:
 	void			setState(int state);
 	bool			checkState(int state);
 	
-	string			printState();
+	string			printState(bool log = true);
 	
 private:
 

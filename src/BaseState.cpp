@@ -66,15 +66,15 @@ void BaseState::setState(int state) {
 	
 }*/
 
-string BaseState::printState() {
+string BaseState::printState(bool log) {
 	map<int, string>::iterator it = _states.find(_state);
 	string msg;
 	if (it == _states.end()) {
 		msg = "Cannot printState() -- no states have been registered or no state has been set";
-		LOG_ERROR(msg); // maybe don't need this now?
+		if (log) LOG_ERROR(msg); // maybe don't need this now?
 	} else {
 		msg = "STATE == " + it->second + " (" + ofToString(it->first) + ")";
-		LOG_VERBOSE(msg);
+		if (log) LOG_VERBOSE(msg);
 	}
 	return msg;
 }
