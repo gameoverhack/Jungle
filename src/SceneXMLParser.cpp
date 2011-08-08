@@ -570,8 +570,7 @@ void SceneXMLParser::parseXML(){
 				// check if it was faked
 				if(_parsedData[mapKey]["faked"] == "true"){					
 					LOG_VERBOSE(mapKey + " was fake, will not try to fix");
-				}
-				else{
+				} else {
 					_missingFiles.push_back(mapKey); // save map key to rebuild
 				}
 				
@@ -632,7 +631,10 @@ void SceneXMLParser::validateInteractivityFileExistence(){
 		
 		// sequence type
 		try {
-			findFullFilePathForFilename(kvmap["interactivityFilename"]);
+			if(kvmap["faked"] != "true") {
+				LOG_VERBOSE("Checking interactivity file existence");
+				findFullFilePathForFilename(kvmap["interactivityFilename"]);
+			} else LOG_VERBOSE("Not checking interactivity file existence because it's a fake node");
 		}
 		catch (JungleException je) {
 			// exception on file not found
@@ -990,7 +992,7 @@ void SceneXMLParser::populateDirListerIDMap(){
 // Wrapped in a function instead of just doing _lister[filename]
 // so we can throw exceptions for it consistently
 int SceneXMLParser::findFileIDForLister(string filename){
-	if(_filenameToDirListerIDMap.find(filename) == _filenameToDirListerIDMap.end()){
+	if(_filenameToDirListerIDMap.find(filename) == _filenameToDirListerIDMap.end()) {
 		LOG_ERROR("No lister id for filename '" + filename +"'");
 		throw JungleException("File not found in dirlist: " + filename);
 	}
