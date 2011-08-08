@@ -19,13 +19,21 @@ AppController::AppController(ofAppBaseWindow * windowPtr) {
 //--------------------------------------------------------------
 AppController::~AppController() {
 	// nothing for now but we should clean up here
-	//_dataController->saveProperties();
+	LOG_NOTICE("Saving properties");
+	_dataController->saveProperties();
 }
 
 //--------------------------------------------------------------
 void AppController::setup() {
 
 	LOG_NOTICE("Initialising");
+    /*		<!--
+        <property name="scenesDataPath" type="string">/Users/ollie/itsa_jungle_out_there/scenes</property>
+		<property name="flashDataPath" type="string">/Users/ollie/itsa_jungle_out_there/apps</property>
+        <property name="scenesDataPath" type="string">/Users/gameover/Desktop/StrangerDanger/video</property>
+		<property name="flashDataPath" type="string">/Users/gameover/Desktop/StrangerDanger/flash</property>
+		-->
+    */
 
 	//ofSetFrameRate(30);
 	//ofSetVerticalSync(true);
@@ -37,7 +45,7 @@ void AppController::setup() {
 	_appModel->setState(kAPP_INIT);
 
 	_flashAnalyzer->registerStates();
-	
+
 	// set up datacontroller
 	_dataController = new DataController(ofToDataPath("config_properties.xml"));
 	_dataController->registerStates();
@@ -184,7 +192,7 @@ void AppController::update() {
                     } else nextScene();
 				}
 			}
-			
+
 			if (_appModel->checkCurrentInteractivity(kINTERACTION_ATTACKER)) { //currentSequence->getInteractivity() == "attacker") {
 				if (userAction == kAttackerAction){
 					LOG_VERBOSE("Interactive action: Attacker");
@@ -196,7 +204,7 @@ void AppController::update() {
 					} else nextScene();
 				}
 			}
-			
+
 			if (_appModel->checkCurrentInteractivity(kINTERACTION_VICTIM)) { //currentSequence->getInteractivity() == "victim") {
 				if (userAction == kVictimAction){
 					LOG_VERBOSE("Interactive action: Victim");
@@ -280,6 +288,20 @@ void AppController::keyPressed(int key){
 	bool autoTest = boost::any_cast<bool>(_appModel->getProperty("autoTest"));
 
 	switch (key) {
+#ifdef TARGET_WIN32
+	    case '1':
+			_camControllers[0]-> showVideoSettings();
+			break;
+		case '2':
+			_camControllers[1]-> showVideoSettings();
+			break;
+        case 'c':
+			_camControllers[0]->saveSettings();
+			break;
+        case 'v':
+			_camControllers[0]->loadSettings();
+			break;
+#endif
 		case 'x':
 			gamma += 0.1;
 			break;

@@ -77,6 +77,8 @@
 			<Add directory="..\..\..\addons\ofxBoost\src\lib" />
 			<Add directory="..\..\..\addons\ofxFbo\src" />
 			<Add directory="..\..\..\addons\ofxShader\src" />
+			<Add directory="..\..\..\addons\ofxNetwork\src" />
+			<Add directory="..\..\..\addons\goFlexCOM" />
 		</Compiler>
 		<Linker>
 			<Add option="../../../libs/FreeImage/lib/win_cb/FreeImage.lib" />
@@ -121,6 +123,8 @@
 		</ExtraCommands>
 		<Unit filename="..\..\..\addons\goDirList\src\goDirList.cpp" />
 		<Unit filename="..\..\..\addons\goDirList\src\goDirList.h" />
+		<Unit filename="..\..\..\addons\goFlexCOM\goFlexCOM.cpp" />
+		<Unit filename="..\..\..\addons\goFlexCOM\goFlexCOM.h" />
 		<Unit filename="..\..\..\addons\goThreadedVideo\src\goThreadedVideo.cpp" />
 		<Unit filename="..\..\..\addons\goThreadedVideo\src\goThreadedVideo.h" />
 		<Unit filename="..\..\..\addons\goUtils\src\goUtils.cpp" />
@@ -133,6 +137,16 @@
 		<Unit filename="..\..\..\addons\goVideoPlayer\src\goVideoPlayer.h" />
 		<Unit filename="..\..\..\addons\ofxFbo\src\ofxFbo.cpp" />
 		<Unit filename="..\..\..\addons\ofxFbo\src\ofxFbo.h" />
+		<Unit filename="..\..\..\addons\ofxNetwork\src\ofxNetwork.h" />
+		<Unit filename="..\..\..\addons\ofxNetwork\src\ofxNetworkUtils.h" />
+		<Unit filename="..\..\..\addons\ofxNetwork\src\ofxTCPClient.cpp" />
+		<Unit filename="..\..\..\addons\ofxNetwork\src\ofxTCPClient.h" />
+		<Unit filename="..\..\..\addons\ofxNetwork\src\ofxTCPManager.cpp" />
+		<Unit filename="..\..\..\addons\ofxNetwork\src\ofxTCPManager.h" />
+		<Unit filename="..\..\..\addons\ofxNetwork\src\ofxTCPServer.cpp" />
+		<Unit filename="..\..\..\addons\ofxNetwork\src\ofxTCPServer.h" />
+		<Unit filename="..\..\..\addons\ofxNetwork\src\ofxUDPManager.cpp" />
+		<Unit filename="..\..\..\addons\ofxNetwork\src\ofxUDPManager.h" />
 		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxCvBlob.h" />
 		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxCvColorImage.cpp" />
 		<Unit filename="..\..\..\addons\ofxOpenCv\src\ofxCvColorImage.h" />
@@ -167,6 +181,12 @@
 		</Unit>
 		<Unit filename="bin\data\multitexturemerge.frag">
 			<Option virtualFolder="src\shaders\" />
+		</Unit>
+		<Unit filename="src\Analyzer.cpp">
+			<Option virtualFolder="src\utils\" />
+		</Unit>
+		<Unit filename="src\Analyzer.h">
+			<Option virtualFolder="src\utils\" />
 		</Unit>
 		<Unit filename="src\AppController.cpp">
 			<Option virtualFolder="src\controllers\" />
@@ -288,10 +308,10 @@
 		<Unit filename="src\SceneXMLParser.h">
 			<Option virtualFolder="src\utils\" />
 		</Unit>
-		<Unit filename="src\Singleton.h">
+		<Unit filename="src\SerializationUtils.h">
 			<Option virtualFolder="src\utils\" />
 		</Unit>
-		<Unit filename="src\VectorUtils.h">
+		<Unit filename="src\Singleton.h">
 			<Option virtualFolder="src\utils\" />
 		</Unit>
 		<Unit filename="src\VideoController.cpp">

@@ -3,20 +3,28 @@
         <property name="appViewHeight" type="float">720.000000</property>
         <property name="appViewWidth" type="float">1280.000000</property>
         <property name="autoTest" type="bool">false</property>
+        <property name="flashDataPath" type="string">G:/gameoverload/VideoProjects/Jungle/flash</property>
         <property name="fullScreen" type="bool">false</property>
-        <property name="loadingMessage" type="string">STATE == kSCENEXMLPARSER_FINISHED (7)</property>
+        <property name="loadingMessage" type="string">STATE == kANAL_READY (0) :: </property>
         <property name="loadingProgress" type="float">1.000000</property>
-		<property name="xmlForceSceneBuildOnLoad" type="bool">true</property>
-        <property name="xmlIgnoreErrors" type="bool">true</property>
-        <property name="xmlIgnoreTransformErrors" type="bool">true</property>
-		<!--
-        <property name="scenesDataPath" type="string">/Users/ollie/itsa_jungle_out_there/scenes</property>
-		<property name="flashDataPath" type="string">/Users/ollie/itsa_jungle_out_there/apps</property>
-        <property name="scenesDataPath" type="string">/Users/gameover/Desktop/StrangerDanger/video</property>
-		<property name="flashDataPath" type="string">/Users/gameover/Desktop/StrangerDanger/flash</property>
-		-->
+        <property name="propBacklightCompensation" type="int">0</property>
+        <property name="propBrightness" type="int">24</property>
+        <property name="propColorEnable" type="int">3986288</property>
+        <property name="propContrast" type="int">24</property>
+        <property name="propExposure" type="int">-5</property>
+        <property name="propFocus" type="int">0</property>
+        <property name="propGain" type="int">33</property>
+        <property name="propGamma" type="int">3986288</property>
+        <property name="propHue" type="int">3986288</property>
+        <property name="propIris" type="int">3986288</property>
+        <property name="propPan" type="int">7</property>
+        <property name="propRoll" type="int">3986288</property>
+        <property name="propSaturation" type="int">24</property>
+        <property name="propSharpness" type="int">24</property>
+        <property name="propTilt" type="int">0</property>
+        <property name="propWhiteBalance" type="int">3162</property>
+        <property name="propZoom" type="int">5</property>
         <property name="scenesDataPath" type="string">G:/gameoverload/VideoProjects/Jungle/video</property>
-		<property name="flashDataPath" type="string">G:/gameoverload/VideoProjects/Jungle/flash</property>
         <property name="scenesXMLFile" type="string">config_scenes.xml</property>
         <property name="shaderBlendRatio" type="float">0.500000</property>
         <property name="shaderFragPath" type="string">multitexturemerge</property>
@@ -25,5 +33,8 @@
         <property name="showDebugView" type="bool">true</property>
         <property name="showUnmaskedTextures" type="bool">false</property>
         <property name="userAction" type="int">0</property>
+        <property name="xmlForceSceneBuildOnLoad" type="bool">true</property>
+        <property name="xmlIgnoreErrors" type="bool">true</property>
+        <property name="xmlIgnoreTransformErrors" type="bool">true</property>
     </properties>
 </config>

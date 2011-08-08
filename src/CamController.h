@@ -18,6 +18,7 @@
 #include "ofxQTKitVideoGrabber.h"	// better quality allows recording but OSX only....
 #else
 #include "goVideoGrabber.h"			// X-platform and will work with multiple cams but not with ManyCam for some reason...
+#include <map>
 #endif
 
 static int _instanceCount = 0;
@@ -29,8 +30,13 @@ public:
 	CamController();
 	~CamController();
 
-	bool		setup(int deviceID, int x, int y);
-#ifdef TARGET_OSX
+    bool		setup(int deviceID, int x, int y);
+
+#ifdef TARGET_WIN32
+	void        showVideoSettings();
+	void        loadSettings();
+	void        saveSettings();
+#else
 	bool		setup(string deviceID, int x, int y);
 #endif
 
