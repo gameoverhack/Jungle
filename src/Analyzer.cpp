@@ -122,7 +122,7 @@ void Analyzer::update() {
 
 	_flexComManager.update();
 
-	if (_flexComManager.checkState(LOAD) && _processedFiles < _files.size()) {
+	if (_flexComManager.checkState(kFLEXCOM_LOAD) && _processedFiles < _files.size()) {
 
 #ifdef TARGET_OSX
 		string systemMsg = "open ";
@@ -158,7 +158,7 @@ void Analyzer::update() {
 
 		_processedFiles++;
 
-		_flexComManager.setState(HAND);
+		_flexComManager.setState(kFLEXCOM_HAND);
 
 	}
 }

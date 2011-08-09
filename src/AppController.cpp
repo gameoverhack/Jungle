@@ -27,13 +27,6 @@ AppController::~AppController() {
 void AppController::setup() {
 
 	LOG_NOTICE("Initialising");
-    /*		<!--
-        <property name="scenesDataPath" type="string">/Users/ollie/itsa_jungle_out_there/scenes</property>
-		<property name="flashDataPath" type="string">/Users/ollie/itsa_jungle_out_there/apps</property>
-        <property name="scenesDataPath" type="string">/Users/gameover/Desktop/StrangerDanger/video</property>
-		<property name="flashDataPath" type="string">/Users/gameover/Desktop/StrangerDanger/flash</property>
-		-->
-    */
 
 	//ofSetFrameRate(30);
 	//ofSetVerticalSync(true);

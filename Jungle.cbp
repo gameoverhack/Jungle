@@ -79,6 +79,7 @@
 			<Add directory="..\..\..\addons\ofxShader\src" />
 			<Add directory="..\..\..\addons\ofxNetwork\src" />
 			<Add directory="..\..\..\addons\goFlexCOM" />
+			<Add directory="..\..\..\addons\ofxBoost\src\lib\boost" />
 		</Compiler>
 		<Linker>
 			<Add option="../../../libs/FreeImage/lib/win_cb/FreeImage.lib" />
