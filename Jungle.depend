@@ -1892,7 +1892,7 @@
 	"ofAppRunner.h"
 	"ofGraphics.h"
 
-1312943923 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appcontroller.cpp
+1312945685 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appcontroller.cpp
 	"AppController.h"
 	"Logger.h"
 
@@ -4903,10 +4903,10 @@
 	"ofMain.h"
 	<fstream>
 
-1312945265 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\loadingview.h
+1312945661 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\loadingview.h
 	"BaseView.h"
 
-1312945264 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\debugview.h
+1312945654 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\debugview.h
 	"BaseView.h"
 	"goVideoPlayer.h"
 	"AppDataTypes.h"
@@ -6472,7 +6472,7 @@
 1312944469 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appmodel.cpp
 	"AppModel.h"
 
-1312944917 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appview.cpp
+1312945761 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appview.cpp
 	"AppView.h"
 
 1312941205 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\ardcontroller.cpp
@@ -6481,7 +6481,7 @@
 1312941206 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\basestate.cpp
 	"BaseState.h"
 
-1312945458 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\baseview.cpp
+1312945645 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\baseview.cpp
 	"BaseView.h"
 
 1312944494 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\camcontroller.cpp
@@ -6490,13 +6490,13 @@
 1312941559 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\datacontroller.cpp
 	"DataController.h"
 
-1312945379 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\debugview.cpp
+1312945651 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\debugview.cpp
 	"DebugView.h"
 
 1312941206 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\jungleexception.cpp
 	"JungleExceptions.h"
 
-1312945368 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\loadingview.cpp
+1312945658 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\loadingview.cpp
 	"LoadingView.h"
 
 1312941206 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\logger.cpp

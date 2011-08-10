@@ -6,7 +6,7 @@
         <property name="appViewWidth" type="float">1920.000000</property>
         <property name="autoTest" type="bool">false</property>
         <property name="flashDataPath" type="string">G:/gameoverload/VideoProjects/Jungle/flash</property>
-        <property name="fullScreen" type="bool">false</property>
+        <property name="fullScreen" type="bool">true</property>
         <property name="loadingMessage" type="string">STATE == kANAL_READY (0) :: </property>
         <property name="loadingProgress" type="float">1.000000</property>
         <property name="propBacklightCompensation_1" type="int">0</property>
@@ -22,7 +22,7 @@
         <property name="propFocus_1" type="int">68</property>
         <property name="propFocus_2" type="int">85</property>
         <property name="propGain_1" type="int">64</property>
-        <property name="propGain_2" type="int">49</property>
+        <property name="propGain_2" type="int">36</property>
         <property name="propGamma_1" type="int">1</property>
         <property name="propGamma_2" type="int">1</property>
         <property name="propHue_1" type="int">1</property>
