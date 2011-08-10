@@ -74,6 +74,7 @@ void AppController::setup() {
 	_camControllers[1]->setup(1, 1920, 1080);
 	_camControllers[0]->loadSettings();
 	_camControllers[1]->loadSettings();
+	//abort();
 #endif
 
 	// register pointers to textures from cams on the model
@@ -83,8 +84,8 @@ void AppController::setup() {
 	_appModel->setProperty("userAction", kNoUserAction);
 
 	// setup main app view
-	_appView = new AppView(boost::any_cast<float>(_appModel->getProperty("appViewWidth")),
-						   boost::any_cast<float>(_appModel->getProperty("appViewHeight")));
+	_appView = new AppView(boost::any_cast<float>(_appModel->getProperty("appRenderWidth")),
+						   boost::any_cast<float>(_appModel->getProperty("appRenderHeight")));
 
 
 	_appModel->setState(kAPP_LOADING);
@@ -93,6 +94,7 @@ void AppController::setup() {
 	_appModel->setProperty("loadingMessage", string("AppController loading"));
 	_appModel->setProperty("loadingProgress", 0.1f);
 
+    _appModel->setProperty("showProps", false);
 	_appModel->setProperty("autoTest", false);
 	_appModel->setProperty("fullScreen", false);
 
@@ -167,7 +169,7 @@ void AppController::update() {
 		if (_switchToSequence == NULL && !_vidController->isPreRolling()) {
 
 			//LOG_VERBOSE("Checking interactivity...");
-
+/*
 			if (_appModel->checkCurrentInteractivity(kINTERACTION_BOTH)) { //currentSequence->getInteractivity() == "both") {
 
 				// Check for interactive event
@@ -217,7 +219,7 @@ void AppController::update() {
                         _vidController->loadMovie(_switchToSequence, true);
                     } else nextScene();
 				}
-			}
+			}*/
 		} else {
 			// force reset of action if we're preRolling...
 			_appModel->setProperty("userAction", kNoUserAction);
@@ -284,10 +286,11 @@ void AppController::draw() {
 //--------------------------------------------------------------
 void AppController::keyPressed(int key){
 
-	float gamma = boost::any_cast<float>(_appModel->getProperty("shaderGammaCorrection"));
-	float blend = boost::any_cast<float>(_appModel->getProperty("shaderBlendRatio"));
+	float gamma     = boost::any_cast<float>(_appModel->getProperty("shaderGammaCorrection"));
+	float blend     = boost::any_cast<float>(_appModel->getProperty("shaderBlendRatio"));
 	bool showUnmask = boost::any_cast<bool>(_appModel->getProperty("showUnmaskedTextures"));
-	bool autoTest = boost::any_cast<bool>(_appModel->getProperty("autoTest"));
+	bool autoTest   = boost::any_cast<bool>(_appModel->getProperty("autoTest"));
+    bool showProps  = boost::any_cast<bool>(_appModel->getProperty("showProps"));
 
 	switch (key) {
 #ifdef TARGET_WIN32
@@ -350,11 +353,14 @@ void AppController::keyPressed(int key){
 			_appModel->getCurrentVideoPlayer()->nextFrame();
 			break;
 		case 'h':
-			_appModel->setProperty("showUnmaskedTextures", (showUnmask ? false : true));
+			_appModel->setProperty("showUnmaskedTextures", !showUnmask);
 			break;
 		case 'f':
 			toggleFullscreen();
 			break;
+        case '0':
+             _appModel->setProperty("showProps", !showProps);
+            break;
 		default:
 			break;
 	}
@@ -412,7 +418,7 @@ void AppController::toggleFullscreen(){
         ofSetWindowTitle(_windowTitle);
         int x = 0;
         int y = 0;
-        int width = _windowPtr->getScreenSize().x*2; // TODO: set in config
+        int width = _windowPtr->getScreenSize().x; // TODO: set in config
         int height = _windowPtr->getScreenSize().y; // TODO: set in config
         int storedWindowX, storedWindowY, storedWindowH, storedWindowW;
         HWND vWnd  = FindWindow(NULL, _windowTitle);

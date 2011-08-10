@@ -38,6 +38,8 @@ private:
 	ofTexture _vic1Tex, _atk1Tex, _atk2Tex;
 	ofxFbo _vic1FBO, _atk1FBO, _atk2FBO;
 
+	float   currentVideoHeight, currentVideoWidth;
+
 	// Shader stuff
 	ofxShader _shader;
 

@@ -1,9 +1,7 @@
 <config>
     <properties>
-        <property name="appRenderHeight" type="float">720.000000</property>
-        <property name="appRenderWidth" type="float">1280.000000</property>
-        <property name="appViewHeight" type="float">1080.000000</property>
-        <property name="appViewWidth" type="float">1920.000000</property>
+        <property name="appRenderHeight" type="float">1080.000000</property>
+        <property name="appRenderWidth" type="float">1920.000000</property>
         <property name="autoTest" type="bool">false</property>
         <property name="flashDataPath" type="string">G:/gameoverload/VideoProjects/Jungle/flash</property>
         <property name="fullScreen" type="bool">true</property>
@@ -17,12 +15,12 @@
         <property name="propColorEnable_2" type="int">1</property>
         <property name="propContrast_1" type="int">32</property>
         <property name="propContrast_2" type="int">32</property>
-        <property name="propExposure_1" type="int">-7</property>
+        <property name="propExposure_1" type="int">-5</property>
         <property name="propExposure_2" type="int">-5</property>
-        <property name="propFocus_1" type="int">68</property>
-        <property name="propFocus_2" type="int">85</property>
-        <property name="propGain_1" type="int">64</property>
-        <property name="propGain_2" type="int">36</property>
+        <property name="propFocus_1" type="int">102</property>
+        <property name="propFocus_2" type="int">102</property>
+        <property name="propGain_1" type="int">29</property>
+        <property name="propGain_2" type="int">35</property>
         <property name="propGamma_1" type="int">1</property>
         <property name="propGamma_2" type="int">1</property>
         <property name="propHue_1" type="int">1</property>
@@ -39,8 +37,8 @@
         <property name="propSharpness_2" type="int">72</property>
         <property name="propTilt_1" type="int">0</property>
         <property name="propTilt_2" type="int">0</property>
-        <property name="propWhiteBalance_1" type="int">4000</property>
-        <property name="propWhiteBalance_2" type="int">5484</property>
+        <property name="propWhiteBalance_1" type="int">3768</property>
+        <property name="propWhiteBalance_2" type="int">4164</property>
         <property name="propZoom_1" type="int">1</property>
         <property name="propZoom_2" type="int">1</property>
         <property name="scenesDataPath" type="string">G:/gameoverload/VideoProjects/Jungle/video</property>
@@ -50,6 +48,7 @@
         <property name="shaderGammaCorrection" type="float">2.000000</property>
         <property name="shaderVertPath" type="string">vertex</property>
         <property name="showDebugView" type="bool">true</property>
+        <property name="showProps" type="bool">false</property>
         <property name="showUnmaskedTextures" type="bool">false</property>
         <property name="userAction" type="int">0</property>
         <property name="xmlForceSceneBuildOnLoad" type="bool">true</property>

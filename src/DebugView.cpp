@@ -29,18 +29,20 @@ void DebugView::update(){
 	int totalFrames		= _appModel->getCurrentFrameTotal(); //currentMovie->getTotalNumFrames();
 
 	//currentFrame = CLAMP(currentFrame, 0, totalFrames-1); // why are you so cruel?
+    if (boost::any_cast<bool>(_appModel->getProperty("showProps"))) {
+        msg += "vic1 Transform: " + currentSequence->getTransformAsString("vic1", currentFrame) + "\n";
+        msg += "atk1 Transform: " + currentSequence->getTransformAsString("atk1", currentFrame) + "\n";
+        if (currentSequence->getTransformCount() > 2) {
+            msg += "atk2 Transform: " + currentSequence->getTransformAsString("atk2", currentFrame) + "\n";
+        }
 
-	msg += "vic1 Transform: " + currentSequence->getTransformAsString("vic1", currentFrame) + "\n";
-	msg += "atk1 Transform: " + currentSequence->getTransformAsString("atk1", currentFrame) + "\n";
-	if (currentSequence->getTransformCount() > 2) {
-		msg += "atk2 Transform: " + currentSequence->getTransformAsString("atk2", currentFrame) + "\n";
-	}
-
-	// get all the properties on the AppModel
-	msg += _appModel->getAllPropsAsList();
+        // get all the properties on the AppModel
+        msg += _appModel->getAllPropsAsList();
+    }
 
 	_viewFBO.begin();
 	glPushMatrix();
+
 	glClearColor(0.0, 0.0, 0.0, 0.0); // transparent clear colour
 	glClear(GL_COLOR_BUFFER_BIT);
 
@@ -77,10 +79,10 @@ void DebugView::update(){
 	_viewFBO.end();
 }
 
-void DebugView::draw(){
+/*void DebugView::draw(){
 	glPushMatrix();
 	glTranslatef(0.0, ofGetHeight(), 0.0);
 	glScalef(1.0, -1.0, 1.0);
 	BaseView::draw();
 	glPushMatrix();
-}
+}*/

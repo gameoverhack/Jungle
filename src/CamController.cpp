@@ -27,6 +27,9 @@ CamController::~CamController() {
 bool CamController::setup(int deviceID, int x, int y){
 	LOG_NOTICE("Attemptimg to set instance " + ofToString(_instanceID) + " cam to deviceID: " + ofToString(deviceID));
 	_cam.close();					// to be sure, to be sure
+#ifdef TARGET_WIN32
+    _cam.setRequestedMediaSubType(VI_MEDIASUBTYPE_MJPG);
+#endif
 	_cam.setDeviceID(deviceID);
 	_cam.initGrabber(x, y, true);
 }

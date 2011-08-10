@@ -20,6 +20,8 @@ void LoadingView::update() {
 
 	_viewFBO.begin();
 	glPushMatrix();
+    glTranslatef(0.0, _viewHeight, 0.0);
+	glScalef(1.0, -1.0, 1.0);
 
 	glClearColor(0.1, 0.1, 0.1, 1.0); // transparent clear colour
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -44,10 +46,10 @@ void LoadingView::update() {
 
 }
 
-void LoadingView::draw(){
+/*void LoadingView::draw(){
 	glPushMatrix();
 	glTranslatef(0.0, _viewHeight, 0.0);
 	glScalef(1.0, -1.0, 1.0);
 	BaseView::draw();
 	glPushMatrix();
-}
+}*/

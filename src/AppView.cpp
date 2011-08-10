@@ -10,9 +10,11 @@
 #include "AppView.h"
 
 AppView::AppView(float width, float height) : BaseView(width ,height) {
+
 	_loadingView = new LoadingView(width, height);
 	_sceneView = new SceneView(width, height);
 	_debugView = new DebugView(width, height);
+
 }
 
 void AppView::update() {
@@ -32,12 +34,12 @@ void AppView::update() {
 void AppView::draw() {
 
     // fullscreen shenanigans
-    bool isFullScreen = boost::any_cast<bool>(_appModel->getProperty("fullScreen"));
+    //bool isFullScreen = boost::any_cast<bool>(_appModel->getProperty("fullScreen"));
     float width = CLAMP((float)ofGetWidth(), 0.0f , 1920.0f);
     float height = (float)ofGetHeight();
 
 	if(_appModel->checkState(kAPP_LOADING)){
-		_loadingView->draw();
+		_loadingView->draw(0, height, width, -height);
 		glPopMatrix();
 	} else {
 
@@ -48,13 +50,13 @@ void AppView::draw() {
 		// options for solving include: use OSX and ofxCocoa or look into multiple openGL contexts and
 		// shared textures and/or switched context drawing...
 		// ...see http://forum.openframeworks.cc/index.php/topic,4872.0.html
-        if (isFullScreen && ofGetWidth() > 1920) _sceneView->draw(width, 0, width, height);
+        //if (isFullScreen && ofGetWidth() > 1920) _sceneView->draw(width, 0, width, height);
 
 		// draw Mic view
 		// draw smasher view
 		// draw diagnositc view
 		if(boost::any_cast<bool>(_appModel->getProperty("showDebugView"))){
-			_debugView->draw();
+			_debugView->draw(0, height, width, -height);
 		}
 	}
 
