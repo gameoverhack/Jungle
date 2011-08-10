@@ -51,29 +51,74 @@ void CamController::loadSettings() {
     map<string, setting> camSettings    = _cam.getCameraSettings();
     map<string, setting> filterSettings = _cam.getFilterSettings();
 
+    map<string, setting> newCamSettings;
+    map<string, setting> newFilterSettings;
+
     map<string, setting>::iterator it;
 
     // get property on the model for each prop's CurrentValue (camera settings)
     for (it = camSettings.begin(); it != camSettings.end(); it++) {
+
         setting s = it->second;
-        LOG_VERBOSE(s.print());
-        // force all settings to manual
-        s.flags = 2;
-        s.CurrentValue = boost::any_cast<int>(_appModel->getProperty(s.propName));
+
+        if (_appModel->hasProperty(s.propName)) {
+
+            setting n;
+
+            LOG_VERBOSE("CURRENT SETTING: " + s.print());
+
+            // copy props to new n setting
+            n.propName      = s.propName;
+            n.propID        = s.propID;
+            n.min           = s.min;
+            n.max           = s.max;
+            n.SteppingDelta = s.SteppingDelta;
+            n.flags         = 2;            // force all settings to manual
+            n.CurrentValue  = boost::any_cast<int>(_appModel->getProperty(n.propName + "_" + ofToString(_instanceID)));
+
+            LOG_VERBOSE("CHANGETO SETTING: " + n.print());
+
+            // stor in new settings map
+            newCamSettings.insert(pair<string, setting>(n.propName, n));
+        }
+
     }
 
     // get property on the model for each prop's CurrentValue (filter settings)
     for (it = filterSettings.begin(); it != filterSettings.end(); it++) {
+
         setting s = it->second;
-        LOG_VERBOSE(s.print());
-        // force all settings to manual
-        s.flags = 2;
-        s.CurrentValue = boost::any_cast<int>(_appModel->getProperty(s.propName));
+
+         if (_appModel->hasProperty(s.propName)) {
+
+            setting n;
+
+            LOG_VERBOSE("CURRENT SETTING: " + s.print());
+
+            // copy props to new n setting
+            n.propName      = s.propName;
+            n.propID        = s.propID;
+            n.min           = s.min;
+            n.max           = s.max;
+            n.SteppingDelta = s.SteppingDelta;
+            n.flags         = 2;            // force all settings to manual
+            n.CurrentValue  = boost::any_cast<int>(_appModel->getProperty(n.propName + "_" + ofToString(_instanceID)));
+
+            LOG_VERBOSE("CHANGETO SETTING: " + n.print());
+
+            // stor in new settings map
+            newFilterSettings.insert(pair<string, setting>(n.propName, n));
+         }
     }
 
     // set to values
-    _cam.setCameraSettings(camSettings);
-    _cam.setFilterSettings(filterSettings);
+     if (newCamSettings.size() > 0)     _cam.setCameraSettings(newCamSettings);
+     if (newFilterSettings.size() > 0)  _cam.setFilterSettings(newFilterSettings);
+
+    camSettings.clear();
+    filterSettings.clear();
+    newCamSettings.clear();
+    newFilterSettings.clear();
 
 }
 
@@ -89,15 +134,18 @@ void CamController::saveSettings() {
     for (it = camSettings.begin(); it != camSettings.end(); it++) {
         setting s = it->second;
         LOG_VERBOSE(s.print());
-        _appModel->setProperty(s.propName, (int)s.CurrentValue);
+        _appModel->setProperty(s.propName + "_" + ofToString(_instanceID), (int)s.CurrentValue);
     }
 
     // set property on the model for each prop's CurrentValue (filter settings)
     for (it = filterSettings.begin(); it != filterSettings.end(); it++) {
         setting s = it->second;
         LOG_VERBOSE(s.print());
-        _appModel->setProperty(s.propName, (int)s.CurrentValue);
+        _appModel->setProperty(s.propName + "_" + ofToString(_instanceID), (int)s.CurrentValue);
     }
+
+    camSettings.clear();
+    filterSettings.clear();
 
 }
 #endif

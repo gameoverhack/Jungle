@@ -31,10 +31,10 @@ DataController::DataController(string configFilePath) {
     _appModel->setProperty("scenesDataPath", (string)"/Users/gameover/Desktop/StrangerDanger/video");
     _appModel->setProperty("flashDataPath", (string)"/Users/gameover/Desktop/StrangerDanger/flash");
     #else TARGET_WIN32
-    _appModel->setProperty("scenesDataPath", (string)"E:/Users/gameover/Desktop/StrangerDanger/video");
-    _appModel->setProperty("flashDataPath", (string)"E:/Users/gameover/Desktop/StrangerDanger/flash");
-    //_appModel->setProperty("scenesDataPath", "G:/gameoverload/VideoProjects/Jungle/video");
-    //_appModel->setProperty("flashDataPath", "G:/gameoverload/VideoProjects/Jungle/flash");
+    //_appModel->setProperty("scenesDataPath", (string)"E:/Users/gameover/Desktop/StrangerDanger/video");
+    //_appModel->setProperty("flashDataPath", (string)"E:/Users/gameover/Desktop/StrangerDanger/flash");
+    _appModel->setProperty("scenesDataPath", (string)"G:/gameoverload/VideoProjects/Jungle/video");
+    _appModel->setProperty("flashDataPath", (string)"G:/gameoverload/VideoProjects/Jungle/flash");
     #endif
 #else defined(USER_OLLIE)
     _appModel->setProperty("scenesDataPath", (string)"/Users/ollie/itsa_jungle_out_there/scenes");

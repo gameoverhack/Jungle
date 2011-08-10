@@ -16,8 +16,8 @@ LoadingView::LoadingView(float width, float height) : BaseView(width ,height) {
 void LoadingView::update() {
 	float progress = boost::any_cast<float>(_appModel->getProperty("loadingProgress"));
 	string message = boost::any_cast<string>(_appModel->getProperty("loadingMessage"));
-											
-											
+
+
 	_viewFBO.begin();
 	glPushMatrix();
 
@@ -34,14 +34,14 @@ void LoadingView::update() {
 
 	ofSetColor(200, 50, 50, 220);
 	ofRect(x, y+1, (progressionWidth-2)*progress, progressionHeight-2);
-	
-	
+
+
 	ofSetColor(0,255,0);
 	ofDrawBitmapString(message, x, y+progressionHeight+2);
-	
+
 	glPopMatrix();
 	_viewFBO.end();
-	
+
 }
 
 void LoadingView::draw(){

@@ -14,34 +14,35 @@
 #include "ofxShader.h"
 
 class SceneView : public BaseView {
-	
+
 public:
-	
+
 	SceneView(float width, float height);	//ctor
 	//SceneView();							//dtor
-	
+
 	void update();
 	//void draw();
-	
-	void drawCharacter(ofxFbo * targetFBO, 
-					   ofTexture * faceTexture, 
+
+	void drawCharacter(ofxFbo * targetFBO,
+					   ofTexture * faceTexture,
 					   CamTransform *transform);
-	
+
 private:
-		int currentFrame;
+
+    int currentFrame;
 	//Scene * _currentScene;
 	ofTexture _cameraOne;
 	ofTexture _cameraTwo;
-	
+
 	// fbo stuff
 	ofTexture _vic1Tex, _atk1Tex, _atk2Tex;
 	ofxFbo _vic1FBO, _atk1FBO, _atk2FBO;
-	
+
 	// Shader stuff
 	ofxShader _shader;
-	
+
 protected:
-	
+
 };
 
 #endif

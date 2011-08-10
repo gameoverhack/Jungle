@@ -20,6 +20,13 @@ AppController::AppController(ofAppBaseWindow * windowPtr) {
 AppController::~AppController() {
 	// nothing for now but we should clean up here
 	LOG_NOTICE("Saving properties");
+
+#ifdef TARGET_WIN32
+    // save cam props
+	_camControllers[0]->saveSettings();
+	_camControllers[1]->saveSettings();
+#endif
+
 	_dataController->saveProperties();
 }
 
@@ -63,8 +70,10 @@ void AppController::setup() {
 	_camControllers[0]->setup("Built-in iSight", 640, 480);
 	_camControllers[1]->setup("ManyCam Virtual Webcam (RGB)", 640, 480);	// NB: had to use QTKit to get ManyCam working
 #else
-	_camControllers[0]->setup(0, 640, 480);
-	_camControllers[1]->setup(1, 640, 480);
+	_camControllers[0]->setup(0, 1920, 1080);
+	_camControllers[1]->setup(1, 1920, 1080);
+	_camControllers[0]->loadSettings();
+	_camControllers[1]->loadSettings();
 #endif
 
 	// register pointers to textures from cams on the model
@@ -290,9 +299,11 @@ void AppController::keyPressed(int key){
 			break;
         case 'c':
 			_camControllers[0]->saveSettings();
+			_camControllers[1]->saveSettings();
 			break;
         case 'v':
 			_camControllers[0]->loadSettings();
+			_camControllers[1]->loadSettings();
 			break;
 #endif
 		case 'x':

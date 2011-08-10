@@ -14,14 +14,14 @@ PropertyXMLParser::PropertyXMLParser(string xmlFile) : IXMLParser(xmlFile){
 	parseXML();
 }
 
-void PropertyXMLParser::parseXML(){	
+void PropertyXMLParser::parseXML(){
 
 	_xml.pushTag("config"); // push into root.
-	
-	//  pull out the properties 
+
+	//  pull out the properties
 	string defaultString = "this should never be seen"; // getValue requires type to know what to return
 	string propName, propValue, propType;
-	
+
 	LOG_VERBOSE("Discovering properties");
 	// Find all the property tags
 	if(!_xml.tagExists("properties")){
@@ -29,20 +29,20 @@ void PropertyXMLParser::parseXML(){
 		abort();
 	}
 	_xml.pushTag("properties"); // set properties as root node
-	
+
 	// loop over all property tags
 	for(int i = 0; i < _xml.getNumTags("property"); i++){
 		propName = _xml.getAttribute("property",
 									"name", defaultString, i);
 		propType = _xml.getAttribute("property",
 									"type", defaultString, i);
-		
+
 		/*
-		 
+
 		 Have to cast the returns from ofxXmlsettings::getValue for some reason
 		 even though we pass in a default value to make it call the correct
 		 function.
-		 
+
 		 */
 		if(propType == "float"){
 			_appModel->setProperty(propName,
@@ -63,6 +63,6 @@ void PropertyXMLParser::parseXML(){
 		else{
 			LOG_WARNING("Could not set property: " + propName + ", unkown type: " + propType);
 		}
-	} 
+	}
 	_xml.popTag();
 }

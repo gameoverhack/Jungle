@@ -13,19 +13,19 @@
 #include "BaseView.h"
 
 class LoadingView : public BaseView {
-	
+
 public:
-	
+
 	LoadingView(float width, float height);	//ctor
 	//SceneView();							//dtor
-	
+
 	void update();
 	void draw();
 
 private:
-	
+
 protected:
-	
+
 };
 
 #endif

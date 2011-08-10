@@ -15,7 +15,7 @@ DebugView::DebugView(float width, float height) : BaseView(width, height){
 }
 
 void DebugView::update(){
-	
+
 	// set pointers for current Scene, Sequence Movie etc
 	//goThreadedVideo	* currentMovie		= _appModel->get();
 	Sequence		* currentSequence	= _appModel->getCurrentSequence();
@@ -23,19 +23,19 @@ void DebugView::update(){
 
 	// get frame rate
 	string msg = "ABC: " + ofToString(ofGetFrameRate()) + "\n";
-	
+
 	// get transform info and current movie frame
 	int currentFrame	= _appModel->getCurrentFrame(); //currentMovie->getCurrentFrame();
 	int totalFrames		= _appModel->getCurrentFrameTotal(); //currentMovie->getTotalNumFrames();
-	
+
 	//currentFrame = CLAMP(currentFrame, 0, totalFrames-1); // why are you so cruel?
-	
+
 	msg += "vic1 Transform: " + currentSequence->getTransformAsString("vic1", currentFrame) + "\n";
 	msg += "atk1 Transform: " + currentSequence->getTransformAsString("atk1", currentFrame) + "\n";
 	if (currentSequence->getTransformCount() > 2) {
 		msg += "atk2 Transform: " + currentSequence->getTransformAsString("atk2", currentFrame) + "\n";
 	}
-	
+
 	// get all the properties on the AppModel
 	msg += _appModel->getAllPropsAsList();
 
@@ -43,18 +43,18 @@ void DebugView::update(){
 	glPushMatrix();
 	glClearColor(0.0, 0.0, 0.0, 0.0); // transparent clear colour
 	glClear(GL_COLOR_BUFFER_BIT);
-	
+
 	// draw strings
 	ofSetColor(0, 255, 0, 255);
 	ofDrawBitmapString(msg, 20, 20); // this gets rendered upside down for some reason ?*/
-	
+
 	// draw scene progression
 	float progressionPercentage = (float)currentFrame/(float)(totalFrames);
 	float progressionWidth = 300;
 	float progressionHeight = 20;
 	ofSetColor(50, 50, 50, 220);
 	ofRect(5, _viewHeight-progressionHeight-10, progressionWidth+4, progressionHeight+2);
-	
+
 	// valid movie file/sequence stuff
 	if(currentSequence->getIsSequenceFaked()) {
 		ofSetColor(255, 50, 50, 220);
@@ -69,7 +69,7 @@ void DebugView::update(){
 
 	// give us info about progression
 	msg = currentScene->getName() + "::" + currentSequence->getName() + "::" + ofToString(currentFrame) + "/" + ofToString(totalFrames);
-	
+
 	ofSetColor(255,255,255);
 	ofDrawBitmapString(msg, 6, _viewHeight-progressionHeight-4);
 

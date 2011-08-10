@@ -1725,11 +1725,11 @@
 1312018975 source:c:\users\gameover\code\of062cb\addons\goutils\src\goutils.cpp
 	"goUtils.h"
 
-1312801185 source:c:\users\gameover\code\of062cb\addons\govideograbber\src\govideograbber.cpp
+1312943619 source:c:\users\gameover\code\of062cb\addons\govideograbber\src\govideograbber.cpp
 	"goVideoGrabber.h"
 	"ofUtils.h"
 
-1312804496 c:\users\gameover\code\of062cb\addons\govideograbber\src\govideograbber.h
+1312941353 c:\users\gameover\code\of062cb\addons\govideograbber\src\govideograbber.h
 	"ofConstants.h"
 	"ofTexture.h"
 	"ofGraphics.h"
@@ -1892,11 +1892,11 @@
 	"ofAppRunner.h"
 	"ofGraphics.h"
 
-1312801575 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appcontroller.cpp
+1312943923 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appcontroller.cpp
 	"AppController.h"
 	"Logger.h"
 
-1312768960 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appcontroller.h
+1312941205 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appcontroller.h
 	"ofMain.h"
 	"AppView.h"
 	"AppModel.h"
@@ -1909,17 +1909,17 @@
 	"ArdController.h"
 	"Analyzer.h"
 
-1312018545 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appview.h
+1312941205 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appview.h
 	"BaseView.h"
 	"SceneView.h"
 	"LoadingView.h"
 	"DebugView.h"
 
-1312768960 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\baseview.h
+1312941206 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\baseview.h
 	"AppModel.h"
 	"ofxFbo.h"
 
-1312768960 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appmodel.h
+1312944299 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appmodel.h
 	"BaseState.h"
 	"Singleton.h"
 	"AppDataTypes.h"
@@ -1929,23 +1929,23 @@
 	<assert.h>
 	<string>
 
-1312768960 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\basestate.h
+1312941206 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\basestate.h
 	"Logger.h"
 	<map>
 	<string>
 
-1312018530 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\logger.h
+1312941206 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\logger.h
 	<iostream>
 	<fstream>
 	<typeinfo>
 	"Singleton.h"
 	"ofUtils.h"
 
-1312018530 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\singleton.h
+1312941206 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\singleton.h
 	"assert.h"
 	<cstdlib>
 
-1312768960 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appdatatypes.h
+1312941205 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appdatatypes.h
 	<boost/serialization/serialization.hpp>
 	<boost/serialization/vector.hpp>
 	<boost/archive/text_oarchive.hpp>
@@ -4883,7 +4883,7 @@
 1236007336 c:\users\gameover\code\of062cb\addons\ofxboost\src\lib\boost\detail\quick_allocator.hpp
 	<boost/smart_ptr/detail/quick_allocator.hpp>
 
-1312018545 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\constants.h
+1312941206 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\constants.h
 
 1252848015 c:\users\gameover\code\of062cb\addons\ofxboost\src\lib\boost\any.hpp
 	<algorithm>
@@ -4895,7 +4895,7 @@
 	<boost/static_assert.hpp>
 	<cstring>
 
-1312768960 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\sceneview.h
+1312945265 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\sceneview.h
 	"BaseView.h"
 	"ofxShader.h"
 
@@ -4903,15 +4903,15 @@
 	"ofMain.h"
 	<fstream>
 
-1312768960 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\loadingview.h
+1312945265 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\loadingview.h
 	"BaseView.h"
 
-1312768960 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\debugview.h
+1312945264 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\debugview.h
 	"BaseView.h"
 	"goVideoPlayer.h"
 	"AppDataTypes.h"
 
-1312768960 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\datacontroller.h
+1312941206 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\datacontroller.h
 	<boost/serialization/serialization.hpp>
 	<boost/serialization/vector.hpp>
 	<boost/archive/text_oarchive.hpp>
@@ -6066,7 +6066,7 @@
 	<boost/algorithm/string/finder.hpp>
 	<boost/algorithm/string/formatter.hpp>
 
-1312018545 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\scenexmlbuilder.h
+1312941206 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\scenexmlbuilder.h
 	<boost/algorithm/string.hpp>
 	<boost/regex.hpp>
 	<algorithm>
@@ -6411,15 +6411,15 @@
 
 1196010439 c:\users\gameover\code\of062cb\addons\ofxboost\src\lib\boost\regex\v4\regex_split.hpp
 
-1312018545 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\ixmlbuilder.h
+1312941206 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\ixmlbuilder.h
 	"ofxXmlSettings.h"
 	"Logger.h"
 
-1312159594 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\jungleexceptions.h
+1312941206 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\jungleexceptions.h
 	<string>
 	<vector>
 
-1312768960 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\scenexmlparser.h
+1312941206 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\scenexmlparser.h
 	<stdlib.h>
 	<set>
 	<map>
@@ -6434,7 +6434,7 @@
 	"goDirList.h"
 	"goVideoPlayer.h"
 
-1312018545 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\ixmlparser.h
+1312941206 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\ixmlparser.h
 	"ofxXmlSettings.h"
 	"Logger.h"
 	"JungleExceptions.h"
@@ -6443,15 +6443,15 @@
 	<string>
 	<vector>
 
-1312018545 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\propertyxmlparser.h
+1312941206 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\propertyxmlparser.h
 	"IXMLParser.h"
 	"AppModel.h"
 
-1312018545 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\propertyxmlbuilder.h
+1312941206 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\propertyxmlbuilder.h
 	"IXMLBuilder.h"
 	"AppModel.h"
 
-1312800126 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\camcontroller.h
+1312941206 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\camcontroller.h
 	"BaseState.h"
 	"AppModel.h"
 	"Logger.h"
@@ -6459,72 +6459,72 @@
 	"goVideoGrabber.h"
 	<map>
 
-1312018545 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\videocontroller.h
+1312941206 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\videocontroller.h
 	"BaseState.h"
 	"AppModel.h"
 
-1312018545 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\miccontroller.h
+1312941206 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\miccontroller.h
 	"BaseState.h"
 
-1312018545 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\ardcontroller.h
+1312941205 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\ardcontroller.h
 	"BaseState.h"
 
-1312768960 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appmodel.cpp
+1312944469 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appmodel.cpp
 	"AppModel.h"
 
-1312768960 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appview.cpp
+1312944917 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appview.cpp
 	"AppView.h"
 
-1312018545 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\ardcontroller.cpp
+1312941205 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\ardcontroller.cpp
 	"ArdController.h"
 
-1312768960 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\basestate.cpp
+1312941206 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\basestate.cpp
 	"BaseState.h"
 
-1312768960 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\baseview.cpp
+1312945458 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\baseview.cpp
 	"BaseView.h"
 
-1312805228 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\camcontroller.cpp
+1312944494 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\camcontroller.cpp
 	"CamController.h"
 
-1312768960 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\datacontroller.cpp
+1312941559 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\datacontroller.cpp
 	"DataController.h"
 
-1312768960 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\debugview.cpp
+1312945379 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\debugview.cpp
 	"DebugView.h"
 
-1312159371 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\jungleexception.cpp
+1312941206 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\jungleexception.cpp
 	"JungleExceptions.h"
 
-1312768960 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\loadingview.cpp
+1312945368 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\loadingview.cpp
 	"LoadingView.h"
 
-1312018545 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\logger.cpp
+1312941206 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\logger.cpp
 	"Logger.h"
 
-1312018545 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\miccontroller.cpp
+1312941206 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\miccontroller.cpp
 	"MicController.h"
 
-1312018545 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\propertyxmlbuilder.cpp
+1312942959 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\propertyxmlbuilder.cpp
 	"PropertyXMLBuilder.h"
 
-1312018545 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\propertyxmlparser.cpp
+1312942956 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\propertyxmlparser.cpp
 	"PropertyXMLParser.h"
 
-1312768960 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\sceneview.cpp
+1312941206 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\sceneview.cpp
 	"SceneView.h"
 
-1312768960 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\scenexmlbuilder.cpp
+1312941206 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\scenexmlbuilder.cpp
 	"SceneXMLBuilder.h"
 
-1312768960 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\scenexmlparser.cpp
+1312941707 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\scenexmlparser.cpp
 	"SceneXMLParser.h"
 	"JungleExceptions.h"
 
-1312018545 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\videocontroller.cpp
+1312941206 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\videocontroller.cpp
 	"VideoController.h"
 
-1312167532 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\main.cpp
+1312941206 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\main.cpp
 	"ofMain.h"
 	"AppController.h"
 	"ofAppGlutWindow.h"
@@ -6548,11 +6548,11 @@
 1308409390 source:c:\users\gameover\code\of062cb\addons\ofxshader\src\ofxshader.cpp
 	"ofxShader.h"
 
-1312768960 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\serializationutils.h
+1312941206 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\serializationutils.h
 	<string>
 	<vector>
 
-1312774004 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\analyzer.h
+1312941205 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\analyzer.h
 	"Logger.h"
 	"AppModel.h"
 	"BaseState.h"
@@ -6563,10 +6563,10 @@
 	<set>
 	<map>
 
-1312772225 source:c:\users\gameover\code\of062cb\addons\goflexcom\goflexcom.cpp
+1312941468 source:c:\users\gameover\code\of062cb\addons\goflexcom\goflexcom.cpp
 	"goFlexCOM.h"
 
-1312769246 c:\users\gameover\code\of062cb\addons\goflexcom\goflexcom.h
+1312941468 c:\users\gameover\code\of062cb\addons\goflexcom\goflexcom.h
 	"ofMain.h"
 	"ofxNetwork.h"
 
@@ -6654,7 +6654,7 @@
 	"ofxUDPManager.h"
 	"ofxNetworkUtils.h"
 
-1312774048 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\analyzer.cpp
+1312941205 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\analyzer.cpp
 	"Analyzer.h"
 
 1312852612 source:c:\users\gameover7\code\of062cb\addons\goflexcom\goflexcom.cpp
@@ -11452,4 +11452,10 @@
 	"MicController.h"
 	"ArdController.h"
 	"Analyzer.h"
+
+1312158316 c:\users\gameover\code\of062cb\addons\ofxboost\src\lib\boost\utility
+
+1312158300 c:\users\gameover\code\of062cb\addons\ofxboost\src\lib\boost\iterator
+
+1312158298 c:\users\gameover\code\of062cb\addons\ofxboost\src\lib\boost\exception
 

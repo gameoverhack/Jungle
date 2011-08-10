@@ -16,23 +16,23 @@ PropertyXMLBuilder::PropertyXMLBuilder(string xmlFile) : IXMLBuilder(xmlFile){
 
 void PropertyXMLBuilder::buildXML(){
 	int which; // used for ofxXmlSettings
-	
-	// get list of all properties 
+
+	// get list of all properties
 	map<string, string> propsAsMap = _appModel->getAllPropsNameTypeAsMap();
-	
+
 	// set xml and root
 	_xml.addTag("config");
 	_xml.pushTag("config");
 	_xml.addTag("properties");
 	_xml.pushTag("properties");
-	
-	// create nodes for each property 
+
+	// create nodes for each property
 	map<string, string>::iterator iter = propsAsMap.begin();
 	while(iter != propsAsMap.end()){
 		which = _xml.addTag("property");
 		_xml.addAttribute("property", "name", iter->first, which); // name
 		_xml.addAttribute("property", "type", iter->second, which); // type
-		
+
 		// value
 		if(iter->second == "float"){
 			_xml.setValue("property", boost::any_cast<float>(_appModel->getProperty(iter->first)), which);
@@ -48,7 +48,7 @@ void PropertyXMLBuilder::buildXML(){
 		}
 		else{
 			LOG_WARNING("Could not save property: " + iter->first + ", unkown type: " + iter->second);
-		}		
+		}
 		iter++;
 	}
 	_xml.popTag();

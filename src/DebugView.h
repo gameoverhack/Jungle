@@ -16,19 +16,19 @@
 #include "AppDataTypes.h"
 
 class DebugView : public BaseView {
-	
+
 public:
-	
+
 	DebugView(float width, float height);	//ctor
 	//SceneView();						//dtor
-	
+
 	void update();
 	void draw();
 
 private:
-	
+
 protected:
-	
+
 };
 
 #endif

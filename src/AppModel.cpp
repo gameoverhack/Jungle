@@ -14,7 +14,7 @@
 AppModel::AppModel(){
 	_currentScene = NULL;
 	_padLength = 1;
-	
+
 	// setup video players
 	_videoPlayers[0] = new goThreadedVideo();
 	_videoPlayers[1] = new goThreadedVideo();
@@ -25,7 +25,7 @@ AppModel::~AppModel(){
 	for(iter = _scenes.begin(); iter != _scenes.end(); iter++){
 		delete (iter->second);
 	}
-	
+
 	// clean up video players
 	delete _videoPlayers[0];
 	delete _videoPlayers[1];
@@ -35,12 +35,12 @@ AppModel::~AppModel(){
 //--------------------------------------------------------------
 void AppModel::registerStates() {
 	LOG_VERBOSE("Registering States");
-	
+
 	registerState(kAPP_INIT, "kAPP_INIT");
 	registerState(kAPP_LOADING, "kAPP_LOADING");
 	registerState(kAPP_RUNNING, "kAPP_RUNNING");
 	registerState(kAPP_EXITING, "kAPP_EXITING");
-	
+
 }
 
 // scene getters and setters
@@ -137,7 +137,7 @@ void AppModel::toggleVideoPlayers() {
 	swap(_videoPlayers[0], _videoPlayers[1]);
 	_videoPlayers[1]->close();
 	_videoPlayers[0]->psuedoUpdate(); // here? or in controller?
-	
+
 	delete _videoPlayers[1];
 	_videoPlayers[1] = new goThreadedVideo();
 }
@@ -180,58 +180,65 @@ bool AppModel::getCurrentIsFrameNew() {
 
 // set any property in a map to propVal
 void AppModel::setProperty(string propName, boost::any propVal) {
-	
+
 	if (_anyProps.count(propName) != 0 && !_anyProps[propName].empty()) {
 		assert (_anyProps[propName].type() == propVal.type());	// don't let properties change types once init'd
 	}
-	
+
 	_anyProps[propName] = propVal;
-	
+
 }
 
 // get any int property in a map (no cast necessary)
 void AppModel::getProperty(string propName, int & propVal) {
-	
+
 	assert(_anyProps.count(propName) != 0);	// if it ain't there abort
 	assert(is_int(_anyProps[propName]));		// if it propVal ref is not same type abort
 	propVal = boost::any_cast<int>(_anyProps[propName]);
-	
+
 }
 
 // get any float property in a map (no cast necessary)
 void AppModel::getProperty(string propName, float & propVal) {
-	
+
 	assert(_anyProps.count(propName) != 0);	// if it ain't there abort
 	assert(is_float(_anyProps[propName]));	// if it propVal ref is not same type abort
 	propVal = boost::any_cast<float>(_anyProps[propName]);
-	
+
 }
 
 // get any string property in a map (no cast necessary)
 void AppModel::getProperty(string propName, string & propVal) {
-	
+
 	assert(_anyProps.count(propName) != 0);	// if it ain't there abort
 	assert(is_string(_anyProps[propName]));	// if it propVal ref is not same type abort
 	propVal = boost::any_cast<string>(_anyProps[propName]);
-	
+
 }
 
 // get any ANY property in a map (cast necessary -> use boost::any_cast<TYPE>(property))
 boost::any AppModel::getProperty(string propName) {
-	
+
 	assert(_anyProps.count(propName) != 0); // if it ain't there abort
 	return _anyProps[propName];
-	
+
+}
+
+// has any ANY property in a map?
+bool AppModel::hasProperty(string propName) {
+
+	return (_anyProps.count(propName) == 0 ? false : true);
+
 }
 
 // return a list of ALL properties -> useful for debug
 string AppModel::getAllPropsAsList() {
-	
+
 	string propsList;
-	
+
 	map<string, boost::any>::iterator anyIT;
 	for (anyIT = _anyProps.begin(); anyIT != _anyProps.end(); anyIT++) {
-		
+
 		string valAsString;
 		string propAsString = anyIT->first;
 		if (is_int(anyIT->second) == true) {
@@ -246,24 +253,24 @@ string AppModel::getAllPropsAsList() {
 		if(is_bool(anyIT->second) == true){
 			valAsString = ((boost::any_cast<bool>)(anyIT->second) ? "true" : "false");
 		}
-		
+
 		propsList += pad(propAsString) + " = " + pad(valAsString) + " type: " + anyIT->second.type().name() + "\n";
 	}
-	
+
 	return propsList;
-	
+
 }
 
 map<string, string> AppModel::getAllPropsNameTypeAsMap(){
 	/*
-	 returning as name,type instead of name,boost::any 
+	 returning as name,type instead of name,boost::any
 	 beacuse we'd have to expose the is_int/etc to check the any types.
 	 */
 	map<string, string> retmap;
-	
+
 	map<string, boost::any>::iterator iter;
 	for (iter = _anyProps.begin(); iter != _anyProps.end(); iter++) {
-		/* add the name and type to the map */		
+		/* add the name and type to the map */
 		if (is_int(iter->second)){
 			retmap.insert(pair<string,string>(iter->first, "int"));
 		}
@@ -281,20 +288,20 @@ map<string, string> AppModel::getAllPropsNameTypeAsMap(){
 }
 
 inline string AppModel::pad(string & t_string) {
-	
+
 	// possibly a more elegant sprintf solution for this but can't work out how to
 	// dynamically set sprintf(objWithWhiteSpace, "%" + ofToString(_padLength) + "s", objectName) ???
-	
+
 	string paddedString = t_string;
 	int padLength = 0;
-	
+
 	// check length and adjust overall pad if the objectName is longer than the current padLength
 	if (t_string.size() > _padLength) _padLength = t_string.size();
-	
+
 	padLength = _padLength - t_string.size();
-	
+
 	for (int i = 0; i < padLength; i++) paddedString += " ";
-	
+
 	return paddedString;
 
 }
