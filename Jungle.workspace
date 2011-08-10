@@ -5,5 +5,6 @@
 			<Depends filename="../../../libs/openFrameworksCompiled/project/win_cb/openFrameworksLib.cbp" />
 		</Project>
 		<Project filename="../../../libs/openFrameworksCompiled/project/win_cb/openFrameworksLib.cbp" />
+		<Project filename="../audioInputExample 3/audioInputExample.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>

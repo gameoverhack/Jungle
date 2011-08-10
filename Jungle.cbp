@@ -80,6 +80,10 @@
 			<Add directory="..\..\..\addons\ofxNetwork\src" />
 			<Add directory="..\..\..\addons\goFlexCOM" />
 			<Add directory="..\..\..\addons\ofxBoost\src\lib\boost" />
+			<Add directory="..\..\..\addons\ofxFft\libs\fftw\include" />
+			<Add directory="..\..\..\addons\ofxFft\libs\kiss" />
+			<Add directory="..\..\..\addons\ofxFft\src" />
+			<Add directory="..\..\..\addons\ofxFft\libs\fftw\lib\win32" />
 		</Compiler>
 		<Linker>
 			<Add option="../../../libs/FreeImage/lib/win_cb/FreeImage.lib" />
@@ -138,6 +142,21 @@
 		<Unit filename="..\..\..\addons\goVideoPlayer\src\goVideoPlayer.h" />
 		<Unit filename="..\..\..\addons\ofxFbo\src\ofxFbo.cpp" />
 		<Unit filename="..\..\..\addons\ofxFbo\src\ofxFbo.h" />
+		<Unit filename="..\..\..\addons\ofxFft\libs\kiss\_kiss_fft_guts.h" />
+		<Unit filename="..\..\..\addons\ofxFft\libs\kiss\kiss_fft.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\..\addons\ofxFft\libs\kiss\kiss_fft.h" />
+		<Unit filename="..\..\..\addons\ofxFft\libs\kiss\kiss_fftr.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\..\addons\ofxFft\libs\kiss\kiss_fftr.h" />
+		<Unit filename="..\..\..\addons\ofxFft\src\ofxFft.cpp" />
+		<Unit filename="..\..\..\addons\ofxFft\src\ofxFft.h" />
+		<Unit filename="..\..\..\addons\ofxFft\src\ofxFftBasic.cpp" />
+		<Unit filename="..\..\..\addons\ofxFft\src\ofxFftBasic.h" />
+		<Unit filename="..\..\..\addons\ofxFft\src\ofxFftw.cpp" />
+		<Unit filename="..\..\..\addons\ofxFft\src\ofxFftw.h" />
 		<Unit filename="..\..\..\addons\ofxNetwork\src\ofxNetwork.h" />
 		<Unit filename="..\..\..\addons\ofxNetwork\src\ofxNetworkUtils.h" />
 		<Unit filename="..\..\..\addons\ofxNetwork\src\ofxTCPClient.cpp" />
@@ -215,6 +234,12 @@
 		</Unit>
 		<Unit filename="src\ArdController.h">
 			<Option virtualFolder="src\controllers\" />
+		</Unit>
+		<Unit filename="src\AttackView.cpp">
+			<Option virtualFolder="src\views\" />
+		</Unit>
+		<Unit filename="src\AttackView.h">
+			<Option virtualFolder="src\views\" />
 		</Unit>
 		<Unit filename="src\BaseState.cpp">
 			<Option virtualFolder="src\utils\" />

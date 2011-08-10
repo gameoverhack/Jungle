@@ -1892,7 +1892,7 @@
 	"ofAppRunner.h"
 	"ofGraphics.h"
 
-1312976626 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appcontroller.cpp
+1312977526 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appcontroller.cpp
 	"AppController.h"
 	"Logger.h"
 
@@ -6478,7 +6478,7 @@
 1312976019 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appview.cpp
 	"AppView.h"
 
-1312977379 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\ardcontroller.cpp
+1312977541 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\ardcontroller.cpp
 	"ArdController.h"
 
 1312941206 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\basestate.cpp
@@ -6490,7 +6490,7 @@
 1312969336 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\camcontroller.cpp
 	"CamController.h"
 
-1312941559 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\datacontroller.cpp
+1312982193 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\datacontroller.cpp
 	"DataController.h"
 
 1312975611 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\debugview.cpp
@@ -11471,4 +11471,53 @@
 
 1312977002 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\attackview.cpp
 	"AttackView.h"
+
+1312438914 source:c:\users\gameover\code\of062cb\addons\ofxfft\src\ofxfft.cpp
+	"ofxFft.h"
+	"ofxFftBasic.h"
+	"ofxFftw.h"
+
+1312252708 c:\users\gameover\code\of062cb\addons\ofxfft\src\ofxfft.h
+	"ofMain.h"
+
+1308409494 c:\users\gameover\code\of062cb\addons\ofxfft\src\ofxfftbasic.h
+	"ofxFft.h"
+	"ofTypes.h"
+	"kiss_fftr.h"
+
+1308409516 c:\users\gameover\code\of062cb\addons\ofxfft\libs\kiss\kiss_fftr.h
+	"kiss_fft.h"
+
+1308409516 c:\users\gameover\code\of062cb\addons\ofxfft\libs\kiss\kiss_fft.h
+	<stdlib.h>
+	<stdio.h>
+	<math.h>
+	<string.h>
+	<xmmintrin.h>
+	<sys/types.h>
+
+1308409494 c:\users\gameover\code\of062cb\addons\ofxfft\src\ofxfftw.h
+	"ofxFft.h"
+	"fftw3.h"
+
+1308409495 c:\users\gameover\code\of062cb\addons\ofxfft\libs\fftw\include\fftw3.h
+	<stdio.h>
+	<stddef.h>
+
+1308409494 source:c:\users\gameover\code\of062cb\addons\ofxfft\src\ofxfftbasic.cpp
+	"ofxFftBasic.h"
+
+1308409494 source:c:\users\gameover\code\of062cb\addons\ofxfft\src\ofxfftw.cpp
+	"ofxFftw.h"
+
+1308409516 source:c:\users\gameover\code\of062cb\addons\ofxfft\libs\kiss\kiss_fft.c
+	"_kiss_fft_guts.h"
+
+1308409516 c:\users\gameover\code\of062cb\addons\ofxfft\libs\kiss\_kiss_fft_guts.h
+	"kiss_fft.h"
+	<limits.h>
+
+1308409516 source:c:\users\gameover\code\of062cb\addons\ofxfft\libs\kiss\kiss_fftr.c
+	"kiss_fftr.h"
+	"_kiss_fft_guts.h"
 

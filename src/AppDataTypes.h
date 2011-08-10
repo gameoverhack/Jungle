@@ -24,20 +24,20 @@ using std::pair;
 #include "Constants.h"
 
 //class VideoPlayer : public goThreadedVideo {
-//	
+//
 //public:
-//	
+//
 //	VideoPlayer(){};
 //	~VideoPlayer(){};
-//	
+//
 //	void	setCurrentFrame(int frame) {_currentFrame == frame;};
 //	int		getCurrentFrame() {return _currentFrame;};
-//		
-//	
+//
+//
 //private:
 //
 //	int					_currentFrame;
-//	
+//
 //};
 
 
@@ -49,6 +49,11 @@ enum interaction_t {
 	kINTERACTION_NONE
 };
 
+// used for fft
+typedef struct {
+	float * fftBand;
+} fftBands;
+
 class FramePair{
 private:
 	friend class boost::serialization::access;
@@ -57,9 +62,9 @@ private:
 	{
 		ar & _start;
 		ar & _end;
-		
+
 	}
-	
+
 public:
 	int _start;
 	int _end;
@@ -76,7 +81,7 @@ private:
 		ar & _attacker;
 		ar & _victim;
 	}
-	
+
 public:
 	int _totalFrames;
 	vector<FramePair> _face;
@@ -117,13 +122,13 @@ public:
 class Sequence {
 
 public:
-	
+
 	Sequence() {
 		_isMovieFaked = false;
 		_isSequenceFaked = false;
 		_interactionTable = NULL;
 	};
-	
+
 	~Sequence() {
 		// nothing for now
 		free(_interactionTable);
@@ -135,61 +140,61 @@ public:
 	void setName(string name) {
 		_name = name;
 	}
-	
+
 	void setNextSequenceName(string ns) {
 		_nextSequenceName = ns;
 	}
-	
+
 	string getNextSequenceName() {
 		return _nextSequenceName;
 	}
-	
+
 	void setAttackerResult(string str) {
 		_attackerResult = str;
 	}
 	string getAttackerResult() {
 		return _attackerResult;
 	}
-	
+
 	void setVictimResult(string str) {
 		_victimResult = str;
 	}
 	string getVictimResult() {
 		return _victimResult;
 	}
-	
+
 	void setMovieFullFilePath(string path) {
 		_movieFullFilePath = path;
 	}
-	
+
 	string getMovieFullFilePath() {
 		return _movieFullFilePath;
 	}
-	
+
 	void setIsMovieFaked(bool b) {
 		_isMovieFaked = b;
 	}
-	
+
 	bool getIsMovieFaked() {
 		return _isMovieFaked;
 	}
-	
+
 	void setIsSequenceFaked(bool b){
 		_isSequenceFaked = b;
 	}
-	
+
 	bool getIsSequenceFaked(){
 		return _isSequenceFaked;
 	}
-	
+
 	void setTransform(string key, vector<CamTransform> * transform){
 		_transforms.insert(make_pair(key, transform));
-	}	
-	
+	}
+
 	int	getTransformCount() {
 		return _transforms.size();
 	}
-	
+
 	vector<CamTransform> * getTransformVector(string key) {
 		map<string, vector<CamTransform> *>::iterator iter;
 		iter = _transforms.find(key);
@@ -199,21 +204,21 @@ public:
 		}
 		return iter->second;
 	}
-	
+
 	string getTransformAsString(string key, int frame) {
 		vector<CamTransform> * t = getTransformVector(key);
-		string tranString = "f: " + ofToString(frame) + 
-							" x: " + ofToString(t->at(frame).x) + 
-							" y: " + ofToString(t->at(frame).y) + 
-							" w: " + ofToString(t->at(frame).w) + 
+		string tranString = "f: " + ofToString(frame) +
+							" x: " + ofToString(t->at(frame).x) +
+							" y: " + ofToString(t->at(frame).y) +
+							" w: " + ofToString(t->at(frame).w) +
 							" h: " + ofToString(t->at(frame).h) +
-							" r: " + ofToString(t->at(frame).rotation) + 
-							" sX: " + ofToString(t->at(frame).scaleX) + 
+							" r: " + ofToString(t->at(frame).rotation) +
+							" sX: " + ofToString(t->at(frame).scaleX) +
 							" sY: " + ofToString(t->at(frame).scaleY) +
 							" zz: " + ofToString((int)t->size());
 		return tranString;
 	}
-	
+
 	void setInteractivity(string s) {
 		_interactivity = s;
 	}
@@ -221,34 +226,34 @@ public:
 	string getInteractivity() {
 		return _interactivity;
 	}
-	
+
 	string getType(){
 		return _type;
 	}
-	
+
 	void setType(string t){
 		_type = t;
 	}
-	
+
 	int getNumber(){
 		return _number;
 	}
-	
+
 	void setNumber(int i){
 		_number = i;
 	}
-	
+
 	interaction_t * getInteractionTable(){
 		return _interactionTable;
 	}
-	
+
 	void setInteractionTable(interaction_t *newInteractionTable){
 		_interactionTable = newInteractionTable;
 	}
-	
-	
+
+
 private:
-	
+
 	string					_name;
 	string					_type;
 	int						_number;
@@ -259,11 +264,11 @@ private:
 	bool					_isMovieFaked;
 	bool					_isSequenceFaked;
 	string					_movieFullFilePath;
-	
+
 	interaction_t			*_interactionTable;
 
 public:
-	
+
 	map<string, vector<CamTransform> *> _transforms;
 };
 
@@ -271,7 +276,7 @@ public:
 // Scene holds a map of Sequences, key'd by the sequence name
 
 class Scene {
-	
+
 public:
 
 	Scene(){
@@ -284,32 +289,32 @@ public:
 			delete (iter->second);
 		}
 	};
-	
+
 	int getNumOfSequences(){
 		return _sequences.size();
 	}
-	
+
 	string getName(){
 		return _name;
 	}
 	void setName(string name){
 		_name = name;
 	}
-	
+
 	void rewindSequences() {
 		_currentSequence = _sequences.begin()->second;
 	}
-	
+
 	void setSequence(string key, Sequence * value){
 		_sequences.insert(pair<string, Sequence *>(key, value));
 	}
-	
+
 	Sequence * getSequence(string key){
 		map<string, Sequence *>::iterator iter;
 		iter = _sequences.find(key);
 		return iter->second;
 	}
-	
+
 	bool setCurrentSequence(string seq){
 		map<string, Sequence *>::iterator iter;
 		iter = _sequences.find(seq);
@@ -323,7 +328,7 @@ public:
 			_currentSequence = iter->second;
 			// play new current sequence movie
 			//_currentSequence->setPaused(false);
-			
+
 			LOG_NOTICE("Set current sequence to " + seq);
 			return true;
 		}
@@ -332,7 +337,7 @@ public:
 		}
 		return false;
 	}
-	
+
 	bool setCurrentSequence(Sequence * seq){
 		// TODO:
 		// Search through the map by value to find if the sequence is a valid
@@ -340,21 +345,21 @@ public:
 		// to be so small it doesn't matter though.
 		return setCurrentSequence(seq->getName());
 	}
-	
+
 	Sequence * getCurrentSequence(){
 		return _currentSequence;
 	}
-	
+
 	bool hasCurrentSequence(){
 		if(_currentSequence == NULL){
 			return false;
 		}
 		return true;
 	}
-	
+
 	// increments the current sequence to the next sequence (of the current sequence)
 	bool nextSequence(){
-		
+
 		Sequence * seq = getCurrentSequence();
 		LOG_VERBOSE(seq->getName());
 		/*
@@ -367,9 +372,9 @@ public:
 				- string _nextSequence = "####FINALSEQUENCETOKEN####";
 
 			Using the string means making a define
-		 
+
 		 */
-		
+
 		if(_currentSequence->getNextSequenceName()== kLAST_SEQUENCE_TOKEN){
 			LOG_VERBOSE("It's not true");
 			return false;
@@ -379,7 +384,7 @@ public:
 		setCurrentSequence(_currentSequence->getNextSequenceName());
 		return true;
 	}
-	
+
 	void print(){
 		string tabs = "\t";
 		string line = "Scene {";
@@ -399,7 +404,7 @@ public:
 			line = tabs + "name => " + iter->second->getName() + "\n";
 			line = line + tabs + "nextSequence => " + iter->second->getNextSequenceName() + "\n";
 			line = line + tabs + "victimResult => " + iter->second->getVictimResult() + "\n";
-			line = line + tabs + "attackerResult => " + iter->second->getAttackerResult() + "\n";			
+			line = line + tabs + "attackerResult => " + iter->second->getAttackerResult() + "\n";
 			printf("%s\n", line.c_str());
 			tabs = "\t\t\t";
 			line = tabs + "}";
@@ -409,18 +414,18 @@ public:
 		line = tabs + "}";
 		printf("%s\n", line.c_str());
 		printf("}\n");
-		
+
 	}
-	
+
 private:
-	
+
 	string					_name;
-	
+
 	Sequence *				_currentSequence;
-	
+
 	map<string, Sequence*>	_sequences;
-	
-	
+
+
 };
 
 #endif

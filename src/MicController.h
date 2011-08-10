@@ -11,21 +11,37 @@
 #define _H_MICCONTROLLER
 
 #include "BaseState.h"
+#include "AppModel.h"
+
+#include "ofxFft.h"
 
 enum {
 	kMICCONTROLLER_INIT,
+	kMICCONTROLLER_READY,
 	kMICCONTROLLER_BELOWTHRESHOLD,
 	kMICCONTROLLER_ABOVETHRESHOLD
 };
+
+
 
 class MicController : public BaseState {
 
 public:
 
-	void	registerStates();
-	
+    MicController();
+    ~MicController();
+
+	void	    registerStates();
+
+    void        setup();
+    void        update();
+
 private:
-	
+
+    void        audioReceived(float* input, int bufferSize, int nChannels);
+
+    ofxFft *    _fft;
+
 };
 
 #endif

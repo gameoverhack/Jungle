@@ -109,7 +109,13 @@ private:
 	int							_frame;
 	bool						_isFrameNew;
 
+    // arduino vars
     int                         _ardRawPins[MAX_ARD_PINS];
+
+    // audio/fft vars
+    fftBands *                  _fftMatrix;
+	fftBands *                  _lsrMatrix;
+	float *                     _audioInput;
 
 protected:
 
