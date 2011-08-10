@@ -10,6 +10,8 @@
 #ifndef _H_APPMODEL
 #define	_H_APPMODEL
 
+#define MAX_ARD_PINS 2
+
 #include "BaseState.h"
 #include "Singleton.h"
 #include "AppDataTypes.h"
@@ -39,32 +41,35 @@ public:
 	AppModel();
 	~AppModel();
 
-	void		registerStates();
+	void		        registerStates();
 
-	void		setScene(string name, Scene * scene);
-	bool		setCurrentScene(string sceneName);
+	void		        setScene(string name, Scene * scene);
+	bool		        setCurrentScene(string sceneName);
 
-	Sequence		* getCurrentSequence();
-	Scene			* getCurrentScene();
+	Sequence		    *getCurrentSequence();
+	Scene			    *getCurrentScene();
 
-	Scene			*getScene(string sceneName);
+	Scene			    *getScene(string sceneName);
 
-	void		setCameraTextures(ofTexture * victimCamTex, ofTexture * attackCamTex);
-	ofTexture * getVictimCamTexRef();
-	ofTexture * getAttackCamTexRef();
+    void                setARDRawPinState(int pin, int val);
+    int                 getARDRawPinState(int pin);
 
-	bool		nextScene();
+	void		        setCameraTextures(ofTexture * victimCamTex, ofTexture * attackCamTex);
+	ofTexture *         getVictimCamTexRef();
+	ofTexture *         getAttackCamTexRef();
 
-    bool        hasProperty(string propName);
-	void		setProperty(string propName, boost::any propVal);
+	bool		        nextScene();
 
-	void		getProperty(string propName, int & propVal);
-	void		getProperty(string propName, float & propVal);
-	void		getProperty(string propName, string & propVal);
+    bool                hasProperty(string propName);
+	void		        setProperty(string propName, boost::any propVal);
 
-	boost::any	getProperty(string propName);
+	void		        getProperty(string propName, int & propVal);
+	void		        getProperty(string propName, float & propVal);
+	void		        getProperty(string propName, string & propVal);
 
-	string		getAllPropsAsList();
+	boost::any	        getProperty(string propName);
+
+	string		        getAllPropsAsList();
 	map<string, string> getAllPropsNameTypeAsMap();
 
 	goThreadedVideo *	getCurrentVideoPlayer();
@@ -82,14 +87,14 @@ public:
 
 private:
 
-	inline string	pad(string & objectName);
-	int				_padLength;
+	inline string	    pad(string & objectName);
+	int				    _padLength;
 
-	bool			is_int(const boost::any & operand);
-	bool			is_float(const boost::any & operand);
-	bool			is_string(const boost::any & operand);
-	bool			is_char_ptr(const boost::any & operand);
-	bool			is_bool(const boost::any & operand);
+	bool			    is_int(const boost::any & operand);
+	bool			    is_float(const boost::any & operand);
+	bool			    is_string(const boost::any & operand);
+	bool			    is_char_ptr(const boost::any & operand);
+	bool			    is_bool(const boost::any & operand);
 
 	map<string, boost::any>		_anyProps;
 
@@ -103,6 +108,8 @@ private:
 	goThreadedVideo *			_videoPlayers[2];
 	int							_frame;
 	bool						_isFrameNew;
+
+    int                         _ardRawPins[MAX_ARD_PINS];
 
 protected:
 

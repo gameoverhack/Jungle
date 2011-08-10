@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_workspace_file>
 	<Workspace title="Workspace">
-		<Project filename="Jungle.cbp">
+		<Project filename="Jungle.cbp" active="1">
 			<Depends filename="../../../libs/openFrameworksCompiled/project/win_cb/openFrameworksLib.cbp" />
 		</Project>
 		<Project filename="../../../libs/openFrameworksCompiled/project/win_cb/openFrameworksLib.cbp" />
-		<Project filename="../../../../videoInput/videoInputSrcAndDemos/CodeBlocks-compileAsLib/videoInputLib/videoInputLib.cbp" active="1" />
 	</Workspace>
 </CodeBlocks_workspace_file>

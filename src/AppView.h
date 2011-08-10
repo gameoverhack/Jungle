@@ -14,24 +14,27 @@
 #include "SceneView.h"
 #include "LoadingView.h"
 #include "DebugView.h"
+#include "AttackView.h"
 
 class AppView : public BaseView {
 
 public:
-	
+
 	AppView(float width, float height);		//ctor
 	//~AppView();							//dtor
-	
+
 	void update();
 	void draw();
-	
+
 private:
+
 	LoadingView *_loadingView;
 	SceneView	*_sceneView;
 	DebugView	*_debugView;
-	
+	AttackView  *_attackView;
+
 protected:
-	
+
 };
 
 #endif

@@ -54,6 +54,7 @@ void DebugView::update(){
 	float progressionPercentage = (float)currentFrame/(float)(totalFrames);
 	float progressionWidth = 300;
 	float progressionHeight = 20;
+
 	ofSetColor(50, 50, 50, 220);
 	ofRect(5, _viewHeight-progressionHeight-10, progressionWidth+4, progressionHeight+2);
 

@@ -1892,7 +1892,7 @@
 	"ofAppRunner.h"
 	"ofGraphics.h"
 
-1312969896 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appcontroller.cpp
+1312976626 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appcontroller.cpp
 	"AppController.h"
 	"Logger.h"
 
@@ -1909,17 +1909,18 @@
 	"ArdController.h"
 	"Analyzer.h"
 
-1312941205 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appview.h
+1312975711 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appview.h
 	"BaseView.h"
 	"SceneView.h"
 	"LoadingView.h"
 	"DebugView.h"
+	"AttackView.h"
 
 1312946305 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\baseview.h
 	"AppModel.h"
 	"ofxFbo.h"
 
-1312944299 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appmodel.h
+1312974850 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appmodel.h
 	"BaseState.h"
 	"Singleton.h"
 	"AppDataTypes.h"
@@ -6466,16 +6467,18 @@
 1312941206 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\miccontroller.h
 	"BaseState.h"
 
-1312941205 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\ardcontroller.h
+1312975854 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\ardcontroller.h
+	"ofMain.h"
 	"BaseState.h"
-
-1312944469 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appmodel.cpp
 	"AppModel.h"
 
-1312969983 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appview.cpp
+1312976429 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appmodel.cpp
+	"AppModel.h"
+
+1312976019 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appview.cpp
 	"AppView.h"
 
-1312941205 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\ardcontroller.cpp
+1312977379 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\ardcontroller.cpp
 	"ArdController.h"
 
 1312941206 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\basestate.cpp
@@ -6490,7 +6493,7 @@
 1312941559 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\datacontroller.cpp
 	"DataController.h"
 
-1312968903 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\debugview.cpp
+1312975611 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\debugview.cpp
 	"DebugView.h"
 
 1312941206 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\jungleexception.cpp
@@ -11462,4 +11465,10 @@
 1190863194 c:\users\gameover\code\of062cb\addons\govideograbber\src\uuids.h
 	"ksuuids.h"
 	<codecapi.h>
+
+1312975886 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\attackview.h
+	"BaseView.h"
+
+1312977002 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\attackview.cpp
+	"AttackView.h"
 

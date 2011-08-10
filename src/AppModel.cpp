@@ -120,7 +120,22 @@ ofTexture * AppModel::getAttackCamTexRef() {
 	return _attackCamTex;
 }
 
-// videoplayer getters and setters
+/********************************************************
+ *      Getters and setters for videoplayer           	*
+ ********************************************************/
+//--------------------------------------------------------------
+
+void AppModel::setARDRawPinState(int pin, int val) {
+    _ardRawPins[pin] = val;
+}
+
+int AppModel::getARDRawPinState(int pin) {
+    return _ardRawPins[pin];
+}
+
+/********************************************************
+ *      Getters and setters for videoplayer           	*
+ ********************************************************/
 //--------------------------------------------------------------
 goThreadedVideo * AppModel::getCurrentVideoPlayer() {
 	return _videoPlayers[0]; // always make 0 the current...

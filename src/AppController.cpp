@@ -35,8 +35,8 @@ void AppController::setup() {
 
 	LOG_NOTICE("Initialising");
 
-	//ofSetFrameRate(30);
-	//ofSetVerticalSync(true);
+	ofSetFrameRate(60);          // has to be as we can't set hammer ofArduino too hard...hmmm
+	ofSetVerticalSync(true);
 
 	_isFullScreen		= false; // change this when we start in fullscreen mode
 	_switchToSequence	= NULL;
@@ -61,6 +61,7 @@ void AppController::setup() {
 	// setup ardController
 	_ardController = new ArdController();
 	_ardController->registerStates();
+	_ardController->setup("COM5"); // TODO: make this a property
 
 	// setup cameras
 	_camControllers[0] = new CamController();
@@ -109,7 +110,8 @@ void AppController::swapCameras() {
 
 //--------------------------------------------------------------
 void AppController::update() {
-	//	LOG_VERBOSE("Updating");
+
+    _ardController->update();
 
 	_appView->update();
 

@@ -11,9 +11,10 @@
 
 AppView::AppView(float width, float height) : BaseView(width ,height) {
 
-	_loadingView = new LoadingView(width, height);
-	_sceneView = new SceneView(width, height);
-	_debugView = new DebugView(width, height);
+	_loadingView    = new LoadingView(width, height);
+	_sceneView      = new SceneView(width, height);
+	_debugView      = new DebugView(width, height);
+	_attackView     = new AttackView(width, height);
 
 }
 
@@ -25,7 +26,8 @@ void AppView::update() {
 		_loadingView->update();
 	} else {
 		_sceneView->update();
-		if(boost::any_cast<bool>(_appModel->getProperty("showDebugView"))){
+		_attackView->update();
+		if(boost::any_cast<bool>(_appModel->getProperty("showDebugView"))) {
 			_debugView->update();
 		}
 	}
@@ -57,6 +59,7 @@ void AppView::draw() {
 		// draw diagnositc view
 		if(boost::any_cast<bool>(_appModel->getProperty("showDebugView"))){
 			_debugView->draw(0, height, width, -height);
+			_attackView->draw(0, height, width, -height);
 		}
 	}
 
