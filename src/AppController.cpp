@@ -57,10 +57,10 @@ void AppController::setup() {
 	_isFullScreen		= false; // change this when we start in fullscreen mode
 	_switchToSequence	= NULL;
 
-	_appModel->registerStates();
+	//_appModel->registerStates();
 	_appModel->setState(kAPP_INIT);
 
-	_flashAnalyzer->registerStates();
+	//_flashAnalyzer->registerStates();
 
 	// set up datacontroller
 	_dataController = new DataController(ofToDataPath("config_properties.xml"));
@@ -71,7 +71,7 @@ void AppController::setup() {
 	//_vidController->registerStates();
 
 	// setup micController
-	_micController = new MicController(3); // TODO: make these a property
+	_micController = new MicController(1); // TODO: make these a property
 	//_micController->registerStates();
 
 	// setup ardController

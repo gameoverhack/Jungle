@@ -31,6 +31,7 @@ AppView::~AppView() {
     delete _sceneView;
     delete _debugView;
     delete _attackView;
+    delete _victimView;
 
 }
 
@@ -76,7 +77,7 @@ void AppView::draw() {
 		// draw diagnositc view
 		if(boost::any_cast<bool>(_appModel->getProperty("showDebugView"))){
 			_attackView->draw(1695 * (width/1920.0f), 217 * (height/1080.0f), _attackView->getWidth() * (width/1920.0f), _attackView->getHeight() * (height/1080.0f));
-			_victimView->draw(4 * (width/1920.0f), 217 * (height/1080.0f), _attackView->getWidth() * (width/1920.0f), _attackView->getHeight() * (height/1080.0f));
+			_victimView->draw(4 * (width/1920.0f), 217 * (height/1080.0f), _victimView->getWidth() * (width/1920.0f), _victimView->getHeight() * (height/1080.0f));
 			_debugView->draw(0, height, width, -height);
 		}
 	}

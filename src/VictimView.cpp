@@ -31,11 +31,18 @@ void VictimView::update() {
     ofTexture   * icon_bar      = _appModel->getGraphicTex(kGFX_SCREAM_BAR);
 
     int currentInteractivity    = _appModel->getCurrentInteractivity();
-    bool isInteractive          = (currentInteractivity == kINTERACTION_BOTH || currentInteractivity == kINTERACTION_VICTIM);
+    bool isInteractive          = true;//(currentInteractivity == kINTERACTION_BOTH || currentInteractivity == kINTERACTION_VICTIM);
 
-    float scaledInputLevel      = (float)_appModel->getARDRawPins()[0]/250.0f;      // make more complex soon ;-)
-    bool blockInput             = ((float)_appModel->getARDRawPins()[0] > 10.0f);   // make more complex soon ;-)
+    float scaledInputLevel      = ((float)_appModel->getFFTArea());      // make more complex soon ;-)
+    bool blockInput             = (scaledInputLevel > 0.2f);   // make more complex soon ;-)
 
+    int totalNumSequences       = _appModel->getCurrentScene()->getNumOfSequences();
+    int thisNumSequence         = _appModel->getCurrentSequence()->getNumber();
+
+    float barThreshold          = (2.0/(float)totalNumSequences)+((float)thisNumSequence/(float)totalNumSequences); // TODO: move to the model
+
+    float bar_y                 = (meter_on->getHeight() - 4*42.0f) - floor((float)thisNumSequence/(float)totalNumSequences*12.0f)*42.0f;
+    float bar_x                 = 17.0f;
     float icon_x                = 5.0f;
     float icon_y                = 700.0f;
     float meter_x               = 5.0f;
@@ -48,6 +55,10 @@ void VictimView::update() {
 
     glClearColor(0.0, 0.0, 0.0, 0.0); // transparent clear colour
     glClear(GL_COLOR_BUFFER_BIT);
+
+    if (scaledInputLevel > barThreshold) ofSetColor(255, 0, 0, 255); // no tinting
+
+    meter_level->draw(bar_x, bar_y);
 
     ofSetColor(255, 255, 255, 255); // no tinting
 
@@ -88,7 +99,7 @@ void VictimView::drawMeterMask(float level) {
 	ofFill();
 	glTranslatef(0.0f, _maskFBO.getHeight(), 0.0f);
 	glScalef(1.0f, -1.0f, 1.0f);
-    ofRect(0, 0, _maskFBO.getWidth(), floor(level*_maskFBO.getHeight()/42.0f) * 42.0f);
+    ofRect(0, 0, _maskFBO.getWidth(), floor(level*16.0f) * 42.0f);
     //ofNoFill();
 
     glPopMatrix();

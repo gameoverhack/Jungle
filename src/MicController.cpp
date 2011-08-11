@@ -27,10 +27,10 @@ MicController::MicController(int fftBufferLengthSecs, int audioBufferSize, int s
 	_fft = ofxFft::create(_audioBufferSize, OF_FFT_WINDOW_HAMMING, OF_FFT_FFTW);
 
      // allocate fft and audio sample arrays refs on the appModel...
-    _appModel->allocateCyclicBuffer(_fftCyclicBufferSize, _fft->getBinSize());
-    _appModel->allocateNoiseFloor(_fft->getBinSize());
-    _appModel->allocateCyclicSum(_fft->getBinSize());
-    _appModel->allocatePostFilter(_fft->getBinSize());
+    _appModel->allocateFFTCyclicBuffer(_fftCyclicBufferSize, _fft->getBinSize());
+    _appModel->allocateFFTNoiseFloor(_fft->getBinSize());
+    _appModel->allocateFFTCyclicSum(_fft->getBinSize());
+    _appModel->allocateFFTPostFilter(_fft->getBinSize());
     _appModel->allocateAudioInput(_audioBufferSize);
 
     // instantiate the soundstream
@@ -59,8 +59,19 @@ void MicController::registerStates() {
 
 void MicController::update() {
 
+    float * fftPostFilter       = _appModel->getFFTNoiseFloor();
+
     // update sound stream
     ofSoundUpdate();
+
+    float area = 0;
+	for (int i = 0; i < _fft->getBinSize(); i++) {
+		float h = fftPostFilter[i];
+		float w = 1.0f;
+		area += w*h;
+	}
+
+    _appModel->setFFTArea(sqrt(area) - 0.3f); // -0.3f is arbitrary noise floor adjustment TODO: make property
 
 }
 
@@ -68,10 +79,10 @@ void MicController::audioReceived(float* input, int bufferSize, int nChannels) {
 
     if (_fft != NULL) {
         // get fft and audio sample arrays refs from the appModel...
-        fftBands * fftCyclicBuffer  = _appModel->getCyclicBuffer();
-        float * fftNoiseFloor       = _appModel->getNoiseFloor();
-        float * fftCyclicSum        = _appModel->getCyclicSum();
-        float * fftPostFilter       = _appModel->getPostFilter();
+        fftBands * fftCyclicBuffer  = _appModel->getFFTCyclicBuffer();
+        float * fftNoiseFloor       = _appModel->getFFTNoiseFloor();
+        float * fftCyclicSum        = _appModel->getFFTCyclicSum();
+        float * fftPostFilter       = _appModel->getFFTPostFilter();
         float * audioInput          = _appModel->getAudioInput();
 
         // put raw copy of audio input into model

@@ -70,19 +70,36 @@ public:
     int                 getCurrentInteractivity();
 
     // arduino getter/setters
-    void                allocateARDRawPins(int numPins);
-    int *               getARDRawPins();
+    void                allocatePinInput(int numPins);
+    int *               getPinInput();
+
+    void                setARDArea(float area);
+    float               getARDArea();
+
+    void                allocateARDCyclicBuffer(int ardCyclicBufferSize);
+    void                allocateARDNoiseFloor();
+    void                allocateARDCyclicSum();
+    void                allocateARDPostFilter();
+
+    float *             getARDCyclicBuffer();
+    float *             getARDNoiseFloor();
+    float *             getARDCyclicSum();
+    float *             getARDPostFilter();
 
     // audio/mic getter/setters
-    void                allocateCyclicBuffer(int fftCyclicBufferSize, int fftBinSize);
-    void                allocateNoiseFloor(int fftBinSize);
-    void                allocateCyclicSum(int fftBinSize);
-    void                allocatePostFilter(int fftBinSize);
+    void                setFFTArea(float area);
+    float               getFFTArea();
+
+    void                allocateFFTCyclicBuffer(int fftCyclicBufferSize, int fftBinSize);
+    void                allocateFFTNoiseFloor(int fftBinSize);
+    void                allocateFFTCyclicSum(int fftBinSize);
+    void                allocateFFTPostFilter(int fftBinSize);
     void                allocateAudioInput(int bufferSize);
-    fftBands *          getCyclicBuffer();
-    float *             getNoiseFloor();
-    float *             getCyclicSum();
-    float *             getPostFilter();
+
+    fftBands *          getFFTCyclicBuffer();
+    float *             getFFTNoiseFloor();
+    float *             getFFTCyclicSum();
+    float *             getFFTPostFilter();
     float *             getAudioInput();
 
     // camera getter/setters
@@ -144,9 +161,19 @@ private:
 	bool						_isFrameNew;
 
     // arduino vars
+    float                       _ardArea;
+
     int *                       _ardRawPins;
 
+    float *                     _ardCyclicBuffer;
+
+    float *                     _ardNoiseFloor;
+    float *                     _ardCyclicSum;
+	float *                     _ardPostFilter;
+
     // audio/fft vars
+    float                       _fftArea;
+
     fftBands *                  _fftCyclicBuffer;
 
     float *                     _fftNoiseFloor;

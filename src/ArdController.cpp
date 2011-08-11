@@ -21,7 +21,7 @@ ArdController::ArdController(string deviceName) {
         abort();
     } else {
         LOG_NOTICE("Successfully connected Arduino on: " + deviceName);
-        _appModel->allocateARDRawPins(2);
+        _appModel->allocatePinInput(2);
         setState(kARDCONTROLLER_INIT);
     }
 }
@@ -76,10 +76,10 @@ void ArdController::updateArduino() {
 
     _ard.update();
 
-    int * ardRawPins = _appModel->getARDRawPins();
+    int * pinInput = _appModel->getPinInput();
 
-    ardRawPins[0] = _ard.getAnalog(0);
-    ardRawPins[1] = _ard.getAnalog(1);
+    pinInput[0] = _ard.getAnalog(0);
+    pinInput[1] = _ard.getAnalog(1);
 
     //LOG_VERBOSE("[" + ofToString(ardRawPins[0]) + "::" + ofToString(ardRawPins[1]) + "]");
 

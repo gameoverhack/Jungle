@@ -11,7 +11,12 @@
 
 // ctor & dtor
 //--------------------------------------------------------------
-AppModel::AppModel(){
+AppModel::AppModel() {
+
+    LOG_NOTICE("Constructing AppModel");
+
+    registerStates();
+
 	_currentScene = NULL;
 	//_ardRawPins = new int[2];
 	_padLength = 1;
@@ -146,8 +151,17 @@ ofTexture * AppModel::getGraphicTex(int type) {
 /********************************************************
  *      Getters and setters for MicController       	*
  ********************************************************/
+
+void AppModel::setFFTArea(float area) {
+    _fftArea = area;
+}
+
+float AppModel::getFFTArea() {
+    return _fftArea;
+}
+
  //--------------------------------------------------------------
-void AppModel::allocateCyclicBuffer(int fftCyclicBufferSize, int fftBinSize) {
+void AppModel::allocateFFTCyclicBuffer(int fftCyclicBufferSize, int fftBinSize) {
     _fftCyclicBuffer = new fftBands[fftCyclicBufferSize];
     for (int i = 0; i < fftCyclicBufferSize; i++) {
         _fftCyclicBuffer[i].fftBand = new float[fftBinSize];
@@ -156,19 +170,19 @@ void AppModel::allocateCyclicBuffer(int fftCyclicBufferSize, int fftBinSize) {
 }
 
 //--------------------------------------------------------------
-void AppModel::allocateNoiseFloor(int fftBinSize) {
+void AppModel::allocateFFTNoiseFloor(int fftBinSize) {
     _fftNoiseFloor = new float[fftBinSize];
     memset(_fftNoiseFloor, 0, sizeof(float) * fftBinSize);
 }
 
 //--------------------------------------------------------------
-void AppModel::allocateCyclicSum(int fftBinSize) {
+void AppModel::allocateFFTCyclicSum(int fftBinSize) {
     _fftCyclicSum = new float[fftBinSize];
     memset(_fftCyclicSum, 0, sizeof(float) * fftBinSize);
 }
 
 //--------------------------------------------------------------
-void AppModel::allocatePostFilter(int fftBinSize) {
+void AppModel::allocateFFTPostFilter(int fftBinSize) {
     _fftPostFilter = new float[fftBinSize];
     memset(_fftPostFilter, 0, sizeof(float) * fftBinSize);
 }
@@ -180,22 +194,22 @@ void AppModel::allocateAudioInput(int bufferSize) {
 }
 
 //--------------------------------------------------------------
-fftBands * AppModel::getCyclicBuffer() {
+fftBands * AppModel::getFFTCyclicBuffer() {
     return _fftCyclicBuffer;
 }
 
 //--------------------------------------------------------------
-float * AppModel::getNoiseFloor() {
+float * AppModel::getFFTNoiseFloor() {
     return _fftNoiseFloor;
 }
 
 //--------------------------------------------------------------
-float * AppModel::getCyclicSum() {
+float * AppModel::getFFTCyclicSum() {
     return _fftCyclicSum;
 }
 
 //--------------------------------------------------------------
-float * AppModel::getPostFilter() {
+float * AppModel::getFFTPostFilter() {
     return _fftPostFilter;
 }
 
@@ -208,14 +222,64 @@ float * AppModel::getAudioInput() {
  *      Getters and setters for ArdController        	*
  ********************************************************/
 //--------------------------------------------------------------
-void AppModel::allocateARDRawPins(int numPins) {
+void AppModel::allocatePinInput(int numPins) {
     //delete _ardRawPins;
     _ardRawPins = new int[numPins];
 }
 
 //--------------------------------------------------------------
-int * AppModel::getARDRawPins() {
+int * AppModel::getPinInput() {
     return _ardRawPins;
+}
+
+void AppModel::setARDArea(float area) {
+    _ardArea = area;
+}
+
+//--------------------------------------------------------------
+float AppModel::getARDArea() {
+    return _ardArea;
+}
+
+//--------------------------------------------------------------
+void AppModel::allocateARDCyclicBuffer(int ardCyclicBufferSize) {
+    _ardCyclicBuffer = new float[ardCyclicBufferSize];
+}
+
+//--------------------------------------------------------------
+void AppModel::allocateARDNoiseFloor() {
+    _ardNoiseFloor = new float;
+}
+
+//--------------------------------------------------------------
+void AppModel::allocateARDCyclicSum() {
+    _ardCyclicSum = new float;
+}
+
+//--------------------------------------------------------------
+void AppModel::allocateARDPostFilter() {
+    _ardPostFilter = new float;
+}
+
+//--------------------------------------------------------------
+
+float * AppModel::getARDCyclicBuffer() {
+    return _ardCyclicBuffer;
+}
+
+//--------------------------------------------------------------
+float * AppModel::getARDNoiseFloor() {
+    return _ardNoiseFloor;
+}
+
+//--------------------------------------------------------------
+float * AppModel::getARDCyclicSum() {
+    return _ardCyclicSum;
+}
+
+//--------------------------------------------------------------
+float * AppModel::getARDPostFilter() {
+    return _ardPostFilter;
 }
 
 /********************************************************

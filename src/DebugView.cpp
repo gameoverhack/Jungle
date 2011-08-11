@@ -20,15 +20,13 @@ void DebugView::update(){
 	//goThreadedVideo	* currentMovie		= _appModel->get();
 	Sequence		* currentSequence	= _appModel->getCurrentSequence();
 	Scene			* currentScene		= _appModel->getCurrentScene();
-    int             * ardRawPins = _appModel->getARDRawPins();
-    string          msg;
+    int             * pinInput          = _appModel->getPinInput();
+    float             fftArea           = _appModel->getFFTArea();
+    string            msg;
 
-    if(ardRawPins != NULL) {
-
-        msg += "ard RAW pin0: " + ofToString(ardRawPins[0]) + "\n";
-        msg += "ard RAW pin1: " + ofToString(ardRawPins[1]) + "\n";
-
-    }
+    msg += "mic RAW area: " + ofToString(fftArea) + "\n";
+    msg += "ard RAW pin0: " + ofToString(pinInput[0]) + "\n";
+    msg += "ard RAW pin1: " + ofToString(pinInput[1]) + "\n";
 
 	// get frame rate
 	msg += "ABC: " + ofToString(ofGetFrameRate()) + "\n";
