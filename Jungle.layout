@@ -73,7 +73,7 @@
 	<File name="src\AppController.h" open="0" top="0" tabpos="3">
 		<Cursor position="281" topLine="36" />
 	</File>
-	<File name="src\AppDataTypes.h" open="1" top="0" tabpos="23">
+	<File name="src\AppDataTypes.h" open="1" top="0" tabpos="20">
 		<Cursor position="955" topLine="36" />
 	</File>
 	<File name="src\AppModel.cpp" open="1" top="0" tabpos="4">
@@ -88,7 +88,7 @@
 	<File name="src\AppView.h" open="1" top="0" tabpos="8">
 		<Cursor position="201" topLine="0" />
 	</File>
-	<File name="src\ArdController.cpp" open="1" top="1" tabpos="2">
+	<File name="src\ArdController.cpp" open="1" top="0" tabpos="2">
 		<Cursor position="774" topLine="13" />
 	</File>
 	<File name="src\ArdController.h" open="1" top="0" tabpos="3">
@@ -145,7 +145,7 @@
 	<File name="src\MicController.cpp" open="1" top="0" tabpos="14">
 		<Cursor position="845" topLine="17" />
 	</File>
-	<File name="src\MicController.h" open="1" top="0" tabpos="22">
+	<File name="src\MicController.h" open="1" top="0" tabpos="19">
 		<Cursor position="699" topLine="23" />
 	</File>
 	<File name="src\PropertyXMLBuilder.cpp" open="0" top="0" tabpos="28">

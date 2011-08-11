@@ -9,12 +9,38 @@
 
 #include "MicController.h"
 
-MicController::MicController() {
-    //ctor
+MicController::MicController(int fftBufferLengthSecs, int audioBufferSize, int sampleRate, int channels) {
+
+    LOG_NOTICE("Setting up MicController");
+
+    // store audio buffer size (in samples) default = 512
+    _audioBufferSize        = audioBufferSize;
+
+    // calculate length of fftCyclicBuffer
+    _fftCyclicBufferSize    = fftBufferLengthSecs * (sampleRate/_audioBufferSize);
+    _fftCyclicBufferOffset  = 0;
+
+        // create the fft
+    LOG_NOTICE("Setting up fft");
+	_fft = ofxFft::create(_audioBufferSize, OF_FFT_WINDOW_HAMMING, OF_FFT_FFTW);
+
+     // allocate fft and audio sample arrays refs on the appModel...
+    _appModel->allocateCyclicBuffer(_fftCyclicBufferSize, _fft->getBinSize());
+    _appModel->allocateNoiseFloor(_fft->getBinSize());
+    _appModel->allocateCyclicSum(_fft->getBinSize());
+    _appModel->allocatePostFilter(_fft->getBinSize());
+    _appModel->allocateAudioInput(_audioBufferSize);
+
+    // instantiate the soundstream
+    LOG_NOTICE("Setting up soundstream");
+	ofSoundStreamSetup(0, channels, this, sampleRate, _audioBufferSize, 4);
+
 }
 
 MicController::~MicController() {
-    //dtor
+    LOG_NOTICE("Closing soundstream...need to close fft too?????");
+    delete _fft;
+    ofSoundStreamClose();
 }
 
 void MicController::registerStates() {
@@ -28,16 +54,52 @@ void MicController::registerStates() {
 	setState(kMICCONTROLLER_INIT);
 }
 
-void MicController::setup() {
-
-}
-
 void MicController::update() {
+
+    // update sound stream
+    ofSoundUpdate();
 
 }
 
 void MicController::audioReceived(float* input, int bufferSize, int nChannels) {
 
+    // get fft and audio sample arrays refs from the appModel...
+    fftBands * fftCyclicBuffer  = _appModel->getCyclicBuffer();
+    float * fftNoiseFloor       = _appModel->getNoiseFloor();
+    float * fftCyclicSum        = _appModel->getCyclicSum();
+    float * fftPostFilter       = _appModel->getPostFilter();
+    float * audioInput          = _appModel->getAudioInput();
 
+    // put raw copy of audio input into model
+    memcpy(audioInput, input, sizeof(float) * bufferSize);
+
+    // pass raw audio data to the fft
+    _fft->setSignal(audioInput);
+    float * fftCurrent          = _fft->getAmplitude();
+
+    // copy current fft into cyclic buffer
+    for(int i = 0; i < _fft->getBinSize(); i++) {
+        fftCyclicBuffer[_fftCyclicBufferOffset].fftBand[i] = fftCurrent[i];
+    }
+
+    // set cyclic sum back to 0;
+    memset(fftCyclicSum, 0, sizeof(float) * _fft->getBinSize());
+
+    // sum every band of every FFT in the cyclic buffer
+    for (int i = 0; i < _fftCyclicBufferSize; i++) {
+        for (int j = 0; j < _fft->getBinSize(); j++) {
+            fftCyclicSum[j] = fftCyclicSum[j] + fftCyclicBuffer[i].fftBand[j];
+        }
+    }
+
+    // calculate the Noise Floor (average of sum of all bands across the cyclic buffer, and
+    // and simultaneously calculate the Adaptive Noise Reduced FFT, storing it on the model
+    for (int j = 1; j < _fft->getBinSize(); j++) {
+        fftNoiseFloor[j] = fftCyclicSum[j]/(float)_fftCyclicBufferSize;
+		fftPostFilter[j] = fftCurrent[j] - fftNoiseFloor[j];
+    }
+
+    // increase the cyclic buffer offset
+    _fftCyclicBufferOffset = (_fftCyclicBufferOffset + 1) % _fftCyclicBufferSize;
 
 }

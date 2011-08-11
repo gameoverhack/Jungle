@@ -11,10 +11,25 @@
 
 AppView::AppView(float width, float height) : BaseView(width ,height) {
 
+    LOG_NOTICE("Setting up all (sub) views");
 	_loadingView    = new LoadingView(width, height);
 	_sceneView      = new SceneView(width, height);
 	_debugView      = new DebugView(width, height);
 	_attackView     = new AttackView(width, height);
+
+}
+
+AppView::~AppView() {
+
+    LOG_NOTICE("Destroying all other (sub) views");
+
+    _viewFBO.detach();
+    _viewFBOTexture.clear();
+
+    delete _loadingView;
+    delete _sceneView;
+    delete _debugView;
+    delete _attackView;
 
 }
 

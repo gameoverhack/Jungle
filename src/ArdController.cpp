@@ -9,12 +9,16 @@
 
 #include "ArdController.h"
 
-ArdController::ArdController() {
-    //ctor
+ArdController::ArdController(string deviceName) {
+    if(!_ard.connect(deviceName, 57600)) {
+        LOG_ERROR("Cannot start Arduino on: " + deviceName);
+        abort();
+    } else LOG_NOTICE("Successfully connected Arduino on: " + deviceName);
 }
 
 ArdController::~ArdController() {
-    //dtor
+    LOG_NOTICE("Disconnecting Arduino");
+    _ard.disconnect();
 }
 
 void ArdController::registerStates() {
@@ -26,13 +30,6 @@ void ArdController::registerStates() {
 	registerState(kARDCONTROLLER_ABOVETHRESHOLD, "kARDCONTROLLER_ABOVETHRESHOLD");
 
 	setState(kARDCONTROLLER_INIT);
-}
-
-void ArdController::setup(string deviceName) {
-    if(!_ard.connect(deviceName, 57600)) {
-        LOG_ERROR("Cannot start Arduino on: " + deviceName);
-        abort();
-    } else LOG_NOTICE("Successfully connected Arduino on: " + deviceName);
 }
 
 void ArdController::update() {
@@ -53,6 +50,8 @@ void ArdController::setupArduino() {
 
     LOG_VERBOSE("Setting up pin types on Arduino");
 
+    _appModel->allocateARDRawPins(2);
+
     _ard.sendAnalogPinReporting(0, ARD_ANALOG);	// AB: report data
 	_ard.sendAnalogPinReporting(1, ARD_ANALOG);	// AB: report data
 	setState(kARDCONTROLLER_READY);
@@ -65,9 +64,11 @@ void ArdController::updateArduino() {
 
     _ard.update();
 
-    _appModel->setARDRawPinState(0, _ard.getAnalog(0));
-    _appModel->setARDRawPinState(1, _ard.getAnalog(1));
+    int * ardRawPins = _appModel->getARDRawPins();
 
-    //LOG_VERBOSE("[" + ofToString(_ard.getAnalog(0)) + "::" + ofToString(_ard.getAnalog(1)) + "]");
+    ardRawPins[0] = _ard.getAnalog(0);
+    ardRawPins[1] = _ard.getAnalog(1);
+
+    //LOG_VERBOSE("[" + ofToString(ardRawPins[0]) + "::" + ofToString(ardRawPins[1]) + "]");
 
 }

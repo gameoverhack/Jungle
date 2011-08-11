@@ -121,16 +121,76 @@ ofTexture * AppModel::getAttackCamTexRef() {
 }
 
 /********************************************************
- *      Getters and setters for videoplayer           	*
+ *      Getters and setters for MicController       	*
  ********************************************************/
-//--------------------------------------------------------------
-
-void AppModel::setARDRawPinState(int pin, int val) {
-    _ardRawPins[pin] = val;
+ //--------------------------------------------------------------
+void AppModel::allocateCyclicBuffer(int fftCyclicBufferSize, int fftBinSize) {
+    _fftCyclicBuffer = new fftBands[fftCyclicBufferSize];
+    for (int i = 0; i < fftCyclicBufferSize; i++) {
+        _fftCyclicBuffer[i].fftBand = new float[fftBinSize];
+        memset(_fftCyclicBuffer[i].fftBand, 0, sizeof(float) * fftBinSize);
+    }
 }
 
-int AppModel::getARDRawPinState(int pin) {
-    return _ardRawPins[pin];
+//--------------------------------------------------------------
+void AppModel::allocateNoiseFloor(int fftBinSize) {
+    _fftNoiseFloor = new float[fftBinSize];
+    memset(_fftNoiseFloor, 0, sizeof(float) * fftBinSize);
+}
+
+//--------------------------------------------------------------
+void AppModel::allocateCyclicSum(int fftBinSize) {
+    _fftCyclicSum = new float[fftBinSize];
+    memset(_fftCyclicSum, 0, sizeof(float) * fftBinSize);
+}
+
+//--------------------------------------------------------------
+void AppModel::allocatePostFilter(int fftBinSize) {
+    _fftPostFilter = new float[fftBinSize];
+    memset(_fftPostFilter, 0, sizeof(float) * fftBinSize);
+}
+
+//--------------------------------------------------------------
+void AppModel::allocateAudioInput(int bufferSize) {
+    _audioInput = new float[bufferSize];
+    memset(_audioInput, 0, sizeof(float) * bufferSize);
+}
+
+//--------------------------------------------------------------
+fftBands * AppModel::getCyclicBuffer() {
+    return _fftCyclicBuffer;
+}
+
+//--------------------------------------------------------------
+float * AppModel::getNoiseFloor() {
+    return _fftNoiseFloor;
+}
+
+//--------------------------------------------------------------
+float * AppModel::getCyclicSum() {
+    return _fftCyclicSum;
+}
+
+//--------------------------------------------------------------
+float * AppModel::getPostFilter() {
+    return _fftPostFilter;
+}
+
+//--------------------------------------------------------------
+float * AppModel::getAudioInput() {
+    return _audioInput;
+}
+
+/********************************************************
+ *      Getters and setters for ArdController        	*
+ ********************************************************/
+
+void AppModel::allocateARDRawPins(int numPins) {
+    _ardRawPins = new int[numPins];
+}
+
+int * AppModel::getARDRawPins() {
+    return _ardRawPins;
 }
 
 /********************************************************

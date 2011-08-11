@@ -24,16 +24,15 @@ enum {
 
 
 
-class MicController : public BaseState {
+class MicController : public BaseState, public ofBaseApp {
 
 public:
 
-    MicController();
+    MicController(int fftBufferLengthSecs, int audioBufferSize = 512, int sampleRate = 44100, int channels = 1);
     ~MicController();
 
 	void	    registerStates();
 
-    void        setup();
     void        update();
 
 private:
@@ -41,6 +40,10 @@ private:
     void        audioReceived(float* input, int bufferSize, int nChannels);
 
     ofxFft *    _fft;
+
+    int         _audioBufferSize;
+    int         _fftCyclicBufferSize;
+    int         _fftCyclicBufferOffset;
 
 };
 

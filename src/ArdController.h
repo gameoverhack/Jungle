@@ -25,12 +25,11 @@ class ArdController : public BaseState {
 
 public:
 
-    ArdController();
+    ArdController(string deviceName);
     ~ArdController();
 
 	void	    registerStates();
 
-	void        setup(string deviceName);
     void        update();
 
 private:

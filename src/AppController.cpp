@@ -28,6 +28,16 @@ AppController::~AppController() {
 #endif
 
 	_dataController->saveProperties();
+
+    delete _appView;
+
+	delete _ardController;
+	delete _micController;
+    delete _camControllers[0];
+	delete _camControllers[1];
+	delete _vidController;
+	delete _dataController;
+
 }
 
 //--------------------------------------------------------------
@@ -55,13 +65,12 @@ void AppController::setup() {
 	_vidController->registerStates();
 
 	// setup micController
-	_micController = new MicController();
+	_micController = new MicController(3); // TODO: make these a property
 	_micController->registerStates();
 
 	// setup ardController
-	_ardController = new ArdController();
+	_ardController = new ArdController("COM5"); // TODO: make this a property
 	_ardController->registerStates();
-	_ardController->setup("COM5"); // TODO: make this a property
 
 	// setup cameras
 	_camControllers[0] = new CamController();
@@ -111,6 +120,7 @@ void AppController::swapCameras() {
 //--------------------------------------------------------------
 void AppController::update() {
 
+    _micController->update();
     _ardController->update();
 
 	_appView->update();
@@ -362,6 +372,9 @@ void AppController::keyPressed(int key){
 			break;
         case '0':
              _appModel->setProperty("showProps", !showProps);
+            break;
+        case '/':
+             delete _micController;
             break;
 		default:
 			break;

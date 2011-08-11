@@ -10,8 +10,6 @@
 #ifndef _H_APPMODEL
 #define	_H_APPMODEL
 
-#define MAX_ARD_PINS 2
-
 #include "BaseState.h"
 #include "Singleton.h"
 #include "AppDataTypes.h"
@@ -43,6 +41,7 @@ public:
 
 	void		        registerStates();
 
+    // scene and sequence getter/setters
 	void		        setScene(string name, Scene * scene);
 	bool		        setCurrentScene(string sceneName);
 
@@ -51,15 +50,45 @@ public:
 
 	Scene			    *getScene(string sceneName);
 
-    void                setARDRawPinState(int pin, int val);
-    int                 getARDRawPinState(int pin);
+    bool		        nextScene();
 
+    // interactivity getter/setters
+    bool				checkCurrentInteractivity(interaction_t interactionType);
+
+    // arduino getter/setters
+    void                allocateARDRawPins(int numPins);
+    int *               getARDRawPins();
+
+    // audio/mic getter/setters
+    void                allocateCyclicBuffer(int fftCyclicBufferSize, int fftBinSize);
+    void                allocateNoiseFloor(int fftBinSize);
+    void                allocateCyclicSum(int fftBinSize);
+    void                allocatePostFilter(int fftBinSize);
+    void                allocateAudioInput(int bufferSize);
+    fftBands *          getCyclicBuffer();
+    float *             getNoiseFloor();
+    float *             getCyclicSum();
+    float *             getPostFilter();
+    float *             getAudioInput();
+
+    // camera getter/setters
 	void		        setCameraTextures(ofTexture * victimCamTex, ofTexture * attackCamTex);
 	ofTexture *         getVictimCamTexRef();
 	ofTexture *         getAttackCamTexRef();
 
-	bool		        nextScene();
+    // video player getter/setters
+    goThreadedVideo *	getCurrentVideoPlayer();
+	goThreadedVideo *	getNextVideoPlayer();
+	void				toggleVideoPlayers();
 
+	void				setCurrentFrame(int frame);
+	int					getCurrentFrame();
+	int					getCurrentFrameTotal();
+
+	void				setCurrentIsFrameNew(bool isFrameNew);
+	bool				getCurrentIsFrameNew();
+
+    // generic property getter/setters
     bool                hasProperty(string propName);
 	void		        setProperty(string propName, boost::any propVal);
 
@@ -71,19 +100,6 @@ public:
 
 	string		        getAllPropsAsList();
 	map<string, string> getAllPropsNameTypeAsMap();
-
-	goThreadedVideo *	getCurrentVideoPlayer();
-	goThreadedVideo *	getNextVideoPlayer();
-	void				toggleVideoPlayers();
-
-	bool				checkCurrentInteractivity(interaction_t interactionType);
-
-	void				setCurrentFrame(int frame);
-	int					getCurrentFrame();
-	int					getCurrentFrameTotal();
-
-	void				setCurrentIsFrameNew(bool isFrameNew);
-	bool				getCurrentIsFrameNew();
 
 private:
 
@@ -110,11 +126,15 @@ private:
 	bool						_isFrameNew;
 
     // arduino vars
-    int                         _ardRawPins[MAX_ARD_PINS];
+    int *                       _ardRawPins;
 
     // audio/fft vars
-    fftBands *                  _fftMatrix;
-	fftBands *                  _lsrMatrix;
+    fftBands *                  _fftCyclicBuffer;
+
+    float *                     _fftNoiseFloor;
+	float *                     _fftCyclicSum;
+	float *                     _fftPostFilter;
+
 	float *                     _audioInput;
 
 protected:
