@@ -13,6 +13,7 @@
 //--------------------------------------------------------------
 AppModel::AppModel(){
 	_currentScene = NULL;
+	//_ardRawPins = new int[2];
 	_padLength = 1;
 
 	// setup video players
@@ -208,6 +209,7 @@ float * AppModel::getAudioInput() {
  ********************************************************/
 //--------------------------------------------------------------
 void AppModel::allocateARDRawPins(int numPins) {
+    //delete _ardRawPins;
     _ardRawPins = new int[numPins];
 }
 

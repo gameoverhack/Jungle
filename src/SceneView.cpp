@@ -10,25 +10,8 @@
 #include "SceneView.h"
 
 SceneView::SceneView(float width, float height) : BaseView(width ,height) {
-	// Set up cameras
 
-	/* temp use static images for cam
-	ofImage frameImage;
-	assert(frameImage.loadImage("gueule.jpg")); // nasty but i keep wondering what's wrong and i just haven't copied the file ;-)
-
-	_cameraOne.allocate(frameImage.getWidth(), frameImage.getHeight(), GL_RGB);
-	_cameraOne.loadData(frameImage.getPixels(), // Load pixels in to texture
-						frameImage.getWidth(),
-						frameImage.getHeight(),
-						GL_RGB);
-
-	_cameraTwo.allocate(frameImage.getWidth(), frameImage.getHeight(), GL_RGB);
-	_cameraTwo.loadData(frameImage.getPixels(), // Load pixels in to texture
-						frameImage.getWidth(),
-						frameImage.getHeight(),
-						GL_RGB);
-	*/
-	// set up fbos
+    LOG_NOTICE("Setting up SceneView");
 
 	// Allocate texture and attach*/
 	_vic1Tex.allocate(_viewWidth, _viewHeight, GL_RGBA);
@@ -44,8 +27,8 @@ SceneView::SceneView(float width, float height) : BaseView(width ,height) {
 	_atk2FBO.attach(_atk2Tex);
 
 	// set up shader
-	string vertPath = boost::any_cast<string>(_appModel->getProperty("shaderVertPath"));
-	string fragPath = boost::any_cast<string>(_appModel->getProperty("shaderFragPath"));
+	string vertPath = boost::any_cast<string>(_appModel->getProperty("shaderHeadVertPath"));
+	string fragPath = boost::any_cast<string>(_appModel->getProperty("shaderHeadFragPath"));
 
 	_shader.setup(ofToDataPath(vertPath), ofToDataPath(fragPath));
 

@@ -2,6 +2,7 @@
 #define _H_VICTIMVIEW
 
 #include "BaseView.h"
+#include "ofxShader.h"
 
 class VictimView : public BaseView
 {
@@ -13,6 +14,8 @@ public:
     void update();
 
 private:
+
+    ofxShader _shader;
 
 };
 

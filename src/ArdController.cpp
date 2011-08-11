@@ -10,7 +10,7 @@
 #include "ArdController.h"
 
 ArdController::ArdController() {
-    // nothing?
+    _appModel->allocateARDRawPins(2);
 }
 
 ArdController::~ArdController() {
@@ -55,10 +55,9 @@ void ArdController::setupArduino() {
 
     LOG_VERBOSE("Setting up pin types on Arduino");
 
-    _appModel->allocateARDRawPins(2);
-
     _ard.sendAnalogPinReporting(0, ARD_ANALOG);	// AB: report data
 	_ard.sendAnalogPinReporting(1, ARD_ANALOG);	// AB: report data
+
 	setState(kARDCONTROLLER_READY);
 
 }

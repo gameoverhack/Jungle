@@ -4,7 +4,7 @@
         <property name="appRenderWidth" type="float">1920.000000</property>
         <property name="autoTest" type="bool">false</property>
         <property name="flashDataPath" type="string">G:/gameoverload/VideoProjects/Jungle/flash</property>
-        <property name="fullScreen" type="bool">true</property>
+        <property name="fullScreen" type="bool">false</property>
         <property name="graphicDataPath" type="string">graphics</property>
         <property name="loadingMessage" type="string">STATE == kANAL_READY (0) :: </property>
         <property name="loadingProgress" type="float">1.000000</property>
@@ -38,16 +38,18 @@
         <property name="propSharpness_2" type="int">72</property>
         <property name="propTilt_1" type="int">0</property>
         <property name="propTilt_2" type="int">0</property>
-        <property name="propWhiteBalance_1" type="int">4208</property>
+        <property name="propWhiteBalance_1" type="int">4120</property>
         <property name="propWhiteBalance_2" type="int">6012</property>
         <property name="propZoom_1" type="int">1</property>
         <property name="propZoom_2" type="int">1</property>
         <property name="scenesDataPath" type="string">G:/gameoverload/VideoProjects/Jungle/video</property>
         <property name="scenesXMLFile" type="string">config_scenes.xml</property>
         <property name="shaderBlendRatio" type="float">0.600000</property>
-        <property name="shaderFragPath" type="string">multitexturemerge</property>
         <property name="shaderGammaCorrection" type="float">2.100000</property>
-        <property name="shaderVertPath" type="string">vertex</property>
+        <property name="shaderHeadFragPath" type="string">multitexturemerge</property>
+        <property name="shaderHeadVertPath" type="string">vertex</property>
+        <property name="shaderLevelFragPath" type="string">leveltextureblend</property>
+        <property name="shaderLevelVertPath" type="string">leveltexturevertex</property>
         <property name="showDebugView" type="bool">true</property>
         <property name="showProps" type="bool">false</property>
         <property name="showUnmaskedTextures" type="bool">false</property>

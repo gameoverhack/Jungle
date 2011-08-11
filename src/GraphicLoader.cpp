@@ -12,8 +12,10 @@ GraphicLoader::GraphicLoader(string assetPath) {
 
         string name = _lister.getName(i);
         string path = assetPath+"/"+name;
+        string msg =    "Attempt to load: " + path + "...";
 
-        LOG_VERBOSE("Attempt to load: " + path + "...");
+        LOG_VERBOSE(msg);
+        _appModel->setProperty("loadingMessage", msg);
 
         bool ok = false;
 
@@ -28,7 +30,9 @@ GraphicLoader::GraphicLoader(string assetPath) {
         if (name.find("scream_bar")   != string::npos) ok = _appModel->loadGraphicAsset(path, kGFX_SCREAM_BAR);
         if (name.find("scream_yes")      != string::npos) ok = _appModel->loadGraphicAsset(path, kGFX_SCREAM_ON);
 
-        LOG_VERBOSE((string)(ok ? "ok" : "fail"));
+        msg = (string)(ok ? "ok" : "fail");
+        LOG_VERBOSE(msg);
+        _appModel->setProperty("loadingMessage", msg);
         assert(ok);
     }
 

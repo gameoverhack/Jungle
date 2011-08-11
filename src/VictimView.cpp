@@ -1,7 +1,7 @@
 #include "VictimView.h"
 
 VictimView::VictimView(float width, float height) : BaseView(width, height) {
-	// nothing?
+	LOG_NOTICE("Setting up VictimView");
 }
 
 void VictimView::update() {
@@ -31,7 +31,7 @@ void VictimView::update() {
         icon_on->draw(5.0, 700.0);
     } else {
         icon_off->draw(5.0, 700.0);
-        icon_bar->draw(5.0, 700.0);
+        //icon_bar->draw(5.0, 700.0);
     }
 
     glPopMatrix();

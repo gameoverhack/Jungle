@@ -11,7 +11,7 @@
 
 
 DebugView::DebugView(float width, float height) : BaseView(width, height){
-	// nothing?
+	LOG_NOTICE("Setting up DebugView");
 }
 
 void DebugView::update(){

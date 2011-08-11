@@ -10,7 +10,7 @@
 #include "LoadingView.h"
 
 LoadingView::LoadingView(float width, float height) : BaseView(width ,height) {
-
+    LOG_NOTICE("Setting up LoadingView");
 }
 
 void LoadingView::update() {

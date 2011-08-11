@@ -18,7 +18,6 @@ AppView::AppView(float width, float height) : BaseView(width ,height) {
 	_attackView     = new AttackView(220, 860);
 	_victimView     = new VictimView(220, 860);
 
-
 }
 
 AppView::~AppView() {
