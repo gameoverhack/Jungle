@@ -14,6 +14,10 @@
 
 DataController::DataController(string configFilePath) {
 
+    LOG_NOTICE("Constructing DataController");
+
+    registerStates();
+
 	// used so we don't keep rebuilding on a parse error
 	// (ie: rebuilt xml is faulty anyway, dont keep attempting)
 	// member vairable instead of toggling parseRebuildXML property so we

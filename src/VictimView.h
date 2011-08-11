@@ -15,7 +15,12 @@ public:
 
 private:
 
-    ofxShader _shader;
+    void drawMeterMask(float level);
+    void drawMeterBlend(float x, float y, ofTexture * meter_on, ofTexture * meter_off);
+
+    ofxShader      _shader;
+    ofTexture      _maskTex;
+    ofxFbo         _maskFBO;
 
 };
 

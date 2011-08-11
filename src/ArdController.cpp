@@ -9,8 +9,21 @@
 
 #include "ArdController.h"
 
-ArdController::ArdController() {
-    _appModel->allocateARDRawPins(2);
+ArdController::ArdController(string deviceName) {
+
+    LOG_NOTICE("Constructing ArdController");
+
+    registerStates();
+
+    if(!_ard.connect(deviceName, 57600)) {
+        _ard.setUseDelay(true);
+        LOG_ERROR("Cannot start Arduino on: " + deviceName);
+        abort();
+    } else {
+        LOG_NOTICE("Successfully connected Arduino on: " + deviceName);
+        _appModel->allocateARDRawPins(2);
+        setState(kARDCONTROLLER_INIT);
+    }
 }
 
 ArdController::~ArdController() {
@@ -21,20 +34,13 @@ ArdController::~ArdController() {
 void ArdController::registerStates() {
 	LOG_VERBOSE("Registering States");
 
+    registerState(kARDCONTROLLER_RETARD, "kARDCONTROLLER_RETARD");
 	registerState(kARDCONTROLLER_INIT, "kARDCONTROLLER_INIT");
 	registerState(kARDCONTROLLER_READY, "kARDCONTROLLER_READY");
 	registerState(kARDCONTROLLER_BELOWTHRESHOLD, "kARDCONTROLLER_BELOWTHRESHOLD");
 	registerState(kARDCONTROLLER_ABOVETHRESHOLD, "kARDCONTROLLER_ABOVETHRESHOLD");
 
-	setState(kARDCONTROLLER_INIT);
-}
-
-void ArdController::setup(string deviceName) {
-    if(!_ard.connect(deviceName, 57600) && _ard.isInitialized()) {
-        //_ard.setUseDelay(true);
-        LOG_ERROR("Cannot start Arduino on: " + deviceName);
-        abort();
-    } else LOG_NOTICE("Successfully connected Arduino on: " + deviceName);
+	setState(kARDCONTROLLER_RETARD);
 }
 
 void ArdController::update() {
@@ -57,6 +63,8 @@ void ArdController::setupArduino() {
 
     _ard.sendAnalogPinReporting(0, ARD_ANALOG);	// AB: report data
 	_ard.sendAnalogPinReporting(1, ARD_ANALOG);	// AB: report data
+
+    ofSleepMillis(1000); // oh dear a magic number...does this stop the magic crashes??
 
 	setState(kARDCONTROLLER_READY);
 

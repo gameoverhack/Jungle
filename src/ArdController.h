@@ -15,6 +15,7 @@
 #include "AppModel.h"
 
 enum {
+    kARDCONTROLLER_RETARD,
 	kARDCONTROLLER_INIT,
 	kARDCONTROLLER_READY,
 	kARDCONTROLLER_BELOWTHRESHOLD,
@@ -25,12 +26,11 @@ class ArdController : public BaseState {
 
 public:
 
-    ArdController();
+    ArdController(string deviceName);
     ~ArdController();
 
 	void	    registerStates();
 
-    void        setup(string deviceName);
     void        update();
 
 private:

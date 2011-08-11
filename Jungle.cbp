@@ -200,7 +200,16 @@
 		<Unit filename="bin\data\config_scenes.xml">
 			<Option virtualFolder="src\config\" />
 		</Unit>
+		<Unit filename="bin\data\leveltextureblend.frag">
+			<Option virtualFolder="src\shaders\" />
+		</Unit>
+		<Unit filename="bin\data\leveltexturevertex.vert">
+			<Option virtualFolder="src\shaders\" />
+		</Unit>
 		<Unit filename="bin\data\multitexturemerge.frag">
+			<Option virtualFolder="src\shaders\" />
+		</Unit>
+		<Unit filename="bin\data\vertex.vert">
 			<Option virtualFolder="src\shaders\" />
 		</Unit>
 		<Unit filename="src\Analyzer.cpp">

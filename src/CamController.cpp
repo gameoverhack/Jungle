@@ -11,7 +11,11 @@
 
 //--------------------------------------------------------------
 CamController::CamController() {
-	LOG_NOTICE("Initialising");
+
+	LOG_NOTICE("Constructing CamController");
+
+    registerStates();
+
 	_cam.listDevices();
 	_instanceCount++;				// use instance counts to keep track of which cam belongs to which viewer - may be redundant??
 	_instanceID = _instanceCount;

@@ -51,7 +51,7 @@ void AppController::setup() {
 
 	LOG_NOTICE("Initialising");
 
-	//ofSetFrameRate(30);          // has to be as we can't set hammer ofArduino too hard...hmmm
+	ofSetFrameRate(30);          // has to be as we can't set hammer ofArduino too hard...hmmm
 	ofSetVerticalSync(true);
 
 	_isFullScreen		= false; // change this when we start in fullscreen mode
@@ -64,19 +64,19 @@ void AppController::setup() {
 
 	// set up datacontroller
 	_dataController = new DataController(ofToDataPath("config_properties.xml"));
-	_dataController->registerStates();
+	//_dataController->registerStates();
 
 	// setup videoController
 	_vidController = new VideoController();
-	_vidController->registerStates();
+	//_vidController->registerStates();
 
 	// setup micController
 	_micController = new MicController(3); // TODO: make these a property
-	_micController->registerStates();
+	//_micController->registerStates();
 
 	// setup ardController
-	_ardController = new ArdController(); // TODO: make this a property
-	_ardController->registerStates();
+	_ardController = new ArdController("COM5"); // TODO: make this a property
+	//_ardController->registerStates();
 
 	// setup cameras
 	_camControllers[0] = new CamController();
@@ -126,6 +126,9 @@ void AppController::swapCameras() {
 //--------------------------------------------------------------
 void AppController::update() {
 
+    _micController->update();
+    _ardController->update();
+
 	_appView->update();
 
 	// if we're loading, update datacontroller
@@ -148,16 +151,11 @@ void AppController::update() {
 			_appModel->setState(kAPP_RUNNING);
 			_lastAutoActionTime = ofGetElapsedTimeMillis();
 
-			// trying this here getting a crash when i do it in setup???
-             _ardController->setup("COM5");
 		}
 	}
 
 	// running, so update scenes, etc
-	if(_appModel->checkState(kAPP_RUNNING)) {
-
-        _micController->update();
-        _ardController->update();
+	if(_appModel->checkState(kAPP_RUNNING) && _ardController->checkState(kARDCONTROLLER_READY)) {
 
 		Scene			* currentScene		= _appModel->getCurrentScene();
 		Sequence		* currentSequence	= currentScene->getCurrentSequence();
@@ -281,6 +279,7 @@ void AppController::update() {
 		_vidController->update();
 
 	}
+
 }
 
 void AppController::nextScene() {

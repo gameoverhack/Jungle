@@ -2,7 +2,7 @@
 
 AttackView::AttackView(float width, float height) : BaseView(width, height) {
 
-    LOG_NOTICE("Setting up VictimView");
+    LOG_NOTICE("Setting up AttackView");
 
     // allocate fbo's
     _maskTex.allocate(124, 672, GL_RGBA); // size of the meter_on/off png
@@ -12,7 +12,7 @@ AttackView::AttackView(float width, float height) : BaseView(width, height) {
     // set up shader
 	string vertPath = boost::any_cast<string>(_appModel->getProperty("shaderLevelVertPath"));
 	string fragPath = boost::any_cast<string>(_appModel->getProperty("shaderLevelFragPath"));
-    cout << ofToDataPath(vertPath) << " :: " << fragPath << endl;
+
 	_shader.setup(ofToDataPath(vertPath), ofToDataPath(fragPath));
 
 }
@@ -36,6 +36,11 @@ void AttackView::update() {
     float scaledInputLevel      = (float)_appModel->getARDRawPins()[0]/250.0f;      // make more complex soon ;-)
     bool blockInput             = ((float)_appModel->getARDRawPins()[0] > 10.0f);   // make more complex soon ;-)
 
+    float icon_x                = 20.0f;
+    float icon_y                = 700.0f;
+    float meter_x               = 92.0f;
+    float meter_y               = 10.0f;
+
     if (isInteractive) drawMeterMask(scaledInputLevel);
 
     _viewFBO.begin();
@@ -48,16 +53,16 @@ void AttackView::update() {
 
     if (isInteractive) {
 
-        drawMeterBlend(92.0, 10.0, meter_on, meter_off);
+        drawMeterBlend(meter_x, meter_y, meter_on, meter_off);
 
-        icon_on->draw(20.0, 700.0);
+        icon_on->draw(icon_x, icon_y);
 
     } else {
 
-        meter_off->draw(92.0, 10.0);
-        icon_off->draw(20.0, 700.0);
+        meter_off->draw(meter_x, meter_y);
+        icon_off->draw(icon_x, icon_y);
 
-        if (blockInput) icon_bar->draw(20.0, 700.0);
+        if (blockInput) icon_bar->draw(icon_x, icon_y);
 
     }
 

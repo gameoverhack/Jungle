@@ -11,7 +11,9 @@
 
 MicController::MicController(int fftBufferLengthSecs, int audioBufferSize, int sampleRate, int channels) {
 
-    LOG_NOTICE("Setting up MicController");
+    LOG_NOTICE("Constructing MicController");
+
+    registerStates();
 
     // store audio buffer size (in samples) default = 512
     _audioBufferSize        = audioBufferSize;
