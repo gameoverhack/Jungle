@@ -15,7 +15,9 @@ AppView::AppView(float width, float height) : BaseView(width ,height) {
 	_loadingView    = new LoadingView(width, height);
 	_sceneView      = new SceneView(width, height);
 	_debugView      = new DebugView(width, height);
-	_attackView     = new AttackView(width, height);
+	_attackView     = new AttackView(220, 860);
+	_victimView     = new VictimView(220, 860);
+
 
 }
 
@@ -42,6 +44,7 @@ void AppView::update() {
 	} else {
 		_sceneView->update();
 		_attackView->update();
+		_victimView->update();
 		if(boost::any_cast<bool>(_appModel->getProperty("showDebugView"))) {
 			_debugView->update();
 		}
@@ -52,8 +55,8 @@ void AppView::draw() {
 
     // fullscreen shenanigans
     //bool isFullScreen = boost::any_cast<bool>(_appModel->getProperty("fullScreen"));
-    float width = CLAMP((float)ofGetWidth(), 0.0f , 1920.0f);
-    float height = (float)ofGetHeight();
+    float width = (float)ofGetWidth();//CLAMP((float)ofGetWidth(), 0.0f , 1920.0f);
+    float height = (float)ofGetHeight();//(float)ofGetHeight();
 
 	if(_appModel->checkState(kAPP_LOADING)){
 		_loadingView->draw(0, height, width, -height);
@@ -73,8 +76,9 @@ void AppView::draw() {
 		// draw smasher view
 		// draw diagnositc view
 		if(boost::any_cast<bool>(_appModel->getProperty("showDebugView"))){
+			_attackView->draw(1695 * (width/1920.0f), 217 * (height/1080.0f), _attackView->getWidth() * (width/1920.0f), _attackView->getHeight() * (height/1080.0f));
+			_victimView->draw(4 * (width/1920.0f), 217 * (height/1080.0f), _attackView->getWidth() * (width/1920.0f), _attackView->getHeight() * (height/1080.0f));
 			_debugView->draw(0, height, width, -height);
-			_attackView->draw(0, height, width, -height);
 		}
 	}
 

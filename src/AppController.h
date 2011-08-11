@@ -50,6 +50,7 @@ public:
 
 private:
 
+    void              exit();
     void              nextScene();
 
 	// Views

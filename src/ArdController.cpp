@@ -9,11 +9,8 @@
 
 #include "ArdController.h"
 
-ArdController::ArdController(string deviceName) {
-    if(!_ard.connect(deviceName, 57600)) {
-        LOG_ERROR("Cannot start Arduino on: " + deviceName);
-        abort();
-    } else LOG_NOTICE("Successfully connected Arduino on: " + deviceName);
+ArdController::ArdController() {
+    // nothing?
 }
 
 ArdController::~ArdController() {
@@ -30,6 +27,14 @@ void ArdController::registerStates() {
 	registerState(kARDCONTROLLER_ABOVETHRESHOLD, "kARDCONTROLLER_ABOVETHRESHOLD");
 
 	setState(kARDCONTROLLER_INIT);
+}
+
+void ArdController::setup(string deviceName) {
+    if(!_ard.connect(deviceName, 57600) && _ard.isInitialized()) {
+        //_ard.setUseDelay(true);
+        LOG_ERROR("Cannot start Arduino on: " + deviceName);
+        abort();
+    } else LOG_NOTICE("Successfully connected Arduino on: " + deviceName);
 }
 
 void ArdController::update() {

@@ -43,6 +43,13 @@ ofTexture * BaseView::getViewFBOTexture(){
 	return &_viewFBOTexture;
 }
 
+float BaseView::getWidth() {
+    return _viewWidth;
+}
+float BaseView::getHeight() {
+    return _viewHeight;
+}
+
 void BaseView::draw() {
 	glPushMatrix();
 	_viewFBO.draw(0, 0);

@@ -30,11 +30,14 @@ public:
 	ofxFbo		* getViewFBO();
 	ofTexture	* getViewFBOTexture();
 
+    float         getWidth();
+    float         getHeight();
+
 private:
 
 protected:
 
-	float		_viewHeight, _viewWidth;
+	float		_viewWidth, _viewHeight;
 
 	ofxFbo		_viewFBO; // final output FBO
 

@@ -40,7 +40,8 @@ MicController::MicController(int fftBufferLengthSecs, int audioBufferSize, int s
 MicController::~MicController() {
     LOG_NOTICE("Closing soundstream...need to close fft too?????");
     delete _fft;
-    ofSoundStreamClose();
+    _fft = NULL;
+    ofSoundStreamClose(); // fucked up crash!!!
 }
 
 void MicController::registerStates() {
@@ -63,43 +64,45 @@ void MicController::update() {
 
 void MicController::audioReceived(float* input, int bufferSize, int nChannels) {
 
-    // get fft and audio sample arrays refs from the appModel...
-    fftBands * fftCyclicBuffer  = _appModel->getCyclicBuffer();
-    float * fftNoiseFloor       = _appModel->getNoiseFloor();
-    float * fftCyclicSum        = _appModel->getCyclicSum();
-    float * fftPostFilter       = _appModel->getPostFilter();
-    float * audioInput          = _appModel->getAudioInput();
+    if (_fft != NULL) {
+        // get fft and audio sample arrays refs from the appModel...
+        fftBands * fftCyclicBuffer  = _appModel->getCyclicBuffer();
+        float * fftNoiseFloor       = _appModel->getNoiseFloor();
+        float * fftCyclicSum        = _appModel->getCyclicSum();
+        float * fftPostFilter       = _appModel->getPostFilter();
+        float * audioInput          = _appModel->getAudioInput();
 
-    // put raw copy of audio input into model
-    memcpy(audioInput, input, sizeof(float) * bufferSize);
+        // put raw copy of audio input into model
+        memcpy(audioInput, input, sizeof(float) * bufferSize);
 
-    // pass raw audio data to the fft
-    _fft->setSignal(audioInput);
-    float * fftCurrent          = _fft->getAmplitude();
+        // pass raw audio data to the fft
+        _fft->setSignal(audioInput);
+        float * fftCurrent          = _fft->getAmplitude();
 
-    // copy current fft into cyclic buffer
-    for(int i = 0; i < _fft->getBinSize(); i++) {
-        fftCyclicBuffer[_fftCyclicBufferOffset].fftBand[i] = fftCurrent[i];
-    }
-
-    // set cyclic sum back to 0;
-    memset(fftCyclicSum, 0, sizeof(float) * _fft->getBinSize());
-
-    // sum every band of every FFT in the cyclic buffer
-    for (int i = 0; i < _fftCyclicBufferSize; i++) {
-        for (int j = 0; j < _fft->getBinSize(); j++) {
-            fftCyclicSum[j] = fftCyclicSum[j] + fftCyclicBuffer[i].fftBand[j];
+        // copy current fft into cyclic buffer
+        for(int i = 0; i < _fft->getBinSize(); i++) {
+            fftCyclicBuffer[_fftCyclicBufferOffset].fftBand[i] = fftCurrent[i];
         }
-    }
 
-    // calculate the Noise Floor (average of sum of all bands across the cyclic buffer, and
-    // and simultaneously calculate the Adaptive Noise Reduced FFT, storing it on the model
-    for (int j = 1; j < _fft->getBinSize(); j++) {
-        fftNoiseFloor[j] = fftCyclicSum[j]/(float)_fftCyclicBufferSize;
-		fftPostFilter[j] = fftCurrent[j] - fftNoiseFloor[j];
-    }
+        // set cyclic sum back to 0;
+        memset(fftCyclicSum, 0, sizeof(float) * _fft->getBinSize());
 
-    // increase the cyclic buffer offset
-    _fftCyclicBufferOffset = (_fftCyclicBufferOffset + 1) % _fftCyclicBufferSize;
+        // sum every band of every FFT in the cyclic buffer
+        for (int i = 0; i < _fftCyclicBufferSize; i++) {
+            for (int j = 0; j < _fft->getBinSize(); j++) {
+                fftCyclicSum[j] = fftCyclicSum[j] + fftCyclicBuffer[i].fftBand[j];
+            }
+        }
+
+        // calculate the Noise Floor (average of sum of all bands across the cyclic buffer, and
+        // and simultaneously calculate the Adaptive Noise Reduced FFT, storing it on the model
+        for (int j = 1; j < _fft->getBinSize(); j++) {
+            fftNoiseFloor[j] = fftCyclicSum[j]/(float)_fftCyclicBufferSize;
+            fftPostFilter[j] = fftCurrent[j] - fftNoiseFloor[j];
+        }
+
+        // increase the cyclic buffer offset
+        _fftCyclicBufferOffset = (_fftCyclicBufferOffset + 1) % _fftCyclicBufferSize;
+    }
 
 }

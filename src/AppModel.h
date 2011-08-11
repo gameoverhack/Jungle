@@ -32,6 +32,18 @@ enum {
 	kAPP_EXITING
 };
 
+enum {
+    kGFX_METER_LEVEL = 0,
+    kGFX_METER_OFF,
+    kGFX_METER_ON,
+    kGFX_PUNCH_OFF,
+    kGFX_PUNCH_ON,
+    kGFX_SCREAM_OFF,
+    kGFX_SCREAM_ON,
+    kGFX_PUNCH_BAR,
+    kGFX_SCREAM_BAR
+};
+
 class AppModel : public BaseState {
 
 public:
@@ -54,6 +66,8 @@ public:
 
     // interactivity getter/setters
     bool				checkCurrentInteractivity(interaction_t interactionType);
+    void                setCurrentInteractivity(int frame); // perhaps should be private???
+    int                 getCurrentInteractivity();
 
     // arduino getter/setters
     void                allocateARDRawPins(int numPins);
@@ -87,6 +101,10 @@ public:
 
 	void				setCurrentIsFrameNew(bool isFrameNew);
 	bool				getCurrentIsFrameNew();
+
+    // graphic asset getter/setters
+    bool                loadGraphicAsset(string path, int type);
+    ofTexture         * getGraphicTex(int type);
 
     // generic property getter/setters
     bool                hasProperty(string propName);
@@ -137,8 +155,11 @@ private:
 
 	float *                     _audioInput;
 
-protected:
+    // graphic asset vars
+    ofImage                     _gfxAssets[9];
 
+    // interactivity vars
+    int                         _currentInteractivity;
 };
 
 typedef Singleton<AppModel> AppModelSingleton;					// Global declaration

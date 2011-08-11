@@ -67,6 +67,8 @@ void SceneView::update() {
 	currentFrame = _appModel->getCurrentFrame(); //currentMovie->getCurrentFrame();
 
 	glClearColor(0.0, 0.0, 0.0, 0.0); // transparent clear colour
+	glClear(GL_COLOR_BUFFER_BIT);
+
 	ofSetColor(255,255,255); // no tinting
 
 	if(_appModel->getCurrentIsFrameNew()){

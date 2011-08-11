@@ -18,7 +18,11 @@ AppController::AppController(ofAppBaseWindow * windowPtr) {
 
 //--------------------------------------------------------------
 AppController::~AppController() {
-	// nothing for now but we should clean up here
+    exit(); // doing this cos of StreamSound & FFT exit bug....basically this dtor never gets called: use the '/' key to exit for now...
+}
+
+void AppController::exit() {
+
 	LOG_NOTICE("Saving properties");
 
 #ifdef TARGET_WIN32
@@ -31,13 +35,15 @@ AppController::~AppController() {
 
     delete _appView;
 
-	delete _ardController;
-	delete _micController;
     delete _camControllers[0];
 	delete _camControllers[1];
 	delete _vidController;
 	delete _dataController;
+	delete _ardController;
+	delete _micController;
 
+    // crash!!!! grrr....TODO: find the problem with RTAudio and FFT/W
+	//std::exit(0);
 }
 
 //--------------------------------------------------------------
@@ -45,7 +51,7 @@ void AppController::setup() {
 
 	LOG_NOTICE("Initialising");
 
-	ofSetFrameRate(60);          // has to be as we can't set hammer ofArduino too hard...hmmm
+	//ofSetFrameRate(30);          // has to be as we can't set hammer ofArduino too hard...hmmm
 	ofSetVerticalSync(true);
 
 	_isFullScreen		= false; // change this when we start in fullscreen mode
@@ -69,7 +75,7 @@ void AppController::setup() {
 	_micController->registerStates();
 
 	// setup ardController
-	_ardController = new ArdController("COM5"); // TODO: make this a property
+	_ardController = new ArdController(); // TODO: make this a property
 	_ardController->registerStates();
 
 	// setup cameras
@@ -120,9 +126,6 @@ void AppController::swapCameras() {
 //--------------------------------------------------------------
 void AppController::update() {
 
-    _micController->update();
-    _ardController->update();
-
 	_appView->update();
 
 	// if we're loading, update datacontroller
@@ -145,11 +148,16 @@ void AppController::update() {
 			_appModel->setState(kAPP_RUNNING);
 			_lastAutoActionTime = ofGetElapsedTimeMillis();
 
+			// trying this here getting a crash when i do it in setup???
+             _ardController->setup("COM5");
 		}
 	}
 
 	// running, so update scenes, etc
 	if(_appModel->checkState(kAPP_RUNNING)) {
+
+        _micController->update();
+        _ardController->update();
 
 		Scene			* currentScene		= _appModel->getCurrentScene();
 		Sequence		* currentSequence	= currentScene->getCurrentSequence();
@@ -374,7 +382,7 @@ void AppController::keyPressed(int key){
              _appModel->setProperty("showProps", !showProps);
             break;
         case '/':
-             delete _micController;
+             exit();
             break;
 		default:
 			break;

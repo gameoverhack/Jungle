@@ -33,6 +33,7 @@ using std::string;
 #include "PropertyXMLParser.h"
 #include "PropertyXMLBuilder.h"
 #include "Analyzer.h"
+#include "GraphicLoader.h"
 
 enum {
 	kDATACONTROLLER_INIT,
@@ -44,30 +45,32 @@ enum {
 class DataController : public BaseState {
 
 public:
-	
+
 	DataController(string configFilePath);
 	~DataController();
-	
+
 	void registerStates();
-	
+
 	void update();
 
 	void saveProperties();
 
 private:
-	
+
 	//string					_stateMessage;
-	
+
 	string					_configFilePath;
-	
-	SceneXMLParser			*_sceneParser;
+
+    GraphicLoader           * _graphicLoader;
+	SceneXMLParser		    * _sceneParser;
 	bool					_hasAttemptedReparse;
 
 	void updateAppLoadingState();
 	void rebuildXML();
-	void restartParseXML();				
+	void restartParseXML();
 
-	
+
+
 };
 
 

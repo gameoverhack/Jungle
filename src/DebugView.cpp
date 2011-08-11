@@ -20,9 +20,18 @@ void DebugView::update(){
 	//goThreadedVideo	* currentMovie		= _appModel->get();
 	Sequence		* currentSequence	= _appModel->getCurrentSequence();
 	Scene			* currentScene		= _appModel->getCurrentScene();
+    int             * ardRawPins = _appModel->getARDRawPins();
+    string          msg;
+
+    if(ardRawPins != NULL) {
+
+        msg += "ard RAW pin0: " + ofToString(ardRawPins[0]) + "\n";
+        msg += "ard RAW pin1: " + ofToString(ardRawPins[1]) + "\n";
+
+    }
 
 	// get frame rate
-	string msg = "ABC: " + ofToString(ofGetFrameRate()) + "\n";
+	msg += "ABC: " + ofToString(ofGetFrameRate()) + "\n";
 
 	// get transform info and current movie frame
 	int currentFrame	= _appModel->getCurrentFrame(); //currentMovie->getCurrentFrame();

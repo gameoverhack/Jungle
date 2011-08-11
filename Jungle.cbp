@@ -120,6 +120,7 @@
 			<Add library="..\..\..\addons\ofxOpenCv\libs\opencv\lib\win_cb\libcv.a" />
 			<Add library="..\..\..\addons\ofxOpenCv\libs\opencv\lib\win_cb\libcvaux.a" />
 			<Add library="..\..\..\addons\ofxOpenCv\libs\opencv\lib\win_cb\libcxcore.a" />
+			<Add library="..\..\..\addons\ofxFft\libs\fftw\lib\win32\libfftw3f-3.dll" />
 		</Linker>
 		<ExtraCommands>
 			<Add after='xcopy /e /i /y &quot;$(PROJECT_DIR)..\..\..\export\win_cb\*.dll&quot;  &quot;$(PROJECT_DIR)bin&quot;' />
@@ -274,6 +275,12 @@
 		<Unit filename="src\DebugView.h">
 			<Option virtualFolder="src\views\" />
 		</Unit>
+		<Unit filename="src\GraphicLoader.cpp">
+			<Option virtualFolder="src\utils\" />
+		</Unit>
+		<Unit filename="src\GraphicLoader.h">
+			<Option virtualFolder="src\utils\" />
+		</Unit>
 		<Unit filename="src\IXMLBuilder.h">
 			<Option virtualFolder="src\utils\" />
 		</Unit>
@@ -339,6 +346,12 @@
 		</Unit>
 		<Unit filename="src\Singleton.h">
 			<Option virtualFolder="src\utils\" />
+		</Unit>
+		<Unit filename="src\VictimView.cpp">
+			<Option virtualFolder="src\views\" />
+		</Unit>
+		<Unit filename="src\VictimView.h">
+			<Option virtualFolder="src\views\" />
 		</Unit>
 		<Unit filename="src\VideoController.cpp">
 			<Option virtualFolder="src\controllers\" />

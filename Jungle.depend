@@ -1892,11 +1892,11 @@
 	"ofAppRunner.h"
 	"ofGraphics.h"
 
-1313033581 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appcontroller.cpp
+1313049287 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appcontroller.cpp
 	"AppController.h"
 	"Logger.h"
 
-1312941205 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appcontroller.h
+1313038277 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appcontroller.h
 	"ofMain.h"
 	"AppView.h"
 	"AppModel.h"
@@ -1909,18 +1909,19 @@
 	"ArdController.h"
 	"Analyzer.h"
 
-1313032550 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appview.h
+1313041780 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appview.h
 	"BaseView.h"
 	"SceneView.h"
 	"LoadingView.h"
 	"DebugView.h"
 	"AttackView.h"
+	"VictimView.h"
 
-1312946305 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\baseview.h
+1313048236 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\baseview.h
 	"AppModel.h"
 	"ofxFbo.h"
 
-1313031078 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appmodel.h
+1313047709 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appmodel.h
 	"BaseState.h"
 	"Singleton.h"
 	"AppDataTypes.h"
@@ -4912,7 +4913,7 @@
 	"goVideoPlayer.h"
 	"AppDataTypes.h"
 
-1312941206 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\datacontroller.h
+1313042554 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\datacontroller.h
 	<boost/serialization/serialization.hpp>
 	<boost/serialization/vector.hpp>
 	<boost/archive/text_oarchive.hpp>
@@ -4931,6 +4932,7 @@
 	"PropertyXMLParser.h"
 	"PropertyXMLBuilder.h"
 	"Analyzer.h"
+	"GraphicLoader.h"
 
 1213877244 c:\users\gameover\code\of062cb\addons\ofxboost\src\lib\boost\algorithm\string.hpp
 	<boost/algorithm/string/std_containers_traits.hpp>
@@ -6464,38 +6466,38 @@
 	"BaseState.h"
 	"AppModel.h"
 
-1313033789 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\miccontroller.h
+1313033836 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\miccontroller.h
 	"BaseState.h"
 	"AppModel.h"
 	"ofxFft.h"
 
-1313032361 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\ardcontroller.h
+1313049678 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\ardcontroller.h
 	"ofMain.h"
 	"BaseState.h"
 	"AppModel.h"
 
-1313030991 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appmodel.cpp
+1313047674 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appmodel.cpp
 	"AppModel.h"
 
-1313032754 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appview.cpp
+1313049227 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appview.cpp
 	"AppView.h"
 
-1313032435 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\ardcontroller.cpp
+1313049720 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\ardcontroller.cpp
 	"ArdController.h"
 
 1312941206 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\basestate.cpp
 	"BaseState.h"
 
-1312948349 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\baseview.cpp
+1313048227 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\baseview.cpp
 	"BaseView.h"
 
-1312969336 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\camcontroller.cpp
+1313044706 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\camcontroller.cpp
 	"CamController.h"
 
-1312982193 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\datacontroller.cpp
+1313043068 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\datacontroller.cpp
 	"DataController.h"
 
-1312975611 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\debugview.cpp
+1313041212 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\debugview.cpp
 	"DebugView.h"
 
 1312941206 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\jungleexception.cpp
@@ -6507,7 +6509,7 @@
 1312941206 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\logger.cpp
 	"Logger.h"
 
-1313033778 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\miccontroller.cpp
+1313047729 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\miccontroller.cpp
 	"MicController.h"
 
 1312942959 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\propertyxmlbuilder.cpp
@@ -6516,7 +6518,7 @@
 1312942956 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\propertyxmlparser.cpp
 	"PropertyXMLParser.h"
 
-1312969615 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\sceneview.cpp
+1313049553 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\sceneview.cpp
 	"SceneView.h"
 
 1312941206 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\scenexmlbuilder.cpp
@@ -11471,15 +11473,15 @@
 1312975886 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\attackview.h
 	"BaseView.h"
 
-1313032329 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\attackview.cpp
+1313049555 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\attackview.cpp
 	"AttackView.h"
 
-1313033019 source:c:\users\gameover\code\of062cb\addons\ofxfft\src\ofxfft.cpp
+1313038342 source:c:\users\gameover\code\of062cb\addons\ofxfft\src\ofxfft.cpp
 	"ofxFft.h"
 	"ofxFftBasic.h"
 	"ofxFftw.h"
 
-1312983659 c:\users\gameover\code\of062cb\addons\ofxfft\src\ofxfft.h
+1313034030 c:\users\gameover\code\of062cb\addons\ofxfft\src\ofxfft.h
 	"ofMain.h"
 
 1308409494 c:\users\gameover\code\of062cb\addons\ofxfft\src\ofxfftbasic.h
@@ -11509,7 +11511,7 @@
 1308409494 source:c:\users\gameover\code\of062cb\addons\ofxfft\src\ofxfftbasic.cpp
 	"ofxFftBasic.h"
 
-1308409494 source:c:\users\gameover\code\of062cb\addons\ofxfft\src\ofxfftw.cpp
+1313038379 source:c:\users\gameover\code\of062cb\addons\ofxfft\src\ofxfftw.cpp
 	"ofxFftw.h"
 
 1308409516 source:c:\users\gameover\code\of062cb\addons\ofxfft\libs\kiss\kiss_fft.c
@@ -11522,4 +11524,18 @@
 1308409516 source:c:\users\gameover\code\of062cb\addons\ofxfft\libs\kiss\kiss_fftr.c
 	"kiss_fftr.h"
 	"_kiss_fft_guts.h"
+
+1313041856 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\victimview.h
+	"BaseView.h"
+
+1313049635 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\victimview.cpp
+	"VictimView.h"
+
+1313043121 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\graphicloader.h
+	"goDirList.h"
+	"AppModel.h"
+	"Logger.h"
+
+1313048748 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\graphicloader.cpp
+	"GraphicLoader.h"
 

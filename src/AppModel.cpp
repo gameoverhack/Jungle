@@ -43,7 +43,9 @@ void AppModel::registerStates() {
 
 }
 
-// scene getters and setters
+/********************************************************
+ *      Getters and setters for Scenes               	*
+ ********************************************************/
 //--------------------------------------------------------------
 void AppModel::setScene(string sceneName, Scene * scene){
 	_scenes.insert(pair<string, Scene *>(sceneName, scene));
@@ -95,7 +97,9 @@ Scene * AppModel::getCurrentScene(){
 	return _currentScene;
 }
 
-// sequence getters and setters
+/********************************************************
+ *      Getters and setters for Sequence               	*
+ ********************************************************/
 //--------------------------------------------------------------
 Sequence * AppModel::getCurrentSequence() {
 	Sequence * seq;
@@ -105,19 +109,37 @@ Sequence * AppModel::getCurrentSequence() {
 	return seq;
 }
 
-// camera texture getters and setters
+/********************************************************
+ *      Getters and setters for Cameras                	*
+ ********************************************************/
 //--------------------------------------------------------------
 void AppModel::setCameraTextures(ofTexture * victimCamTex, ofTexture * attackCamTex) {
 	_victimCamTex = victimCamTex;
 	_attackCamTex = attackCamTex;
 }
 
+//--------------------------------------------------------------
 ofTexture * AppModel::getVictimCamTexRef() {
 	return _victimCamTex;
 }
 
+//--------------------------------------------------------------
 ofTexture * AppModel::getAttackCamTexRef() {
 	return _attackCamTex;
+}
+
+/********************************************************
+ *      Getters and setters for GraphicAssets       	*
+ ********************************************************/
+ //--------------------------------------------------------------
+bool AppModel::loadGraphicAsset(string path, int type) {
+    assert(type < 9); // will this do?
+    return _gfxAssets[type].loadImage(ofToDataPath(path));
+}
+
+//--------------------------------------------------------------
+ofTexture * AppModel::getGraphicTex(int type) {
+    return &(_gfxAssets[type].getTextureReference());
 }
 
 /********************************************************
@@ -184,27 +206,30 @@ float * AppModel::getAudioInput() {
 /********************************************************
  *      Getters and setters for ArdController        	*
  ********************************************************/
-
+//--------------------------------------------------------------
 void AppModel::allocateARDRawPins(int numPins) {
     _ardRawPins = new int[numPins];
 }
 
+//--------------------------------------------------------------
 int * AppModel::getARDRawPins() {
     return _ardRawPins;
 }
 
 /********************************************************
- *      Getters and setters for videoplayer           	*
+ *      Getters and setters for VideoController       	*
  ********************************************************/
 //--------------------------------------------------------------
 goThreadedVideo * AppModel::getCurrentVideoPlayer() {
 	return _videoPlayers[0]; // always make 0 the current...
 }
 
+//--------------------------------------------------------------
 goThreadedVideo * AppModel::getNextVideoPlayer() {
 	return _videoPlayers[1]; // ... and 1 the next or cached video player
 }
 
+//--------------------------------------------------------------
 void AppModel::toggleVideoPlayers() {
 	LOG_VERBOSE("Swap Video Player pointers");
 	_videoPlayers[1]->setPosition(0.0f);
@@ -217,33 +242,67 @@ void AppModel::toggleVideoPlayers() {
 	_videoPlayers[1] = new goThreadedVideo();
 }
 
-bool AppModel::checkCurrentInteractivity(interaction_t interactionType) {
-	Sequence * seq						= getCurrentSequence();
-	interaction_t * interactionTable	= seq->getInteractionTable();
-	int currentFrame					= getCurrentFrame();
-	// should i do any checks here????
-	return (interactionTable[currentFrame] == interactionType);
-}
-
+//--------------------------------------------------------------
 void AppModel::setCurrentFrame(int frame) {
 	//_frame = CLAMP(frame, 0, getCurrentFrameTotal()-1); //frame clamped to one less than total number;
 	_frame = CLAMP(frame, 0, _currentScene->getCurrentSequence()->getTransformVector("atk1")->size()-1); // to be sure, to be sure!
+	setCurrentInteractivity(_frame); // see notes below in Interactivity getter/setters section as to why this is here
 }
 
+//--------------------------------------------------------------
 int AppModel::getCurrentFrame() {
 	return _frame;
 }
 
+//--------------------------------------------------------------
 int AppModel::getCurrentFrameTotal() { // for now no setter just do it on the actual movie....
 	return _videoPlayers[0]->getTotalNumFrames();
 }
 
+//--------------------------------------------------------------
 void AppModel::setCurrentIsFrameNew(bool isFrameNew) {
 	_isFrameNew = isFrameNew;
 }
 
+//--------------------------------------------------------------
 bool AppModel::getCurrentIsFrameNew() {
 	return _isFrameNew;
+}
+
+/********************************************************
+ *      Getters and setters for Interactivity       	*
+ ********************************************************/
+//--------------------------------------------------------------
+bool AppModel::checkCurrentInteractivity(interaction_t interactionType) {
+	return (getCurrentInteractivity() == interactionType);
+}
+
+//--------------------------------------------------------------
+void AppModel::setCurrentInteractivity(int frame) {
+	Sequence * seq						= getCurrentSequence();
+	interaction_t * interactionTable	= seq->getInteractionTable();
+	//int currentFrame					= getCurrentFrame(); // could use this if we called from outside model, but for now setCurrentFrame calls this method
+	// should i do any checks here????
+	_currentInteractivity = interactionTable[frame];
+}
+
+//--------------------------------------------------------------
+int AppModel::getCurrentInteractivity() {
+
+	/*Sequence * seq						= getCurrentSequence();
+	interaction_t * interactionTable	= seq->getInteractionTable();
+	int currentFrame					= getCurrentFrame();
+	// should i do any checks here????
+	return interactionTable[currentFrame];*/
+
+	// have to setCurrentInteractivity per frame at some point
+	// becuase we need to know when drawing views (meters, etc)
+	// better to set this once per frame draw than to check it
+	// every frame processed...so call setCurrentInteractivity
+	// immediately after set frame...gonna do it internally for
+	// now, but maybe better explicit in the videocontroller???
+
+	return _currentInteractivity;
 }
 
 /********************************************************

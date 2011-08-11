@@ -15,6 +15,7 @@
 #include "LoadingView.h"
 #include "DebugView.h"
 #include "AttackView.h"
+#include "VictimView.h"
 
 class AppView : public BaseView {
 
@@ -28,10 +29,11 @@ public:
 
 private:
 
-	LoadingView *_loadingView;
-	SceneView	*_sceneView;
-	DebugView	*_debugView;
-	AttackView  *_attackView;
+	LoadingView * _loadingView;
+	SceneView	* _sceneView;
+	DebugView	* _debugView;
+	AttackView  * _attackView;
+	VictimView  * _victimView;
 
 protected:
 
