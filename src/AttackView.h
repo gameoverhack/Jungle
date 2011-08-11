@@ -1,10 +1,9 @@
 #ifndef _H_ATTACKVIEW
 #define _H_ATTACKVIEW
 
-#include "BaseView.h"
-#include "ofxShader.h"
+#include "BaseMeterView.h"
 
-class AttackView : public BaseView {
+class AttackView : public BaseMeterView {
 
 public:
 
@@ -14,13 +13,6 @@ public:
     void update();
 
 private:
-
-    void drawMeterMask(float level);
-    void drawMeterBlend(float x, float y, ofTexture * meter_on, ofTexture * meter_off);
-
-    ofxShader      _shader;
-    ofTexture      _maskTex;
-    ofxFbo         _maskFBO;
 
 };
 

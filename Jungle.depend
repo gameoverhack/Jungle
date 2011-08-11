@@ -6476,7 +6476,7 @@
 	"BaseState.h"
 	"AppModel.h"
 
-1313066336 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appmodel.cpp
+1313076378 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appmodel.cpp
 	"AppModel.h"
 
 1313066431 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appview.cpp
@@ -11470,11 +11470,10 @@
 	"ksuuids.h"
 	<codecapi.h>
 
-1313059481 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\attackview.h
-	"BaseView.h"
-	"ofxShader.h"
+1313076934 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\attackview.h
+	"BaseMeterView.h"
 
-1313075721 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\attackview.cpp
+1313078028 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\attackview.cpp
 	"AttackView.h"
 
 1313038342 source:c:\users\gameover\code\of062cb\addons\ofxfft\src\ofxfft.cpp
@@ -11526,9 +11525,8 @@
 	"kiss_fftr.h"
 	"_kiss_fft_guts.h"
 
-1313060429 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\victimview.h
-	"BaseView.h"
-	"ofxShader.h"
+1313078487 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\victimview.h
+	"BaseMeterView.h"
 
 1313074599 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\victimview.cpp
 	"VictimView.h"
@@ -11540,4 +11538,11 @@
 
 1313050919 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\graphicloader.cpp
 	"GraphicLoader.h"
+
+1313078738 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\basemeterview.h
+	"BaseView.h"
+	"ofxShader.h"
+
+1313078115 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\basemeterview.cpp
+	"BaseMeterView.h"
 

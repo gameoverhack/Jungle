@@ -251,6 +251,12 @@
 		<Unit filename="src\AttackView.h">
 			<Option virtualFolder="src\views\" />
 		</Unit>
+		<Unit filename="src\BaseMeterView.cpp">
+			<Option virtualFolder="src\views\" />
+		</Unit>
+		<Unit filename="src\BaseMeterView.h">
+			<Option virtualFolder="src\views\" />
+		</Unit>
 		<Unit filename="src\BaseState.cpp">
 			<Option virtualFolder="src\utils\" />
 		</Unit>
