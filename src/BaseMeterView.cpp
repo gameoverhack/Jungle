@@ -4,9 +4,17 @@ BaseMeterView::BaseMeterView(float width, float height) : BaseView(width, height
 
     LOG_NOTICE("Constructing BaseMeterView");
 
+    /********************************************************
+     *      Get _appModel objects for drawing               *
+     ********************************************************/
+
     _meter_on      = _appModel->getGraphicTex(kGFX_METER_ON);
     _meter_off     = _appModel->getGraphicTex(kGFX_METER_OFF);
     _meter_level   = _appModel->getGraphicTex(kGFX_METER_LEVEL);
+
+    /********************************************************
+     *      setup meter FBO and Shader                      *
+     ********************************************************/
 
     // allocate fbo's
     _maskTex.allocate(124, 672, GL_RGBA); // size of the meter_on/off png
@@ -27,16 +35,24 @@ BaseMeterView::~BaseMeterView() {
 
 void BaseMeterView::update(interaction_t interactionType) {
 
-    int currentInteractivity    = _appModel->getCurrentInteractivity();
-    bool isInteractive          = true;//(currentInteractivity == kINTERACTION_BOTH || currentInteractivity == interactionType);
+    /********************************************************
+     *      Get _appModel Interactivity & Threshold         *
+     ********************************************************/
 
-    bool isBlocked              = (_scaledInputLevel > 0.2f);   // make more complex soon ;-)
+    int   currentInteractivity  = _appModel->getCurrentInteractivity();
+    bool  isInteractive         = true;//(currentInteractivity == kINTERACTION_BOTH || currentInteractivity == interactionType);
 
-    int totalNumSequences       = _appModel->getCurrentScene()->getNumOfSequences();
-    int thisNumSequence         = _appModel->getCurrentSequence()->getNumber();
+    bool  isBlocked             = (_scaledInputLevel > 0.2f);   // make more complex soon ;-)
+
+    int   totalNumSequences     = _appModel->getCurrentScene()->getNumOfSequences();
+    int   thisNumSequence       = _appModel->getCurrentSequence()->getNumber();
 
     float barThreshold          = (3.0/(float)totalNumSequences)+((float)thisNumSequence/(float)totalNumSequences); // TODO: move to the model
     float bar_y                 = (672.0 - 4*42.0f) - floor((float)thisNumSequence/(float)totalNumSequences*12.0f)*42.0f;
+
+    /********************************************************
+     *      Draw the Meter to the ViewFBO                   *
+     ********************************************************/
 
     if (isInteractive) drawMeterMask(_scaledInputLevel);
 

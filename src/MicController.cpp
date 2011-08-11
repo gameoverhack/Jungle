@@ -35,6 +35,8 @@ MicController::MicController(int fftBufferLengthSecs, int audioBufferSize, int s
 
     // instantiate the soundstream
     LOG_NOTICE("Setting up soundstream");
+    ofSoundStreamListDevices();
+    abort();
 	ofSoundStreamSetup(0, channels, this, sampleRate, _audioBufferSize, 4);
 
 }
