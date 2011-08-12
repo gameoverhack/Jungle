@@ -18,12 +18,10 @@ AppController::AppController(ofAppBaseWindow * windowPtr) {
 
 //--------------------------------------------------------------
 AppController::~AppController() {
-    exit(); // doing this cos of StreamSound & FFT exit bug....basically this dtor never gets called: use the '/' key to exit for now...
-}
 
-void AppController::exit() {
+    // need to comment out ofSoundStreamClose() in method ofExitCallback() in ofAppRunner -> some RTAUDIO bug wrecks clean exit!
 
-	LOG_NOTICE("Saving properties");
+    LOG_NOTICE("Saving properties");
 
 #ifdef TARGET_WIN32
     // save cam props
@@ -42,8 +40,6 @@ void AppController::exit() {
 	delete _ardController;
 	delete _micController;
 
-    // crash!!!! grrr....TODO: find the problem with RTAudio and FFT/W
-	//std::exit(0);
 }
 
 //--------------------------------------------------------------
@@ -114,7 +110,7 @@ void AppController::setup() {
 
     _appModel->setProperty("showProps", false);
 	_appModel->setProperty("autoTest", false);
-	_appModel->setProperty("fullScreen", false);
+	_appModel->setProperty("fullScreen", true);
     //_appModel->setProperty("showFFT", false);
 
 	LOG_NOTICE("Initialisation complete");
@@ -130,16 +126,15 @@ void AppController::swapCameras() {
 //--------------------------------------------------------------
 void AppController::VictimEvent(float & level) {
 
-    //LOG_NOTICE("VICTIM ACTION [" + ofToString(level) + "]");
-
     if (_switchToSequence == NULL && !_vidController->isPreRolling()) {
         if (_appModel->checkCurrentInteractivity(kINTERACTION_BOTH) || _appModel->checkCurrentInteractivity(kINTERACTION_VICTIM)) {
             string res = _appModel->getCurrentSequence()->getVictimResult();
-            cout << res << endl;
+            LOG_NOTICE("VICTIM ACTION [" + ofToString(level) + "]" + res);
             if (res != kLAST_SEQUENCE_TOKEN) {
                 _switchToSequence = _appModel->getCurrentScene()->getSequence(res);
                 _vidController->loadMovie(_switchToSequence, true);
             } else nextScene();
+
         } //else cout << "Clocked by type " << _appModel->getCurrentInteractivity() << " = " << kINTERACTION_VICTIM << endl;
     } //else cout << "Blocked by null" << endl;
 }
@@ -147,12 +142,11 @@ void AppController::VictimEvent(float & level) {
 //--------------------------------------------------------------
 void AppController::AttackEvent(float & level) {
 
-    //LOG_NOTICE("ATTACK ACTION [" + ofToString(level) + "]");
-
     if (_switchToSequence == NULL && !_vidController->isPreRolling()) {
         if (_appModel->checkCurrentInteractivity(kINTERACTION_BOTH) || _appModel->checkCurrentInteractivity(kINTERACTION_ATTACKER)) {
+
             string res = _appModel->getCurrentSequence()->getAttackerResult();
-            cout << res << endl;
+            LOG_NOTICE("ATTACK ACTION [" + ofToString(level) + "] == " + res);
             if (res != kLAST_SEQUENCE_TOKEN) {
                 _switchToSequence = _appModel->getCurrentScene()->getSequence(res);
                 _vidController->loadMovie(_switchToSequence, true);
@@ -165,11 +159,17 @@ void AppController::AttackEvent(float & level) {
 //--------------------------------------------------------------
 void AppController::FaceEvent(float & level) {
 
-    LOG_NOTICE("FASCIA ACTION [" + ofToString(level) + "]");
+    if (_switchToSequence == NULL && !_vidController->isPreRolling()) {
+        if (_appModel->checkCurrentInteractivity(kINTERACTION_FACE)) {
 
-    if (_appModel->checkCurrentInteractivity(kINTERACTION_FACE)) {
-        //nothing yet
-    }
+            string res ="seq01a"; // hack
+            LOG_NOTICE("FAKE ATTACK ACTION [" + ofToString(level) + "] == " + res);
+            if (res != kLAST_SEQUENCE_TOKEN) {
+                _switchToSequence = _appModel->getCurrentScene()->getSequence(res);
+                _vidController->loadMovie(_switchToSequence, true);
+            } else nextScene();
+        } //else cout << "Clocked by type " << _appModel->getCurrentInteractivity() << " = " << kINTERACTION_ATTACKER << endl;
+    } //else cout << "Blocked by null" << endl;
 
 }
 
@@ -227,71 +227,6 @@ void AppController::update() {
                 nextScene();
 			}
 
-			// re call update on vidcontroller so everything is sweet and seq, scene and movs all match
-			//_vidController->update();
-			//_vidController->setState(kVIDCONTROLLER_READY);
-		}
-
-		// check user actions and que movies and the sequece to _switchTo...
-		int userAction = boost::any_cast<int>(_appModel->getProperty("userAction"));
-
-		if (_switchToSequence == NULL && !_vidController->isPreRolling()) {
-
-			//LOG_VERBOSE("Checking interactivity...");
-/*
-			if (_appModel->checkCurrentInteractivity(kINTERACTION_BOTH)) { //currentSequence->getInteractivity() == "both") {
-
-				// Check for interactive event
-				// this->hasInteractiveEventFlag()
-				// we have had an interactive event
-
-				if (userAction == kAttackerAction) {
-					LOG_VERBOSE("Interactive action: Attacker");
-					_appModel->setProperty("userAction", kNoUserAction);
-					string res = currentSequence->getAttackerResult();
-					if (res != kLAST_SEQUENCE_TOKEN) {
-                        _switchToSequence = currentScene->getSequence(res);
-                        _vidController->loadMovie(_switchToSequence, true);
-					} else nextScene();
-				}
-
-				if (userAction == kVictimAction){
-					LOG_VERBOSE("Interactive action: Victim");
-					_appModel->setProperty("userAction", kNoUserAction);
-					string res = currentSequence->getVictimResult();
-					if (res != kLAST_SEQUENCE_TOKEN) {
-                        _switchToSequence = currentScene->getSequence(res);
-                        _vidController->loadMovie(_switchToSequence, true);
-                    } else nextScene();
-				}
-			}
-
-			if (_appModel->checkCurrentInteractivity(kINTERACTION_ATTACKER)) { //currentSequence->getInteractivity() == "attacker") {
-				if (userAction == kAttackerAction){
-					LOG_VERBOSE("Interactive action: Attacker");
-					_appModel->setProperty("userAction", kNoUserAction);
-					string res = currentSequence->getAttackerResult();
-					if (res != kLAST_SEQUENCE_TOKEN) {
-                        _switchToSequence = currentScene->getSequence(res);
-                        _vidController->loadMovie(_switchToSequence, true);
-					} else nextScene();
-				}
-			}
-
-			if (_appModel->checkCurrentInteractivity(kINTERACTION_VICTIM)) { //currentSequence->getInteractivity() == "victim") {
-				if (userAction == kVictimAction){
-					LOG_VERBOSE("Interactive action: Victim");
-					_appModel->setProperty("userAction", kNoUserAction);
-					string res = currentSequence->getVictimResult();
-					if (res != kLAST_SEQUENCE_TOKEN) {
-                        _switchToSequence = currentScene->getSequence(res);
-                        _vidController->loadMovie(_switchToSequence, true);
-                    } else nextScene();
-				}
-			}*/
-		} else {
-			// force reset of action if we're preRolling...
-			_appModel->setProperty("userAction", kNoUserAction);
 		}
 
 		// catch _switchToSequence when a movie is loaded completely
@@ -364,6 +299,8 @@ void AppController::keyPressed(int key){
     bool showFFT    = boost::any_cast<bool>(_appModel->getProperty("showFFT"));
     bool showDebug  = boost::any_cast<bool>(_appModel->getProperty("showDebugView"));
 
+    float fakeInput = 1024.0f; // this could be faked more realistically using time between keys etc -> will do for now
+
 	switch (key) {
 #ifdef TARGET_WIN32
 	    case '1':
@@ -400,10 +337,10 @@ void AppController::keyPressed(int key){
 			_appModel->setProperty("autoTest", !autoTest);
 			break;
 		case 'q':
-			_appModel->setProperty("userAction", kVictimAction);
+			_micController->fakeVictimAction(fakeInput*8.0f);
 			break;
 		case 'p':
-			_appModel->setProperty("userAction", kAttackerAction);
+			_ardController->fakeAttackAction(fakeInput);
 			break;
 		case 'P':
 			_dataController->saveProperties();
@@ -412,8 +349,11 @@ void AppController::keyPressed(int key){
 			swapCameras();
 			break;
 		case ' ':
-			_appModel->getCurrentVideoPlayer()->togglePaused();
+            FaceEvent(fakeInput);
 			break;
+        case 'o':
+            _appModel->getCurrentVideoPlayer()->togglePaused();
+            break;
 		case '>':
 		case '.':
 			_appModel->getCurrentVideoPlayer()->setFrame(_appModel->getCurrentFrameTotal()-13);
@@ -435,9 +375,6 @@ void AppController::keyPressed(int key){
 			break;
         case '0':
              _appModel->setProperty("showProps", !showProps);
-            break;
-        case '/':
-             exit();
             break;
 		default:
 			break;

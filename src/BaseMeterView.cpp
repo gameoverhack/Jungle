@@ -42,13 +42,13 @@ void BaseMeterView::update(interaction_t interactionType) {
     int   currentInteractivity  = _appModel->getCurrentInteractivity();
     bool  isInteractive         = (currentInteractivity == kINTERACTION_BOTH || currentInteractivity == interactionType);
 
-    bool  isBlocked             = (_scaledInputLevel > 0.2f);   // make more complex soon ;-)
+    bool  isBlocked             = (_scaledInputLevel > 0.05f);   // make more complex soon ;-)
 
     int   totalNumSequences     = _appModel->getCurrentScene()->getNumOfSequences();
     int   thisNumSequence       = _appModel->getCurrentSequence()->getNumber();
 
     float threshold             = _appModel->getCurrentSequence()->getThresholdLevel();//(3.0/(float)totalNumSequences)+((float)thisNumSequence/(float)totalNumSequences); // TODO: move to the model
-    float bar_y                 = (672.0 - 4*42.0f) - floor((float)thisNumSequence/(float)totalNumSequences*12.0f)*42.0f + 2; // magic numbers...bad boy
+    float bar_y                 = (672.0 - 6*42.0f) - floor((float)thisNumSequence/(float)totalNumSequences*12.0f)*42.0f; // magic numbers...bad boy
 
     /********************************************************
      *      Draw the Meter to the ViewFBO                   *
@@ -66,17 +66,19 @@ void BaseMeterView::update(interaction_t interactionType) {
 
         if (_scaledInputLevel > threshold) ofSetColor(255, 0, 0, 255); // no tinting
 
-        ofSetColor(255, 255, 255, 255); // no tinting
-        _meter_level->draw(_bar_x, bar_y);
         drawMeterBlend(_meter_x, _meter_y);
+
+         ofSetColor(255, 255, 255, 255); // no tinting
+        _meter_level->draw(_bar_x, bar_y - 5);
         _icon_on->draw(_icon_x, _icon_y);
 
     } else {
 
-        float level = 0.9f; // TODO: make prop
-        drawMeterBlend(_meter_x, _meter_y, level);
+        float blend = 0.0f; // TODO: make prop
 
-        ofSetColor(255.0f*level, 255.0f*level, 255.0f*level, 255.0f*level); // no tinting
+        drawMeterBlend(_meter_x, _meter_y, blend);
+
+        ofSetColor(255.0f*blend, 255.0f*blend, 255.0f*blend, 255.0f*blend); // no tinting
         _icon_off->draw(_icon_x, _icon_y);
 
         if (isBlocked) _icon_bar->draw(_icon_x, _icon_y);
@@ -89,7 +91,7 @@ void BaseMeterView::update(interaction_t interactionType) {
 
 }
 
-void BaseMeterView::drawMeterMask(float level) {
+void BaseMeterView::drawMeterMask(float input) {
 
     /********************************************************
      *    Draw a rect in an FBO to mask the level meter     *
@@ -105,7 +107,7 @@ void BaseMeterView::drawMeterMask(float level) {
 	ofFill();
 	glTranslatef(0.0f, _maskFBO.getHeight(), 0.0f);
 	glScalef(1.0f, -1.0f, 1.0f);
-    ofRect(0, 0, _maskFBO.getWidth(), floor(level*16.0f) * 42.0f);
+    ofRect(0, 0, _maskFBO.getWidth(), floor(input*16.0f) * 42.0f);
     //ofNoFill();
 
     glPopMatrix();
@@ -113,7 +115,7 @@ void BaseMeterView::drawMeterMask(float level) {
 
 }
 
-void BaseMeterView::drawMeterBlend(float x, float y, float level) {
+void BaseMeterView::drawMeterBlend(float x, float y, float blend) {
 
     /********************************************************
      *    Use a shader to mask the meter_on/off png         *
@@ -127,7 +129,7 @@ void BaseMeterView::drawMeterBlend(float x, float y, float level) {
 	_shader.setTexture("textures[1]", *_meter_on, 11);
 	_shader.setTexture("textures[2]", *_meter_off, 12);
 
-    _shader.setUniform1f("level", level);
+    _shader.setUniform1f("level", blend);
 
     glTranslatef(x, y, 1.0f);
 

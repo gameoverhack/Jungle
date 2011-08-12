@@ -276,12 +276,13 @@ bool SceneXMLParser::createAppModel(){
 		sequence->setNumber(findSequenceNumberFromString(sequence->getName()));
 
 		// loop only stuff
-		if(kvmap["sequenceType"] == "loop"){
-			sequence->setAttackerResult(kvmap["attackerResult"]);
-			sequence->setVictimResult(kvmap["victimResult"]);
-		} else if(kvmap["sequenceType"] == "a"){
-			sequence->setVictimResult(kvmap["victimResult"]);
-		}
+        sequence->setAttackerResult(kvmap["attackerResult"]);
+        sequence->setVictimResult(kvmap["victimResult"]);
+cout << kvmap["sequenceType"] << kvmap["loop"] << endl;
+        if (kvmap["loop"] == "true") {
+            sequence->setLoop(true);
+        } else sequence->setLoop(false);
+cout << kvmap["sequenceType"] << endl;
 
 		// set if sequence is faked
 		if(kvmap["faked"] == "true"){
@@ -482,7 +483,8 @@ void SceneXMLParser::parseXML(){
 			attributesToCheck.push_back("size");
 			attributesToCheck.push_back("dateModified");
 			attributesToCheck.push_back("dateCreated");
-			attributesToCheck.push_back("interactivity");
+			//attributesToCheck.push_back("interactivity");
+			attributesToCheck.push_back("loop");
 			attributesToCheck.push_back("nextSequence");
 			attributesToCheck.push_back("faked");
 			attributesToCheck.push_back("sequenceType");
@@ -494,11 +496,11 @@ void SceneXMLParser::parseXML(){
 			LOG_VERBOSE("Parsing xml=>map sequence: " + sequenceName);
 
 			// check for loop only attributes
-			if(_xml.getAttribute("sequence", "sequenceType", stringType, seqNum) == "loop"){
-				attributesToCheck.push_back("attackerResult");
-				attributesToCheck.push_back("victimResult");
-				checkTagAttributesExist("sequence", attributesToCheck, seqNum);
-			}
+
+            attributesToCheck.push_back("attackerResult");
+            attributesToCheck.push_back("victimResult");
+            checkTagAttributesExist("sequence", attributesToCheck, seqNum);
+
 
 			// done checking, sequence node has all we'll need so build it up
 
@@ -511,21 +513,11 @@ void SceneXMLParser::parseXML(){
 			_parsedData[mapKey]["faked"] = _xml.getAttribute("sequence", "faked", stringType, seqNum);
 			_parsedData[mapKey]["sequenceType"] = _xml.getAttribute("sequence", "sequenceType", stringType, seqNum);
 			_parsedData[mapKey]["nextSequence"] = _xml.getAttribute("sequence", "nextSequence", stringType, seqNum);
+            _parsedData[mapKey]["loop"] = _xml.getAttribute("sequence", "loop", stringType, seqNum);
 
-			if(_parsedData[mapKey]["sequenceType"] == "loop"){
-				_parsedData[mapKey]["attackerResult"] = _xml.getAttribute("sequence", "attackerResult", stringType, seqNum);
-				_parsedData[mapKey]["victimResult"] = _xml.getAttribute("sequence", "victimResult", stringType, seqNum);
-			} else{
-				// check if its an a or b
-				if(_parsedData[mapKey]["sequenceType"] == "a"){
-					// a type sequences have a victim result
-					attributesToCheck.push_back("victimResult");
-					checkTagAttributesExist("sequence", attributesToCheck, seqNum);
-					_parsedData[mapKey]["victimResult"] = _xml.getAttribute("sequence", "victimResult", stringType, seqNum);
-				} else {
-					// b type, nothing to set.
-				}
-			}
+            _parsedData[mapKey]["attackerResult"] = _xml.getAttribute("sequence", "attackerResult", stringType, seqNum);
+            _parsedData[mapKey]["victimResult"] = _xml.getAttribute("sequence", "victimResult", stringType, seqNum);
+
 
 			// save movie file name
 			_parsedData[mapKey]["filename"] = _xml.getAttribute("sequence", "filename", stringType, seqNum);

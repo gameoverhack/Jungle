@@ -127,7 +127,7 @@ public:
     // video player getter/setters
     goThreadedVideo *	getCurrentVideoPlayer();
 	goThreadedVideo *	getNextVideoPlayer();
-	void				toggleVideoPlayers();
+	void				toggleVideoPlayers(int forceFrame = 0);
 
 	void				setCurrentFrame(int frame);
 	int					getCurrentFrame();

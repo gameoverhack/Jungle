@@ -24,7 +24,8 @@ void listStuff(map<string, map<string, string> > m){
 	}
 }
 
-SceneXMLBuilder::SceneXMLBuilder(string dataPath, string xmlFile) : IXMLBuilder(xmlFile){
+SceneXMLBuilder::SceneXMLBuilder(string dataPath, string xmlFile) : IXMLBuilder(xmlFile) {
+
 	LOG_NOTICE("Creating scene xml builder with path:" + dataPath + " and config:" + xmlFile);
 	_dataPath = dataPath;
 
@@ -38,7 +39,7 @@ SceneXMLBuilder::SceneXMLBuilder(string dataPath, string xmlFile) : IXMLBuilder(
 //	listStuff(_info);
 
 	// Now check for any references to invalid sequences
-	findAndFixInvalidSequences();
+	//findAndFixInvalidSequences();
 
 //	printf("!!! Fixed files\n");
 //	listStuff(_info);
@@ -98,7 +99,8 @@ void SceneXMLBuilder::santiseFiles(){
 // then inserting that map into the _info member variable (keyed by filename
 // Building the xml graph should be done entirely by just using the _info map
 // THIS DOES NOT LOAD ANY EXTERNAL STRUCUTURES. Everything is just strings.
-void SceneXMLBuilder::scanFiles(){
+void SceneXMLBuilder::scanFiles() {
+
 	string fullname;
 	vector<string> substrings; // stores split string parts
 
@@ -120,9 +122,10 @@ void SceneXMLBuilder::scanFiles(){
 		// need to know if its a loop file to get the right sequence name
 		if(regex_search(fullname, regex("_loop"))){
 			// cant set all props here because it might be movie or transform
+			fileInfo.insert(make_pair("loop", "true")); // is loop
 			fileInfo.insert(make_pair("sequence", substrings[1] + "_loop")); // is loop
-		}
-		else{
+		} else {
+		    fileInfo.insert(make_pair("loop", "false")); // is loop
 			fileInfo.insert(make_pair("sequence", substrings[1])); // not loop
 		}
 
@@ -142,36 +145,43 @@ void SceneXMLBuilder::scanFiles(){
 				fileInfo.insert(make_pair("nextSequence", fileInfo.find("sequence")->second));
 				// seq01a_loop A-> seq02a
 				// seq01a_loop V-> seq02b
-				string resultSeqName = substrings[1]; // seq01a (ignores loop part which is substrings[2] if present
-				resultSeqName = createNextSequenceString(resultSeqName); // seq01a to seq02a
-				fileInfo.insert(make_pair("attackerResult", resultSeqName));
-				LOG_WARNING("MUST CONFIRM loop to victim result sequence names (seq01a_loop to seq02b?)");
-				resultSeqName[resultSeqName.length()-1] = 'b'; // make seq02a into seq02b TODO: this might be wrong name
-				fileInfo.insert(make_pair("victimResult", resultSeqName));
+                string resultSeqName = substrings[1]; // seq01a (ignores loop part which is substrings[2] if present
+                resultSeqName[resultSeqName.length()-1] = 'b'; // make seq02a into seq02b TODO: this might be wrong name
+                fileInfo.insert(make_pair("victimResult", resultSeqName));
+                LOG_NOTICE("Inserting: victimResult " + resultSeqName);
+                resultSeqName[resultSeqName.length()-1] = 'a';
+                resultSeqName = createNextSequenceString(resultSeqName); // seq01a to seq02a
+                fileInfo.insert(make_pair("attackerResult", resultSeqName));
+                LOG_NOTICE("Inserting: attackerResult " + resultSeqName);
+
 				fileInfo.insert(make_pair("interactivity", "both")); // both can play
-			}
-			else{
+			} else {
 				// not a loop movie, just a or b
 				// find out if its a b sequence
 				if(regex_search(fullname, regex(".+?seq\\d+b$"))){
 					// is b sequence
 					fileInfo.insert(make_pair("type", "b"));
-					fileInfo.insert(make_pair("nextSequence", kLAST_SEQUENCE_TOKEN)); // nothing comes after a b sequence in the scene
+
+				if (substrings[1] == "seq01b" || substrings[1] == "seq02b") {
+				    LOG_WARNING("Doing exceptions to the model here: " + substrings[1]);
+                    fileInfo.insert(make_pair("nextSequence", "seq01a_loop"));
+				} else fileInfo.insert(make_pair("nextSequence", kLAST_SEQUENCE_TOKEN)); // nothing comes after a b sequence in the scene
 					fileInfo.insert(make_pair("interactivity", "none"));
-				}
-				else if(regex_search(fullname, regex(".+?seq\\d+a$"))){
+				} else if (regex_search(fullname, regex(".+?seq\\d+a$"))){
 					// is a sequence
 					fileInfo.insert(make_pair("type", "a"));
 					// seq01a -> seq01a_loop
 					fileInfo.insert(make_pair("nextSequence", substrings[1]+"_loop"));
-					fileInfo.insert(make_pair("interactivity", "victim"));
+					fileInfo.insert(make_pair("interactivity", "both"));
 
-					// seq01a -> seq02b
-					string resultSeqName = substrings[1]; // seq01a (ignores loop part which is substrings[2] if present
-					resultSeqName = createNextSequenceString(resultSeqName); // seq01a to seq02a
-					LOG_WARNING("MUST CONFIRM a_type sequence victimResult name is seq02b  (and not seq01b, probably isnt.)");
-					resultSeqName[resultSeqName.length()-1] = 'b'; // make seq02a into seq02b TODO: this might be wrong name
-					fileInfo.insert(make_pair("victimResult", resultSeqName));
+                    string resultSeqName = substrings[1]; // seq01a (ignores loop part which is substrings[2] if present
+                    resultSeqName[resultSeqName.length()-1] = 'b'; // make seq02a into seq02b TODO: this might be wrong name
+                    fileInfo.insert(make_pair("victimResult", resultSeqName));
+                    LOG_NOTICE("Inserting: victimResult " + resultSeqName);
+                    resultSeqName[resultSeqName.length()-1] = 'a';
+                    resultSeqName = createNextSequenceString(resultSeqName); // seq01a to seq02a
+                    fileInfo.insert(make_pair("attackerResult", resultSeqName));
+                    LOG_NOTICE("Inserting: attackerResult " + resultSeqName);
 				}
 				else{
 					LOG_ERROR("Found a file, but name does not describe type!: " + fullname);
@@ -231,7 +241,7 @@ void SceneXMLBuilder::scanFiles(){
 
 }
 
-void SceneXMLBuilder::findAndFixInvalidSequences(){
+void SceneXMLBuilder::findAndFixInvalidSequences() {
 	set<string> invalids;
 
 	map<string, map<string, string> >::iterator iter = _info.begin();
@@ -243,7 +253,7 @@ void SceneXMLBuilder::findAndFixInvalidSequences(){
 		LOG_VERBOSE("FindFixInvalid: " + iter->first);
 		if(kvmap["type"] == "loop"){
 			LOG_VERBOSE("\tLoop type");
-			checkKey = scene + ":" + kvmap["attackerResult"];
+			//checkKey = scene + ":" + kvmap["attackerResult"];
 			LOG_VERBOSE("\tfind "+checkKey);
 			// do the find
 			if(_info.find(checkKey) == _info.end()){
@@ -251,7 +261,7 @@ void SceneXMLBuilder::findAndFixInvalidSequences(){
 				// is invalid, so store in invalid vector
 				invalids.insert(checkKey);
 			}
-			checkKey = scene + ":" +  kvmap["victimResult"];
+			//checkKey = scene + ":" +  kvmap["victimResult"];
 			LOG_VERBOSE("\tfind "+checkKey);
 			if(_info.find(checkKey) == _info.end()){
 				LOG_VERBOSE("\t\tDid not find! Adding to invalids");
@@ -446,23 +456,13 @@ void SceneXMLBuilder::buildXML(){
 
 			_xml.popTag(); // pop sequence
 
-		}
-		else{
+		} else {
+
 			_xml.addAttribute("sequence", "sequenceType", fileInfo["type"], which);
-			if(fileInfo["type"] == "loop"){
-				// loop specific stuff
-				// seq01a_loop V-> seq02b
-				// seq01a_loop A-> seq02a
-				_xml.addAttribute("sequence", "attackerResult", fileInfo["attackerResult"], which);
-				_xml.addAttribute("sequence", "victimResult", fileInfo["victimResult"], which);
-			}
-			// every sequence has this stuff
-			_xml.setAttribute("sequence", "interactivity", fileInfo["interactivity"], which);
-			if(fileInfo["interactivity"] == "victim"){
-				_xml.setAttribute("sequence", "victimResult", fileInfo["victimResult"], which);
-			}
-			// seq01a -> seq01a_loop
-			// seq01a_loop N-> seq01a_loop
+
+            _xml.addAttribute("sequence", "attackerResult", fileInfo["attackerResult"], which);
+            _xml.addAttribute("sequence", "victimResult", fileInfo["victimResult"], which);
+            _xml.addAttribute("sequence", "loop", fileInfo["loop"], which);
 			_xml.addAttribute("sequence", "nextSequence", fileInfo["nextSequence"], which);
 			_xml.addAttribute("sequence", "faked", fileInfo["faked"], which);
 			_xml.addAttribute("sequence", "filename", fileInfo["filename"], which);
@@ -471,13 +471,13 @@ void SceneXMLBuilder::buildXML(){
 			_xml.addAttribute("sequence", "dateModified", fileInfo["dateModified"], which);
 
 			_xml.pushTag("sequence", which);
-			
+
 			// add the transform node and its info
 			which = _xml.addTag("interactivity");
 			// set attributes for this transform
 			_xml.addAttribute("interactivity", "filename", fileInfo["interactivityFilename"], which);
 			_xml.popTag();
-			
+
 		}
 		_xml.popTag(); // pop scene
 		iter++; // next file

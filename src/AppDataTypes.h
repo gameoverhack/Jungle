@@ -179,11 +179,11 @@ public:
 		return _isMovieFaked;
 	}
 
-	void setIsSequenceFaked(bool b){
+	void setIsSequenceFaked(bool b) {
 		_isSequenceFaked = b;
 	}
 
-	bool getIsSequenceFaked(){
+	bool getIsSequenceFaked() {
 		return _isSequenceFaked;
 	}
 
@@ -227,15 +227,23 @@ public:
 		return _interactivity;
 	}
 
-	string getType(){
+	bool getLoop() {
+		return _loop;
+	}
+
+	void setLoop(bool loop){
+		_loop = loop;
+	}
+
+	string getType() {
 		return _type;
 	}
 
-	void setType(string t){
+	void setType(string t) {
 		_type = t;
 	}
 
-	int getNumber(){
+	int getNumber() {
 		return _number;
 	}
 
@@ -243,11 +251,11 @@ public:
 		_number = i;
 	}
 
-	interaction_t * getInteractionTable(){
+	interaction_t * getInteractionTable() {
 		return _interactionTable;
 	}
 
-	void setInteractionTable(interaction_t *newInteractionTable){
+	void setInteractionTable(interaction_t *newInteractionTable) {
 		_interactionTable = newInteractionTable;
 	}
 
@@ -263,6 +271,7 @@ private:
 
 	string					_name;
 	string					_type;
+	bool                    _loop;
 	int						_number;
 	string					_nextSequenceName;
 	string					_attackerResult;
@@ -309,7 +318,7 @@ public:
 	}
 
 	void rewindScene() {
-		_currentSequence = _sequences.begin()->second;
+		_currentSequence = _sequences.begin()->second; // this is an assumption...?
 	}
 
 	void setSequence(string key, Sequence * value) {
@@ -318,20 +327,33 @@ public:
 
     void setSequenceThresholds() {
         map<string, Sequence *>::iterator iter;
-        int total   = _sequences.size();
+        int total   = _sequences.size(); // this is bad!
 		for (iter = _sequences.begin(); iter != _sequences.end(); iter++) {
 		    Sequence * seq = iter->second;
 		    int num     = seq->getNumber();
-		    float level = (3.0/(float)total)+((float)num/(float)total);
+		    float level = (5.0/(float)total)+((float)num/(float)total);
 		    LOG_NOTICE("Set level threshold for: " + seq->getName() + " [" + ofToString(num) + " to " + ofToString(level));
             seq->setThresholdLevel(level);
 		}
     }
 
 	Sequence * getSequence(string key) {
+	    cout <<key << endl;
 		map<string, Sequence *>::iterator iter;
 		iter = _sequences.find(key);
 		return iter->second;
+	}
+
+    Sequence * getSequence(int num, string type) {
+		map<string, Sequence *>::iterator iter;
+		Sequence * seq = NULL;
+		for (iter = _sequences.begin(); iter != _sequences.end(); iter++) {
+		    seq = iter->second;
+		    if (seq->getNumber() == num && seq->getType() == type) {
+                break;
+		    }
+		}
+		return seq;
 	}
 
 	bool setCurrentSequence(string seq) {
@@ -379,6 +401,8 @@ public:
 	// increments the current sequence to the next sequence (of the current sequence)
 	bool nextSequence() {
 
+        LOG_VERBOSE("Scene has been requested nextSequence");
+
 		Sequence * seq = getCurrentSequence();
 		LOG_VERBOSE(seq->getName());
 		/*
@@ -394,17 +418,18 @@ public:
 
 		 */
 
-		if(_currentSequence->getNextSequenceName()== kLAST_SEQUENCE_TOKEN){
-			LOG_VERBOSE("It's not true");
-			return false;
+		if(_currentSequence->getNextSequenceName() == kLAST_SEQUENCE_TOKEN){
+			LOG_VERBOSE("getNextSequenceName == kLAST_SEQUENCE_TOKEN");
+            return false;
 		}
-		LOG_VERBOSE("It is true");
+		LOG_VERBOSE("getNextSequenceName != kLAST_SEQUENCE_TOKEN");
 		// not last sequence, so set next
 		setCurrentSequence(_currentSequence->getNextSequenceName());
 		return true;
 	}
 
 	void print() {
+
 		string tabs = "\t";
 		string line = "Scene {";
 		// print details of scene

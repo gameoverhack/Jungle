@@ -88,7 +88,7 @@ void ArdController::setupArduino() {
 
 }
 
-void ArdController::updateArduino() {
+void ArdController::updateArduino(bool fake) {
 
     //LOG_VERBOSE("Update Ard");
 
@@ -99,10 +99,14 @@ void ArdController::updateArduino() {
 
     int * pinInput              = _appModel->getPinInput();
 
-    _ard.update();
+    if (!fake) {
 
-    pinInput[0] = _ard.getAnalog(0);
-    pinInput[1] = _ard.getAnalog(1);
+        _ard.update();
+
+        pinInput[0] = _ard.getAnalog(0);
+        pinInput[1] = _ard.getAnalog(1);
+
+    }
 
     _lastUpdateTime = ofGetElapsedTimeMillis();
 
@@ -132,3 +136,17 @@ void ArdController::updateArduino() {
     //LOG_VERBOSE("[" + ofToString(ardRawPins[0]) + "::" + ofToString(ardRawPins[1]) + "]");
 
 }
+
+void ArdController::fakeAttackAction(float input) {
+
+    //LOG_VERBOSE("Fake Attack Action " + ofToString(input));
+
+    int * pinInput              = _appModel->getPinInput();
+
+    pinInput[0] = input;
+    pinInput[1] = 1024;
+
+    updateArduino(true);
+
+}
+

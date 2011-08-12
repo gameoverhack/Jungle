@@ -81,18 +81,19 @@ void VideoController::update() {
 	_appModel->setCurrentIsFrameNew(isFrameNew);
 
 	if (currentFrame > totalFrames - 12 && !_preRolling) {
-
+cout << "yes" << endl;
 		// set loopstate
-		if (currentSequence->getInteractivity() == "both") {
+		if (currentSequence->getLoop()) {
 			currentMovie->setLoopState(OF_LOOP_NORMAL);
 		} else {
 			currentMovie->setLoopState(OF_LOOP_NONE);
 		}
-
+cout << "no" << endl;
 		// 'cache' (ie., half) load loop sequence if we're on an 'a' type movie
 
 		string nextSequenceName = currentSequence->getNextSequenceName();
 		if (nextSequenceName != "" && nextSequenceName != "__FINAL_SEQUENCE__" && nextSequenceName != currentSequence->getName()) {
+		    LOG_NOTICE("End of last mov start: " + nextSequenceName);
 			loadMovie(currentScene->getSequence(nextSequenceName));
 			_preRolling = true;
 		} else if (nextSequenceName == "__FINAL_SEQUENCE__") {
@@ -117,13 +118,14 @@ void VideoController::forceUpdate() {
 	nextMovie->psuedoDraw();
 }
 
-void VideoController::loadMovie(Sequence * seq, bool forceCurrentLoad) {
+void VideoController::loadMovie(Sequence * seq, bool forceCurrentLoad, int lastFrame) {
 
 	// get the full path of the movie from the sequence
 	string path = seq->getMovieFullFilePath();
 	LOG_VERBOSE("Next video start to load: " + path + (string)(forceCurrentLoad ? " FORCED" : " NORMAL"));
 
 	_forceCurrentLoad = forceCurrentLoad;
+    _lastFrameWhenForced = lastFrame;
 
 	goThreadedVideo * nextMovie			= _appModel->getNextVideoPlayer();
 

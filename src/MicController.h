@@ -37,6 +37,8 @@ public:
 
     ofEvent<float>  victimAction;
 
+    void            fakeVictimAction(float input);
+
 private:
 
     void        audioReceived(float* input, int bufferSize, int nChannels);

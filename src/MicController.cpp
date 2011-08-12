@@ -144,3 +144,21 @@ void MicController::audioReceived(float* input, int bufferSize, int nChannels) {
     }
 
 }
+
+void MicController::fakeVictimAction(float input) {
+
+    //LOG_VERBOSE("Fake Victim Action " + ofToString(input));
+
+    float * audioInput          = _appModel->getAudioInput();
+
+    float * fakeInput = new float[_audioBufferSize];
+
+   for (int i = 0; i < _audioBufferSize; i++) {
+        fakeInput[i] = input;
+   }
+
+    audioReceived(fakeInput, _audioBufferSize, 2);
+
+    delete [] fakeInput;
+
+}

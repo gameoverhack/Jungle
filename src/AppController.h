@@ -54,7 +54,6 @@ private:
     void            AttackEvent(float & level);
     void            FaceEvent(float & level);
 
-    void              exit();
     void              nextScene();
 
 	// Views

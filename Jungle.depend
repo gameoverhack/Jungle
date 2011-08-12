@@ -1893,11 +1893,11 @@
 	"ofAppRunner.h"
 	"ofGraphics.h"
 
-1313142391 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appcontroller.cpp
+1313171207 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appcontroller.cpp
 	"AppController.h"
 	"Logger.h"
 
-1313137024 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appcontroller.h
+1313153468 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appcontroller.h
 	"ofMain.h"
 	"AppView.h"
 	"AppModel.h"
@@ -1922,7 +1922,7 @@
 	"AppModel.h"
 	"ofxFbo.h"
 
-1313134196 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appmodel.h
+1313155406 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appmodel.h
 	"BaseState.h"
 	"Singleton.h"
 	"AppDataTypes.h"
@@ -1948,7 +1948,7 @@
 	"assert.h"
 	<cstdlib>
 
-1313140867 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appdatatypes.h
+1313169523 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appdatatypes.h
 	<boost/serialization/serialization.hpp>
 	<boost/serialization/vector.hpp>
 	<boost/archive/text_oarchive.hpp>
@@ -6463,27 +6463,27 @@
 	"goVideoGrabber.h"
 	<map>
 
-1312941206 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\videocontroller.h
+1313156017 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\videocontroller.h
 	"BaseState.h"
 	"AppModel.h"
 
-1313136899 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\miccontroller.h
+1313151295 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\miccontroller.h
 	"BaseState.h"
 	"AppModel.h"
 	"ofxFft.h"
 
-1313137157 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\ardcontroller.h
+1313152202 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\ardcontroller.h
 	"ofMain.h"
 	"BaseState.h"
 	"AppModel.h"
 
-1313140898 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appmodel.cpp
+1313171417 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appmodel.cpp
 	"AppModel.h"
 
-1313066431 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appview.cpp
+1313160344 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appview.cpp
 	"AppView.h"
 
-1313143380 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\ardcontroller.cpp
+1313153627 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\ardcontroller.cpp
 	"ArdController.h"
 
 1312941206 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\basestate.cpp
@@ -6510,7 +6510,7 @@
 1312941206 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\logger.cpp
 	"Logger.h"
 
-1313143430 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\miccontroller.cpp
+1313153637 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\miccontroller.cpp
 	"MicController.h"
 
 1312942959 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\propertyxmlbuilder.cpp
@@ -6522,14 +6522,14 @@
 1313054535 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\sceneview.cpp
 	"SceneView.h"
 
-1312941206 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\scenexmlbuilder.cpp
+1313170735 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\scenexmlbuilder.cpp
 	"SceneXMLBuilder.h"
 
-1313138905 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\scenexmlparser.cpp
+1313169446 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\scenexmlparser.cpp
 	"SceneXMLParser.h"
 	"JungleExceptions.h"
 
-1313062260 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\videocontroller.cpp
+1313170693 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\videocontroller.cpp
 	"VideoController.h"
 
 1312941206 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\main.cpp
@@ -6571,7 +6571,7 @@
 	<set>
 	<map>
 
-1312941468 source:c:\users\gameover\code\of062cb\addons\goflexcom\goflexcom.cpp
+1313148238 source:c:\users\gameover\code\of062cb\addons\goflexcom\goflexcom.cpp
 	"goFlexCOM.h"
 
 1312941468 c:\users\gameover\code\of062cb\addons\goflexcom\goflexcom.h
@@ -6662,7 +6662,7 @@
 	"ofxUDPManager.h"
 	"ofxNetworkUtils.h"
 
-1313066290 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\analyzer.cpp
+1313164256 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\analyzer.cpp
 	"Analyzer.h"
 
 1312852612 source:c:\users\gameover7\code\of062cb\addons\goflexcom\goflexcom.cpp
@@ -11540,11 +11540,11 @@
 1313050919 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\graphicloader.cpp
 	"GraphicLoader.h"
 
-1313143706 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\basemeterview.h
+1313146494 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\basemeterview.h
 	"BaseView.h"
 	"ofxShader.h"
 
-1313143344 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\basemeterview.cpp
+1313161812 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\basemeterview.cpp
 	"BaseMeterView.h"
 
 1298946454 c:\users\gameover\code\of062cb\libs\rtaudio\include\rtaudio.h

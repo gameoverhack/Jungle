@@ -35,10 +35,12 @@ public:
 
     ofEvent<float>  attackAction;
 
+    void            fakeAttackAction(float input);
+
 private:
 
     void        setupArduino();
-    void        updateArduino();
+    void        updateArduino(bool fake = false);
 
     bool        _bSetupArduino;
 

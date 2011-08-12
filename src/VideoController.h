@@ -25,28 +25,30 @@ enum {
 class VideoController : public BaseState {
 
 public:
-	
+
 	VideoController();
 	~VideoController();
-	
+
 	void	registerStates();
-	
+
 	void	update();
 	void	forceUpdate();
-	
-	void	loadMovie(Sequence * seq, bool forceCurrentLoad = false);
+
+	void	loadMovie(Sequence * seq, bool forceCurrentLoad = false, int lastFrame = 0);
 	void	toggleVideoPlayers();
-	
+
 	bool	isPreRolling();
-	
+
 private:
-	
+
 	bool	_preRolling;
 	bool	_forceCurrentLoad;
-	
+
 	void	loaded(string & path);
 	void	error(int & err);
-	
+
+	int     _lastFrameWhenForced;
+
 };
 
 #endif
