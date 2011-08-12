@@ -54,7 +54,7 @@ void DebugView::update(){
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	// draw strings
-	ofSetColor(0, 255, 0, 255);
+	ofSetColor(0, 0, 255, 255);
 	ofDrawBitmapString(msg, 20, 20); // this gets rendered upside down for some reason ?*/
 
 	// draw scene progression

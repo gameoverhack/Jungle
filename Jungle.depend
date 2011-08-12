@@ -1306,11 +1306,12 @@
 	<wchar.h>
 	<inttypes.h>
 
-1298946455 c:\users\gameover\code\of062cb\libs\openframeworks\sound\ofsoundstream.h
+1313116691 c:\users\gameover\code\of062cb\libs\openframeworks\sound\ofsoundstream.h
 	"ofConstants.h"
 	"ofBaseApp.h"
 	"ofEvents.h"
 	"ofMath.h"
+	<vector>
 
 1298946455 c:\users\gameover\code\of062cb\libs\openframeworks\sound\ofsoundplayer.h
 	"ofConstants.h"
@@ -1892,7 +1893,7 @@
 	"ofAppRunner.h"
 	"ofGraphics.h"
 
-1313066315 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appcontroller.cpp
+1313114841 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appcontroller.cpp
 	"AppController.h"
 	"Logger.h"
 
@@ -6466,12 +6467,12 @@
 	"BaseState.h"
 	"AppModel.h"
 
-1313033836 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\miccontroller.h
+1313114465 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\miccontroller.h
 	"BaseState.h"
 	"AppModel.h"
 	"ofxFft.h"
 
-1313061896 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\ardcontroller.h
+1313113581 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\ardcontroller.h
 	"ofMain.h"
 	"BaseState.h"
 	"AppModel.h"
@@ -6482,7 +6483,7 @@
 1313066431 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appview.cpp
 	"AppView.h"
 
-1313075761 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\ardcontroller.cpp
+1313113572 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\ardcontroller.cpp
 	"ArdController.h"
 
 1312941206 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\basestate.cpp
@@ -6497,7 +6498,7 @@
 1313062321 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\datacontroller.cpp
 	"DataController.h"
 
-1313075692 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\debugview.cpp
+1313117935 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\debugview.cpp
 	"DebugView.h"
 
 1312941206 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\jungleexception.cpp
@@ -6509,7 +6510,7 @@
 1312941206 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\logger.cpp
 	"Logger.h"
 
-1313075521 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\miccontroller.cpp
+1313117458 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\miccontroller.cpp
 	"MicController.h"
 
 1312942959 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\propertyxmlbuilder.cpp
@@ -11543,6 +11544,22 @@
 	"BaseView.h"
 	"ofxShader.h"
 
-1313078115 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\basemeterview.cpp
+1313079205 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\basemeterview.cpp
 	"BaseMeterView.h"
+
+1298946454 c:\users\gameover\code\of062cb\libs\rtaudio\include\rtaudio.h
+	<string>
+	<vector>
+	"RtError.h"
+	<windows.h>
+	<process.h>
+	<pthread.h>
+	<sys/time.h>
+	<sstream>
+	<CoreAudio/AudioHardware.h>
+
+1298946454 c:\users\gameover\code\of062cb\libs\rtaudio\include\rterror.h
+	<exception>
+	<iostream>
+	<string>
 

@@ -9,7 +9,7 @@
 
 #include "MicController.h"
 
-MicController::MicController(int fftBufferLengthSecs, int audioBufferSize, int sampleRate, int channels) {
+MicController::MicController(string deviceName, int fftBufferLengthSecs, int audioBufferSize, int sampleRate, int channels) {
 
     LOG_NOTICE("Constructing MicController");
 
@@ -35,9 +35,19 @@ MicController::MicController(int fftBufferLengthSecs, int audioBufferSize, int s
 
     // instantiate the soundstream
     LOG_NOTICE("Setting up soundstream");
-    ofSoundStreamListDevices();
-    abort();
-	ofSoundStreamSetup(0, channels, this, sampleRate, _audioBufferSize, 4);
+    vector<ofStreamDevice> deviceVec = ofSoundStreamListDevices();
+
+    int inputDeviceID = -1;
+    for(int i = 0; i < deviceVec.size(); i++) {
+        ofStreamDevice info = deviceVec[i];
+        LOG_VERBOSE("Device name == " + info.name);
+        if (info.name == deviceName) {
+            inputDeviceID = i;
+            break;
+        }
+    }
+
+	ofSoundStreamSetup(0, channels, this, sampleRate, _audioBufferSize, 4, inputDeviceID);
 
 }
 

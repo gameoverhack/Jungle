@@ -71,11 +71,11 @@ void AppController::setup() {
 	//_vidController->registerStates();
 
 	// setup micController
-	_micController = new MicController(1); // TODO: make these a property
+	_micController = new MicController("Microphone (HD Pro Webcam C910)", 2); // other is Microphone (2- HD Pro Webcam C910) // TODO: make these a property
 	//_micController->registerStates();
 
 	// setup ardController
-	_ardController = new ArdController("COM5"); // TODO: make this a property
+	_ardController = new ArdController("COM5", 2); // TODO: make this a property
 	//_ardController->registerStates();
 
 	// setup cameras

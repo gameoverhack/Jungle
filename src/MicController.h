@@ -28,7 +28,7 @@ class MicController : public BaseState, public ofBaseApp {
 
 public:
 
-    MicController(int fftBufferLengthSecs, int audioBufferSize = 512, int sampleRate = 44100, int channels = 1);
+    MicController(string deviceName, int fftBufferLengthSecs, int audioBufferSize = 512, int sampleRate = 44100, int channels = 2);
     ~MicController();
 
 	void	    registerStates();

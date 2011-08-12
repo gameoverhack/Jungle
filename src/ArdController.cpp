@@ -9,21 +9,32 @@
 
 #include "ArdController.h"
 
-ArdController::ArdController(string deviceName) {
+ArdController::ArdController(string deviceName, int ardBufferLengthSecs) {
 
     LOG_NOTICE("Constructing ArdController");
 
     registerStates();
 
     if(!_ard.connect(deviceName, 57600)) {
-        _ard.setUseDelay(true);
+
         LOG_ERROR("Cannot start Arduino on: " + deviceName);
         abort();
+
     } else {
+
         LOG_NOTICE("Successfully connected Arduino on: " + deviceName);
+
         _appModel->allocatePinInput(2);
+
+        // setup timeouts to simulate a similiar update lifecycle to the audio input
+        _bufferIntervalMillis = floor(44100.0/512.0);
+
+        _ardCyclicBufferSize = ardBufferLengthSecs * _bufferIntervalMillis;
+        _ardCyclicBufferOffset = 0;
+
         setState(kARDCONTROLLER_INIT);
     }
+
 }
 
 ArdController::~ArdController() {
@@ -52,7 +63,7 @@ void ArdController::update() {
 			setupArduino();
 		}
 		// 2nd do the update of the arduino
-		updateArduino();
+		if (ofGetElapsedTimeMillis() - _lastUpdateTime > _bufferIntervalMillis) updateArduino();
 	}
 
 }
@@ -65,6 +76,8 @@ void ArdController::setupArduino() {
 	_ard.sendAnalogPinReporting(1, ARD_ANALOG);	// AB: report data
 
     ofSleepMillis(1000); // oh dear a magic number...does this stop the magic crashes??
+
+    _lastUpdateTime = ofGetElapsedTimeMillis();
 
 	setState(kARDCONTROLLER_READY);
 
@@ -80,6 +93,8 @@ void ArdController::updateArduino() {
 
     pinInput[0] = _ard.getAnalog(0);
     pinInput[1] = _ard.getAnalog(1);
+
+    _lastUpdateTime = ofGetElapsedTimeMillis();
 
     //LOG_VERBOSE("[" + ofToString(ardRawPins[0]) + "::" + ofToString(ardRawPins[1]) + "]");
 

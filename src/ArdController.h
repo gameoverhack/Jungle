@@ -26,7 +26,7 @@ class ArdController : public BaseState {
 
 public:
 
-    ArdController(string deviceName);
+    ArdController(string deviceName, int ardBufferLengthSecs);
     ~ArdController();
 
 	void	    registerStates();
@@ -41,6 +41,12 @@ private:
     bool        _bSetupArduino;
 
     ofArduino   _ard;
+
+    int         _bufferIntervalMillis;
+    int         _lastUpdateTime;
+
+    int         _ardCyclicBufferSize;
+    int         _ardCyclicBufferOffset;
 
 };
 
