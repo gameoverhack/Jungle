@@ -539,7 +539,11 @@ void AppController::toggleFullscreen(){
         ofSetWindowTitle(_windowTitle);
         int x = 0;
         int y = 0;
+#ifdef EXTENDED_DISPLAY
+        int width = _windowPtr->getScreenSize().x*2; // TODO: set in config
+#else
         int width = _windowPtr->getScreenSize().x; // TODO: set in config
+#endif
         int height = _windowPtr->getScreenSize().y; // TODO: set in config
         int storedWindowX, storedWindowY, storedWindowH, storedWindowW;
         HWND vWnd  = FindWindow(NULL, _windowTitle);

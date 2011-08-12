@@ -34,16 +34,20 @@ DataController::DataController(string configFilePath) {
     #ifdef TARGET_OSX
     _appModel->setProperty("scenesDataPath", (string)"/Users/gameover/Desktop/StrangerDanger/video");
     _appModel->setProperty("flashDataPath", (string)"/Users/gameover/Desktop/StrangerDanger/flash");
+    _appModel->setProperty("graphicDataPath", (string)"graphics");
     #else TARGET_WIN32
     //_appModel->setProperty("scenesDataPath", (string)"E:/Users/gameover/Desktop/StrangerDanger/video");
     //_appModel->setProperty("flashDataPath", (string)"E:/Users/gameover/Desktop/StrangerDanger/flash");
-    _appModel->setProperty("scenesDataPath", (string)"G:/gameoverload/VideoProjects/Jungle/video");
-    _appModel->setProperty("flashDataPath", (string)"G:/gameoverload/VideoProjects/Jungle/flash");
+    //_appModel->setProperty("scenesDataPath", (string)"G:/gameoverload/VideoProjects/Jungle/video");
+    //_appModel->setProperty("flashDataPath", (string)"G:/gameoverload/VideoProjects/Jungle/flash");
+    _appModel->setProperty("scenesDataPath", (string)"E:/Jungle/video");
+    _appModel->setProperty("flashDataPath", (string)"E:/Jungle/flash");
     _appModel->setProperty("graphicDataPath", (string)"graphics");
     #endif
 #else defined(USER_OLLIE)
     _appModel->setProperty("scenesDataPath", (string)"/Users/ollie/itsa_jungle_out_there/scenes");
     _appModel->setProperty("flashDataPath", (string)"/Users/ollie/itsa_jungle_out_there/apps");
+    _appModel->setProperty("graphicDataPath", (string)"graphics");
 #endif
 
 #if !defined(USER_MATT) && !defined(USER_OLLIE)

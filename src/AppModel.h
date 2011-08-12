@@ -21,6 +21,8 @@
 #include <assert.h>
 #include <string>
 
+//#define EXTENDED_DISPLAY
+
 using std::map;
 using std::vector;
 using std::string;

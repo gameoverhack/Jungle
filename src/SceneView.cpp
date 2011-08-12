@@ -188,13 +188,10 @@ void SceneView::drawCharacter(ofxFbo * targetFBO,
 	//glScalef(-1.0f, 1.0f, 1.0f);
 	//rot = -rot;
 
-
     glTranslatef(width/2.0f + prs.x, height/2.0f + prs.y, 0.0f);
     glScalef(prs.s, prs.s, 1.0f);
     glRotatef(prs.r, 0.0f, 0.0f, 1.0f);
     glTranslatef(-width/2.0f - prs.x, -height/2.0f - prs.y, 0.0f);
-
-
 
 	// draw face texture
 	faceTexture->draw(0,0);

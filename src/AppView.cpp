@@ -55,7 +55,12 @@ void AppView::draw() {
 
     // fullscreen shenanigans
     //bool isFullScreen = boost::any_cast<bool>(_appModel->getProperty("fullScreen"));
-    float width = (float)ofGetWidth();//CLAMP((float)ofGetWidth(), 0.0f , 1920.0f);
+#ifdef EXTENDED_DISPLAY
+    float width = CLAMP((float)ofGetWidth(), 0.0f , 1920.0f);
+#else
+    float width = (float)ofGetWidth();
+#endif
+
     float height = (float)ofGetHeight();//(float)ofGetHeight();
 
 	if(_appModel->checkState(kAPP_LOADING)){
@@ -71,10 +76,15 @@ void AppView::draw() {
 		// options for solving include: use OSX and ofxCocoa or look into multiple openGL contexts and
 		// shared textures and/or switched context drawing...
 		// ...see http://forum.openframeworks.cc/index.php/topic,4872.0.html
-        //if (isFullScreen && ofGetWidth() > 1920) _sceneView->draw(width, 0, width, height);
-
+#ifdef EXTENDED_DISPLAY
+        if (ofGetWidth() > 1920) _sceneView->draw(width, 0, width, height);
+#endif
         if (!_appModel->checkCurrentInteractivity(kINTERACTION_FACE)) {
+#ifdef EXTENDED_DISPLAY
+            _attackView->draw(1920 + 1695 * (width/1920.0f), 217 * (height/1080.0f), _attackView->getWidth() * (width/1920.0f), _attackView->getHeight() * (height/1080.0f));
+#else
             _attackView->draw(1695 * (width/1920.0f), 217 * (height/1080.0f), _attackView->getWidth() * (width/1920.0f), _attackView->getHeight() * (height/1080.0f));
+#endif
             _victimView->draw(4 * (width/1920.0f), 217 * (height/1080.0f), _victimView->getWidth() * (width/1920.0f), _victimView->getHeight() * (height/1080.0f));
         }
 
