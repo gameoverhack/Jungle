@@ -49,6 +49,23 @@ enum interaction_t {
 	kINTERACTION_NONE
 };
 
+// used for camera pos, rot scale
+class PosRotScale {
+public:
+
+    PosRotScale(){};
+
+	float x;
+	float y;
+	float r;
+	float s;
+	string print(bool log) {
+	    string out = "PRS: x = " + ofToString(x) + " y = " + ofToString(y) + " r = " + ofToString(r) + " s = " + ofToString(s);
+	    if (log) cout << out << endl;
+	    return out;
+    }
+};
+
 // used for fft
 typedef struct {
 	float * fftBand;

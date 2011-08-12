@@ -32,6 +32,9 @@ public:
 
     bool		setup(int deviceID, int x, int y);
 
+    void        loadAttributes();
+    void        saveAttributes();
+
 #ifdef TARGET_WIN32
 	void        showVideoSettings();
 	void        loadSettings();
@@ -44,6 +47,7 @@ public:
 
 	int			getInstanceID();
 	void		setInstanceID(int instanceID);
+    void        setCameraAttributes(PosRotScale prs);
 
 	ofTexture	* getCamTextureRef();
 

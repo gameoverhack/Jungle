@@ -81,14 +81,14 @@ void VideoController::update() {
 	_appModel->setCurrentIsFrameNew(isFrameNew);
 
 	if (currentFrame > totalFrames - 12 && !_preRolling) {
-cout << "yes" << endl;
+
 		// set loopstate
-		if (currentSequence->getLoop()) {
+		if (currentSequence->getLoop()) { // this does get hammered...hmmm
 			currentMovie->setLoopState(OF_LOOP_NORMAL);
 		} else {
 			currentMovie->setLoopState(OF_LOOP_NONE);
 		}
-cout << "no" << endl;
+
 		// 'cache' (ie., half) load loop sequence if we're on an 'a' type movie
 
 		string nextSequenceName = currentSequence->getNextSequenceName();
@@ -124,8 +124,8 @@ void VideoController::loadMovie(Sequence * seq, bool forceCurrentLoad, int lastF
 	string path = seq->getMovieFullFilePath();
 	LOG_VERBOSE("Next video start to load: " + path + (string)(forceCurrentLoad ? " FORCED" : " NORMAL"));
 
-	_forceCurrentLoad = forceCurrentLoad;
-    _lastFrameWhenForced = lastFrame;
+	_forceCurrentLoad       = forceCurrentLoad;
+    _lastFrameWhenForced    = lastFrame; // not using this now but will when we want to jump to specific frame...did it while hacking...is on appModel toggleVideo too...
 
 	goThreadedVideo * nextMovie			= _appModel->getNextVideoPlayer();
 

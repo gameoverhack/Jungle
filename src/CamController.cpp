@@ -17,9 +17,10 @@ CamController::CamController() {
     registerStates();
 
 	_cam.listDevices();
-	_instanceCount++;				// use instance counts to keep track of which cam belongs to which viewer - may be redundant??
 	_instanceID = _instanceCount;
+    _instanceCount++;				// use instance counts to keep track of which cam belongs to which viewer - may be redundant??
 	LOG_NOTICE("Initialisation complete. Instance ID: " + ofToString(_instanceID));
+
 }
 
 //--------------------------------------------------------------
@@ -35,16 +36,22 @@ bool CamController::setup(int deviceID, int x, int y){
     _cam.setRequestedMediaSubType(VI_MEDIASUBTYPE_MJPG);
 #endif
 	_cam.setDeviceID(deviceID);
-	_cam.initGrabber(x, y, true);
+	bool ok = _cam.initGrabber(x, y, true);
+#ifdef TARGET_WIN32
+	if (ok) loadSettings();
+#endif
+    loadAttributes();
+    return ok;
 }
 
 #ifdef TARGET_OSX
 bool CamController::setup(string deviceID, int x, int y){
 	LOG_NOTICE("Attemptimg to set instance " + ofToString(_instanceID) + " cam to deviceID: " + deviceID);
 	_cam.close();					// to be sure, to be sure
-    // TODO: make this work on WINDOZE
 	_cam.setDeviceID(deviceID);
 	_cam.initGrabber(x, y, true);
+
+    loadAttributes();
 }
 #endif
 
@@ -54,7 +61,9 @@ void CamController::showVideoSettings() {
 }
 
 void CamController::loadSettings() {
+
     // fill maps with current (ie., default values)
+
     map<string, setting> camSettings    = _cam.getCameraSettings();
     map<string, setting> filterSettings = _cam.getFilterSettings();
 
@@ -154,8 +163,50 @@ void CamController::saveSettings() {
     camSettings.clear();
     filterSettings.clear();
 
+     // save to drive here or just let it happen on quit??
+
 }
 #endif
+
+void CamController::loadAttributes() {
+
+    float camRotation           = boost::any_cast<float>(_appModel->getProperty("camRotation" + ofToString(_instanceID)));
+    float camScale              = boost::any_cast<float>(_appModel->getProperty("camScale" + ofToString(_instanceID)));
+    float camPositionX          = boost::any_cast<float>(_appModel->getProperty("camPositionX" + ofToString(_instanceID)));
+    float camPositionY          = boost::any_cast<float>(_appModel->getProperty("camPositionY" + ofToString(_instanceID)));
+
+    PosRotScale prs;
+
+    prs.x           = camPositionX;
+    prs.y           = camPositionY;
+    prs.r           = camRotation;
+    prs.s           = camScale;
+
+    setCameraAttributes(prs);
+
+}
+
+void CamController::saveAttributes() {
+
+    PosRotScale * camAttributes = _appModel->getCameraAttributes();
+    PosRotScale prs             = camAttributes[_instanceID];
+
+    _appModel->setProperty("camRotation" + ofToString(_instanceID), prs.r);
+    _appModel->setProperty("camScale" + ofToString(_instanceID), prs.s);
+    _appModel->setProperty("camPositionX" + ofToString(_instanceID), prs.x);
+    _appModel->setProperty("camPositionY" + ofToString(_instanceID), prs.y);
+
+    // save to drive here or just let it happen on quit??
+}
+
+void CamController::setCameraAttributes(PosRotScale prs) {
+
+    LOG_NOTICE("Saving [" + prs.print(false) + "]");
+
+    PosRotScale * camAttributes = _appModel->getCameraAttributes();
+    camAttributes[_instanceID] = prs;
+
+}
 
 void CamController::update() {
 	_cam.update();

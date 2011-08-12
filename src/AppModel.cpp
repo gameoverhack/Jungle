@@ -18,15 +18,19 @@ AppModel::AppModel() {
     registerStates();
 
 	_currentScene = NULL;
-	//_ardRawPins = new int[2];
 	_padLength = 1;
+
+    _cameraPRS = new PosRotScale[2];
 
 	// setup video players
 	_videoPlayers[0] = new goThreadedVideo();
 	_videoPlayers[1] = new goThreadedVideo();
 }
 
-AppModel::~AppModel(){
+AppModel::~AppModel() {
+
+    LOG_NOTICE("Destroying AppModel");
+
 	map<string, Scene *>::iterator iter;
 	for(iter = _scenes.begin(); iter != _scenes.end(); iter++){
 		delete (iter->second);
@@ -35,6 +39,18 @@ AppModel::~AppModel(){
 	// clean up video players
 	delete _videoPlayers[0];
 	delete _videoPlayers[1];
+	delete [] _cameraPRS;
+	delete [] _ardCyclicBuffer;
+	delete [] _fftCyclicBuffer;
+	delete [] _fftCyclicSum;
+	delete [] _fftInput;
+	delete [] _fftNoiseFloor;
+	delete [] _fftPostFilter;
+
+    // there are more to do
+
+    LOG_WARNING("Have you cleaned up the model????");
+
 }
 
 // state registration
@@ -137,6 +153,11 @@ ofTexture * AppModel::getVictimCamTexRef() {
 //--------------------------------------------------------------
 ofTexture * AppModel::getAttackCamTexRef() {
 	return _attackCamTex;
+}
+
+PosRotScale * AppModel::getCameraAttributes() {
+    // should check? // lazy pointer ways
+    return _cameraPRS;
 }
 
 /********************************************************

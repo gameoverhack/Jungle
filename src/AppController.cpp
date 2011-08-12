@@ -85,10 +85,7 @@ void AppController::setup() {
 	_camControllers[1]->setup("ManyCam Virtual Webcam (RGB)", 640, 480);	// NB: had to use QTKit to get ManyCam working
 #else
 	_camControllers[0]->setup(0, 1920, 1080);
-	_camControllers[1]->setup(1, 1920, 1080);
-	_camControllers[0]->loadSettings();
-	_camControllers[1]->loadSettings();
-	//abort();
+	_camControllers[1]->setup(0, 1920, 1080);
 #endif
 
 	// register pointers to textures from cams on the model
@@ -104,14 +101,27 @@ void AppController::setup() {
 
 	_appModel->setState(kAPP_LOADING);
 
-	// set app state;
+	// set app default properties - COMMENT TO STOP SETTING BACK TO DEFAULTS
 	_appModel->setProperty("loadingMessage", string("AppController loading"));
 	_appModel->setProperty("loadingProgress", 0.1f);
 
     _appModel->setProperty("showProps", false);
 	_appModel->setProperty("autoTest", false);
 	_appModel->setProperty("fullScreen", true);
-    //_appModel->setProperty("showFFT", false);
+	_appModel->setProperty("tryScaleMethod", 0);
+
+/*	_appModel->setProperty("cameraToAdjust", (string)"0");
+	_appModel->setProperty("cameraPropToAdjust", (string)"SCALEROTATION");
+    _appModel->setProperty("camScale0", 0.0f);
+	_appModel->setProperty("camScale1", 0.0f);
+	_appModel->setProperty("camRotation0", 0.0f);
+	_appModel->setProperty("camRotation1", 0.0f);
+    _appModel->setProperty("camPositionX0", 0.0f);
+	_appModel->setProperty("camPositionX1", 0.0f);
+	_appModel->setProperty("camPositionY0", 0.0f);
+	_appModel->setProperty("camPositionY1", 0.0f);
+
+    _appModel->setProperty("showFFT", false);*/
 
 	LOG_NOTICE("Initialisation complete");
 }
@@ -126,50 +136,58 @@ void AppController::swapCameras() {
 //--------------------------------------------------------------
 void AppController::VictimEvent(float & level) {
 
-    if (_switchToSequence == NULL && !_vidController->isPreRolling()) {
-        if (_appModel->checkCurrentInteractivity(kINTERACTION_BOTH) || _appModel->checkCurrentInteractivity(kINTERACTION_VICTIM)) {
-            string res = _appModel->getCurrentSequence()->getVictimResult();
-            LOG_NOTICE("VICTIM ACTION [" + ofToString(level) + "]" + res);
-            if (res != kLAST_SEQUENCE_TOKEN) {
-                _switchToSequence = _appModel->getCurrentScene()->getSequence(res);
-                _vidController->loadMovie(_switchToSequence, true);
-            } else nextScene();
+    if (ofGetElapsedTimeMillis() - _lastActionTime > 500) {
+        if (_switchToSequence == NULL && !_vidController->isPreRolling()) {
+            if (_appModel->checkCurrentInteractivity(kINTERACTION_BOTH) || _appModel->checkCurrentInteractivity(kINTERACTION_VICTIM)) {
+                _lastActionTime = ofGetElapsedTimeMillis();
+                string res = _appModel->getCurrentSequence()->getVictimResult();
+                LOG_NOTICE("VICTIM ACTION [" + ofToString(level) + "]" + res);
+                if (res != kLAST_SEQUENCE_TOKEN) {
+                    _switchToSequence = _appModel->getCurrentScene()->getSequence(res);
+                    _vidController->loadMovie(_switchToSequence, true);
+                } else nextScene();
 
-        } //else cout << "Clocked by type " << _appModel->getCurrentInteractivity() << " = " << kINTERACTION_VICTIM << endl;
-    } //else cout << "Blocked by null" << endl;
+            } //else cout << "Clocked by type " << _appModel->getCurrentInteractivity() << " = " << kINTERACTION_VICTIM << endl;
+        } //else cout << "Blocked by null" << endl;
+    } //else cout << "Blocked by time" << endl;
+
 }
 
 //--------------------------------------------------------------
 void AppController::AttackEvent(float & level) {
 
-    if (_switchToSequence == NULL && !_vidController->isPreRolling()) {
-        if (_appModel->checkCurrentInteractivity(kINTERACTION_BOTH) || _appModel->checkCurrentInteractivity(kINTERACTION_ATTACKER)) {
-
-            string res = _appModel->getCurrentSequence()->getAttackerResult();
-            LOG_NOTICE("ATTACK ACTION [" + ofToString(level) + "] == " + res);
-            if (res != kLAST_SEQUENCE_TOKEN) {
-                _switchToSequence = _appModel->getCurrentScene()->getSequence(res);
-                _vidController->loadMovie(_switchToSequence, true);
-            } else nextScene();
-        } //else cout << "Clocked by type " << _appModel->getCurrentInteractivity() << " = " << kINTERACTION_ATTACKER << endl;
-    } //else cout << "Blocked by null" << endl;
+    if (ofGetElapsedTimeMillis() - _lastActionTime > 500) {
+        if (_switchToSequence == NULL && !_vidController->isPreRolling()) {
+            if (_appModel->checkCurrentInteractivity(kINTERACTION_BOTH) || _appModel->checkCurrentInteractivity(kINTERACTION_ATTACKER)) {
+                _lastActionTime = ofGetElapsedTimeMillis();
+                string res = _appModel->getCurrentSequence()->getAttackerResult();
+                LOG_NOTICE("ATTACK ACTION [" + ofToString(level) + "] == " + res);
+                if (res != kLAST_SEQUENCE_TOKEN) {
+                    _switchToSequence = _appModel->getCurrentScene()->getSequence(res);
+                    _vidController->loadMovie(_switchToSequence, true);
+                } else nextScene();
+            } //else cout << "Clocked by type " << _appModel->getCurrentInteractivity() << " = " << kINTERACTION_ATTACKER << endl;
+        } //else cout << "Blocked by null" << endl;
+    } //else cout << "Blocked by time" << endl;
 
 }
 
 //--------------------------------------------------------------
 void AppController::FaceEvent(float & level) {
 
-    if (_switchToSequence == NULL && !_vidController->isPreRolling()) {
-        if (_appModel->checkCurrentInteractivity(kINTERACTION_FACE)) {
-
-            string res ="seq01a"; // hack
-            LOG_NOTICE("FAKE ATTACK ACTION [" + ofToString(level) + "] == " + res);
-            if (res != kLAST_SEQUENCE_TOKEN) {
-                _switchToSequence = _appModel->getCurrentScene()->getSequence(res);
-                _vidController->loadMovie(_switchToSequence, true);
-            } else nextScene();
-        } //else cout << "Clocked by type " << _appModel->getCurrentInteractivity() << " = " << kINTERACTION_ATTACKER << endl;
-    } //else cout << "Blocked by null" << endl;
+    if (ofGetElapsedTimeMillis() - _lastActionTime > 500) {
+        if (_switchToSequence == NULL && !_vidController->isPreRolling()) {
+            if (_appModel->checkCurrentInteractivity(kINTERACTION_FACE)) {
+                _lastActionTime = ofGetElapsedTimeMillis();
+                string res ="seq01a"; // hack
+                LOG_NOTICE("FAKE ATTACK ACTION [" + ofToString(level) + "] == " + res);
+                if (res != kLAST_SEQUENCE_TOKEN) {
+                    _switchToSequence = _appModel->getCurrentScene()->getSequence(res);
+                    _vidController->loadMovie(_switchToSequence, true);
+                } else nextScene();
+            } //else cout << "Clocked by type " << _appModel->getCurrentInteractivity() << " = " << kINTERACTION_ATTACKER << endl;
+        } //else cout << "Blocked by null" << endl;
+    } //else cout << "Blocked by time" << endl;
 
 }
 
@@ -231,6 +249,7 @@ void AppController::update() {
 
 		// catch _switchToSequence when a movie is loaded completely
 		if (_switchToSequence != NULL && _vidController->checkState(kVIDCONTROLLER_NEXTVIDREADY)) {
+		     _lastActionTime = ofGetElapsedTimeMillis();
 			_vidController->toggleVideoPlayers();
 			_vidController->update();
 			_vidController->setState(kVIDCONTROLLER_READY);
@@ -291,22 +310,33 @@ void AppController::draw() {
 //--------------------------------------------------------------
 void AppController::keyPressed(int key){
 
-	float gamma     = boost::any_cast<float>(_appModel->getProperty("shaderGammaCorrection"));
-	float blend     = boost::any_cast<float>(_appModel->getProperty("shaderBlendRatio"));
-	bool showUnmask = boost::any_cast<bool>(_appModel->getProperty("showUnmaskedTextures"));
-	bool autoTest   = boost::any_cast<bool>(_appModel->getProperty("autoTest"));
-    bool showProps  = boost::any_cast<bool>(_appModel->getProperty("showProps"));
-    bool showFFT    = boost::any_cast<bool>(_appModel->getProperty("showFFT"));
-    bool showDebug  = boost::any_cast<bool>(_appModel->getProperty("showDebugView"));
+	float gamma                 = boost::any_cast<float>(_appModel->getProperty("shaderGammaCorrection"));
+	float blend                 = boost::any_cast<float>(_appModel->getProperty("shaderBlendRatio"));
+	bool showUnmask             = boost::any_cast<bool>(_appModel->getProperty("showUnmaskedTextures"));
+	bool autoTest               = boost::any_cast<bool>(_appModel->getProperty("autoTest"));
+    bool showProps              = boost::any_cast<bool>(_appModel->getProperty("showProps"));
+    bool showFFT                = boost::any_cast<bool>(_appModel->getProperty("showFFT"));
+    bool showDebug              = boost::any_cast<bool>(_appModel->getProperty("showDebugView"));
+    int scaleMethod             = boost::any_cast<int>(_appModel->getProperty("tryScaleMethod"));
+    string cameraToAdjust       = boost::any_cast<string>(_appModel->getProperty("cameraToAdjust"));
+    string cameraPropToAdjust   = boost::any_cast<string>(_appModel->getProperty("cameraPropToAdjust"));
+    float camRotation           = boost::any_cast<float>(_appModel->getProperty("camRotation"+cameraToAdjust));
+    float camScale              = boost::any_cast<float>(_appModel->getProperty("camScale"+cameraToAdjust));
+    float camPositionX          = boost::any_cast<float>(_appModel->getProperty("camPositionX"+cameraToAdjust));
+    float camPositionY          = boost::any_cast<float>(_appModel->getProperty("camPositionY"+cameraToAdjust));
 
-    float fakeInput = 1024.0f; // this could be faked more realistically using time between keys etc -> will do for now
+    float rotationAdjustment    = 0.5f;
+    float scaleAdjustment       = 0.01f;
+    float positionAdjustment    = 5.0f;
+
+    float fakeInput             = 1024.0f; // this could be faked more realistically using time between keys etc -> will do for now
 
 	switch (key) {
 #ifdef TARGET_WIN32
-	    case '1':
+	    case '3':
 			_camControllers[0]-> showVideoSettings();
 			break;
-		case '2':
+		case '4':
 			_camControllers[1]-> showVideoSettings();
 			break;
         case 'c':
@@ -318,6 +348,14 @@ void AppController::keyPressed(int key){
 			_camControllers[1]->loadSettings();
 			break;
 #endif
+        case 'n':
+			swapCameras();
+			break;
+        case 'y':
+            if (scaleMethod == 0) {
+                 _appModel->setProperty("tryScaleMethod", 1);
+            } else  _appModel->setProperty("tryScaleMethod", 0);
+            break;
 		case 'x':
 			gamma += 0.1;
 			break;
@@ -334,7 +372,7 @@ void AppController::keyPressed(int key){
 			_appModel->setProperty("showDebugView", !showDebug);
 			break;
 		case 't':
-			_appModel->setProperty("autoTest", !autoTest);
+			//_appModel->setProperty("autoTest", !autoTest);
 			break;
 		case 'q':
 			_micController->fakeVictimAction(fakeInput*8.0f);
@@ -342,28 +380,75 @@ void AppController::keyPressed(int key){
 		case 'p':
 			_ardController->fakeAttackAction(fakeInput);
 			break;
-		case 'P':
+		case 'S':
 			_dataController->saveProperties();
-			break;
-		case 'm':
-			swapCameras();
 			break;
 		case ' ':
             FaceEvent(fakeInput);
 			break;
-        case 'o':
+        case 'm':
             _appModel->getCurrentVideoPlayer()->togglePaused();
             break;
-		case '>':
+        case '/':
+            _appModel->getCurrentVideoPlayer()->setFrame(_appModel->getCurrentFrameTotal()-13);
+            break;
 		case '.':
-			_appModel->getCurrentVideoPlayer()->setFrame(_appModel->getCurrentFrameTotal()-13);
+            _appModel->getCurrentVideoPlayer()->nextFrame();
+            break;
+		case ',':
+            _appModel->getCurrentVideoPlayer()->previousFrame();
 			break;
+        case '1':
+            _appModel->setProperty("cameraToAdjust", (string)"0");
+            break;
+        case '2':
+            _appModel->setProperty("cameraToAdjust", (string)"1");
+            break;
+        case '5':
+            _appModel->setProperty("cameraPropToAdjust", (string)"POSITION");
+            break;
+        case '6':
+            _appModel->setProperty("cameraPropToAdjust", (string)"SCALEROTATION");
+            break;
 		case 356: // left arrow
-			_appModel->getCurrentVideoPlayer()->previousFrame();
+            if (cameraPropToAdjust == "SCALEROTATION") {
+                camRotation -= rotationAdjustment;
+
+            }
+            if (cameraPropToAdjust == "POSITION") {
+                camPositionX -= positionAdjustment;
+            }
 			break;
 		case 358: // right arrow
-			_appModel->getCurrentVideoPlayer()->nextFrame();
+            if (cameraPropToAdjust == "SCALEROTATION") {
+                camRotation += rotationAdjustment;
+            }
+            if (cameraPropToAdjust == "POSITION") {
+                camPositionX += positionAdjustment;
+            }
 			break;
+        case 359: // up arrow
+            if (cameraPropToAdjust == "SCALEROTATION") {
+                camScale -= scaleAdjustment;
+            }
+            if (cameraPropToAdjust == "POSITION") {
+                camPositionY -= positionAdjustment;
+            }
+			break;
+		case 357: // down arrow
+            if (cameraPropToAdjust == "SCALEROTATION") {
+                camScale += scaleAdjustment;
+            }
+            if (cameraPropToAdjust == "POSITION") {
+                camPositionY += positionAdjustment;
+            }
+			break;
+        case 'r':
+            camPositionX = 0.0f;
+            camPositionY = 0.0f;
+            camScale = 0.5f;
+            camRotation = 0.0f;
+            break;
 		case 'h':
 			_appModel->setProperty("showUnmaskedTextures", !showUnmask);
 			break;
@@ -382,6 +467,27 @@ void AppController::keyPressed(int key){
 
 	_appModel->setProperty("shaderBlendRatio", blend);
 	_appModel->setProperty("shaderGammaCorrection", gamma);
+
+    _appModel->setProperty("camRotation"+cameraToAdjust, camRotation);
+    _appModel->setProperty("camScale"+cameraToAdjust, camScale);
+    _appModel->setProperty("camPositionX"+cameraToAdjust, camPositionX);
+    _appModel->setProperty("camPositionY"+cameraToAdjust, camPositionY);
+
+    PosRotScale prs;
+
+    prs.x           = camPositionX;
+    prs.y           = camPositionY;
+    prs.r           = camRotation;
+    prs.s           = camScale;
+
+    LOG_NOTICE(cameraPropToAdjust + " on camera " + cameraToAdjust);
+
+    if (cameraToAdjust == "0") {
+        _camControllers[0]->setCameraAttributes(prs); // could do this direct on model but seems more apt to go cia the cam controllers
+    } else {
+        _camControllers[1]->setCameraAttributes(prs); // could do this direct on model but seems more apt to go cia the cam controllers
+    }
+
 
 }
 

@@ -123,6 +123,7 @@ public:
 	void		        setCameraTextures(ofTexture * victimCamTex, ofTexture * attackCamTex);
 	ofTexture *         getVictimCamTexRef();
 	ofTexture *         getAttackCamTexRef();
+	PosRotScale *       getCameraAttributes();
 
     // video player getter/setters
     goThreadedVideo *	getCurrentVideoPlayer();
@@ -166,13 +167,16 @@ private:
 
 	map<string, boost::any>		_anyProps;
 
+    // scene and sequence vars
 	map<string, Scene *>		_scenes;
-
 	Scene *						_currentScene;
 
+    // camera vars
 	ofTexture *					_victimCamTex;
 	ofTexture *					_attackCamTex;
+	PosRotScale *               _cameraPRS;
 
+    // video vars
 	goThreadedVideo *			_videoPlayers[2];
 	int							_frame;
 	bool						_isFrameNew;
@@ -210,6 +214,7 @@ private:
     // interactivity vars
     int                         _currentInteractivity;
     float                       _currentSequenceLevel;
+
 };
 
 typedef Singleton<AppModel> AppModelSingleton;					// Global declaration

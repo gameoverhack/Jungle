@@ -25,7 +25,8 @@ public:
 
 	void drawCharacter(ofxFbo * targetFBO,
 					   ofTexture * faceTexture,
-					   CamTransform *transform);
+					   CamTransform *transform,
+					   PosRotScale prs);
 
 private:
 

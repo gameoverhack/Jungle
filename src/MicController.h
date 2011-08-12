@@ -22,7 +22,7 @@ enum {
 	kMICCONTROLLER_ABOVETHRESHOLD
 };
 
-
+// problems shutting down ofSoundStream, see: http://forum.openframeworks.cc/index.php?topic=5357.0 for solution
 
 class MicController : public BaseState, public ofBaseApp {
 

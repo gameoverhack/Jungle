@@ -13,6 +13,10 @@ SceneView::SceneView(float width, float height) : BaseView(width ,height) {
 
     LOG_NOTICE("Setting up SceneView");
 
+    /********************************************************
+     *              Allocate Textures and FBO's           	*
+     ********************************************************/
+
 	// Allocate texture and attach*/
 	_vic1Tex.allocate(_viewWidth, _viewHeight, GL_RGBA);
 	_vic1FBO.setup(_viewWidth, _viewHeight);
@@ -36,7 +40,12 @@ SceneView::SceneView(float width, float height) : BaseView(width ,height) {
 
 void SceneView::update() {
 
-	goThreadedVideo * currentMovie = _appModel->getCurrentVideoPlayer(); //getCurrentSequence()->getMovie();
+    /********************************************************
+     *          Get references needed to do drawing      	*
+     ********************************************************/
+
+	goThreadedVideo * currentMovie  = _appModel->getCurrentVideoPlayer(); //getCurrentSequence()->getMovie();
+	PosRotScale     * camAttributes = _appModel->getCameraAttributes();
 	ofTexture		* sceneTexture;
 	CamTransform	* actorTransform;
 
@@ -54,16 +63,24 @@ void SceneView::update() {
 
 	ofSetColor(255,255,255); // no tinting
 
+    /********************************************************
+     *          Draw each head/webcam into an FBO       	*
+     ********************************************************/
+
 	if(_appModel->getCurrentIsFrameNew()){
 		// draw characters faces to new positions
 		// TODO: This needs to be smarter
-		drawCharacter(&_vic1FBO, _appModel->getVictimCamTexRef(), &(_appModel->getCurrentSequence()->getTransformVector("vic1")->at(currentFrame)));
-		drawCharacter(&_atk1FBO, _appModel->getAttackCamTexRef(), &(_appModel->getCurrentSequence()->getTransformVector("atk1")->at(currentFrame)));
+		drawCharacter(&_vic1FBO, _appModel->getVictimCamTexRef(), &(_appModel->getCurrentSequence()->getTransformVector("vic1")->at(currentFrame)), camAttributes[0]);
+		drawCharacter(&_atk1FBO, _appModel->getAttackCamTexRef(), &(_appModel->getCurrentSequence()->getTransformVector("atk1")->at(currentFrame)), camAttributes[1]);
 
 		if (_appModel->getCurrentSequence()->getTransformCount() > 2) {
-			drawCharacter(&_atk2FBO, _appModel->getAttackCamTexRef(), &(_appModel->getCurrentSequence()->getTransformVector("atk2")->at(currentFrame)));
+			drawCharacter(&_atk2FBO, _appModel->getAttackCamTexRef(), &(_appModel->getCurrentSequence()->getTransformVector("atk2")->at(currentFrame)), camAttributes[1]);
 		}
 	}
+
+    /********************************************************
+     *      Draw Shader (composites webcams and movie)     	*
+     ********************************************************/
 
 	_viewFBO.begin();
 
@@ -102,21 +119,36 @@ void SceneView::update() {
 
 void SceneView::drawCharacter(ofxFbo * targetFBO,
 							  ofTexture * faceTexture,
-							  CamTransform *transform) {
+							  CamTransform *transform,
+							  PosRotScale prs) {
+
+
+    float width  = faceTexture->getWidth();
+    float height = faceTexture->getHeight();
+
 	// set up draw state
 	targetFBO->begin();
 	glPushMatrix();
 
 	glClear(GL_COLOR_BUFFER_BIT); // clear frame
 
-	// do the transform
-
-	// translate to the right place
-	glTranslatef(transform->x, transform->y, 0.0);
+    /********************************************************
+     *      Magic numbers on the Transform data         	*
+     *      should be moved to the Analyzer eventually    	*
+     ********************************************************/
 
 	// magic transform shenanigans -> move to flash analyze functions eventually
 	float rot = transform->rotation;
-	float sclX = transform->w/640.0f;
+
+	float sclX;
+
+	int scaleMethod = boost::any_cast<int>(_appModel->getProperty("tryScaleMethod"));
+	if (scaleMethod == 0) {
+        sclX = ABS(transform->scaleX);
+	} else {
+        sclX = transform->w/640.0f;
+	}
+
 	float sclY = sclX;
 
 	if (transform->rotation < -90.0 || transform->rotation > 90.0) {
@@ -124,25 +156,51 @@ void SceneView::drawCharacter(ofxFbo * targetFBO,
 		rot = -rot;
 	}
 
+    /********************************************************
+     *     Translate, Scale, Rotate webcam by Transform   	*
+     ********************************************************/
+
+    // transform translation
+	glTranslatef(transform->x, transform->y, 0.0);
+
+    // transform scale
+	glScalef(sclX, sclY, 1.0f);
+
+	// transform rotation
+	glRotatef(rot, 0.0f, 0.0f, 1.0f);
+
+	// translate back half (/4 due to glScale) the width/height of the camera texture
+	glTranslatef(-(width/4.0), -(height/4.0), 0.0);
+
+    // can we do like this?
+    /*glTranslatef(width/2.0f + transform->x, height/2.0f + transform->y, 0.0f);
+    glScalef(sclX, sclY, 1.0f);
+    glRotatef(rot, 0.0f, 0.0f, 1.0f);
+    glTranslatef(-width/2.0f - transform->x, -height/2.0f - transform->y, 0.0f);*/
+
+
+
+    /********************************************************
+     *      Translate, Scale, Rotate webcam by User     	*
+     ********************************************************/
+
 	// flip the camera requires scale and rot to be negativised...
 	//glScalef(-1.0f, 1.0f, 1.0f);
 	//rot = -rot;
 
-	glScalef(sclX, sclY, 1.0f);
 
-	// rotate the head
-	glRotatef(rot, 0.0f, 0.0f, 1.0f);
+    glTranslatef(width/2.0f + prs.x, height/2.0f + prs.y, 0.0f);
+    glScalef(prs.s, prs.s, 1.0f);
+    glRotatef(prs.r, 0.0f, 0.0f, 1.0f);
+    glTranslatef(-width/2.0f - prs.x, -height/2.0f - prs.y, 0.0f);
 
-	// translate back half (/4 due to glScale) the width/height of the camera texture
-	glTranslatef(-(faceTexture->getWidth()/4.0), -(faceTexture->getHeight()/4.0), 0.0);
 
-	// scale down camera texture
-	glScalef(0.5, 0.5, 0);
 
 	// draw face texture
 	faceTexture->draw(0,0);
 
 	// end rendering
 	glPopMatrix();
+
 	targetFBO->end();
 }
