@@ -27,10 +27,14 @@ MicController::MicController(string deviceName, int fftBufferLengthSecs, int aud
 	_fft = ofxFft::create(_audioBufferSize, OF_FFT_WINDOW_HAMMING, OF_FFT_FFTW);
 
      // allocate fft and audio sample arrays refs on the appModel...
+    _appModel->setAudioBufferSize(_audioBufferSize);            // TODO: use this throughout instead of var
+    _appModel->setFFTBinSize(_fft->getBinSize());               // TODO: use this throughout instead of var and instead of passing value
+    _appModel->setFFTCyclicBufferSize(_fftCyclicBufferSize);    // TODO: use this throughout instead of var and instead of passing value
     _appModel->allocateFFTCyclicBuffer(_fftCyclicBufferSize, _fft->getBinSize());
     _appModel->allocateFFTNoiseFloor(_fft->getBinSize());
     _appModel->allocateFFTCyclicSum(_fft->getBinSize());
     _appModel->allocateFFTPostFilter(_fft->getBinSize());
+    _appModel->allocateFFTInput(_fft->getBinSize());
     _appModel->allocateAudioInput(_audioBufferSize);
 
     // instantiate the soundstream
@@ -71,30 +75,21 @@ void MicController::registerStates() {
 
 void MicController::update() {
 
-    float * fftPostFilter       = _appModel->getFFTNoiseFloor();
-
     // update sound stream
     ofSoundUpdate();
-
-    float area = 0;
-	for (int i = 0; i < _fft->getBinSize(); i++) {
-		float h = fftPostFilter[i];
-		float w = 1.0f;
-		area += w*h;
-	}
-
-    _appModel->setFFTArea(sqrt(area) - 0.3f); // -0.3f is arbitrary noise floor adjustment TODO: make property
 
 }
 
 void MicController::audioReceived(float* input, int bufferSize, int nChannels) {
 
     if (_fft != NULL) {
+
         // get fft and audio sample arrays refs from the appModel...
         fftBands * fftCyclicBuffer  = _appModel->getFFTCyclicBuffer();
         float * fftNoiseFloor       = _appModel->getFFTNoiseFloor();
         float * fftCyclicSum        = _appModel->getFFTCyclicSum();
         float * fftPostFilter       = _appModel->getFFTPostFilter();
+        float * fftInput            = _appModel->getFFTInput();
         float * audioInput          = _appModel->getAudioInput();
 
         // put raw copy of audio input into model
@@ -106,7 +101,7 @@ void MicController::audioReceived(float* input, int bufferSize, int nChannels) {
 
         // copy current fft into cyclic buffer
         for(int i = 0; i < _fft->getBinSize(); i++) {
-            fftCyclicBuffer[_fftCyclicBufferOffset].fftBand[i] = fftCurrent[i];
+            fftCyclicBuffer[_fftCyclicBufferOffset].fftBand[i] = fftInput[i] = fftCurrent[i];
         }
 
         // set cyclic sum back to 0;
@@ -121,13 +116,31 @@ void MicController::audioReceived(float* input, int bufferSize, int nChannels) {
 
         // calculate the Noise Floor (average of sum of all bands across the cyclic buffer, and
         // and simultaneously calculate the Adaptive Noise Reduced FFT, storing it on the model
-        for (int j = 1; j < _fft->getBinSize(); j++) {
+        for (int j = 0; j < _fft->getBinSize(); j++) {
             fftNoiseFloor[j] = fftCyclicSum[j]/(float)_fftCyclicBufferSize;
-            fftPostFilter[j] = fftCurrent[j] - fftNoiseFloor[j];
+            fftPostFilter[j] = fftInput[j] - fftNoiseFloor[j]*1.2f;
         }
+
+        float area = 0;
+
+        for (int i = 10; i < _fft->getBinSize(); i++) {
+            float h = fftNoiseFloor[i]; //fftPostFilter[i]; // this is wrong but i like it!!
+            float w = 1.0f;
+            area += w*h;
+        }
+
+        area = sqrt(area) - 0.2f; //TODO: make prop
+
+        _appModel->setFFTArea(area);
 
         // increase the cyclic buffer offset
         _fftCyclicBufferOffset = (_fftCyclicBufferOffset + 1) % _fftCyclicBufferSize;
+
+        if (_appModel->checkState(kAPP_RUNNING)) {
+            if (area > _appModel->getCurrentSequence()->getThresholdLevel()) {
+                ofNotifyEvent(victimAction, area, this);
+            }
+        }
     }
 
 }

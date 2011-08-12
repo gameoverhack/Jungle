@@ -31,9 +31,11 @@ public:
     MicController(string deviceName, int fftBufferLengthSecs, int audioBufferSize = 512, int sampleRate = 44100, int channels = 2);
     ~MicController();
 
-	void	    registerStates();
+	void	        registerStates();
 
-    void        update();
+    void            update();
+
+    ofEvent<float>  victimAction;
 
 private:
 

@@ -50,6 +50,10 @@ public:
 
 private:
 
+    void            VictimEvent(float & level);
+    void            AttackEvent(float & level);
+    void            FaceEvent(float & level);
+
     void              exit();
     void              nextScene();
 

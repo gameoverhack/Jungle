@@ -18,9 +18,9 @@ VictimView::VictimView(float width, float height) : BaseMeterView(width, height)
      *      Get _appModel objects for drawing               *
      ********************************************************/
 
-    _icon_on       = _appModel->getGraphicTex(kGFX_PUNCH_ON);
-    _icon_off      = _appModel->getGraphicTex(kGFX_PUNCH_OFF);
-    _icon_bar      = _appModel->getGraphicTex(kGFX_PUNCH_BAR);
+    _icon_on       = _appModel->getGraphicTex(kGFX_SCREAM_ON);
+    _icon_off      = _appModel->getGraphicTex(kGFX_SCREAM_OFF);
+    _icon_bar      = _appModel->getGraphicTex(kGFX_SCREAM_BAR);
 
 }
 

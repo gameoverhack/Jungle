@@ -51,7 +51,7 @@ void AppController::setup() {
 
 	LOG_NOTICE("Initialising");
 
-	ofSetFrameRate(30);          // has to be as we can't set hammer ofArduino too hard...hmmm
+	ofSetFrameRate(60);          // has to be as we can't set hammer ofArduino too hard...hmmm
 	ofSetVerticalSync(true);
 
 	_isFullScreen		= false; // change this when we start in fullscreen mode
@@ -72,10 +72,12 @@ void AppController::setup() {
 
 	// setup micController
 	_micController = new MicController("Microphone (HD Pro Webcam C910)", 2); // other is Microphone (2- HD Pro Webcam C910) // TODO: make these a property
+	ofAddListener(_micController->victimAction, this, &AppController::VictimEvent);
 	//_micController->registerStates();
 
 	// setup ardController
 	_ardController = new ArdController("COM5", 2); // TODO: make this a property
+	ofAddListener(_ardController->attackAction, this, &AppController::AttackEvent);
 	//_ardController->registerStates();
 
 	// setup cameras
@@ -113,14 +115,62 @@ void AppController::setup() {
     _appModel->setProperty("showProps", false);
 	_appModel->setProperty("autoTest", false);
 	_appModel->setProperty("fullScreen", false);
+    //_appModel->setProperty("showFFT", false);
 
 	LOG_NOTICE("Initialisation complete");
 }
 
+//--------------------------------------------------------------
 void AppController::swapCameras() {
 	// use pointer swap and re-register texture references on the model
 	swap(_camControllers[0], _camControllers[1]);
 	_appModel->setCameraTextures(_camControllers[0]->getCamTextureRef(), _camControllers[1]->getCamTextureRef());
+}
+
+//--------------------------------------------------------------
+void AppController::VictimEvent(float & level) {
+
+    //LOG_NOTICE("VICTIM ACTION [" + ofToString(level) + "]");
+
+    if (_switchToSequence == NULL && !_vidController->isPreRolling()) {
+        if (_appModel->checkCurrentInteractivity(kINTERACTION_BOTH) || _appModel->checkCurrentInteractivity(kINTERACTION_VICTIM)) {
+            string res = _appModel->getCurrentSequence()->getVictimResult();
+            cout << res << endl;
+            if (res != kLAST_SEQUENCE_TOKEN) {
+                _switchToSequence = _appModel->getCurrentScene()->getSequence(res);
+                _vidController->loadMovie(_switchToSequence, true);
+            } else nextScene();
+        } //else cout << "Clocked by type " << _appModel->getCurrentInteractivity() << " = " << kINTERACTION_VICTIM << endl;
+    } //else cout << "Blocked by null" << endl;
+}
+
+//--------------------------------------------------------------
+void AppController::AttackEvent(float & level) {
+
+    //LOG_NOTICE("ATTACK ACTION [" + ofToString(level) + "]");
+
+    if (_switchToSequence == NULL && !_vidController->isPreRolling()) {
+        if (_appModel->checkCurrentInteractivity(kINTERACTION_BOTH) || _appModel->checkCurrentInteractivity(kINTERACTION_ATTACKER)) {
+            string res = _appModel->getCurrentSequence()->getAttackerResult();
+            cout << res << endl;
+            if (res != kLAST_SEQUENCE_TOKEN) {
+                _switchToSequence = _appModel->getCurrentScene()->getSequence(res);
+                _vidController->loadMovie(_switchToSequence, true);
+            } else nextScene();
+        } //else cout << "Clocked by type " << _appModel->getCurrentInteractivity() << " = " << kINTERACTION_ATTACKER << endl;
+    } //else cout << "Blocked by null" << endl;
+
+}
+
+//--------------------------------------------------------------
+void AppController::FaceEvent(float & level) {
+
+    LOG_NOTICE("FASCIA ACTION [" + ofToString(level) + "]");
+
+    if (_appModel->checkCurrentInteractivity(kINTERACTION_FACE)) {
+        //nothing yet
+    }
+
 }
 
 //--------------------------------------------------------------
@@ -143,6 +193,7 @@ void AppController::update() {
 			goThreadedVideo * movie;
 
 			// get current scene
+			_appModel->setCurrentScene("t");
 			currentScene = _appModel->getCurrentScene();
 
 			// force load using _switchToSequence var which will be caught below when the movie is fully loaded...
@@ -287,7 +338,7 @@ void AppController::nextScene() {
 
     Scene			* currentScene		= _appModel->getCurrentScene();
     // rewind last scene
-    currentScene->rewindSequences();
+    currentScene->rewindScene();
     // load next scene
     _appModel->nextScene();
     currentScene = _appModel->getCurrentScene();
@@ -310,6 +361,8 @@ void AppController::keyPressed(int key){
 	bool showUnmask = boost::any_cast<bool>(_appModel->getProperty("showUnmaskedTextures"));
 	bool autoTest   = boost::any_cast<bool>(_appModel->getProperty("autoTest"));
     bool showProps  = boost::any_cast<bool>(_appModel->getProperty("showProps"));
+    bool showFFT    = boost::any_cast<bool>(_appModel->getProperty("showFFT"));
+    bool showDebug  = boost::any_cast<bool>(_appModel->getProperty("showDebugView"));
 
 	switch (key) {
 #ifdef TARGET_WIN32
@@ -341,10 +394,10 @@ void AppController::keyPressed(int key){
 			blend -= 0.1;
 			break;
 		case 'd':
-			_appModel->setProperty("showDebugView", !boost::any_cast<bool>(_appModel->getProperty("showDebugView")));
+			_appModel->setProperty("showDebugView", !showDebug);
 			break;
 		case 't':
-			_appModel->setProperty("autoTest", !boost::any_cast<bool>(_appModel->getProperty("autoTest")));
+			_appModel->setProperty("autoTest", !autoTest);
 			break;
 		case 'q':
 			_appModel->setProperty("userAction", kVictimAction);
@@ -376,6 +429,9 @@ void AppController::keyPressed(int key){
 			break;
 		case 'f':
 			toggleFullscreen();
+			break;
+        case '9':
+			_appModel->setProperty("showFFT", !showFFT);
 			break;
         case '0':
              _appModel->setProperty("showProps", !showProps);

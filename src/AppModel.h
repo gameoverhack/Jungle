@@ -64,6 +64,9 @@ public:
 
     bool		        nextScene();
 
+    //void                setCurrentSequenceLevel(); // just doing this internally for now with _currentSceneLevel
+    float               getCurrentSequenceLevel();     // possibly need different levels for attack and victim, might need to pass type?
+
     // interactivity getter/setters
     bool				checkCurrentInteractivity(interaction_t interactionType);
     void                setCurrentInteractivity(int frame); // perhaps should be private???
@@ -75,6 +78,9 @@ public:
 
     void                setARDArea(float area);
     float               getARDArea();
+
+    void                setARDCyclicBufferSize(int size);
+    int                 getARDCyclicBufferSize();
 
     void                allocateARDCyclicBuffer(int ardCyclicBufferSize);
     void                allocateARDNoiseFloor();
@@ -90,16 +96,27 @@ public:
     void                setFFTArea(float area);
     float               getFFTArea();
 
+    void                setFFTBinSize(int size);
+    int                 getFFTBinSize();
+
+    void                setAudioBufferSize(int size);
+    int                 getAudioBufferSize();
+
+    void                setFFTCyclicBufferSize(int size);
+    int                 getFFTCyclicBufferSize();
+
     void                allocateFFTCyclicBuffer(int fftCyclicBufferSize, int fftBinSize);
     void                allocateFFTNoiseFloor(int fftBinSize);
     void                allocateFFTCyclicSum(int fftBinSize);
     void                allocateFFTPostFilter(int fftBinSize);
+    void                allocateFFTInput(int fftBinSize);
     void                allocateAudioInput(int bufferSize);
 
     fftBands *          getFFTCyclicBuffer();
     float *             getFFTNoiseFloor();
     float *             getFFTCyclicSum();
     float *             getFFTPostFilter();
+    float *             getFFTInput();
     float *             getAudioInput();
 
     // camera getter/setters
@@ -166,6 +183,7 @@ private:
     int *                       _ardRawPins;
 
     float *                     _ardCyclicBuffer;
+    int                         _ardCyclicBufferSize;
 
     float *                     _ardNoiseFloor;
     float *                     _ardCyclicSum;
@@ -179,6 +197,10 @@ private:
     float *                     _fftNoiseFloor;
 	float *                     _fftCyclicSum;
 	float *                     _fftPostFilter;
+    float *                     _fftInput;
+    int                         _fftBinSize;
+    int                         _fftCyclicBufferSize;
+    int                         _audioBufferSize;
 
 	float *                     _audioInput;
 
@@ -187,6 +209,7 @@ private:
 
     // interactivity vars
     int                         _currentInteractivity;
+    float                       _currentSequenceLevel;
 };
 
 typedef Singleton<AppModel> AppModelSingleton;					// Global declaration

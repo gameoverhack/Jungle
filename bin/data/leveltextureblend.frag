@@ -7,6 +7,7 @@ meter_off
 */
 
 uniform sampler2DRect textures[3];
+uniform float level;
 
 void main(){
 
@@ -20,7 +21,7 @@ void main(){
 	meter_offTexel	= texture2DRect(textures[2], gl_TexCoord[0].xy);
 
     if (meter_mask.a > 0) {
-        gl_FragColor = meter_onTexel.rgba;
-    } else gl_FragColor = meter_offTexel.rgba;
+        gl_FragColor = meter_onTexel.rgba * level;
+    } else gl_FragColor = meter_offTexel.rgba * level;
 
 }

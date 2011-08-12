@@ -1057,6 +1057,7 @@ int SceneXMLParser::findSequenceNumberFromString(string str){
 	if(regex_match(str.c_str(), match, regex("seq(\\d+)\\D+?"))){ // find int
 		matchstring = string(match[1].first, match[1].second);
 		sscanf(matchstring.c_str(), "%d", &seqNum); // extract int
+		LOG_NOTICE("Assigning number: " + ofToString(seqNum));
 		return seqNum;
 	}
 	LOG_ERROR("Could not find sequence number from string: " + str);

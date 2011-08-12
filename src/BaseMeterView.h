@@ -16,7 +16,7 @@ public:
 protected:
 
     void drawMeterMask(float level);
-    void drawMeterBlend(float x, float y);
+    void drawMeterBlend(float x, float y, float level = 1.0f);
 
     ofxShader       _shader;
     ofTexture       _maskTex;

@@ -68,11 +68,16 @@ Scene *AppModel::getScene(string sceneName){
 }
 
 bool AppModel::setCurrentScene(string sceneName){
-	map<string, Scene *>::iterator iter;
-	iter = _scenes.find(sceneName);
-	if(iter != _scenes.end()){
-		_currentScene = iter->second; // TODO: DO we have to dereference this? TEST IT.
+	map<string, Scene *>::iterator sceneIter;
+	sceneIter = _scenes.find(sceneName);
+	if(sceneIter != _scenes.end()) {
+
+		_currentScene = sceneIter->second; // TODO: DO we have to dereference this? TEST IT.
+
 		LOG_NOTICE("Set current scene to " + sceneName);
+
+        _currentScene->setSequenceThresholds();
+
 		return true;
 	}
 	else{
@@ -152,15 +157,47 @@ ofTexture * AppModel::getGraphicTex(int type) {
  *      Getters and setters for MicController       	*
  ********************************************************/
 
+//--------------------------------------------------------------
 void AppModel::setFFTArea(float area) {
     _fftArea = area;
 }
 
+//--------------------------------------------------------------
 float AppModel::getFFTArea() {
     return _fftArea;
 }
 
- //--------------------------------------------------------------
+//--------------------------------------------------------------
+void AppModel::setFFTBinSize(int size) {
+    _fftBinSize = size;
+}
+
+//--------------------------------------------------------------
+int AppModel::getFFTBinSize(){
+    return _fftBinSize;
+}
+
+//--------------------------------------------------------------
+void AppModel::setFFTCyclicBufferSize(int size) {
+    _fftCyclicBufferSize = size;
+}
+
+//--------------------------------------------------------------
+int AppModel::getFFTCyclicBufferSize(){
+    return _fftCyclicBufferSize;
+}
+
+//--------------------------------------------------------------
+void AppModel::setAudioBufferSize(int size){
+    _audioBufferSize = size;
+}
+
+//--------------------------------------------------------------
+int AppModel::getAudioBufferSize(){
+    return _audioBufferSize;
+}
+
+//--------------------------------------------------------------
 void AppModel::allocateFFTCyclicBuffer(int fftCyclicBufferSize, int fftBinSize) {
     _fftCyclicBuffer = new fftBands[fftCyclicBufferSize];
     for (int i = 0; i < fftCyclicBufferSize; i++) {
@@ -188,6 +225,12 @@ void AppModel::allocateFFTPostFilter(int fftBinSize) {
 }
 
 //--------------------------------------------------------------
+void AppModel::allocateFFTInput(int fftBinSize) {
+    _fftInput = new float[fftBinSize];
+    memset(_fftInput, 0, sizeof(float) * fftBinSize);
+}
+
+//--------------------------------------------------------------
 void AppModel::allocateAudioInput(int bufferSize) {
     _audioInput = new float[bufferSize];
     memset(_audioInput, 0, sizeof(float) * bufferSize);
@@ -211,6 +254,11 @@ float * AppModel::getFFTCyclicSum() {
 //--------------------------------------------------------------
 float * AppModel::getFFTPostFilter() {
     return _fftPostFilter;
+}
+
+//--------------------------------------------------------------
+float * AppModel::getFFTInput() {
+    return _fftInput;
 }
 
 //--------------------------------------------------------------
@@ -242,8 +290,19 @@ float AppModel::getARDArea() {
 }
 
 //--------------------------------------------------------------
+void AppModel::setARDCyclicBufferSize(int size) {
+    _ardCyclicBufferSize = size;
+}
+
+//--------------------------------------------------------------
+int AppModel::getARDCyclicBufferSize(){
+    return _ardCyclicBufferSize;
+}
+
+//--------------------------------------------------------------
 void AppModel::allocateARDCyclicBuffer(int ardCyclicBufferSize) {
     _ardCyclicBuffer = new float[ardCyclicBufferSize];
+    memset(_ardCyclicBuffer, 0, sizeof(float) * ardCyclicBufferSize);
 }
 
 //--------------------------------------------------------------

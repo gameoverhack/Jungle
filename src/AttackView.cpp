@@ -26,7 +26,7 @@ AttackView::AttackView(float width, float height) : BaseMeterView(width, height)
 
 void AttackView::update() {
 
-    _scaledInputLevel           = (float)_appModel->getPinInput()[0]/600.0f;      // make more complex soon ;-)
+    _scaledInputLevel           = (float)_appModel->getARDArea(); //(float)_appModel->getPinInput()[0]/600.0f;      // make more complex soon ;-)
 
     BaseMeterView::update(kINTERACTION_ATTACKER);
 

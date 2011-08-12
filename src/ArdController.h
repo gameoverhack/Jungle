@@ -29,9 +29,11 @@ public:
     ArdController(string deviceName, int ardBufferLengthSecs);
     ~ArdController();
 
-	void	    registerStates();
+	void	        registerStates();
 
-    void        update();
+    void            update();
+
+    ofEvent<float>  attackAction;
 
 private:
 

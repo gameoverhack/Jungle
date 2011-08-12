@@ -23,11 +23,11 @@ public:
 	//SceneView();						//dtor
 
 	void update();
-	//void draw();
 
 private:
 
-protected:
+    void plot(float* array, int length, float scale, float offset);
+	void plotDraw(float* array, int width, int height, int binSize, float scaleW = 1.0f, float scaleH = 1.0f);
 
 };
 

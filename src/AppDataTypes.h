@@ -239,7 +239,7 @@ public:
 		return _number;
 	}
 
-	void setNumber(int i){
+	void setNumber(int i) {
 		_number = i;
 	}
 
@@ -251,6 +251,13 @@ public:
 		_interactionTable = newInteractionTable;
 	}
 
+    void setThresholdLevel(float level) {
+        _thresholdLevel = level;
+    }
+
+    float getThresholdLevel() {
+        return _thresholdLevel; // setting this in setNumber for now
+    }
 
 private:
 
@@ -264,7 +271,7 @@ private:
 	bool					_isMovieFaked;
 	bool					_isSequenceFaked;
 	string					_movieFullFilePath;
-
+    float                   _thresholdLevel;
 	interaction_t			*_interactionTable;
 
 public:
@@ -283,43 +290,55 @@ public:
 		_currentSequence = NULL;
 	};
 
-	~Scene(){
+	~Scene() {
 		map<string, Sequence *>::iterator iter;
 		for(iter = _sequences.begin(); iter != _sequences.end(); iter++){
 			delete (iter->second);
 		}
 	};
 
-	int getNumOfSequences(){
+	int getNumOfSequences() {
 		return _sequences.size();
 	}
 
-	string getName(){
+	string getName() {
 		return _name;
 	}
-	void setName(string name){
+	void setName(string name) {
 		_name = name;
 	}
 
-	void rewindSequences() {
+	void rewindScene() {
 		_currentSequence = _sequences.begin()->second;
 	}
 
-	void setSequence(string key, Sequence * value){
+	void setSequence(string key, Sequence * value) {
 		_sequences.insert(pair<string, Sequence *>(key, value));
 	}
 
-	Sequence * getSequence(string key){
+    void setSequenceThresholds() {
+        map<string, Sequence *>::iterator iter;
+        int total   = _sequences.size();
+		for (iter = _sequences.begin(); iter != _sequences.end(); iter++) {
+		    Sequence * seq = iter->second;
+		    int num     = seq->getNumber();
+		    float level = (3.0/(float)total)+((float)num/(float)total);
+		    LOG_NOTICE("Set level threshold for: " + seq->getName() + " [" + ofToString(num) + " to " + ofToString(level));
+            seq->setThresholdLevel(level);
+		}
+    }
+
+	Sequence * getSequence(string key) {
 		map<string, Sequence *>::iterator iter;
 		iter = _sequences.find(key);
 		return iter->second;
 	}
 
-	bool setCurrentSequence(string seq){
+	bool setCurrentSequence(string seq) {
 		map<string, Sequence *>::iterator iter;
 		iter = _sequences.find(seq);
 		if(iter != _sequences.end()){
-			if(_currentSequence != NULL){
+			if(_currentSequence != NULL) {
 				// reset video state for current sequence
 				//_currentSequence->resetMovie();
 			}
@@ -338,7 +357,7 @@ public:
 		return false;
 	}
 
-	bool setCurrentSequence(Sequence * seq){
+	bool setCurrentSequence(Sequence * seq) {
 		// TODO:
 		// Search through the map by value to find if the sequence is a valid
 		// sequence? Linear search so "slow", (our data size is always going
@@ -346,19 +365,19 @@ public:
 		return setCurrentSequence(seq->getName());
 	}
 
-	Sequence * getCurrentSequence(){
+	Sequence * getCurrentSequence() {
 		return _currentSequence;
 	}
 
 	bool hasCurrentSequence(){
-		if(_currentSequence == NULL){
+		if(_currentSequence == NULL) {
 			return false;
 		}
 		return true;
 	}
 
 	// increments the current sequence to the next sequence (of the current sequence)
-	bool nextSequence(){
+	bool nextSequence() {
 
 		Sequence * seq = getCurrentSequence();
 		LOG_VERBOSE(seq->getName());
@@ -385,7 +404,7 @@ public:
 		return true;
 	}
 
-	void print(){
+	void print() {
 		string tabs = "\t";
 		string line = "Scene {";
 		// print details of scene
