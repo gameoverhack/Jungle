@@ -224,7 +224,7 @@ void AppController::update() {
 	}
 
 	// running, so update scenes, etc
-	if(_appModel->checkState(kAPP_RUNNING) && _ardController->checkState(kARDCONTROLLER_READY)) {
+	if(_appModel->checkState(kAPP_RUNNING) && (_ardController->checkState(kARDCONTROLLER_READY) || _ardController->checkState(kARDCONTROLLER_DISABLED))) {
 
 		Scene			* currentScene		= _appModel->getCurrentScene();
 		Sequence		* currentSequence	= currentScene->getCurrentSequence();

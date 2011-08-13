@@ -15,27 +15,30 @@ ArdController::ArdController(string deviceName, int ardBufferLengthSecs) {
 
     registerStates();
 
+      // setup timeouts to simulate a similiar update lifecycle to the audio input
+    _bufferIntervalMillis = 1000/60.0f;
+
+    _ardCyclicBufferSize = ardBufferLengthSecs * _bufferIntervalMillis;
+    _ardCyclicBufferOffset = 0;
+
+    _appModel->setARDCyclicBufferSize(_ardCyclicBufferSize);
+    _appModel->allocateARDCyclicBuffer(_ardCyclicBufferSize);
+    _appModel->allocateARDNoiseFloor();
+    _appModel->allocateARDCyclicSum();
+    _appModel->allocateARDPostFilter();
+    _appModel->allocatePinInput(2);
+
     if(!_ard.connect(deviceName, 57600)) {
 
         LOG_ERROR("Cannot start Arduino on: " + deviceName);
-        abort();
+
+        //abort();
+
+        setState(kARDCONTROLLER_DISABLED);
 
     } else {
 
         LOG_NOTICE("Successfully connected Arduino on: " + deviceName);
-
-        // setup timeouts to simulate a similiar update lifecycle to the audio input
-        _bufferIntervalMillis = 1000/60.0f;
-
-        _ardCyclicBufferSize = ardBufferLengthSecs * _bufferIntervalMillis;
-        _ardCyclicBufferOffset = 0;
-
-        _appModel->setARDCyclicBufferSize(_ardCyclicBufferSize);
-        _appModel->allocateARDCyclicBuffer(_ardCyclicBufferSize);
-        _appModel->allocateARDNoiseFloor();
-        _appModel->allocateARDCyclicSum();
-        _appModel->allocateARDPostFilter();
-        _appModel->allocatePinInput(2);
 
         setState(kARDCONTROLLER_INIT);
     }
@@ -51,10 +54,9 @@ void ArdController::registerStates() {
 	LOG_VERBOSE("Registering States");
 
     registerState(kARDCONTROLLER_RETARD, "kARDCONTROLLER_RETARD");
+    registerState(kARDCONTROLLER_DISABLED, "kARDCONTROLLER_DISABLED");
 	registerState(kARDCONTROLLER_INIT, "kARDCONTROLLER_INIT");
 	registerState(kARDCONTROLLER_READY, "kARDCONTROLLER_READY");
-	registerState(kARDCONTROLLER_BELOWTHRESHOLD, "kARDCONTROLLER_BELOWTHRESHOLD");
-	registerState(kARDCONTROLLER_ABOVETHRESHOLD, "kARDCONTROLLER_ABOVETHRESHOLD");
 
 	setState(kARDCONTROLLER_RETARD);
 }

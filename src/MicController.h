@@ -18,8 +18,6 @@
 enum {
 	kMICCONTROLLER_INIT,
 	kMICCONTROLLER_READY,
-	kMICCONTROLLER_BELOWTHRESHOLD,
-	kMICCONTROLLER_ABOVETHRESHOLD
 };
 
 // problems shutting down ofSoundStream, see: http://forum.openframeworks.cc/index.php?topic=5357.0 for solution

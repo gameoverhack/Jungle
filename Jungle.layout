@@ -88,8 +88,8 @@
 	<File name="src\Analyzer.h" open="0" top="0" tabpos="12">
 		<Cursor position="327" topLine="10" />
 	</File>
-	<File name="src\AppController.cpp" open="1" top="0" tabpos="6">
-		<Cursor position="19646" topLine="538" />
+	<File name="src\AppController.cpp" open="1" top="1" tabpos="5">
+		<Cursor position="8949" topLine="207" />
 	</File>
 	<File name="src\AppController.h" open="0" top="0" tabpos="24">
 		<Cursor position="1705" topLine="55" />
@@ -97,23 +97,23 @@
 	<File name="src\AppDataTypes.h" open="0" top="0" tabpos="14">
 		<Cursor position="1003" topLine="44" />
 	</File>
-	<File name="src\AppModel.cpp" open="1" top="0" tabpos="10">
+	<File name="src\AppModel.cpp" open="1" top="0" tabpos="9">
 		<Cursor position="1266" topLine="0" />
 	</File>
-	<File name="src\AppModel.h" open="1" top="1" tabpos="9">
+	<File name="src\AppModel.h" open="1" top="0" tabpos="8">
 		<Cursor position="311" topLine="9" />
 	</File>
-	<File name="src\AppView.cpp" open="1" top="0" tabpos="8">
-		<Cursor position="2249" topLine="71" />
+	<File name="src\AppView.cpp" open="1" top="0" tabpos="7">
+		<Cursor position="2249" topLine="68" />
 	</File>
 	<File name="src\AppView.h" open="0" top="0" tabpos="21">
 		<Cursor position="624" topLine="11" />
 	</File>
-	<File name="src\ArdController.cpp" open="0" top="0" tabpos="4">
-		<Cursor position="4011" topLine="110" />
+	<File name="src\ArdController.cpp" open="1" top="0" tabpos="11">
+		<Cursor position="416" topLine="3" />
 	</File>
-	<File name="src\ArdController.h" open="0" top="0" tabpos="19">
-		<Cursor position="817" topLine="23" />
+	<File name="src\ArdController.h" open="1" top="0" tabpos="12">
+		<Cursor position="379" topLine="0" />
 	</File>
 	<File name="src\AttackView.cpp" open="0" top="0" tabpos="1">
 		<Cursor position="816" topLine="0" />
@@ -121,7 +121,7 @@
 	<File name="src\AttackView.h" open="0" top="0" tabpos="17">
 		<Cursor position="74" topLine="0" />
 	</File>
-	<File name="src\BaseMeterView.cpp" open="1" top="0" tabpos="5">
+	<File name="src\BaseMeterView.cpp" open="1" top="0" tabpos="4">
 		<Cursor position="1851" topLine="33" />
 	</File>
 	<File name="src\BaseMeterView.h" open="0" top="0" tabpos="15">
@@ -185,10 +185,10 @@
 		<Cursor position="1255" topLine="54" />
 	</File>
 	<File name="src\MicController.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="2305" topLine="57" />
+		<Cursor position="2547" topLine="57" />
 	</File>
 	<File name="src\MicController.h" open="1" top="0" tabpos="2">
-		<Cursor position="495" topLine="20" />
+		<Cursor position="323" topLine="5" />
 	</File>
 	<File name="src\PropertyXMLBuilder.cpp" open="0" top="0" tabpos="47">
 		<Cursor position="982" topLine="0" />
@@ -199,8 +199,8 @@
 	<File name="src\PropertyXMLParser.h" open="0" top="0" tabpos="49">
 		<Cursor position="317" topLine="0" />
 	</File>
-	<File name="src\SceneView.cpp" open="1" top="0" tabpos="7">
-		<Cursor position="6950" topLine="181" />
+	<File name="src\SceneView.cpp" open="1" top="0" tabpos="6">
+		<Cursor position="6950" topLine="174" />
 	</File>
 	<File name="src\SceneView.h" open="0" top="0" tabpos="54">
 		<Cursor position="444" topLine="16" />
