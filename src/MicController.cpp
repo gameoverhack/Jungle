@@ -24,8 +24,12 @@ MicController::MicController(string deviceName, int fftBufferLengthSecs, int aud
 
         // create the fft
     LOG_NOTICE("Setting up fft");
+#ifdef USE_FFTW
 	_fft = ofxFft::create(_audioBufferSize, OF_FFT_WINDOW_HAMMING, OF_FFT_FFTW);
-
+#else
+	_fft = ofxFft::create(_audioBufferSize, OF_FFT_WINDOW_HAMMING);
+#endif
+	
      // allocate fft and audio sample arrays refs on the appModel...
     _appModel->setAudioBufferSize(_audioBufferSize);            // TODO: use this throughout instead of var
     _appModel->setFFTBinSize(_fft->getBinSize());               // TODO: use this throughout instead of var and instead of passing value
@@ -37,6 +41,7 @@ MicController::MicController(string deviceName, int fftBufferLengthSecs, int aud
     _appModel->allocateFFTInput(_fft->getBinSize());
     _appModel->allocateAudioInput(_audioBufferSize);
 
+#ifdef TARGET_WIN32
     // instantiate the soundstream
     LOG_NOTICE("Setting up soundstream");
     vector<ofStreamDevice> deviceVec = ofSoundStreamListDevices();
@@ -50,8 +55,11 @@ MicController::MicController(string deviceName, int fftBufferLengthSecs, int aud
             break;
         }
     }
-
 	ofSoundStreamSetup(0, channels, this, sampleRate, _audioBufferSize, 4, inputDeviceID);
+#else
+	LOG_WARNING("I made good changes to ofSoundStream -> impliment them by copying the file or making your own version");
+	ofSoundStreamSetup(0, channels, this, sampleRate, _audioBufferSize, 4);
+#endif
 
 }
 

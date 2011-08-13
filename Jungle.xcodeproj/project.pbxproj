@@ -56,6 +56,17 @@
 		7780730C13BB4547007BAC08 /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 778072ED13BB4547007BAC08 /* tinyxmlparser.cpp */; };
 		7780730D13BB4547007BAC08 /* ofxXmlSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 778072EF13BB4547007BAC08 /* ofxXmlSettings.cpp */; };
 		7780732713BB4C1E007BAC08 /* AppModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7780732613BB4C1E007BAC08 /* AppModel.cpp */; };
+		77929D4013F5F96A002A2FD4 /* AttackView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77929D3A13F5F96A002A2FD4 /* AttackView.cpp */; };
+		77929D4113F5F96A002A2FD4 /* BaseMeterView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77929D3C13F5F96A002A2FD4 /* BaseMeterView.cpp */; };
+		77929D4213F5F96A002A2FD4 /* VictimView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77929D3E13F5F96A002A2FD4 /* VictimView.cpp */; };
+		77929D6013F5F9AD002A2FD4 /* kiss_fft.c in Sources */ = {isa = PBXBuildFile; fileRef = 77929D5513F5F9AD002A2FD4 /* kiss_fft.c */; };
+		77929D6113F5F9AD002A2FD4 /* kiss_fftr.c in Sources */ = {isa = PBXBuildFile; fileRef = 77929D5713F5F9AD002A2FD4 /* kiss_fftr.c */; };
+		77929D6213F5F9AD002A2FD4 /* ofxFft.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77929D5A13F5F9AD002A2FD4 /* ofxFft.cpp */; };
+		77929D6313F5F9AD002A2FD4 /* ofxFftBasic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77929D5C13F5F9AD002A2FD4 /* ofxFftBasic.cpp */; };
+		77929D6413F5F9AD002A2FD4 /* ofxFftw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77929D5E13F5F9AD002A2FD4 /* ofxFftw.cpp */; };
+		77929D6F13F5FAD5002A2FD4 /* GraphicLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77929D6D13F5FAD5002A2FD4 /* GraphicLoader.cpp */; };
+		77929DAC13F5FBEC002A2FD4 /* leveltextureblend.frag in Sources */ = {isa = PBXBuildFile; fileRef = 77929DAA13F5FBEC002A2FD4 /* leveltextureblend.frag */; };
+		77929DAD13F5FBEC002A2FD4 /* leveltexturevertex.vert in Sources */ = {isa = PBXBuildFile; fileRef = 77929DAB13F5FBEC002A2FD4 /* leveltexturevertex.vert */; };
 		77CFD4AF13EABB9C00AEF1C0 /* Analyzer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77CFD4AE13EABB9C00AEF1C0 /* Analyzer.cpp */; };
 		77CFD4BC13EABFB300AEF1C0 /* goFlexCOM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77CFD4BA13EABFB300AEF1C0 /* goFlexCOM.cpp */; };
 		77F0332313CD6F6C00D7811A /* CamController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77F0332113CD6F6C00D7811A /* CamController.cpp */; };
@@ -294,6 +305,30 @@
 		778076CA13BC2FAF007BAC08 /* decomposite.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = decomposite.frag; path = bin/data/decomposite.frag; sourceTree = SOURCE_ROOT; };
 		778076CB13BC2FAF007BAC08 /* multitexturemerge.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = multitexturemerge.frag; path = bin/data/multitexturemerge.frag; sourceTree = SOURCE_ROOT; };
 		778076CC13BC2FAF007BAC08 /* vertex.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = vertex.vert; path = bin/data/vertex.vert; sourceTree = SOURCE_ROOT; };
+		77929D3A13F5F96A002A2FD4 /* AttackView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AttackView.cpp; sourceTree = "<group>"; };
+		77929D3B13F5F96A002A2FD4 /* AttackView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttackView.h; sourceTree = "<group>"; };
+		77929D3C13F5F96A002A2FD4 /* BaseMeterView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BaseMeterView.cpp; sourceTree = "<group>"; };
+		77929D3D13F5F96A002A2FD4 /* BaseMeterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseMeterView.h; sourceTree = "<group>"; };
+		77929D3E13F5F96A002A2FD4 /* VictimView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VictimView.cpp; sourceTree = "<group>"; };
+		77929D3F13F5F96A002A2FD4 /* VictimView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VictimView.h; sourceTree = "<group>"; };
+		77929D4B13F5F9AD002A2FD4 /* Instructions.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Instructions.txt; sourceTree = "<group>"; };
+		77929D4F13F5F9AD002A2FD4 /* fftw3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fftw3.h; sourceTree = "<group>"; };
+		77929D5213F5F9AD002A2FD4 /* libfftw3f-3.dll */ = {isa = PBXFileReference; lastKnownFileType = file; path = "libfftw3f-3.dll"; sourceTree = "<group>"; };
+		77929D5413F5F9AD002A2FD4 /* _kiss_fft_guts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _kiss_fft_guts.h; sourceTree = "<group>"; };
+		77929D5513F5F9AD002A2FD4 /* kiss_fft.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = kiss_fft.c; sourceTree = "<group>"; };
+		77929D5613F5F9AD002A2FD4 /* kiss_fft.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kiss_fft.h; sourceTree = "<group>"; };
+		77929D5713F5F9AD002A2FD4 /* kiss_fftr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = kiss_fftr.c; sourceTree = "<group>"; };
+		77929D5813F5F9AD002A2FD4 /* kiss_fftr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kiss_fftr.h; sourceTree = "<group>"; };
+		77929D5A13F5F9AD002A2FD4 /* ofxFft.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxFft.cpp; sourceTree = "<group>"; };
+		77929D5B13F5F9AD002A2FD4 /* ofxFft.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxFft.h; sourceTree = "<group>"; };
+		77929D5C13F5F9AD002A2FD4 /* ofxFftBasic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxFftBasic.cpp; sourceTree = "<group>"; };
+		77929D5D13F5F9AD002A2FD4 /* ofxFftBasic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxFftBasic.h; sourceTree = "<group>"; };
+		77929D5E13F5F9AD002A2FD4 /* ofxFftw.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxFftw.cpp; sourceTree = "<group>"; };
+		77929D5F13F5F9AD002A2FD4 /* ofxFftw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxFftw.h; sourceTree = "<group>"; };
+		77929D6D13F5FAD5002A2FD4 /* GraphicLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GraphicLoader.cpp; sourceTree = "<group>"; };
+		77929D6E13F5FAD5002A2FD4 /* GraphicLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphicLoader.h; sourceTree = "<group>"; };
+		77929DAA13F5FBEC002A2FD4 /* leveltextureblend.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = leveltextureblend.frag; path = bin/data/leveltextureblend.frag; sourceTree = SOURCE_ROOT; };
+		77929DAB13F5FBEC002A2FD4 /* leveltexturevertex.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = leveltexturevertex.vert; path = bin/data/leveltexturevertex.vert; sourceTree = SOURCE_ROOT; };
 		77CFD4AD13EABB9C00AEF1C0 /* Analyzer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Analyzer.h; sourceTree = "<group>"; };
 		77CFD4AE13EABB9C00AEF1C0 /* Analyzer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Analyzer.cpp; sourceTree = "<group>"; };
 		77CFD4BA13EABFB300AEF1C0 /* goFlexCOM.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = goFlexCOM.cpp; sourceTree = "<group>"; };
@@ -385,6 +420,8 @@
 		07545BA713BDFCFC00325443 /* Config */ = {
 			isa = PBXGroup;
 			children = (
+				77929DAA13F5FBEC002A2FD4 /* leveltextureblend.frag */,
+				77929DAB13F5FBEC002A2FD4 /* leveltexturevertex.vert */,
 				07B2019113CAD52500FF66CB /* config_properties.xml */,
 				07B2019213CAD52500FF66CB /* config_scenes.xml */,
 			);
@@ -1062,6 +1099,12 @@
 		7780731313BB4592007BAC08 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				77929D3A13F5F96A002A2FD4 /* AttackView.cpp */,
+				77929D3B13F5F96A002A2FD4 /* AttackView.h */,
+				77929D3C13F5F96A002A2FD4 /* BaseMeterView.cpp */,
+				77929D3D13F5F96A002A2FD4 /* BaseMeterView.h */,
+				77929D3E13F5F96A002A2FD4 /* VictimView.cpp */,
+				77929D3F13F5F96A002A2FD4 /* VictimView.h */,
 				072CF9CC13BD864E000DBD67 /* AppView.cpp */,
 				072CF9CD13BD864E000DBD67 /* AppView.h */,
 				072CF9CE13BD864E000DBD67 /* BaseView.cpp */,
@@ -1081,6 +1124,8 @@
 			children = (
 				07B2076813CC833A00FF66CB /* XML */,
 				77DD1F1513BC466B00F19718 /* Singleton.h */,
+				77929D6D13F5FAD5002A2FD4 /* GraphicLoader.cpp */,
+				77929D6E13F5FAD5002A2FD4 /* GraphicLoader.h */,
 				770AD16E13DFB8E6001C7EF2 /* BaseState.h */,
 				770AD16F13DFB8E6001C7EF2 /* BaseState.cpp */,
 				0754595413BD9C2500325443 /* Logger.cpp */,
@@ -1104,6 +1149,92 @@
 			name = Shaders;
 			sourceTree = "<group>";
 		};
+		77929D4913F5F9AD002A2FD4 /* ofxFft */ = {
+			isa = PBXGroup;
+			children = (
+				77929D4A13F5F9AD002A2FD4 /* docs */,
+				77929D4C13F5F9AD002A2FD4 /* libs */,
+				77929D5913F5F9AD002A2FD4 /* src */,
+			);
+			name = ofxFft;
+			path = ../../../addons/ofxFft;
+			sourceTree = SOURCE_ROOT;
+		};
+		77929D4A13F5F9AD002A2FD4 /* docs */ = {
+			isa = PBXGroup;
+			children = (
+				77929D4B13F5F9AD002A2FD4 /* Instructions.txt */,
+			);
+			path = docs;
+			sourceTree = "<group>";
+		};
+		77929D4C13F5F9AD002A2FD4 /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				77929D4D13F5F9AD002A2FD4 /* fftw */,
+				77929D5313F5F9AD002A2FD4 /* kiss */,
+			);
+			path = libs;
+			sourceTree = "<group>";
+		};
+		77929D4D13F5F9AD002A2FD4 /* fftw */ = {
+			isa = PBXGroup;
+			children = (
+				77929D4E13F5F9AD002A2FD4 /* include */,
+				77929D5013F5F9AD002A2FD4 /* lib */,
+			);
+			path = fftw;
+			sourceTree = "<group>";
+		};
+		77929D4E13F5F9AD002A2FD4 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				77929D4F13F5F9AD002A2FD4 /* fftw3.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		77929D5013F5F9AD002A2FD4 /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				77929D5113F5F9AD002A2FD4 /* win32 */,
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
+		77929D5113F5F9AD002A2FD4 /* win32 */ = {
+			isa = PBXGroup;
+			children = (
+				77929D5213F5F9AD002A2FD4 /* libfftw3f-3.dll */,
+			);
+			path = win32;
+			sourceTree = "<group>";
+		};
+		77929D5313F5F9AD002A2FD4 /* kiss */ = {
+			isa = PBXGroup;
+			children = (
+				77929D5413F5F9AD002A2FD4 /* _kiss_fft_guts.h */,
+				77929D5513F5F9AD002A2FD4 /* kiss_fft.c */,
+				77929D5613F5F9AD002A2FD4 /* kiss_fft.h */,
+				77929D5713F5F9AD002A2FD4 /* kiss_fftr.c */,
+				77929D5813F5F9AD002A2FD4 /* kiss_fftr.h */,
+			);
+			path = kiss;
+			sourceTree = "<group>";
+		};
+		77929D5913F5F9AD002A2FD4 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				77929D5A13F5F9AD002A2FD4 /* ofxFft.cpp */,
+				77929D5B13F5F9AD002A2FD4 /* ofxFft.h */,
+				77929D5C13F5F9AD002A2FD4 /* ofxFftBasic.cpp */,
+				77929D5D13F5F9AD002A2FD4 /* ofxFftBasic.h */,
+				77929D5E13F5F9AD002A2FD4 /* ofxFftw.cpp */,
+				77929D5F13F5F9AD002A2FD4 /* ofxFftw.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		77CFD4B913EABFB300AEF1C0 /* goFlexCOM */ = {
 			isa = PBXGroup;
 			children = (
@@ -1117,6 +1248,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				77929D4913F5F9AD002A2FD4 /* ofxFft */,
 				77CFD4B913EABFB300AEF1C0 /* goFlexCOM */,
 				075EDA7613CD8F14009C6288 /* goVideoGrabber */,
 				075EDAA613CD8F3D009C6288 /* ofxQTKitVideoGrabber */,
@@ -1562,6 +1694,17 @@
 				775D753013E1B985008137FC /* ArdController.cpp in Sources */,
 				77CFD4AF13EABB9C00AEF1C0 /* Analyzer.cpp in Sources */,
 				77CFD4BC13EABFB300AEF1C0 /* goFlexCOM.cpp in Sources */,
+				77929D4013F5F96A002A2FD4 /* AttackView.cpp in Sources */,
+				77929D4113F5F96A002A2FD4 /* BaseMeterView.cpp in Sources */,
+				77929D4213F5F96A002A2FD4 /* VictimView.cpp in Sources */,
+				77929D6013F5F9AD002A2FD4 /* kiss_fft.c in Sources */,
+				77929D6113F5F9AD002A2FD4 /* kiss_fftr.c in Sources */,
+				77929D6213F5F9AD002A2FD4 /* ofxFft.cpp in Sources */,
+				77929D6313F5F9AD002A2FD4 /* ofxFftBasic.cpp in Sources */,
+				77929D6413F5F9AD002A2FD4 /* ofxFftw.cpp in Sources */,
+				77929D6F13F5FAD5002A2FD4 /* GraphicLoader.cpp in Sources */,
+				77929DAC13F5FBEC002A2FD4 /* leveltextureblend.frag in Sources */,
+				77929DAD13F5FBEC002A2FD4 /* leveltexturevertex.vert in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

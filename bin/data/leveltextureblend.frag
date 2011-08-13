@@ -20,7 +20,7 @@ void main(){
 	meter_onTexel	= texture2DRect(textures[1], gl_TexCoord[0].xy);
 	meter_offTexel	= texture2DRect(textures[2], gl_TexCoord[0].xy);
 
-    if (meter_mask.a > 0) {
+    if (meter_mask.a > 0.0) {
         gl_FragColor = meter_onTexel.rgba * level;
     } else gl_FragColor = meter_offTexel.rgba * level;
 

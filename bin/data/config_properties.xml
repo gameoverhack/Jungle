@@ -13,8 +13,8 @@
         <property name="camScale1" type="float">0.500000</property>
         <property name="cameraPropToAdjust" type="string">POSITION</property>
         <property name="cameraToAdjust" type="string">0</property>
-        <property name="flashDataPath" type="string">E:/Jungle/flash</property>
-        <property name="fullScreen" type="bool">true</property>
+        <property name="flashDataPath" type="string">/Users/gameover/Desktop/StrangerDanger/flash</property>
+        <property name="fullScreen" type="bool">false</property>
         <property name="graphicDataPath" type="string">graphics</property>
         <property name="loadingMessage" type="string">STATE == kANAL_READY (0) :: </property>
         <property name="loadingProgress" type="float">1.000000</property>
@@ -69,7 +69,7 @@
         <property name="propZoom_0" type="int">1</property>
         <property name="propZoom_1" type="int">1</property>
         <property name="propZoom_2" type="int">1</property>
-        <property name="scenesDataPath" type="string">E:/Jungle/video</property>
+        <property name="scenesDataPath" type="string">/Users/gameover/Desktop/StrangerDanger/video</property>
         <property name="scenesXMLFile" type="string">config_scenes.xml</property>
         <property name="shaderBlendRatio" type="float">0.300000</property>
         <property name="shaderGammaCorrection" type="float">2.300000</property>
