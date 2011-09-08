@@ -65,6 +65,11 @@ void AppModel::registerStates() {
 
 }
 
+void AppModel::clearScenesAndSequences(){
+	_currentScene = NULL;
+	_scenes.clear();
+}
+
 /********************************************************
  *      Getters and setters for Scenes               	*
  ********************************************************/
@@ -78,7 +83,7 @@ Scene *AppModel::getScene(string sceneName){
 	iter = _scenes.find(sceneName);
 	if(iter == _scenes.end()){
 		LOG_ERROR("Attempted to get invalid scene name " + sceneName);
-		abort();
+		return NULL;
 	}
 	return iter->second;
 }
@@ -106,6 +111,10 @@ bool AppModel::nextScene(){
 	string nextname;
 	// find current scene in map
 	map<string, Scene *>::iterator iter;
+	if(_currentScene == NULL){
+		setCurrentScene(_scenes.begin()->first);
+		return true;
+	}
 	for(iter = _scenes.begin(); iter != _scenes.end(); iter++){
 		if(iter->first == _currentScene->getName()){
 			iter++; // found current, increment to next
@@ -588,6 +597,14 @@ inline string AppModel::pad(string & t_string) {
 
 	return paddedString;
 
+}
+
+void AppModel::printAllScenes(){
+	map<string, Scene *>::iterator iter = _scenes.begin();
+	while(iter != _scenes.end()){
+		iter->second->print();
+		iter++;
+	}
 }
 
 // check type int

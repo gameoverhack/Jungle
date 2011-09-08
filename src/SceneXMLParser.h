@@ -9,6 +9,7 @@
 #ifndef _H_SCENEXMLPARSER
 #define _H_SCENEXMLPARSER
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <set>
 #include <map>
@@ -17,6 +18,7 @@ using std::vector;
 using std::map;
 using std::set;
 
+#include <boost/lexical_cast.hpp> // i to string
 #include <boost/algorithm/string.hpp> // string splitting
 #include <boost/regex.hpp> // regex
 using boost::regex;
@@ -31,76 +33,25 @@ using boost::regex_match;
 #include "AppDataTypes.h"
 #include "SerializationUtils.h"
 #include "goDirList.h"
-#include "goVideoPlayer.h"
+#include "StringHelpers.h"
 
-enum {
-	kSCENEXMLPARSER_INIT,
-	kSCENEXMLPARSER_SETUP,
-	kSCENEXMLPARSER_PARSE_XML,
-	kSCENEXMLPARSER_VALIDATING_MOVIE_FILE_EXISTENCE,
-	kSCENEXMLPARSER_VALIDATING_INTERACTIVITY_FILE_EXISTENCE,
-	kSCENEXMLPARSER_VALIDATING_FILE_METADATA,
-	kSCENEXMLPARSER_VALIDATING_MOVIE_TRANSFORM_LENGTHS,
-	kSCENEXMLPARSER_CREATING_APPMODEL,
-	kSCENEXMLPARSER_FINISHED
-};
-
-class SceneXMLParser : public BaseState, public IXMLParser {
+class SceneXMLParser : public IXMLParser {
 
 public:
 
 	SceneXMLParser(string dataPath, string xmlFile);
 
-	void registerStates();
-
+	bool compareTagAttribute(string xmltag, string attribute, string target, int which);
+	void checkTagAttributesExist(string xmltag, vector<string> attributes, int which);
+	void setupFileListers();
 	void parseXML();
-	void update();
-
-	//string getStateMessage();
-
-	float getLoadingProgress();
 
 
 private:
-	
-	vector<string>			_missingFiles;	// Holds missing trans/interac files.
-											// instance var because we add to it in
-											// parseXML if there is no transform nodes for a sequence.
 
 	string					_dataPath;
-
-	float					_loadingProgress;
-	string					_stateMessage;
-
-	goDirList				_dirLister;
-	int						_numFiles;
-	map<string, int>		_filenameToDirListerIDMap; // maps filenames to _dirLister.getX(ID)
-
-	// scene:sequence or scene:sequence:transformname, map of values for end type (seq or transfrorm)
-	map<string, map<string, string> >	_parsedData;
-
-	// convenience, save keys we've processed in some update methods
-	// so we can re-enter and not re-process the same keys
-	set<string>							_completedKeys;
-	goVideoPlayer                       *_movie;
-
-	// "doing" functions
-	void setupDirLister();
-	void populateDirListerIDMap();
-	void validateInteractivityFileExistence();
-	void validateMovieFileExistence();
-	bool validateMovieTransformLengths();
-	void validateFileMetadata();
-	bool createAppModel();
-
-	// Helper functions
-	void listParsedData();
-	bool compareFileinfo(string filename, map<string, string> fileInfo);
-	void checkTagAttributesExist(string xmltag, vector<string> attributes, int which);
-	int findFileIDForLister(string filename);
-	string findFullFilePathForFilename(string filename);
-	void updateLoadingState();
-	int findSequenceNumberFromString(string name);
+	goDirList				_moviesFileLister;
+	goDirList				_assetsFileLister;
 
 };
 

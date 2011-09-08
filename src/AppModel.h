@@ -58,6 +58,12 @@ public:
     // scene and sequence getter/setters
 	void		        setScene(string name, Scene * scene);
 	bool		        setCurrentScene(string sceneName);
+	
+	map<string, Scene *> getScenes(){
+		return _scenes;
+	}
+	
+	void				clearScenesAndSequences();
 
 	Sequence		    *getCurrentSequence();
 	Scene			    *getCurrentScene();
@@ -155,6 +161,8 @@ public:
 
 	string		        getAllPropsAsList();
 	map<string, string> getAllPropsNameTypeAsMap();
+	
+	void				printAllScenes();
 
 private:
 

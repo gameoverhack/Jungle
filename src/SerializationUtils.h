@@ -10,6 +10,11 @@
 #ifndef _H_SERIALIZATIONUTILS
 #define	_H_SERIALIZATIONUTILS
 
+#include <boost/serialization/serialization.hpp>
+#include <boost/serialization/vector.hpp>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
+
 #include <string>
 #include <vector>
 using std::vector;

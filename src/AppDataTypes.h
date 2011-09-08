@@ -288,12 +288,12 @@ private:
 
 	string					_name;
 	string					_type;
-	bool                    _loop;
+	bool                    _loop; // TODO: DEPRECIATED, use _type
 	int						_number;
-	string					_nextSequenceName;
+	string					_nextSequenceName; //TODO: DEPRECIATED?
 	string					_attackerResult;
 	string					_victimResult;
-	string					_interactivity;
+	string					_interactivity; //TODO: DEPRECIATED
 	bool					_isMovieFaked;
 	bool					_isSequenceFaked;
 	string					_movieFullFilePath;
@@ -301,7 +301,11 @@ private:
 	interaction_t			*_interactionTable;
 
 public:
-
+	
+	// used for SceneXMLBuilder when it has to save out a model.
+	vector<string> _transformsFilenames;
+	string _interactivityFilename;
+	
 	map<string, vector<CamTransform> *> _transforms;
 };
 
@@ -326,6 +330,11 @@ public:
 	int getNumOfSequences() {
 		return _sequences.size();
 	}
+	
+	map<string, Sequence*> getSequences(){
+		return _sequences;
+	}
+	
 
 	string getName() {
 		return _name;
@@ -452,7 +461,7 @@ public:
 		// print details of scene
 		printf("%s\n", line.c_str());
 		tabs = "\t\t";
-		line = tabs + "_name => " + _name + "\n"+tabs+"_currentSequence => " + _currentSequence->getName();
+		line = tabs + "_name => " + _name + "\n";
 		printf("%s\n", line.c_str());
 		line = tabs + "sequences => {";
 		printf("%s\n", line.c_str());
