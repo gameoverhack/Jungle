@@ -172,7 +172,7 @@ void SceneXMLBuilder::checkMovieAssets(){
 	delete seqDescriptor; 
 	
 	if(brokenFiles.size() != 0){
-		throw new AnalysisRequiredException("Missing files", brokenFiles);
+		throw AnalysisRequiredException("Missing files", brokenFiles);
 	} 
 }
 

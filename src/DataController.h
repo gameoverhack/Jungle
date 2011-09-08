@@ -62,7 +62,6 @@ private:
 	string					_configFilePath;
 
     GraphicLoader           * _graphicLoader;
-	SceneXMLParser		    * _sceneParser;
 	bool					_hasAttemptedReparse;
 
 	void updateAppLoadingState();

@@ -37,28 +37,27 @@ public:
 	}
 };
 
-// Thrown when metadata (dates,sizes) don't match between the xml and hdd
-class MetadataMismatchException : public JungleException {
-
+class XMLRebuildRequiredException : public JungleException{
 public:
-
-	MetadataMismatchException(string message) : JungleException(message) {
-		// nothing
+	XMLRebuildRequiredException(string message) : JungleException(message){
 	}
 };
 
-
-// Thrown when the number of frames don't match between the transforms and movies
-class TransformMovieLengthMismatchException : public JungleException {
-
+class AnalysisRequiredException : public JungleException{
+	vector<string> _files;
+	
 public:
-
-	TransformMovieLengthMismatchException(string message, vector<string> names) : JungleException(message){
-		_names = names;
+	
+	AnalysisRequiredException(string message, vector<string> files) : JungleException(message){
+		_files = files;
+		
 	}
-
-	vector<string> _names;
-
+	
+	vector<string> getFiles(){
+		return _files;
+	}
+	
 };
+
 
 #endif

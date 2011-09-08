@@ -9,8 +9,8 @@
 
 #include "DataController.h"
 
-#define USER_MATT
-//#define USER_OLLIE
+//#define USER_MATT
+#define USER_OLLIE
 
 DataController::DataController(string configFilePath) {
 
@@ -45,8 +45,8 @@ DataController::DataController(string configFilePath) {
     _appModel->setProperty("graphicDataPath", (string)"graphics");
     #endif
 #else defined(USER_OLLIE)
-    _appModel->setProperty("scenesDataPath", (string)"/Users/ollie/itsa_jungle_out_there/scenes");
-    _appModel->setProperty("flashDataPath", (string)"/Users/ollie/itsa_jungle_out_there/apps");
+    _appModel->setProperty("scenesDataPath", (string)"/Users/ollie/its_a_jungle_out_there/Newest/video");
+    _appModel->setProperty("flashDataPath", (string)"/Users/ollie/its_a_jungle_out_there/Newest/flash");
     _appModel->setProperty("graphicDataPath", (string)"graphics");
 #endif
 
@@ -54,24 +54,19 @@ DataController::DataController(string configFilePath) {
     LOG_ERROR("I've made some defines for our user path - saves thrasing the config_props and I need to save them now...they're in DataController::DataController()");
     abort();
 #endif
-
+	
 	if(boost::any_cast<bool>(_appModel->getProperty("xmlForceSceneBuildOnLoad"))){
 		LOG_WARNING("Building XML due to property xmlForceSceneBuildOnLoad = true");
-		rebuildXML();
+//		rebuildXML(); // TODO: uncommenting this breaks the app model properties some how...
+		_hasAttemptedReparse = false;
 	}
 
     _graphicLoader = new GraphicLoader(boost::any_cast<string>(_appModel->getProperty("graphicDataPath"))); // not doing this fancy for now ;-)
-
-	_sceneParser = new SceneXMLParser(boost::any_cast<string>(_appModel->getProperty("scenesDataPath")),
-									  boost::any_cast<string>(_appModel->getProperty("scenesXMLFile")));
-	_sceneParser->registerStates();
 
 	LOG_NOTICE("Initialisation complete");
 }
 
 DataController::~DataController(){
-	delete _sceneParser;
-
 }
 
 void DataController::registerStates() {
@@ -86,52 +81,48 @@ void DataController::registerStates() {
 }
 
 void DataController::update(){
-
 	switch(getState()){
 		case kDATACONTROLLER_SCENE_PARSING:
 			try{
-				// run scene parser update
-				// this will look at the scene parsers internal state and perform
-				// whatever is necessary.
-				_sceneParser->update();
+				
+				SceneXMLParser sceneParser = SceneXMLParser(boost::any_cast<string>(_appModel->getProperty("scenesDataPath")),
+															boost::any_cast<string>(_appModel->getProperty("scenesXMLFile")));
+				setState(kDATACONTROLLER_FINISHED);
 			}
-			catch(MetadataMismatchException ex){
-				LOG_WARNING("Metadata mismatch exception: " + ex._message);
-
+			catch(XMLRebuildRequiredException ex){
 				// check if we want to handle it
 				if(boost::any_cast<bool>(_appModel->getProperty("xmlIgnoreErrors"))){
 					LOG_WARNING("xmlIgnoreErrors true, ignoring exception");
 					// ignoring issue
 				}
 				else {
+					LOG_WARNING("Rebuilding xml due to parser throwing XMLRebuildRequiredException");					
 					// try to rebuild
-					LOG_WARNING("Rebuilding XML to handle metadata mismatch exception");
 					rebuildXML();
-					restartParseXML();
 				}
-
 			}
-			catch (TransformMovieLengthMismatchException ex) {
+			catch (AnalysisRequiredException ex) {
+				LOG_WARNING("Analysis required due to parser throwing AnalysisRequiredException");
 				string message = "";
-				for(vector<string>::iterator iter = ex._names.begin(); iter != ex._names.end(); iter++){
+				for(vector<string>::iterator iter = ex.getFiles().begin(); iter != ex.getFiles().end(); iter++){
 					message = *iter + ", " + message;
 				}
 				message[message.length()-1] = ' ';
 				LOG_ERROR("Require reanalysis/creation of transform files: " + message);
-
+				
 				if(boost::any_cast<bool>(_appModel->getProperty("xmlIgnoreTransformErrors"))){
 					LOG_WARNING("xmlIgnoreTransformErrors true, continuing without rebuilding transforms");
 				} else {
 					if (!_hasAttemptedReparse) {
 						LOG_NOTICE("Starting Analysis");
-						_flashAnalyzer->setup(&ex._names, 6667);
+						vector<string> files = ex.getFiles();
+						_flashAnalyzer->setup(&files, 6667);
 						setState(kDATACONTROLLER_SCENE_ANALYSING);
 					} else {
 						LOG_WARNING("hasAttemptedReparse already, continuing without rebuilding transforms");
 					}
-
+					
 				}
-
 			}
 			catch (GenericXMLParseException ex) {
 				LOG_WARNING("XML parse exception: " + ex._message);
@@ -143,7 +134,6 @@ void DataController::update(){
 				} else {
 					LOG_WARNING("Rebuilding XML to handle parse exception");
 					rebuildXML();
-					restartParseXML();
 				}
 			}
 			catch (JungleException ex){
@@ -151,10 +141,6 @@ void DataController::update(){
 				LOG_ERROR("Caught JungleException: " + ex._message);
 				LOG_ERROR("Don't know what to do, aborting.");
 				abort();
-			}
-			// if the parser is done, update our state
-			if(_sceneParser->checkState(kSCENEXMLPARSER_FINISHED)){
-				setState(kDATACONTROLLER_FINISHED);
 			}
 			break;
 
@@ -164,7 +150,6 @@ void DataController::update(){
 				LOG_WARNING("Rebuilding XML to handle mal-transforms");
 				setState(kDATACONTROLLER_SCENE_PARSING);
 				rebuildXML();
-				restartParseXML();
 			} else _flashAnalyzer->update();
 
 			break;
@@ -186,11 +171,11 @@ void DataController::saveProperties(){
 void DataController::updateAppLoadingState(){
 	// loading messave is just the scene parser state state.
 	if(!kDATACONTROLLER_SCENE_ANALYSING) {
-		_appModel->setProperty("loadingMessage",  _sceneParser->printState(false));
+		//_appModel->setProperty("loadingMessage",  _sceneParser->printState(false));
 	} else {
 		_appModel->setProperty("loadingMessage",  _flashAnalyzer->getMessage());
 	}
-	_appModel->setProperty("loadingProgress", _sceneParser->getLoadingProgress());
+	//_appModel->setProperty("loadingProgress", _sceneParser->getLoadingProgress());
 }
 
 void DataController::rebuildXML(){
@@ -202,14 +187,5 @@ void DataController::rebuildXML(){
 	// rebuild
 	SceneXMLBuilder sceneXMLBuilder(boost::any_cast<string>(_appModel->getProperty("scenesDataPath")),
 									boost::any_cast<string>(_appModel->getProperty("scenesXMLFile")));
-}
-
-void DataController::restartParseXML(){
-	// delete old parser and make a new one (fresh state etc)
-	delete _sceneParser;
-	_sceneParser = new SceneXMLParser(boost::any_cast<string>(_appModel->getProperty("scenesDataPath")),
-									  boost::any_cast<string>(_appModel->getProperty("scenesXMLFile")));
-	_sceneParser->registerStates();
 	_hasAttemptedReparse = true; // don't loop re-trying to fix an error.
 }
-

@@ -127,7 +127,7 @@ void SceneXMLParser::parseXML(){
 			   !compareTagAttribute("sequence", "dateModified", _moviesFileLister.getModified(fileId), whichSequence) ||
 			   !compareTagAttribute("sequence", "size", boost::lexical_cast<std::string>(_moviesFileLister.getSize(fileId)), whichSequence)){
 				LOG_VERBOSE("Comparision failure or file missing on " + _moviesFileLister.getName(fileId));
-				throw new XMLRebuildRequiredException("Missing movie file");
+				throw XMLRebuildRequiredException("Missing movie file");
 			}
 			sequence->setMovieFullFilePath(_moviesFileLister.getPath(fileId));
 			
@@ -154,7 +154,7 @@ void SceneXMLParser::parseXML(){
 			   !compareTagAttribute("interactivity", "dateModified", _assetsFileLister.getModified(fileId), 0) ||
 			   !compareTagAttribute("interactivity", "size", boost::lexical_cast<std::string>(_assetsFileLister.getSize(fileId)), 0)){
 				LOG_VERBOSE("Comparision failure on interactivity for " + sequence->getName());
-				brokenfiles.push_back(_assetsFileLister.getName(fileId));
+				brokenfiles.push_back(_xml.getAttribute("interactivity", "filename", "", 0));
 			}
 			else{
 				LOG_VERBOSE("Adding interactivity for " + _assetsFileLister.getName(fileId));
@@ -220,7 +220,7 @@ void SceneXMLParser::parseXML(){
 				   !compareTagAttribute("transform", "dateModified", _assetsFileLister.getModified(fileId), witchTransform) ||
 				   !compareTagAttribute("transform", "size", boost::lexical_cast<std::string>(_assetsFileLister.getSize(fileId)), witchTransform)){
 					LOG_VERBOSE("Comparision failure on transform for " + sequence->getName());
-					brokenfiles.push_back(_assetsFileLister.getName(fileId));
+					brokenfiles.push_back(_xml.getAttribute("transform", "filename", "", witchTransform));
 				}
 				else{
 					// Load up transforms into the sequence
@@ -257,7 +257,7 @@ void SceneXMLParser::parseXML(){
 		// reset app model because its invalid
 		_appModel->clearScenesAndSequences();
 		// throw that up the broken files
-		throw new AnalysisRequiredException("Analysis required", brokenfiles);
+		throw AnalysisRequiredException("Analysis required", brokenfiles);
 	}
 	
 }
