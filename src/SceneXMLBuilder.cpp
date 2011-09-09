@@ -189,11 +189,13 @@ void SceneXMLBuilder::buildAppModel(){
 		vector<string> movieFilenameParts;
 		boost::split(movieFilenameParts, movieFilename, boost::is_any_of("_"));
 		// first part of name is scene, get/create
-		scene = _builderAppModel.getScene(movieFilenameParts[0]);
-		if(scene == NULL){
+		if(_builderModel.find(movieFilenameParts[0]) == _builderModel.end()){
 			scene = new Scene();
 			scene->setName(movieFilenameParts[0]);
-			_builderAppModel.setScene(movieFilenameParts[0], scene);
+			_builderModel.insert(make_pair(movieFilenameParts[0], scene));
+		}
+		else{
+			scene = _builderModel.find(movieFilenameParts[0])->second;
 		}
 		// next part is sequence name
 		sequence = new Sequence();
@@ -231,7 +233,7 @@ void SceneXMLBuilder::buildAppModel(){
 	}
 	
 	// setup iterators etc
-	map<string, Scene*> scenes = _builderAppModel.getScenes();
+	map<string, Scene*> scenes = _builderModel;
 	map<string, Scene*>::iterator scenei = scenes.begin();
 	map<string, Sequence*> sequences;
 	map<string, Sequence*>::iterator seqi;
@@ -323,7 +325,7 @@ void SceneXMLBuilder::buildAppModel(){
 
 void SceneXMLBuilder::buildXML(){
 	map<string, string> fileInfo;
-	map<string, Scene*> scenes = _builderAppModel.getScenes();
+	map<string, Scene*> scenes = _builderModel;
 	map<string, Sequence*> sequences;
 	map<string, Sequence*>::iterator seqi;
 	map<string, Scene*>::iterator scenei = scenes.begin();

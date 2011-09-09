@@ -45,7 +45,7 @@ public:
 	
 	
 private:
-	AppModel _builderAppModel;
+	map<string, Scene*> _builderModel;
 	
 	string			_xmlFile;
 	string			_dataPath;
