@@ -42,38 +42,30 @@ void Analyzer::setup(vector<string> * files, int port) {
 
 	for (int i = 0; i < files->size(); i++) {
 
-		vector<string> nameSplit = ofSplitString(files->at(i), ":");
-
-//		// HERES WHAT I THINK IS NEEDED
-//		// split name
-//		vector<string> nameSplit;
-//		boost::split(nameSplit, files->at(i), boost::is_any_of("_"));		
-//		string sceneName = nameSplit[0]; // is this a flash scene or a jungle scene??
-//		string filename = files->at(i); // file names are passed directly now
-//		string typeName = ""; // work this out from the filename
-//		if(filename.find("interactivity.bin") != string::npos){
-//			// filename contains interactivity.bin
-//			typeName = "interactivity";
-//		}
-//		else if(filename.find("transform") != string::npos){
-//			// filename contains transform
-//			// pull type out from filename
-//			typeName = filename.substr(filename.find_last_of("_")+1); // pull out atk1/2/vic1
-//			typeName = typeName.substr(0, typeName.find_last_of(".")); // remove extension
-//		}
-//		else{
-//			// Something went very wrong and we dont know how to handle this file
-//			LOG_ERROR("Could not work out how to analyse file: " + files->at(i));
-//		}
-
-		
-		string fileName = nameSplit[0];
+		// split name
+		vector<string> nameSplit = ofSplitString(files->at(i), "_");
+		string fileName = nameSplit[0]; // file name is the flash app filename
 		string sceneName = nameSplit[1];
-		string typeName;
-
-		if (nameSplit.size() > 2) {
-			typeName = nameSplit[2];
-		} else typeName = "";
+		// check if filename had _loop, if it does, append this to the sceneName
+		// that we pulled out (we have to do this because we split on the _
+		if(files->at(i).find("_loop") != string::npos){
+			sceneName = sceneName+"_loop";
+		}
+		string typeName = ""; // work this out from the filename
+		if(files->at(i).find("interactivity.bin") != string::npos){
+			// filename contains interactivity.bin
+			typeName = "int";
+		}
+		else if(files->at(i).find("transform") != string::npos){
+			// fileName contains transform
+			// pull type out from fileName
+			typeName = files->at(i).substr(files->at(i).find_last_of("_")+1); // pull out atk1/2/vic1
+			typeName = typeName.substr(0, typeName.find_last_of(".")); // remove extension
+		}
+		else{
+			// Something went very wrong and we dont know how to handle this file
+			LOG_ERROR("Could not work out how to analyse file: " + files->at(i));
+		}
 
 		FileScenes * thisFileScene;
 
