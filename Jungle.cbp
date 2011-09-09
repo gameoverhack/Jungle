@@ -362,6 +362,12 @@
 		<Unit filename="src\Singleton.h">
 			<Option virtualFolder="src\utils\" />
 		</Unit>
+		<Unit filename="src\StringHelpers.cpp">
+			<Option virtualFolder="src\utils\" />
+		</Unit>
+		<Unit filename="src\StringHelpers.h">
+			<Option virtualFolder="src\utils\" />
+		</Unit>
 		<Unit filename="src\VictimView.cpp">
 			<Option virtualFolder="src\views\" />
 		</Unit>

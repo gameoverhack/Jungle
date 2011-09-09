@@ -9,8 +9,8 @@
 
 #include "DataController.h"
 
-//#define USER_MATT
-#define USER_OLLIE
+#define USER_MATT
+//#define USER_OLLIE
 
 DataController::DataController(string configFilePath) {
 
@@ -40,8 +40,8 @@ DataController::DataController(string configFilePath) {
     //_appModel->setProperty("flashDataPath", (string)"E:/Users/gameover/Desktop/StrangerDanger/flash");
     //_appModel->setProperty("scenesDataPath", (string)"G:/gameoverload/VideoProjects/Jungle/video");
     //_appModel->setProperty("flashDataPath", (string)"G:/gameoverload/VideoProjects/Jungle/flash");
-    _appModel->setProperty("scenesDataPath", (string)"E:/Jungle/video");
-    _appModel->setProperty("flashDataPath", (string)"E:/Jungle/flash");
+    _appModel->setProperty("scenesDataPath", (string)"D:/newmodel/video");
+    _appModel->setProperty("flashDataPath", (string)"D:/newmodel/flash");
     _appModel->setProperty("graphicDataPath", (string)"graphics");
     #endif
 #else defined(USER_OLLIE)
@@ -54,7 +54,7 @@ DataController::DataController(string configFilePath) {
     LOG_ERROR("I've made some defines for our user path - saves thrasing the config_props and I need to save them now...they're in DataController::DataController()");
     abort();
 #endif
-	
+
 	if(boost::any_cast<bool>(_appModel->getProperty("xmlForceSceneBuildOnLoad"))){
 		LOG_WARNING("Building XML due to property xmlForceSceneBuildOnLoad = true");
 		buildXML();
@@ -83,14 +83,14 @@ void DataController::update(){
 	switch(getState()){
 		case kDATACONTROLLER_SCENE_PARSING:
 			try{
-				
+
 				SceneXMLParser sceneParser = SceneXMLParser(boost::any_cast<string>(_appModel->getProperty("scenesDataPath")),
 															boost::any_cast<string>(_appModel->getProperty("scenesXMLFile")));
 				setState(kDATACONTROLLER_FINISHED);
 			}
 			catch (GenericXMLParseException ex) {
 				LOG_WARNING("XML parse exception: " + ex._message);
-				
+
 				// check if we want to handle it
 				if(boost::any_cast<bool>(_appModel->getProperty("xmlIgnoreErrors"))){
 					LOG_WARNING("xmlIgnoreErrors true, ignoring exception");
@@ -176,7 +176,7 @@ void DataController::buildXML(){
 		SceneXMLBuilder sceneXMLBuilder(boost::any_cast<string>(_appModel->getProperty("scenesDataPath")),filename);
 	}
 	catch (AnalysisRequiredException ex) {
-		
+
 		LOG_WARNING("Analysis required due to builder throwing AnalysisRequiredException");
 		string message = "";
 		for(vector<string>::iterator iter = ex.getFiles().begin(); iter != ex.getFiles().end(); iter++){
@@ -184,7 +184,7 @@ void DataController::buildXML(){
 		}
 		message[message.length()-1] = ' ';
 		LOG_ERROR("Require reanalysis/creation of transform files: " + message);
-		
+
 		if(boost::any_cast<bool>(_appModel->getProperty("xmlIgnoreTransformErrors"))){
 			LOG_WARNING("xmlIgnoreTransformErrors true, continuing without rebuilding transforms");
 		} else {
@@ -193,11 +193,11 @@ void DataController::buildXML(){
 			} else {
 				LOG_WARNING("hasAttemptedReparse already, continuing without rebuilding transforms");
 			}
-			
+
 		}
 	}
-	
-	
+
+
 }
 
 void DataController::rebuildXML(){
@@ -206,7 +206,7 @@ void DataController::rebuildXML(){
 		LOG_ERROR("Already attempted to rebuild XML once and failed, aborting.");
 		abort();
 	}
-	
+
 	buildXML();
 	_hasAttemptedReparse = true; // don't loop re-trying to fix an error.
 }

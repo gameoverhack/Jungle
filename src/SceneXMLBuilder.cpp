@@ -28,7 +28,7 @@ SceneXMLBuilder::SceneXMLBuilder(string dataPath, string xmlFile) : IXMLBuilder(
 
 	LOG_NOTICE("Creating scene xml builder with path:" + dataPath + " and config:" + xmlFile);
 	_dataPath = dataPath;
-	
+
 	// some pre-flight setup
 	setupFileListers();	// set up lister
 	santiseFiles();	// make sure files are ok
@@ -36,7 +36,7 @@ SceneXMLBuilder::SceneXMLBuilder(string dataPath, string xmlFile) : IXMLBuilder(
 	LOG_NOTICE("Checking file validity, frame lengths etc");
 	// check file validity (frame lengths etc)
 	checkMovieAssets();
-	
+
 	buildAppModel();
 
 	buildXML();		// build xml from app model
@@ -55,7 +55,7 @@ void SceneXMLBuilder::setupFileListers(){
 	_moviesFileLister.allowExt("MOV");
 	_moviesFileLister.listDir(true);
 
-	
+
 	_assetsFileLister.reset();
 	_assetsFileLister.addDir(_dataPath);
 	_assetsFileLister.allowExt("bin");
@@ -67,7 +67,7 @@ void SceneXMLBuilder::setupFileListers(){
 		LOG_ERROR("Could not build scene config, goDirList reported 0 movie files found.");
 		abort();
 	}
-	
+
 	if(_assetsFileLister.size() == 0){
 		LOG_ERROR("Could not build scene config, goDirList reported 0 asset files found.");
 		throw JungleException("0 asset files found");
@@ -102,7 +102,7 @@ void SceneXMLBuilder::santiseFiles(){
 		pathLower.replace(pathLower.find_last_of(filename)-filename.length()+1, filename.length(), filenameLower);
 		rename(path.c_str(), pathLower.c_str());
 	}
-	
+
 	// have to relist dir because filenames have changed (possibly)
 	setupFileListers();
 }
@@ -116,15 +116,15 @@ void SceneXMLBuilder::checkMovieAssets(){
 	vector<string> assetFilenameParts;
 
 	goVideoPlayer movie;
-	
+
 	SequenceDescriptor *seqDescriptor = new SequenceDescriptor();
 	vector<CamTransform> transform;
 
 	for(int movieFileId = 0; movieFileId < _moviesFileLister.size(); movieFileId++){
-		
+
 		// get name without extension
 		movieFilename = _moviesFileLister.getNameWithoutExtension(movieFileId);
-		
+
 		LOG_NOTICE("Loading movie: " + movieFilename);
 		movie.setUseTexture(false);
 		movie.loadMovie(_moviesFileLister.getPath(movieFileId));
@@ -139,7 +139,7 @@ void SceneXMLBuilder::checkMovieAssets(){
 		}
 
 		for(vector<string>::iterator iter = assetFilenameParts.begin();	iter != assetFilenameParts.end(); iter++){
-			
+
 			// check for interactifity file
 			assetFilename = movieFilename+*iter;
 			LOG_NOTICE("CHecking for " + assetFilename);
@@ -170,13 +170,13 @@ void SceneXMLBuilder::checkMovieAssets(){
 			}
 		}
 	}
-	
+
 	// clean up
-	delete seqDescriptor; 
-	
+	delete seqDescriptor;
+
 	if(brokenFiles.size() != 0){
 		throw AnalysisRequiredException("Missing files", brokenFiles);
-	} 
+	}
 }
 
 void SceneXMLBuilder::buildAppModel(){
@@ -185,7 +185,7 @@ void SceneXMLBuilder::buildAppModel(){
 	Sequence *sequence = NULL;
 	vector<CamTransform> *transform = NULL;
 	goVideoPlayer *movie;
-	
+
 	string movieFilename;
 	for(int movieFileId = 0; movieFileId < _moviesFileLister.size(); movieFileId++){
 		movieFilename = _moviesFileLister.getNameWithoutExtension(movieFileId);
@@ -206,7 +206,7 @@ void SceneXMLBuilder::buildAppModel(){
 		// t_seq01a
 		sequence->setName(movieFilenameParts[1]); //t_[seq01a]
 		sequence->setNumber(findSequenceNumberFromString(sequence->getName())); //t_seq[01]a
-		
+
 		sequence->setNextSequenceName("_not_forging_");
 		sequence->setAttackerResult("_not_forging_");
 		sequence->setVictimResult("_not_forging_");
@@ -225,27 +225,27 @@ void SceneXMLBuilder::buildAppModel(){
 			   sequence->setType("b");
 			}
 		}
-		
+
 		sequence->setMovieFullFilePath(_moviesFileLister.getPath(movieFileId));
 		sequence->_interactivityFilename = movieFilename+"_interactivity.bin";
 		sequence->_transformsFilenames.push_back(movieFilename+"_transform_vic1.bin");
 		sequence->_transformsFilenames.push_back(movieFilename+"_transform_atk1.bin");
-		if(scene->getName() == "t"){// FIXME: Check if scene is t and add this?	
-			sequence->_transformsFilenames.push_back(movieFilename+"_transform_atk2.bin");	
+		if(scene->getName() == "t"){// FIXME: Check if scene is t and add this?
+			sequence->_transformsFilenames.push_back(movieFilename+"_transform_atk2.bin");
 		}
-		
-		
+
+
 		scene->setSequence(sequence->getName(), sequence);
 	}
-	
+
 	// setup iterators etc
 	map<string, Scene*> scenes = _builderModel;
 	map<string, Scene*>::iterator scenei = scenes.begin();
 	map<string, Sequence*> sequences;
 	map<string, Sequence*>::iterator seqi;
 	map<string, Sequence*>::reverse_iterator rseqi;
-	
-#pragma mark FORGE SETTINGS	
+
+#pragma mark FORGE SETTINGS
 	// _ FORGING flag _
 	bool forgefinals = true; // final sequences
 	bool forgenexts = false; // next sequences
@@ -283,14 +283,14 @@ void SceneXMLBuilder::buildAppModel(){
 					// save absolute last as final sequence since we found no a
 					sequence->setNextSequenceName(kLAST_SEQUENCE_TOKEN);
 					sequence->setAttackerResult(kLAST_SEQUENCE_TOKEN);
-					sequence->setVictimResult(kLAST_SEQUENCE_TOKEN);				
+					sequence->setVictimResult(kLAST_SEQUENCE_TOKEN);
 					break;
 				}
 			}
 			scenei++;
 		}
 	}
-	
+
 	// setup guessed next sequences
 	if(forgenexts){
 		// TODO: setup guessed next sequences
@@ -347,12 +347,12 @@ void SceneXMLBuilder::buildXML(){
 	// note both these are popped at end of method
 	_xml.pushTag("config");
 	_xml.pushTag("scenes");
-	
+
 	// iterate all scenes
 	while(scenei != scenes.end()){
 		scene = scenei->second;
 		sequences = scene->getSequences();
-		
+
 		which = _xml.addTag("scene");
 		_xml.addAttribute("scene", "name", scene->getName(), which);
 		seqi = sequences.begin();
@@ -360,7 +360,7 @@ void SceneXMLBuilder::buildXML(){
 		// iterate the sequences in this scene
 		while(seqi != sequences.end()){
 			sequence =seqi->second;
-			
+
 			which = _xml.addTag("sequence");
 			_xml.addAttribute("sequence", "name", sequence->getName(), which);
 			_xml.addAttribute("sequence", "sequenceType", sequence->getType(), which);
@@ -368,24 +368,24 @@ void SceneXMLBuilder::buildXML(){
 			_xml.addAttribute("sequence", "victimResult", sequence->getVictimResult(), which);
 			_xml.addAttribute("sequence", "nextSequence", sequence->getNextSequenceName(), which);
 			_xml.addAttribute("sequence", "faked", (sequence->getIsSequenceFaked() ? "true" : "false"), which);
-			
+
 			string movieFilename = sequence->getMovieFullFilePath();
 			movieFilename = movieFilename.substr(movieFilename.rfind(scene->getName()+"_"));
 			_xml.addAttribute("sequence", "filename", movieFilename, which);
 			fileId = _moviesFileLister.findFileByName(movieFilename);
 			_xml.addAttribute("sequence", "dateCreated", _moviesFileLister.getCreated(fileId), which);
 			_xml.addAttribute("sequence", "dateModified", _moviesFileLister.getModified(fileId), which);
-			_xml.addAttribute("sequence", "size", _moviesFileLister.getSize(fileId), which);			
-			
+			_xml.addAttribute("sequence", "size", _moviesFileLister.getSize(fileId), which);
+
 			_xml.pushTag("sequence", which);
-			
+
 			which = _xml.addTag("interactivity");
 			_xml.addAttribute("interactivity", "filename", sequence->_interactivityFilename, which);
 			fileId = _assetsFileLister.findFileByName(sequence->_interactivityFilename);
 			_xml.addAttribute("interactivity", "dateCreated", _assetsFileLister.getCreated(fileId), which);
 			_xml.addAttribute("interactivity", "dateModified", _assetsFileLister.getModified(fileId), which);
-			_xml.addAttribute("interactivity", "size", _assetsFileLister.getSize(fileId), which);			
-			
+			_xml.addAttribute("interactivity", "size", _assetsFileLister.getSize(fileId), which);
+
 			vector<string>::iterator iter = sequence->_transformsFilenames.begin();
 			while(iter != sequence->_transformsFilenames.end()){
 				which = _xml.addTag("transform");
@@ -393,10 +393,10 @@ void SceneXMLBuilder::buildXML(){
 				fileId = _assetsFileLister.findFileByName(*iter);
 				_xml.addAttribute("transform", "dateCreated", _assetsFileLister.getCreated(fileId), which);
 				_xml.addAttribute("transform", "dateModified", _assetsFileLister.getModified(fileId), which);
-				_xml.addAttribute("transform", "size", _assetsFileLister.getSize(fileId), which);			
+				_xml.addAttribute("transform", "size", _assetsFileLister.getSize(fileId), which);
 				iter++;
 			}
-			
+
 			_xml.popTag();
 			seqi++;
 		}
@@ -406,16 +406,16 @@ void SceneXMLBuilder::buildXML(){
 }
 
 /*
- 
- 
- 
- 
+
+
+
+
 		Saved for later inclusion.
- 
- 
- 
- 
- 
+
+
+
+
+
  */
 // Scans files in directories, working out information relavent to them.
 //void SceneXMLBuilder::findAndFixInvalidSequences() {

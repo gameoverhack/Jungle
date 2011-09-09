@@ -64,11 +64,11 @@
 	<File name="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.h" open="0" top="0" tabpos="29">
 		<Cursor position="2604" topLine="55" />
 	</File>
-	<File name="bin\data\config_properties.xml" open="0" top="0" tabpos="31">
-		<Cursor position="4154" topLine="39" />
+	<File name="bin\data\config_properties.xml" open="1" top="0" tabpos="13">
+		<Cursor position="5734" topLine="55" />
 	</File>
-	<File name="bin\data\config_scenes.xml" open="0" top="0" tabpos="44">
-		<Cursor position="1884" topLine="0" />
+	<File name="bin\data\config_scenes.xml" open="1" top="0" tabpos="15">
+		<Cursor position="0" topLine="0" />
 	</File>
 	<File name="bin\data\leveltextureblend.frag" open="0" top="0" tabpos="29">
 		<Cursor position="643" topLine="0" />
@@ -88,7 +88,7 @@
 	<File name="src\Analyzer.h" open="0" top="0" tabpos="12">
 		<Cursor position="327" topLine="10" />
 	</File>
-	<File name="src\AppController.cpp" open="1" top="1" tabpos="5">
+	<File name="src\AppController.cpp" open="1" top="0" tabpos="5">
 		<Cursor position="8949" topLine="207" />
 	</File>
 	<File name="src\AppController.h" open="0" top="0" tabpos="24">
@@ -104,15 +104,15 @@
 		<Cursor position="311" topLine="9" />
 	</File>
 	<File name="src\AppView.cpp" open="1" top="0" tabpos="7">
-		<Cursor position="2249" topLine="68" />
+		<Cursor position="2249" topLine="59" />
 	</File>
 	<File name="src\AppView.h" open="0" top="0" tabpos="21">
 		<Cursor position="624" topLine="11" />
 	</File>
-	<File name="src\ArdController.cpp" open="1" top="0" tabpos="11">
+	<File name="src\ArdController.cpp" open="1" top="0" tabpos="10">
 		<Cursor position="416" topLine="3" />
 	</File>
-	<File name="src\ArdController.h" open="1" top="0" tabpos="12">
+	<File name="src\ArdController.h" open="1" top="0" tabpos="11">
 		<Cursor position="379" topLine="0" />
 	</File>
 	<File name="src\AttackView.cpp" open="0" top="0" tabpos="1">
@@ -146,7 +146,7 @@
 		<Cursor position="219" topLine="0" />
 	</File>
 	<File name="src\DataController.cpp" open="1" top="0" tabpos="3">
-		<Cursor position="1700" topLine="28" />
+		<Cursor position="862" topLine="21" />
 	</File>
 	<File name="src\DataController.h" open="0" top="0" tabpos="23">
 		<Cursor position="935" topLine="20" />
@@ -200,13 +200,13 @@
 		<Cursor position="317" topLine="0" />
 	</File>
 	<File name="src\SceneView.cpp" open="1" top="0" tabpos="6">
-		<Cursor position="6950" topLine="174" />
+		<Cursor position="6950" topLine="165" />
 	</File>
 	<File name="src\SceneView.h" open="0" top="0" tabpos="54">
 		<Cursor position="444" topLine="16" />
 	</File>
-	<File name="src\SceneXMLBuilder.cpp" open="0" top="0" tabpos="26">
-		<Cursor position="6179" topLine="134" />
+	<File name="src\SceneXMLBuilder.cpp" open="1" top="1" tabpos="14">
+		<Cursor position="3495" topLine="89" />
 	</File>
 	<File name="src\SceneXMLBuilder.h" open="0" top="0" tabpos="50">
 		<Cursor position="1945" topLine="51" />
