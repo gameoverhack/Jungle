@@ -44,6 +44,29 @@ void Analyzer::setup(vector<string> * files, int port) {
 
 		vector<string> nameSplit = ofSplitString(files->at(i), ":");
 
+//		// HERES WHAT I THINK IS NEEDED
+//		// split name
+//		vector<string> nameSplit;
+//		boost::split(nameSplit, files->at(i), boost::is_any_of("_"));		
+//		string sceneName = nameSplit[0]; // is this a flash scene or a jungle scene??
+//		string filename = files->at(i); // file names are passed directly now
+//		string typeName = ""; // work this out from the filename
+//		if(filename.find("interactivity.bin") != string::npos){
+//			// filename contains interactivity.bin
+//			typeName = "interactivity";
+//		}
+//		else if(filename.find("transform") != string::npos){
+//			// filename contains transform
+//			// pull type out from filename
+//			typeName = filename.substr(filename.find_last_of("_")+1); // pull out atk1/2/vic1
+//			typeName = typeName.substr(0, typeName.find_last_of(".")); // remove extension
+//		}
+//		else{
+//			// Something went very wrong and we dont know how to handle this file
+//			LOG_ERROR("Could not work out how to analyse file: " + files->at(i));
+//		}
+
+		
 		string fileName = nameSplit[0];
 		string sceneName = nameSplit[1];
 		string typeName;
