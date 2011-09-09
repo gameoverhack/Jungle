@@ -58,8 +58,7 @@ DataController::DataController(string configFilePath) {
 	if(boost::any_cast<bool>(_appModel->getProperty("xmlForceSceneBuildOnLoad"))){
 		try{
 			LOG_WARNING("Building XML due to property xmlForceSceneBuildOnLoad = true");
-			rebuildXML(); // TODO: uncommenting this breaks the app model properties some how...
-			_hasAttemptedReparse = false;			
+			buildXML();
 		}
 		catch (AnalysisRequiredException ex) {
 			LOG_WARNING("Analysis required due to parser throwing AnalysisRequiredException");
@@ -203,14 +202,38 @@ void DataController::updateAppLoadingState(){
 	//_appModel->setProperty("loadingProgress", _sceneParser->getLoadingProgress());
 }
 
+void DataController::buildXML(){
+	// save existing file if present
+	string filename = boost::any_cast<string>(_appModel->getProperty("scenesXMLFile"));
+	string path = ofToDataPath(filename);
+	char backup[65536];
+	sprintf(backup, "%s_%d_%d_%d_%dh%dm%ds", path.c_str(), ofGetYear(), ofGetMonth(), ofGetDay(), ofGetHours(), ofGetMinutes(), ofGetSeconds());
+
+	std::fstream fin(path.c_str(), fstream::in);
+	std::fstream fout(backup, fstream::out);
+
+	ifstream in(path.c_str());
+	ofstream out(backup);
+	if(out == NULL) {
+		LOG_ERROR("Could not backup XML file");
+		abort();
+	}
+	if(in != NULL && out != NULL){
+		out<< in.rdbuf();
+		in.close();
+		out.close();
+	}
+	// build
+	SceneXMLBuilder sceneXMLBuilder(boost::any_cast<string>(_appModel->getProperty("scenesDataPath")),filename);
+}
+
 void DataController::rebuildXML(){
 	if(_hasAttemptedReparse){
 		// we've already tried to fix this once
 		LOG_ERROR("Already attempted to rebuild XML once and failed, aborting.");
 		abort();
 	}
-	// rebuild
-	SceneXMLBuilder sceneXMLBuilder(boost::any_cast<string>(_appModel->getProperty("scenesDataPath")),
-									boost::any_cast<string>(_appModel->getProperty("scenesXMLFile")));
+	
+	buildXML();
 	_hasAttemptedReparse = true; // don't loop re-trying to fix an error.
 }

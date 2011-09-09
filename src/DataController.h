@@ -10,6 +10,9 @@
 #ifndef _H_DATACONTROLLER
 #define _H_DATACONTROLLER
 
+#include <iostream>
+#include <fstream>
+
 #include <boost/serialization/serialization.hpp>
 #include <boost/serialization/vector.hpp>
 #include <boost/archive/text_oarchive.hpp>
@@ -65,9 +68,8 @@ private:
 	bool					_hasAttemptedReparse;
 
 	void updateAppLoadingState();
+	void buildXML();
 	void rebuildXML();
-	void restartParseXML();
-
 
 
 };
