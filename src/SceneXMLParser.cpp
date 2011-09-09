@@ -36,7 +36,7 @@ void SceneXMLParser::setupFileListers(){
 	// quick error check
 	if(_moviesFileLister.size() == 0){
 		LOG_ERROR("Could not load scene config, goDirList reported 0 movie files found.");
-		abort();
+		throw JungleException("0 movie files found");
 	}
 	
 	if(_assetsFileLister.size() == 0){
@@ -127,7 +127,7 @@ void SceneXMLParser::parseXML(){
 			   !compareTagAttribute("sequence", "dateModified", _moviesFileLister.getModified(fileId), whichSequence) ||
 			   !compareTagAttribute("sequence", "size", boost::lexical_cast<std::string>(_moviesFileLister.getSize(fileId)), whichSequence)){
 				LOG_VERBOSE("Comparision failure or file missing on " + _moviesFileLister.getName(fileId));
-				throw XMLRebuildRequiredException("Missing movie file");
+				throw GenericXMLParseException("Missing movie file");
 			}
 			sequence->setMovieFullFilePath(_moviesFileLister.getPath(fileId));
 			
@@ -154,7 +154,8 @@ void SceneXMLParser::parseXML(){
 			   !compareTagAttribute("interactivity", "dateModified", _assetsFileLister.getModified(fileId), 0) ||
 			   !compareTagAttribute("interactivity", "size", boost::lexical_cast<std::string>(_assetsFileLister.getSize(fileId)), 0)){
 				LOG_VERBOSE("Comparision failure on interactivity for " + sequence->getName());
-				brokenfiles.push_back(_xml.getAttribute("interactivity", "filename", "", 0));
+				throw GenericXMLParseException("Interactivity file was missing of invalid");
+//				brokenfiles.push_back(_xml.getAttribute("interactivity", "filename", "", 0));
 			}
 			else{
 				LOG_VERBOSE("Adding interactivity for " + _assetsFileLister.getName(fileId));
@@ -220,7 +221,8 @@ void SceneXMLParser::parseXML(){
 				   !compareTagAttribute("transform", "dateModified", _assetsFileLister.getModified(fileId), witchTransform) ||
 				   !compareTagAttribute("transform", "size", boost::lexical_cast<std::string>(_assetsFileLister.getSize(fileId)), witchTransform)){
 					LOG_VERBOSE("Comparision failure on transform for " + sequence->getName());
-					brokenfiles.push_back(_xml.getAttribute("transform", "filename", "", witchTransform));
+					throw GenericXMLParseException("Transform file was missing or invalid");
+//					brokenfiles.push_back(_xml.getAttribute("transform", "filename", "", witchTransform));
 				}
 				else{
 					// Load up transforms into the sequence
@@ -253,12 +255,12 @@ void SceneXMLParser::parseXML(){
 	} // end scene tag for loop
 	
 	// check if we had broken files
-	if(brokenfiles.size() != 0){
-		// reset app model because its invalid
-		_appModel->clearScenesAndSequences();
-		// throw that up the broken files
-		throw AnalysisRequiredException("Analysis required", brokenfiles);
-	}
+//	if(brokenfiles.size() != 0){
+//		// reset app model because its invalid
+//		_appModel->clearScenesAndSequences();
+//		// throw that up the broken files
+//		throw AnalysisRequiredException("Analysis required", brokenfiles);
+//	}
 	
 }
 
