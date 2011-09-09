@@ -56,33 +56,8 @@ DataController::DataController(string configFilePath) {
 #endif
 	
 	if(boost::any_cast<bool>(_appModel->getProperty("xmlForceSceneBuildOnLoad"))){
-		try{
-			LOG_WARNING("Building XML due to property xmlForceSceneBuildOnLoad = true");
-			buildXML();
-		}
-		catch (AnalysisRequiredException ex) {
-			LOG_WARNING("Analysis required due to parser throwing AnalysisRequiredException");
-			string message = "";
-			for(vector<string>::iterator iter = ex.getFiles().begin(); iter != ex.getFiles().end(); iter++){
-				message = *iter + ", " + message;
-			}
-			message[message.length()-1] = ' ';
-			LOG_ERROR("Require reanalysis/creation of transform files: " + message);
-			
-			if(boost::any_cast<bool>(_appModel->getProperty("xmlIgnoreTransformErrors"))){
-				LOG_WARNING("xmlIgnoreTransformErrors true, continuing without rebuilding transforms");
-			} else {
-				if (!_hasAttemptedReparse) {
-					LOG_NOTICE("Starting Analysis");
-					vector<string> files = ex.getFiles();
-					_flashAnalyzer->setup(&files, 6667);
-					setState(kDATACONTROLLER_SCENE_ANALYSING);
-				} else {
-					LOG_WARNING("hasAttemptedReparse already, continuing without rebuilding transforms");
-				}
-				
-			}
-		}
+		LOG_WARNING("Building XML due to property xmlForceSceneBuildOnLoad = true");
+		buildXML();
 	}
 
     _graphicLoader = new GraphicLoader(boost::any_cast<string>(_appModel->getProperty("graphicDataPath"))); // not doing this fancy for now ;-)
@@ -125,7 +100,7 @@ void DataController::update(){
 					rebuildXML();
 				}
 			}
-			catch (AnalysisRequiredException ex) {
+			catch (AnalysisRequiredException ex) {				
 				LOG_WARNING("Analysis required due to parser throwing AnalysisRequiredException");
 				string message = "";
 				for(vector<string>::iterator iter = ex.getFiles().begin(); iter != ex.getFiles().end(); iter++){
@@ -138,10 +113,7 @@ void DataController::update(){
 					LOG_WARNING("xmlIgnoreTransformErrors true, continuing without rebuilding transforms");
 				} else {
 					if (!_hasAttemptedReparse) {
-						LOG_NOTICE("Starting Analysis");
-						vector<string> files = ex.getFiles();
-						_flashAnalyzer->setup(&files, 6667);
-						setState(kDATACONTROLLER_SCENE_ANALYSING);
+						runAnalyser(ex.getFiles());
 					} else {
 						LOG_WARNING("hasAttemptedReparse already, continuing without rebuilding transforms");
 					}
@@ -202,6 +174,12 @@ void DataController::updateAppLoadingState(){
 	//_appModel->setProperty("loadingProgress", _sceneParser->getLoadingProgress());
 }
 
+void DataController::runAnalyser(vector<string> files){
+	LOG_NOTICE("Starting Analysis");
+	_flashAnalyzer->setup(&files, 6667);
+	setState(kDATACONTROLLER_SCENE_ANALYSING);
+}
+
 void DataController::buildXML(){
 	// save existing file if present
 	string filename = boost::any_cast<string>(_appModel->getProperty("scenesXMLFile"));
@@ -224,7 +202,31 @@ void DataController::buildXML(){
 		out.close();
 	}
 	// build
-	SceneXMLBuilder sceneXMLBuilder(boost::any_cast<string>(_appModel->getProperty("scenesDataPath")),filename);
+	try{
+		SceneXMLBuilder sceneXMLBuilder(boost::any_cast<string>(_appModel->getProperty("scenesDataPath")),filename);
+	}
+	catch (AnalysisRequiredException ex) {				
+		LOG_WARNING("Analysis required due to builder throwing AnalysisRequiredException");
+		string message = "";
+		for(vector<string>::iterator iter = ex.getFiles().begin(); iter != ex.getFiles().end(); iter++){
+			message = *iter + ", " + message;
+		}
+		message[message.length()-1] = ' ';
+		LOG_ERROR("Require reanalysis/creation of transform files: " + message);
+		
+		if(boost::any_cast<bool>(_appModel->getProperty("xmlIgnoreTransformErrors"))){
+			LOG_WARNING("xmlIgnoreTransformErrors true, continuing without rebuilding transforms");
+		} else {
+			if (!_hasAttemptedReparse) {
+				runAnalyser(ex.getFiles());
+			} else {
+				LOG_WARNING("hasAttemptedReparse already, continuing without rebuilding transforms");
+			}
+			
+		}
+	}
+	
+	
 }
 
 void DataController::rebuildXML(){

@@ -70,6 +70,7 @@ private:
 	void updateAppLoadingState();
 	void buildXML();
 	void rebuildXML();
+	void runAnalyser(vector<string> files);
 
 
 };
