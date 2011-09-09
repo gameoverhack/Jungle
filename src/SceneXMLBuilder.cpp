@@ -120,11 +120,6 @@ void SceneXMLBuilder::checkMovieAssets(){
 	SequenceDescriptor *seqDescriptor = new SequenceDescriptor();
 	vector<CamTransform> transform;
 
-	assetFilenameParts.push_back("_interactivity.bin");
-	assetFilenameParts.push_back("_transform_vic1.bin");
-	assetFilenameParts.push_back("_transform_atk1.bin");
-	assetFilenameParts.push_back("_transform_atk2.bin"); // TODO: Check if start of name is t_ and add then?
-	
 	for(int movieFileId = 0; movieFileId < _moviesFileLister.size(); movieFileId++){
 		
 		// get name without extension
@@ -133,7 +128,15 @@ void SceneXMLBuilder::checkMovieAssets(){
 		LOG_NOTICE("Loading movie: " + movieFilename);
 		movie.setUseTexture(false);
 		movie.loadMovie(_moviesFileLister.getPath(movieFileId));
-		
+
+		assetFilenameParts.clear();
+		assetFilenameParts.push_back("_interactivity.bin");
+		assetFilenameParts.push_back("_transform_vic1.bin");
+		assetFilenameParts.push_back("_transform_atk1.bin");
+		if(movieFilename.find("t_") == 0){
+			 // FIXME: Check if start of name is t_ and add then?
+			assetFilenameParts.push_back("_transform_atk2.bin");
+		}
 
 		for(vector<string>::iterator iter = assetFilenameParts.begin();	iter != assetFilenameParts.end(); iter++){
 			
@@ -227,7 +230,10 @@ void SceneXMLBuilder::buildAppModel(){
 		sequence->_interactivityFilename = movieFilename+"_interactivity.bin";
 		sequence->_transformsFilenames.push_back(movieFilename+"_transform_vic1.bin");
 		sequence->_transformsFilenames.push_back(movieFilename+"_transform_atk1.bin");
-		sequence->_transformsFilenames.push_back(movieFilename+"_transform_atk2.bin");	// TODO: Check if scene is t and add this?
+		if(scene->getName() == "t"){// FIXME: Check if scene is t and add this?	
+			sequence->_transformsFilenames.push_back(movieFilename+"_transform_atk2.bin");	
+		}
+		
 		
 		scene->setSequence(sequence->getName(), sequence);
 	}
