@@ -152,16 +152,15 @@ void DataController::runAnalyser(vector<string> files){
 
 void DataController::buildXML(){
 	// save existing file if present
-	string filename = boost::any_cast<string>(_appModel->getProperty("scenesXMLFile"));
-	string path = ofToDataPath(filename);
-	char backup[65536];
-	sprintf(backup, "%s_%d_%d_%d_%dh%dm%ds", path.c_str(), ofGetYear(), ofGetMonth(), ofGetDay(), ofGetHours(), ofGetMinutes(), ofGetSeconds());
+	string sceneFileName = boost::any_cast<string>(_appModel->getProperty("scenesXMLFile"));
+	string sceneFilePath = ofToDataPath(sceneFileName);
+	char sceneBackupFileName[256];
+	sprintf(sceneBackupFileName, "%s_%d_%d_%d_%dh%dm%ds.xml", (sceneFileName.substr(0, sceneFileName.find_last_of("."))).c_str(), ofGetYear(), ofGetMonth(), ofGetDay(), ofGetHours(), ofGetMinutes(), ofGetSeconds());
+    string sceneBackupFilePath = ofToDataPath(sceneBackupFileName);
 
-	std::fstream fin(path.c_str(), fstream::in);
-	std::fstream fout(backup, fstream::out);
+	ifstream in(sceneFilePath.c_str());
+	ofstream out(sceneBackupFilePath.c_str());
 
-	ifstream in(path.c_str());
-	ofstream out(backup);
 	if(out == NULL) {
 		LOG_ERROR("Could not backup XML file");
 		abort();
@@ -173,7 +172,7 @@ void DataController::buildXML(){
 	}
 	// build
 	try{
-		SceneXMLBuilder sceneXMLBuilder(boost::any_cast<string>(_appModel->getProperty("scenesDataPath")),filename);
+		SceneXMLBuilder sceneXMLBuilder(boost::any_cast<string>(_appModel->getProperty("scenesDataPath")),sceneFileName);
 	}
 	catch (AnalysisRequiredException ex) {
 
