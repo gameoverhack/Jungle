@@ -144,7 +144,7 @@ void AppController::VictimEvent(float & level) {
                 LOG_NOTICE("VICTIM ACTION [" + ofToString(level) + "]" + res);
                 if (res != kLAST_SEQUENCE_TOKEN) {
                     _switchToSequence = _appModel->getCurrentScene()->getSequence(res);
-                    _vidController->loadMovie(_switchToSequence, true);
+                    _vidController->loadMovie(_switchToSequence, true, _appModel->getCurrentFrame()+1);
                 } else nextScene();
 
             } //else cout << "Clocked by type " << _appModel->getCurrentInteractivity() << " = " << kINTERACTION_VICTIM << endl;
@@ -180,7 +180,7 @@ void AppController::FaceEvent(float & level) {
             if (_appModel->checkCurrentInteractivity(kINTERACTION_FACE)) {
                 _lastActionTime = ofGetElapsedTimeMillis();
                 string res ="seq01a"; // hack
-                LOG_NOTICE("FAKE ATTACK ACTION [" + ofToString(level) + "] == " + res);
+                LOG_NOTICE("FAKE FACE ACTION [" + ofToString(level) + "] == " + res);
                 if (res != kLAST_SEQUENCE_TOKEN) {
                     _switchToSequence = _appModel->getCurrentScene()->getSequence(res);
                     _vidController->loadMovie(_switchToSequence, true);

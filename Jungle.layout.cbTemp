@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="debug" />
-	<File name="..\..\..\addons\goDirList\src\goDirList.cpp" open="1" top="0" tabpos="17">
+	<File name="..\..\..\addons\goDirList\src\goDirList.cpp" open="1" top="0" tabpos="19">
 		<Cursor position="775" topLine="18" />
 	</File>
 	<File name="..\..\..\addons\goDirList\src\goDirList.h" open="0" top="0" tabpos="1">
@@ -67,7 +67,7 @@
 	<File name="bin\data\config_properties.xml" open="1" top="0" tabpos="12">
 		<Cursor position="5940" topLine="55" />
 	</File>
-	<File name="bin\data\config_scenes.xml" open="1" top="0" tabpos="14">
+	<File name="bin\data\config_scenes.xml" open="1" top="1" tabpos="14">
 		<Cursor position="17350" topLine="0" />
 	</File>
 	<File name="bin\data\leveltextureblend.frag" open="0" top="0" tabpos="29">
@@ -88,13 +88,13 @@
 	<File name="src\Analyzer.h" open="0" top="0" tabpos="12">
 		<Cursor position="327" topLine="10" />
 	</File>
-	<File name="src\AppController.cpp" open="1" top="1" tabpos="5">
-		<Cursor position="6974" topLine="159" />
+	<File name="src\AppController.cpp" open="1" top="0" tabpos="5">
+		<Cursor position="7290" topLine="159" />
 	</File>
-	<File name="src\AppController.h" open="1" top="0" tabpos="22">
+	<File name="src\AppController.h" open="1" top="0" tabpos="24">
 		<Cursor position="1790" topLine="46" />
 	</File>
-	<File name="src\AppDataTypes.h" open="1" top="0" tabpos="20">
+	<File name="src\AppDataTypes.h" open="1" top="0" tabpos="22">
 		<Cursor position="4952" topLine="236" />
 	</File>
 	<File name="src\AppModel.cpp" open="1" top="0" tabpos="9">
@@ -190,7 +190,7 @@
 	<File name="src\MicController.h" open="1" top="0" tabpos="2">
 		<Cursor position="323" topLine="4" />
 	</File>
-	<File name="src\PropertyXMLBuilder.cpp" open="1" top="0" tabpos="18">
+	<File name="src\PropertyXMLBuilder.cpp" open="1" top="0" tabpos="20">
 		<Cursor position="743" topLine="18" />
 	</File>
 	<File name="src\PropertyXMLParser.cpp" open="0" top="0" tabpos="27">
@@ -211,7 +211,7 @@
 	<File name="src\SceneXMLBuilder.h" open="0" top="0" tabpos="50">
 		<Cursor position="1945" topLine="51" />
 	</File>
-	<File name="src\SceneXMLParser.cpp" open="1" top="0" tabpos="23">
+	<File name="src\SceneXMLParser.cpp" open="1" top="0" tabpos="25">
 		<Cursor position="10077" topLine="255" />
 	</File>
 	<File name="src\SceneXMLParser.h" open="0" top="0" tabpos="15">
@@ -220,10 +220,10 @@
 	<File name="src\Singleton.h" open="0" top="0" tabpos="0">
 		<Cursor position="422" topLine="0" />
 	</File>
-	<File name="src\StringHelpers.cpp" open="1" top="0" tabpos="16">
+	<File name="src\StringHelpers.cpp" open="1" top="0" tabpos="18">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="src\StringHelpers.h" open="1" top="0" tabpos="15">
+	<File name="src\StringHelpers.h" open="1" top="0" tabpos="17">
 		<Cursor position="0" topLine="0" />
 	</File>
 	<File name="src\VictimView.cpp" open="0" top="0" tabpos="2">
@@ -232,10 +232,10 @@
 	<File name="src\VictimView.h" open="0" top="0" tabpos="18">
 		<Cursor position="74" topLine="0" />
 	</File>
-	<File name="src\VideoController.cpp" open="1" top="0" tabpos="19">
+	<File name="src\VideoController.cpp" open="1" top="0" tabpos="21">
 		<Cursor position="3712" topLine="91" />
 	</File>
-	<File name="src\VideoController.h" open="1" top="0" tabpos="21">
+	<File name="src\VideoController.h" open="1" top="0" tabpos="23">
 		<Cursor position="705" topLine="16" />
 	</File>
 	<File name="src\main.cpp" open="0" top="0" tabpos="7">

@@ -70,7 +70,7 @@ void SceneXMLBuilder::setupFileListers(){
 
 	if(_assetsFileLister.size() == 0){
 		LOG_ERROR("Could not build scene config, goDirList reported 0 asset files found.");
-		throw JungleException("0 asset files found");
+		//throw JungleException("0 asset files found");
 	}
 }
 

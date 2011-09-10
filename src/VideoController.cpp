@@ -83,7 +83,7 @@ void VideoController::update() {
 	if (currentFrame > totalFrames - 12 && !_preRolling) {
 
 		// set loopstate
-		if (currentSequence->getLoop()) { // this does get hammered...hmmm
+		if (currentSequence->getType() == "loop") { // this does get hammered...hmmm
 			currentMovie->setLoopState(OF_LOOP_NORMAL);
 		} else {
 			currentMovie->setLoopState(OF_LOOP_NONE);
@@ -104,7 +104,8 @@ void VideoController::update() {
 	}
 
 	if (currentMovie->getIsMovieDone()) {
-		toggleVideoPlayers();
+		toggleVideoPlayers(_lastFrameWhenForced);
+		_lastFrameWhenForced = 0;
 		_preRolling = false;
 		setState(kVIDCONTROLLER_CURRENTVIDONE);
 	}
@@ -118,14 +119,14 @@ void VideoController::forceUpdate() {
 	nextMovie->psuedoDraw();
 }
 
-void VideoController::loadMovie(Sequence * seq, bool forceCurrentLoad, int lastFrame) {
+void VideoController::loadMovie(Sequence * seq, bool forceCurrentLoad, int lastFrameWhenForced) {
 
 	// get the full path of the movie from the sequence
 	string path = seq->getMovieFullFilePath();
-	LOG_VERBOSE("Next video start to load: " + path + (string)(forceCurrentLoad ? " FORCED" : " NORMAL"));
+	LOG_VERBOSE("Next video start to load: " + path + (string)(forceCurrentLoad ? " FORCED: " + ofToString(lastFrameWhenForced) : " NORMAL"));
 
 	_forceCurrentLoad       = forceCurrentLoad;
-    _lastFrameWhenForced    = lastFrame; // not using this now but will when we want to jump to specific frame...did it while hacking...is on appModel toggleVideo too...
+    if (lastFrameWhenForced != 0) _lastFrameWhenForced    = lastFrameWhenForced; // not using this now but will when we want to jump to specific frame...did it while hacking...is on appModel toggleVideo too...
 
 	goThreadedVideo * nextMovie			= _appModel->getNextVideoPlayer();
 
@@ -138,13 +139,13 @@ void VideoController::loadMovie(Sequence * seq, bool forceCurrentLoad, int lastF
 
 }
 
-void VideoController::toggleVideoPlayers() {
-	LOG_VERBOSE("Toggling Video Players");
+void VideoController::toggleVideoPlayers(int lastFrameWhenForced) {
+	LOG_NOTICE("Toggling Video Players " + ofToString(lastFrameWhenForced));
 //	goThreadedVideo * nextMovie = _appModel->getNextVideoPlayer();
 //	goThreadedVideo * currentMovie = _appModel->getCurrentVideoPlayer();
 //	nextMovie->setPosition(0.0f);
 	//swap(nextMovie, currentMovie); // why not for?
-	_appModel->toggleVideoPlayers(); // swap(_videoPlayers[0], _videoPlayers[1]); should work with (nextMovie, currentMovie) but doesn't!?!?
+	_appModel->toggleVideoPlayers(lastFrameWhenForced); // swap(_videoPlayers[0], _videoPlayers[1]); should work with (nextMovie, currentMovie) but doesn't!?!?
 //	nextMovie->psuedoUpdate();	// now it's the currentMovie...
 //	currentMovie->close();		// and this is the last movie!
 
@@ -152,7 +153,7 @@ void VideoController::toggleVideoPlayers() {
 }
 
 void VideoController::loaded(string & path) {
-	LOG_VERBOSE("Next video successfully loaded: " + path);
+	LOG_NOTICE("Next video successfully loaded: " + path);
 	goThreadedVideo * nextMovie = _appModel->getNextVideoPlayer();
 	ofRemoveListener(nextMovie->loadDone, this, &VideoController::loaded);
 	ofRemoveListener(nextMovie->error, this, &VideoController::error);
