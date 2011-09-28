@@ -4,23 +4,6 @@ BaseMeterView::BaseMeterView(float width, float height) : BaseView(width, height
 
     LOG_NOTICE("Constructing BaseMeterView");
 
-    /********************************************************
-     *      Get _appModel objects for drawing               *
-     ********************************************************/
-
-    _meter_on      = _appModel->getGraphicTex(kGFX_METER_ON);
-    _meter_off     = _appModel->getGraphicTex(kGFX_METER_OFF);
-    _meter_level   = _appModel->getGraphicTex(kGFX_METER_LEVEL);
-
-    /********************************************************
-     *      setup meter FBO and Shader                      *
-     ********************************************************/
-
-    // allocate fbo's
-    _maskTex.allocate(124, 672, GL_RGBA); // size of the meter_on/off png
-    _maskFBO.setup(124, 672);
-    _maskFBO.attach(_maskTex);
-
     // set up shader
 	string vertPath = boost::any_cast<string>(_appModel->getProperty("shaderLevelVertPath"));
 	string fragPath = boost::any_cast<string>(_appModel->getProperty("shaderLevelFragPath"));
@@ -47,8 +30,8 @@ void BaseMeterView::update(interaction_t interactionType) {
     int   totalNumSequences     = _appModel->getCurrentScene()->getNumOfSequences();
     int   thisNumSequence       = _appModel->getCurrentSequence()->getNumber();
 
-    float threshold             = _appModel->getCurrentSequence()->getThresholdLevel();//(3.0/(float)totalNumSequences)+((float)thisNumSequence/(float)totalNumSequences); // TODO: move to the model
-    float bar_y                 = (672.0 - 6*42.0f) - floor((float)thisNumSequence/(float)totalNumSequences*12.0f)*42.0f; // magic numbers...bad boy
+    //float threshold             = _appModel->getCurrentSequence()->getThresholdLevel();//(3.0/(float)totalNumSequences)+((float)thisNumSequence/(float)totalNumSequences); // TODO: move to the model
+    //float bar_y                 = (672.0 - 6*42.0f) - floor((float)thisNumSequence/(float)totalNumSequences*12.0f)*42.0f; // magic numbers...bad boy
 
     /********************************************************
      *      Draw the Meter to the ViewFBO                   *
@@ -59,18 +42,18 @@ void BaseMeterView::update(interaction_t interactionType) {
     _viewFBO.begin();
     glPushMatrix();
 
-    glClearColor(0.0, 0.0, 0.0, 0.0); // transparent clear colour
+    glClearColor(0.0, 0.0, 0.0, 1.0); // black background no transparency
     glClear(GL_COLOR_BUFFER_BIT);
 
     if (isInteractive) {
 
-        if (_scaledInputLevel > threshold) ofSetColor(255, 0, 0, 255); // no tinting
+        //if (_scaledInputLevel > threshold) ofSetColor(255, 0, 0, 255); // no tinting
 
         drawMeterBlend(_meter_x, _meter_y);
 
          ofSetColor(255, 255, 255, 255); // no tinting
-        _meter_level->draw(_bar_x, bar_y - 5);
-        _icon_on->draw(_icon_x, _icon_y);
+        //_meter_level->draw(_bar_x, bar_y - 5);
+       // _icon_on->draw(_icon_x, _icon_y);
 
     } else {
 
@@ -79,9 +62,9 @@ void BaseMeterView::update(interaction_t interactionType) {
         drawMeterBlend(_meter_x, _meter_y, blend);
 
         ofSetColor(255.0f*blend, 255.0f*blend, 255.0f*blend, 255.0f*blend); // no tinting
-        _icon_off->draw(_icon_x, _icon_y);
+        //_icon_off->draw(_icon_x, _icon_y);
 
-        if (isBlocked) _icon_bar->draw(_icon_x, _icon_y);
+        //if (isBlocked) _icon_bar->draw(_icon_x, _icon_y);
 
     }
 
@@ -107,7 +90,7 @@ void BaseMeterView::drawMeterMask(float input) {
 	ofFill();
 	glTranslatef(0.0f, _maskFBO.getHeight(), 0.0f);
 	glScalef(1.0f, -1.0f, 1.0f);
-    ofRect(0, 0, _maskFBO.getWidth(), floor(input*16.0f) * 42.0f);
+    ofRect(0, 0, _maskFBO.getWidth(), floor(input * _meterSteps) * _meterPixelsForStep);
     //ofNoFill();
 
     glPopMatrix();

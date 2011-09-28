@@ -8,19 +8,26 @@ VictimView::VictimView(float width, float height) : BaseMeterView(width, height)
      *      Set unique x y co ordinates for assets          *
      ********************************************************/
 
-    _bar_x                 = 17.0f;
-    _icon_x                = 5.0f;
-    _icon_y                = 700.0f;
-    _meter_x               = 5.0f;
-    _meter_y               = 10.0f;
+    _meter_x               = 0.0f;
+    _meter_y               = 689.0f;
+    _meterSteps             = 16;
+    _meterPixelsForStep     = 18.0f;
 
     /********************************************************
      *      Get _appModel objects for drawing               *
      ********************************************************/
 
-    _icon_on       = _appModel->getGraphicTex(kGFX_SCREAM_ON);
-    _icon_off      = _appModel->getGraphicTex(kGFX_SCREAM_OFF);
-    _icon_bar      = _appModel->getGraphicTex(kGFX_SCREAM_BAR);
+    _meter_on      = _appModel->getGraphicTex(kGFX_METER_ON);
+    _meter_off     = _appModel->getGraphicTex(kGFX_METER_OFF);
+
+    /********************************************************
+     *      setup meter FBO and Shader                      *
+     ********************************************************/
+
+    // allocate fbo's
+    _maskTex.allocate(147, 285, GL_RGBA); // size of the meter_on/off png
+    _maskFBO.setup(147, 285);
+    _maskFBO.attach(_maskTex);
 
 }
 

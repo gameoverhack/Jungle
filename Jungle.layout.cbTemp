@@ -88,8 +88,8 @@
 	<File name="src\Analyzer.h" open="0" top="0" tabpos="12">
 		<Cursor position="327" topLine="10" />
 	</File>
-	<File name="src\AppController.cpp" open="1" top="0" tabpos="5">
-		<Cursor position="6974" topLine="159" />
+	<File name="src\AppController.cpp" open="1" top="1" tabpos="5">
+		<Cursor position="6853" topLine="204" />
 	</File>
 	<File name="src\AppController.h" open="1" top="0" tabpos="22">
 		<Cursor position="1790" topLine="41" />
@@ -205,7 +205,7 @@
 	<File name="src\SceneView.h" open="0" top="0" tabpos="54">
 		<Cursor position="444" topLine="16" />
 	</File>
-	<File name="src\SceneXMLBuilder.cpp" open="1" top="1" tabpos="13">
+	<File name="src\SceneXMLBuilder.cpp" open="1" top="0" tabpos="13">
 		<Cursor position="7084" topLine="197" />
 	</File>
 	<File name="src\SceneXMLBuilder.h" open="0" top="0" tabpos="50">

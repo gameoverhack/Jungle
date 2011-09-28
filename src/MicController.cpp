@@ -29,7 +29,7 @@ MicController::MicController(string deviceName, int fftBufferLengthSecs, int aud
 #else
 	_fft = ofxFft::create(_audioBufferSize, OF_FFT_WINDOW_HAMMING);
 #endif
-	
+
      // allocate fft and audio sample arrays refs on the appModel...
     _appModel->setAudioBufferSize(_audioBufferSize);            // TODO: use this throughout instead of var
     _appModel->setFFTBinSize(_fft->getBinSize());               // TODO: use this throughout instead of var and instead of passing value
@@ -143,7 +143,7 @@ void MicController::audioReceived(float* input, int bufferSize, int nChannels) {
         _fftCyclicBufferOffset = (_fftCyclicBufferOffset + 1) % _fftCyclicBufferSize;
 
         if (_appModel->checkState(kAPP_RUNNING)) {
-            if (area > _appModel->getCurrentSequence()->getThresholdLevel()) {
+            if (area > 1.0f) {
                 ofNotifyEvent(victimAction, area, this);
             }
         }

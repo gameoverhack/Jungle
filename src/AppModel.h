@@ -35,15 +35,21 @@ enum {
 };
 
 enum {
-    kGFX_METER_LEVEL = 0,
-    kGFX_METER_OFF,
+    kGFX_ARROWS_ON = 0,
+    kGFX_ARROWS_OFF,
+    kGFX_BUTTON_ON,
+    kGFX_BUTTON_OFF,
+    kGFX_BUTTON_DENY,
     kGFX_METER_ON,
-    kGFX_PUNCH_OFF,
-    kGFX_PUNCH_ON,
-    kGFX_SCREAM_OFF,
-    kGFX_SCREAM_ON,
-    kGFX_PUNCH_BAR,
-    kGFX_SCREAM_BAR
+    kGFX_METER_OFF,
+    kGFX_TOP_ON,
+    kGFX_TOP_OFF,
+    kGFX_STATIONS_ON,
+    kGFX_STATIONS_OFF,
+    kGFX_BIRD,
+    kGFX_TURTLE,
+    kGFX_TURTLE_BAR,
+    kGFX_TOTAL
 };
 
 class AppModel : public BaseState {
@@ -58,11 +64,11 @@ public:
     // scene and sequence getter/setters
 	void		        setScene(string name, Scene * scene);
 	bool		        setCurrentScene(string sceneName);
-	
+
 	map<string, Scene *> getScenes(){
 		return _scenes;
 	}
-	
+
 	void				clearScenesAndSequences();
 
 	Sequence		    *getCurrentSequence();
@@ -161,7 +167,7 @@ public:
 
 	string		        getAllPropsAsList();
 	map<string, string> getAllPropsNameTypeAsMap();
-	
+
 	void				printAllScenes();
 
 private:
@@ -219,7 +225,7 @@ private:
 	float *                     _audioInput;
 
     // graphic asset vars
-    ofImage                     _gfxAssets[9];
+    ofImage                     _gfxAssets[kGFX_TOTAL];
 
     // interactivity vars
     int                         _currentInteractivity;

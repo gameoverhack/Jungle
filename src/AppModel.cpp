@@ -174,7 +174,7 @@ PosRotScale * AppModel::getCameraAttributes() {
  ********************************************************/
  //--------------------------------------------------------------
 bool AppModel::loadGraphicAsset(string path, int type) {
-    assert(type < 9); // will this do?
+    assert(type < kGFX_TOTAL); // will this do?
     return _gfxAssets[type].loadImage(ofToDataPath(path));
 }
 

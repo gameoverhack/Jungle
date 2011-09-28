@@ -15,8 +15,8 @@ AppView::AppView(float width, float height) : BaseView(width ,height) {
 	_loadingView    = new LoadingView(width, height);
 	_sceneView      = new SceneView(width, height);
 	_debugView      = new DebugView(width, height);
-	_attackView     = new AttackView(220, 860);
-	_victimView     = new VictimView(220, 860);
+	_attackView     = new AttackView(146, 1080);
+	_victimView     = new VictimView(146, 1080);
 
 }
 
@@ -81,11 +81,11 @@ void AppView::draw() {
 #endif
         if (!_appModel->checkCurrentInteractivity(kINTERACTION_FACE)) {
 #ifdef EXTENDED_DISPLAY
-            _attackView->draw(1920 + 1695 * (width/1920.0f), 217 * (height/1080.0f), _attackView->getWidth() * (width/1920.0f), _attackView->getHeight() * (height/1080.0f));
+            _attackView->draw(1920 + (1920 - _attackView->getWidth()) * (width/1920.0f), 0, _attackView->getWidth() * (width/1920.0f), _attackView->getHeight() * (height/1080.0f));
 #else
-            _attackView->draw(1695 * (width/1920.0f), 217 * (height/1080.0f), _attackView->getWidth() * (width/1920.0f), _attackView->getHeight() * (height/1080.0f));
+            _attackView->draw((1920 - _attackView->getWidth()) * (width/1920.0f), 0, _attackView->getWidth() * (width/1920.0f), _attackView->getHeight() * (height/1080.0f));
 #endif
-            _victimView->draw(4 * (width/1920.0f), 217 * (height/1080.0f), _victimView->getWidth() * (width/1920.0f), _victimView->getHeight() * (height/1080.0f));
+            _victimView->draw(0, 0, _victimView->getWidth() * (width/1920.0f), _victimView->getHeight() * (height/1080.0f));
         }
 
 

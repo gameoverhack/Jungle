@@ -24,16 +24,12 @@ protected:
 
     ofTexture *     _meter_on;
     ofTexture *     _meter_off;
-    ofTexture *     _meter_level;
-    ofTexture *     _icon_on;
-    ofTexture *     _icon_off;
-    ofTexture *     _icon_bar;
 
-    float           _bar_x;
-    float           _icon_x;
-    float           _icon_y;
     float           _meter_x;
     float           _meter_y;
+
+    int             _meterSteps;
+    float           _meterPixelsForStep;
 
     float           _scaledInputLevel;
 

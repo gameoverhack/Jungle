@@ -130,7 +130,7 @@ void ArdController::updateArduino(bool fake) {
     _ardCyclicBufferOffset = (_ardCyclicBufferOffset + 1) % _ardCyclicBufferSize;
 
     if (_appModel->checkState(kAPP_RUNNING)) {
-        if (area > _appModel->getCurrentSequence()->getThresholdLevel()) {
+        if (area > 1.0f) {
             ofNotifyEvent(attackAction, area, this);
         }
     }
