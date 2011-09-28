@@ -929,10 +929,10 @@
 1310223535 source:c:\users\gameover7\code\of062cb\addons\ofxthread\src\ofxthread.cpp
 	"ofxThread.h"
 
-1312161942 source:c:\users\gameover\code\of062cb\addons\godirlist\src\godirlist.cpp
+1315558836 source:c:\users\gameover\code\of062cb\addons\godirlist\src\godirlist.cpp
 	"goDirList.h"
 
-1312018906 c:\users\gameover\code\of062cb\addons\godirlist\src\godirlist.h
+1315558836 c:\users\gameover\code\of062cb\addons\godirlist\src\godirlist.h
 	"ofMain.h"
 	"goUtils.h"
 	<map>
@@ -988,7 +988,7 @@
 	<iomanip>
 	<fstream>
 
-1298946452 c:\users\gameover\code\of062cb\libs\glee\include\glee.h
+1310223522 c:\users\gameover\code\of062cb\libs\glee\include\glee.h
 	<windows.h>
 	<GL/gl.h>
 	<OpenGL/gl.h>
@@ -996,7 +996,7 @@
 	<GL/glx.h>
 	<stddef.h>
 
-1298946450 c:\users\gameover\code\of062cb\libs\glu\include\glu.h
+1310223520 c:\users\gameover\code\of062cb\libs\glu\include\glu.h
 	"glu_mangle.h"
 	<GL/gl.h>
 
@@ -1052,13 +1052,13 @@
 	"Poco/FIFOEvent.h"
 	"Poco/Delegate.h"
 
-1298946466 c:\users\gameover\code\of062cb\libs\poco\include\poco\fifoevent.h
+1310223531 c:\users\gameover\code\of062cb\libs\poco\include\poco\fifoevent.h
 	"Poco/AbstractEvent.h"
 	"Poco/FIFOStrategy.h"
 	"Poco/AbstractDelegate.h"
 	"Poco/CompareFunctions.h"
 
-1298946464 c:\users\gameover\code\of062cb\libs\poco\include\poco\abstractevent.h
+1310223530 c:\users\gameover\code\of062cb\libs\poco\include\poco\abstractevent.h
 	"Poco/Foundation.h"
 	"Poco/SingletonHolder.h"
 	"Poco/SharedPtr.h"
@@ -1066,7 +1066,7 @@
 	"Poco/ActiveMethod.h"
 	"Poco/Mutex.h"
 
-1298946466 c:\users\gameover\code\of062cb\libs\poco\include\poco\foundation.h
+1310223531 c:\users\gameover\code\of062cb\libs\poco\include\poco\foundation.h
 	"Poco/Config.h"
 	"Poco/Platform.h"
 	"Poco/Platform_WIN32.h"
@@ -1076,62 +1076,62 @@
 	"Poco/Types.h"
 	<string>
 
-1298946466 c:\users\gameover\code\of062cb\libs\poco\include\poco\config.h
+1310223532 c:\users\gameover\code\of062cb\libs\poco\include\poco\config.h
 
-1298946464 c:\users\gameover\code\of062cb\libs\poco\include\poco\platform.h
+1310223530 c:\users\gameover\code\of062cb\libs\poco\include\poco\platform.h
 
-1298946464 c:\users\gameover\code\of062cb\libs\poco\include\poco\platform_win32.h
+1310223530 c:\users\gameover\code\of062cb\libs\poco\include\poco\platform_win32.h
 
-1298946467 c:\users\gameover\code\of062cb\libs\poco\include\poco\platform_vms.h
+1310223532 c:\users\gameover\code\of062cb\libs\poco\include\poco\platform_vms.h
 
-1298946466 c:\users\gameover\code\of062cb\libs\poco\include\poco\platform_posix.h
+1310223531 c:\users\gameover\code\of062cb\libs\poco\include\poco\platform_posix.h
 
-1298946466 c:\users\gameover\code\of062cb\libs\poco\include\poco\bugcheck.h
+1310223531 c:\users\gameover\code\of062cb\libs\poco\include\poco\bugcheck.h
 	"Poco/Foundation.h"
 	<string>
 
-1298946466 c:\users\gameover\code\of062cb\libs\poco\include\poco\types.h
+1310223531 c:\users\gameover\code\of062cb\libs\poco\include\poco\types.h
 	"Poco/Foundation.h"
 
-1298946467 c:\users\gameover\code\of062cb\libs\poco\include\poco\singletonholder.h
+1310223532 c:\users\gameover\code\of062cb\libs\poco\include\poco\singletonholder.h
 	"Poco/Foundation.h"
 	"Poco/Mutex.h"
 
-1298946467 c:\users\gameover\code\of062cb\libs\poco\include\poco\mutex.h
+1310223532 c:\users\gameover\code\of062cb\libs\poco\include\poco\mutex.h
 	"Poco/Foundation.h"
 	"Poco/Exception.h"
 	"Poco/ScopedLock.h"
 	"Poco/Mutex_WIN32.h"
 	"Poco/Mutex_POSIX.h"
 
-1298946466 c:\users\gameover\code\of062cb\libs\poco\include\poco\exception.h
+1310223531 c:\users\gameover\code\of062cb\libs\poco\include\poco\exception.h
 	"Poco/Foundation.h"
 	<stdexcept>
 
-1298946467 c:\users\gameover\code\of062cb\libs\poco\include\poco\scopedlock.h
+1310223532 c:\users\gameover\code\of062cb\libs\poco\include\poco\scopedlock.h
 	"Poco/Foundation.h"
 
-1298946465 c:\users\gameover\code\of062cb\libs\poco\include\poco\mutex_win32.h
+1310223531 c:\users\gameover\code\of062cb\libs\poco\include\poco\mutex_win32.h
 	"Poco/Foundation.h"
 	"Poco/Exception.h"
 	"Poco/UnWindows.h"
 
-1298946464 c:\users\gameover\code\of062cb\libs\poco\include\poco\unwindows.h
+1310223530 c:\users\gameover\code\of062cb\libs\poco\include\poco\unwindows.h
 	<windows.h>
 
-1298946466 c:\users\gameover\code\of062cb\libs\poco\include\poco\mutex_posix.h
+1310223532 c:\users\gameover\code\of062cb\libs\poco\include\poco\mutex_posix.h
 	"Poco/Foundation.h"
 	"Poco/Exception.h"
 	<pthread.h>
 	<errno.h>
 
-1298946467 c:\users\gameover\code\of062cb\libs\poco\include\poco\sharedptr.h
+1310223532 c:\users\gameover\code\of062cb\libs\poco\include\poco\sharedptr.h
 	"Poco/Foundation.h"
 	"Poco/Exception.h"
 	"Poco/Mutex.h"
 	<algorithm>
 
-1298946467 c:\users\gameover\code\of062cb\libs\poco\include\poco\activeresult.h
+1310223532 c:\users\gameover\code\of062cb\libs\poco\include\poco\activeresult.h
 	"Poco/Foundation.h"
 	"Poco/Mutex.h"
 	"Poco/Event.h"
@@ -1139,35 +1139,35 @@
 	"Poco/Exception.h"
 	<algorithm>
 
-1298946467 c:\users\gameover\code\of062cb\libs\poco\include\poco\event.h
+1310223532 c:\users\gameover\code\of062cb\libs\poco\include\poco\event.h
 	"Poco/Foundation.h"
 	"Poco/Exception.h"
 	"Poco/Event_WIN32.h"
 	"Poco/Event_POSIX.h"
 
-1298946466 c:\users\gameover\code\of062cb\libs\poco\include\poco\event_win32.h
+1310223531 c:\users\gameover\code\of062cb\libs\poco\include\poco\event_win32.h
 	"Poco/Foundation.h"
 	"Poco/Exception.h"
 	"Poco/UnWindows.h"
 
-1298946465 c:\users\gameover\code\of062cb\libs\poco\include\poco\event_posix.h
+1310223530 c:\users\gameover\code\of062cb\libs\poco\include\poco\event_posix.h
 	"Poco/Foundation.h"
 	"Poco/Exception.h"
 	<pthread.h>
 	<errno.h>
 
-1298946467 c:\users\gameover\code\of062cb\libs\poco\include\poco\refcountedobject.h
+1310223532 c:\users\gameover\code\of062cb\libs\poco\include\poco\refcountedobject.h
 	"Poco/Foundation.h"
 	"Poco/Mutex.h"
 
-1298946464 c:\users\gameover\code\of062cb\libs\poco\include\poco\activemethod.h
+1310223530 c:\users\gameover\code\of062cb\libs\poco\include\poco\activemethod.h
 	"Poco/Foundation.h"
 	"Poco/ActiveResult.h"
 	"Poco/ActiveRunnable.h"
 	"Poco/ActiveStarter.h"
 	"Poco/AutoPtr.h"
 
-1298946464 c:\users\gameover\code\of062cb\libs\poco\include\poco\activerunnable.h
+1310223530 c:\users\gameover\code\of062cb\libs\poco\include\poco\activerunnable.h
 	"Poco/Foundation.h"
 	"Poco/ActiveResult.h"
 	"Poco/Runnable.h"
@@ -1175,37 +1175,37 @@
 	"Poco/AutoPtr.h"
 	"Poco/Exception.h"
 
-1298946466 c:\users\gameover\code\of062cb\libs\poco\include\poco\runnable.h
+1310223531 c:\users\gameover\code\of062cb\libs\poco\include\poco\runnable.h
 	"Poco/Foundation.h"
 
-1298946465 c:\users\gameover\code\of062cb\libs\poco\include\poco\autoptr.h
+1310223530 c:\users\gameover\code\of062cb\libs\poco\include\poco\autoptr.h
 	"Poco/Foundation.h"
 	"Poco/Exception.h"
 	<algorithm>
 
-1298946465 c:\users\gameover\code\of062cb\libs\poco\include\poco\activestarter.h
+1310223530 c:\users\gameover\code\of062cb\libs\poco\include\poco\activestarter.h
 	"Poco/Foundation.h"
 	"Poco/ThreadPool.h"
 	"Poco/ActiveRunnable.h"
 
-1298946464 c:\users\gameover\code\of062cb\libs\poco\include\poco\threadpool.h
+1310223530 c:\users\gameover\code\of062cb\libs\poco\include\poco\threadpool.h
 	"Poco/Foundation.h"
 	"Poco/Thread.h"
 	"Poco/Mutex.h"
 	<vector>
 
-1298946466 c:\users\gameover\code\of062cb\libs\poco\include\poco\thread.h
+1310223531 c:\users\gameover\code\of062cb\libs\poco\include\poco\thread.h
 	"Poco/Foundation.h"
 	"Poco/Mutex.h"
 	"Poco/Thread_WIN32.h"
 	"Poco/Thread_POSIX.h"
 
-1298946466 c:\users\gameover\code\of062cb\libs\poco\include\poco\thread_win32.h
+1310223531 c:\users\gameover\code\of062cb\libs\poco\include\poco\thread_win32.h
 	"Poco/Foundation.h"
 	"Poco/Runnable.h"
 	"Poco/UnWindows.h"
 
-1298946466 c:\users\gameover\code\of062cb\libs\poco\include\poco\thread_posix.h
+1310223532 c:\users\gameover\code\of062cb\libs\poco\include\poco\thread_posix.h
 	"Poco/Foundation.h"
 	"Poco/Runnable.h"
 	"Poco/SignalHandler.h"
@@ -1216,43 +1216,43 @@
 	<sys/select.h>
 	<errno.h>
 
-1298946466 c:\users\gameover\code\of062cb\libs\poco\include\poco\signalhandler.h
+1310223531 c:\users\gameover\code\of062cb\libs\poco\include\poco\signalhandler.h
 	"Poco/Foundation.h"
 	<vector>
 	<setjmp.h>
 
-1298946466 c:\users\gameover\code\of062cb\libs\poco\include\poco\fifostrategy.h
+1310223531 c:\users\gameover\code\of062cb\libs\poco\include\poco\fifostrategy.h
 	"Poco/NotificationStrategy.h"
 	<map>
 	<list>
 	<memory>
 
-1298946463 c:\users\gameover\code\of062cb\libs\poco\include\poco\notificationstrategy.h
+1310223529 c:\users\gameover\code\of062cb\libs\poco\include\poco\notificationstrategy.h
 	"Poco/Foundation.h"
 
-1298946467 c:\users\gameover\code\of062cb\libs\poco\include\poco\abstractdelegate.h
+1310223532 c:\users\gameover\code\of062cb\libs\poco\include\poco\abstractdelegate.h
 	"Poco/Foundation.h"
 
-1298946466 c:\users\gameover\code\of062cb\libs\poco\include\poco\comparefunctions.h
+1310223531 c:\users\gameover\code\of062cb\libs\poco\include\poco\comparefunctions.h
 	"Poco/Foundation.h"
 	<functional>
 
-1298946464 c:\users\gameover\code\of062cb\libs\poco\include\poco\delegate.h
+1310223530 c:\users\gameover\code\of062cb\libs\poco\include\poco\delegate.h
 	"Poco/Foundation.h"
 	"Poco/AbstractDelegate.h"
 	"Poco/FunctionDelegate.h"
 	"Poco/Expire.h"
 
-1298946466 c:\users\gameover\code\of062cb\libs\poco\include\poco\functiondelegate.h
+1310223531 c:\users\gameover\code\of062cb\libs\poco\include\poco\functiondelegate.h
 	"Poco/Foundation.h"
 	"Poco/AbstractDelegate.h"
 
-1298946467 c:\users\gameover\code\of062cb\libs\poco\include\poco\expire.h
+1310223532 c:\users\gameover\code\of062cb\libs\poco\include\poco\expire.h
 	"Poco/Foundation.h"
 	"Poco/AbstractDelegate.h"
 	"Poco/Timestamp.h"
 
-1298946465 c:\users\gameover\code\of062cb\libs\poco\include\poco\timestamp.h
+1310223530 c:\users\gameover\code\of062cb\libs\poco\include\poco\timestamp.h
 	"Poco/Foundation.h"
 	<ctime>
 
@@ -1297,12 +1297,12 @@
 	<GLUT/glut.h>
 	<GL/glut.h>
 
-1298946451 c:\users\gameover\code\of062cb\libs\glut\include\glut.h
+1310223520 c:\users\gameover\code\of062cb\libs\glut\include\glut.h
 	<windows.h>
 	<GL/gl.h>
 	<GL/glu.h>
 
-1298946451 c:\users\gameover\code\of062cb\libs\freeimage\include\freeimage.h
+1310223520 c:\users\gameover\code\of062cb\libs\freeimage\include\freeimage.h
 	<wchar.h>
 	<inttypes.h>
 
@@ -1318,18 +1318,18 @@
 	"fmod.h"
 	"fmod_errors.h"
 
-1298946460 c:\users\gameover\code\of062cb\libs\fmodex\include\fmod.h
+1310223529 c:\users\gameover\code\of062cb\libs\fmodex\include\fmod.h
 	"fmod_codec.h"
 	"fmod_dsp.h"
 	"fmod_memoryinfo.h"
 
-1298946461 c:\users\gameover\code\of062cb\libs\fmodex\include\fmod_codec.h
+1310223529 c:\users\gameover\code\of062cb\libs\fmodex\include\fmod_codec.h
 
-1298946460 c:\users\gameover\code\of062cb\libs\fmodex\include\fmod_dsp.h
+1310223529 c:\users\gameover\code\of062cb\libs\fmodex\include\fmod_dsp.h
 
-1298946460 c:\users\gameover\code\of062cb\libs\fmodex\include\fmod_memoryinfo.h
+1310223529 c:\users\gameover\code\of062cb\libs\fmodex\include\fmod_memoryinfo.h
 
-1298946460 c:\users\gameover\code\of062cb\libs\fmodex\include\fmod_errors.h
+1310223529 c:\users\gameover\code\of062cb\libs\fmodex\include\fmod_errors.h
 	"fmod.h"
 
 1312176665 c:\users\gameover\code\of062cb\libs\openframeworks\video\ofvideograbber.h
@@ -1354,26 +1354,26 @@
 	<TextUtils.h>
 	<MediaHandlers.h>
 
-1298946458 c:\users\gameover\code\of062cb\libs\quicktime\include\qtml.h
+1310223526 c:\users\gameover\code\of062cb\libs\quicktime\include\qtml.h
 	<MacTypes.h>
 	<MacMemory.h>
 	<MacWindows.h>
 	<OSUtils.h>
 	<Files.h>
 
-1298946456 c:\users\gameover\code\of062cb\libs\quicktime\include\mactypes.h
+1310223524 c:\users\gameover\code\of062cb\libs\quicktime\include\mactypes.h
 	<ConditionalMacros.h>
 
-1298946457 c:\users\gameover\code\of062cb\libs\quicktime\include\conditionalmacros.h
+1310223525 c:\users\gameover\code\of062cb\libs\quicktime\include\conditionalmacros.h
 
-1298946459 c:\users\gameover\code\of062cb\libs\quicktime\include\macmemory.h
+1310223527 c:\users\gameover\code\of062cb\libs\quicktime\include\macmemory.h
 	<MacTypes.h>
 	<MixedMode.h>
 
-1298946457 c:\users\gameover\code\of062cb\libs\quicktime\include\mixedmode.h
+1310223525 c:\users\gameover\code\of062cb\libs\quicktime\include\mixedmode.h
 	<MacTypes.h>
 
-1298946457 c:\users\gameover\code\of062cb\libs\quicktime\include\macwindows.h
+1310223526 c:\users\gameover\code\of062cb\libs\quicktime\include\macwindows.h
 	<MacTypes.h>
 	<Aliases.h>
 	<AppleEvents.h>
@@ -1388,16 +1388,16 @@
 	<Icons.h>
 	<MacErrors.h>
 
-1298946459 c:\users\gameover\code\of062cb\libs\quicktime\include\aliases.h
+1310223528 c:\users\gameover\code\of062cb\libs\quicktime\include\aliases.h
 	<MacTypes.h>
 	<AppleTalk.h>
 	<Files.h>
 
-1298946457 c:\users\gameover\code\of062cb\libs\quicktime\include\appletalk.h
+1310223526 c:\users\gameover\code\of062cb\libs\quicktime\include\appletalk.h
 	<MacTypes.h>
 	<OSUtils.h>
 
-1298946459 c:\users\gameover\code\of062cb\libs\quicktime\include\osutils.h
+1310223528 c:\users\gameover\code\of062cb\libs\quicktime\include\osutils.h
 	<MacTypes.h>
 	<MixedMode.h>
 	<MacMemory.h>
@@ -1405,18 +1405,18 @@
 	<DateTimeUtils.h>
 	<Endian.h>
 
-1298946459 c:\users\gameover\code\of062cb\libs\quicktime\include\patches.h
+1310223528 c:\users\gameover\code\of062cb\libs\quicktime\include\patches.h
 	<MacTypes.h>
 
-1298946458 c:\users\gameover\code\of062cb\libs\quicktime\include\datetimeutils.h
+1310223526 c:\users\gameover\code\of062cb\libs\quicktime\include\datetimeutils.h
 	<ConditionalMacros.h>
 	<MacTypes.h>
 
-1298946456 c:\users\gameover\code\of062cb\libs\quicktime\include\endian.h
+1310223524 c:\users\gameover\code\of062cb\libs\quicktime\include\endian.h
 	<ConditionalMacros.h>
 	<MacTypes.h>
 
-1298946456 c:\users\gameover\code\of062cb\libs\quicktime\include\files.h
+1310223524 c:\users\gameover\code\of062cb\libs\quicktime\include\files.h
 	<MacTypes.h>
 	<MixedMode.h>
 	<OSUtils.h>
@@ -1424,67 +1424,67 @@
 	<UTCUtils.h>
 	<Finder.h>
 
-1298946460 c:\users\gameover\code\of062cb\libs\quicktime\include\textcommon.h
+1310223528 c:\users\gameover\code\of062cb\libs\quicktime\include\textcommon.h
 	<MacTypes.h>
 
-1298946460 c:\users\gameover\code\of062cb\libs\quicktime\include\utcutils.h
+1310223528 c:\users\gameover\code\of062cb\libs\quicktime\include\utcutils.h
 	<MacTypes.h>
 	<MacErrors.h>
 
-1298946459 c:\users\gameover\code\of062cb\libs\quicktime\include\macerrors.h
+1310223527 c:\users\gameover\code\of062cb\libs\quicktime\include\macerrors.h
 	<ConditionalMacros.h>
 
-1298946456 c:\users\gameover\code\of062cb\libs\quicktime\include\finder.h
+1310223524 c:\users\gameover\code\of062cb\libs\quicktime\include\finder.h
 	<MacTypes.h>
 
-1298946458 c:\users\gameover\code\of062cb\libs\quicktime\include\appleevents.h
+1310223526 c:\users\gameover\code\of062cb\libs\quicktime\include\appleevents.h
 	<MacTypes.h>
 	<MixedMode.h>
 	<Notification.h>
 	<Events.h>
 	<AEDataModel.h>
 
-1298946457 c:\users\gameover\code\of062cb\libs\quicktime\include\notification.h
+1310223525 c:\users\gameover\code\of062cb\libs\quicktime\include\notification.h
 	<MacTypes.h>
 	<OSUtils.h>
 
-1298946458 c:\users\gameover\code\of062cb\libs\quicktime\include\events.h
+1310223526 c:\users\gameover\code\of062cb\libs\quicktime\include\events.h
 	<OSUtils.h>
 	<Quickdraw.h>
 	<MacTypes.h>
 	<Endian.h>
 
-1298946458 c:\users\gameover\code\of062cb\libs\quicktime\include\quickdraw.h
+1310223526 c:\users\gameover\code\of062cb\libs\quicktime\include\quickdraw.h
 	<Components.h>
 	<MacTypes.h>
 	<MixedMode.h>
 	<QuickdrawText.h>
 
-1298946459 c:\users\gameover\code\of062cb\libs\quicktime\include\components.h
+1310223527 c:\users\gameover\code\of062cb\libs\quicktime\include\components.h
 	<MacErrors.h>
 	<MacTypes.h>
 	<MixedMode.h>
 
-1298946457 c:\users\gameover\code\of062cb\libs\quicktime\include\quickdrawtext.h
+1310223525 c:\users\gameover\code\of062cb\libs\quicktime\include\quickdrawtext.h
 	<MacTypes.h>
 	<MixedMode.h>
 
-1298946457 c:\users\gameover\code\of062cb\libs\quicktime\include\aedatamodel.h
+1310223526 c:\users\gameover\code\of062cb\libs\quicktime\include\aedatamodel.h
 	<MacTypes.h>
 	<MixedMode.h>
 
-1298946458 c:\users\gameover\code\of062cb\libs\quicktime\include\collections.h
+1310223526 c:\users\gameover\code\of062cb\libs\quicktime\include\collections.h
 	<MacTypes.h>
 	<MixedMode.h>
 
-1298946457 c:\users\gameover\code\of062cb\libs\quicktime\include\drag.h
+1310223525 c:\users\gameover\code\of062cb\libs\quicktime\include\drag.h
 	<MacTypes.h>
 	<Events.h>
 	<Files.h>
 	<AppleEvents.h>
 	<Quickdraw.h>
 
-1298946457 c:\users\gameover\code\of062cb\libs\quicktime\include\menus.h
+1310223526 c:\users\gameover\code\of062cb\libs\quicktime\include\menus.h
 	<MacTypes.h>
 	<Events.h>
 	<Quickdraw.h>
@@ -1495,36 +1495,36 @@
 	<Collections.h>
 	<MacErrors.h>
 
-1298946460 c:\users\gameover\code\of062cb\libs\quicktime\include\fonts.h
+1310223528 c:\users\gameover\code\of062cb\libs\quicktime\include\fonts.h
 	<MacTypes.h>
 	<Files.h>
 	<Quickdraw.h>
 	<TextCommon.h>
 	<MacErrors.h>
 
-1298946457 c:\users\gameover\code\of062cb\libs\quicktime\include\processes.h
+1310223525 c:\users\gameover\code\of062cb\libs\quicktime\include\processes.h
 	<MacTypes.h>
 	<Events.h>
 	<Files.h>
 
-1298946458 c:\users\gameover\code\of062cb\libs\quicktime\include\qdoffscreen.h
+1310223526 c:\users\gameover\code\of062cb\libs\quicktime\include\qdoffscreen.h
 	<MacErrors.h>
 	<Quickdraw.h>
 
-1298946460 c:\users\gameover\code\of062cb\libs\quicktime\include\icons.h
+1310223528 c:\users\gameover\code\of062cb\libs\quicktime\include\icons.h
 	<MacTypes.h>
 	<Quickdraw.h>
 	<Files.h>
 	<CodeFragments.h>
 
-1298946457 c:\users\gameover\code\of062cb\libs\quicktime\include\codefragments.h
+1310223526 c:\users\gameover\code\of062cb\libs\quicktime\include\codefragments.h
 	<MacTypes.h>
 	<Files.h>
 
-1298946457 c:\users\gameover\code\of062cb\libs\quicktime\include\fixmath.h
+1310223525 c:\users\gameover\code\of062cb\libs\quicktime\include\fixmath.h
 	<MacTypes.h>
 
-1298946459 c:\users\gameover\code\of062cb\libs\quicktime\include\quicktimecomponents.h
+1310223527 c:\users\gameover\code\of062cb\libs\quicktime\include\quicktimecomponents.h
 	<MacTypes.h>
 	<MixedMode.h>
 	<Components.h>
@@ -1535,19 +1535,19 @@
 	<Sound.h>
 	<QuickTimeMusic.h>
 
-1298946459 c:\users\gameover\code\of062cb\libs\quicktime\include\imagecompression.h
+1310223527 c:\users\gameover\code\of062cb\libs\quicktime\include\imagecompression.h
 	<MacTypes.h>
 	<Quickdraw.h>
 	<QDOffscreen.h>
 	<Components.h>
 	<StandardFile.h>
 
-1298946457 c:\users\gameover\code\of062cb\libs\quicktime\include\standardfile.h
+1310223525 c:\users\gameover\code\of062cb\libs\quicktime\include\standardfile.h
 	<MacTypes.h>
 	<Dialogs.h>
 	<Files.h>
 
-1298946456 c:\users\gameover\code\of062cb\libs\quicktime\include\dialogs.h
+1310223524 c:\users\gameover\code\of062cb\libs\quicktime\include\dialogs.h
 	<MacTypes.h>
 	<MixedMode.h>
 	<Events.h>
@@ -1556,12 +1556,12 @@
 	<Controls.h>
 	<MacErrors.h>
 
-1298946456 c:\users\gameover\code\of062cb\libs\quicktime\include\textedit.h
+1310223524 c:\users\gameover\code\of062cb\libs\quicktime\include\textedit.h
 	<MacTypes.h>
 	<Quickdraw.h>
 	<MixedMode.h>
 
-1298946460 c:\users\gameover\code\of062cb\libs\quicktime\include\controls.h
+1310223528 c:\users\gameover\code\of062cb\libs\quicktime\include\controls.h
 	<MacTypes.h>
 	<Quickdraw.h>
 	<Menus.h>
@@ -1571,7 +1571,7 @@
 	<Collections.h>
 	<MacErrors.h>
 
-1298946459 c:\users\gameover\code\of062cb\libs\quicktime\include\movies.h
+1310223527 c:\users\gameover\code\of062cb\libs\quicktime\include\movies.h
 	<Quickdraw.h>
 	<Aliases.h>
 	<Events.h>
@@ -1579,17 +1579,17 @@
 	<Components.h>
 	<ImageCompression.h>
 
-1298946459 c:\users\gameover\code\of062cb\libs\quicktime\include\video.h
+1310223528 c:\users\gameover\code\of062cb\libs\quicktime\include\video.h
 	<Quickdraw.h>
 
-1298946459 c:\users\gameover\code\of062cb\libs\quicktime\include\sound.h
+1310223527 c:\users\gameover\code\of062cb\libs\quicktime\include\sound.h
 	<MacTypes.h>
 	<Dialogs.h>
 	<Components.h>
 	<MixedMode.h>
 	<Movies.h>
 
-1298946458 c:\users\gameover\code\of062cb\libs\quicktime\include\quicktimemusic.h
+1310223526 c:\users\gameover\code\of062cb\libs\quicktime\include\quicktimemusic.h
 	<Components.h>
 	<ImageCompression.h>
 	<Movies.h>
@@ -1599,32 +1599,32 @@
 	<Sound.h>
 	<Endian.h>
 
-1298946457 c:\users\gameover\code\of062cb\libs\quicktime\include\textutils.h
+1310223525 c:\users\gameover\code\of062cb\libs\quicktime\include\textutils.h
 	<MacTypes.h>
 	<NumberFormatting.h>
 	<StringCompare.h>
 	<DateTimeUtils.h>
 
-1298946460 c:\users\gameover\code\of062cb\libs\quicktime\include\numberformatting.h
+1310223528 c:\users\gameover\code\of062cb\libs\quicktime\include\numberformatting.h
 	<ConditionalMacros.h>
 	<MacTypes.h>
 	<IntlResources.h>
 
-1298946457 c:\users\gameover\code\of062cb\libs\quicktime\include\intlresources.h
+1310223525 c:\users\gameover\code\of062cb\libs\quicktime\include\intlresources.h
 	<MacTypes.h>
 
-1298946456 c:\users\gameover\code\of062cb\libs\quicktime\include\stringcompare.h
+1310223524 c:\users\gameover\code\of062cb\libs\quicktime\include\stringcompare.h
 	<MacTypes.h>
 	<TextCommon.h>
 	<Script.h>
 
-1298946456 c:\users\gameover\code\of062cb\libs\quicktime\include\script.h
+1310223524 c:\users\gameover\code\of062cb\libs\quicktime\include\script.h
 	<MacTypes.h>
 	<Quickdraw.h>
 	<IntlResources.h>
 	<Events.h>
 
-1298946456 c:\users\gameover\code\of062cb\libs\quicktime\include\mediahandlers.h
+1310223524 c:\users\gameover\code\of062cb\libs\quicktime\include\mediahandlers.h
 	<ConditionalMacros.h>
 	<MacTypes.h>
 	<Components.h>
@@ -1653,12 +1653,12 @@
 1312018975 c:\users\gameover\code\of062cb\addons\goutils\src\goutils.h
 	"ofMain.h"
 
-1298946464 c:\users\gameover\code\of062cb\libs\poco\include\poco\directoryiterator.h
+1310223530 c:\users\gameover\code\of062cb\libs\poco\include\poco\directoryiterator.h
 	"Poco/Foundation.h"
 	"Poco/File.h"
 	"Poco/Path.h"
 
-1298946464 c:\users\gameover\code\of062cb\libs\poco\include\poco\file.h
+1310223530 c:\users\gameover\code\of062cb\libs\poco\include\poco\file.h
 	"Poco/Foundation.h"
 	"Poco/Timestamp.h"
 	<vector>
@@ -1667,28 +1667,28 @@
 	"Poco/File_UNIX.h"
 	"Poco/File_VMS.h"
 
-1298946466 c:\users\gameover\code\of062cb\libs\poco\include\poco\file_win32u.h
+1310223531 c:\users\gameover\code\of062cb\libs\poco\include\poco\file_win32u.h
 	"Poco/Foundation.h"
 	"Poco/Timestamp.h"
 
-1298946467 c:\users\gameover\code\of062cb\libs\poco\include\poco\file_win32.h
+1310223532 c:\users\gameover\code\of062cb\libs\poco\include\poco\file_win32.h
 	"Poco/Foundation.h"
 	"Poco/Timestamp.h"
 
-1298946466 c:\users\gameover\code\of062cb\libs\poco\include\poco\file_unix.h
+1310223531 c:\users\gameover\code\of062cb\libs\poco\include\poco\file_unix.h
 	"Poco/Foundation.h"
 
-1298946466 c:\users\gameover\code\of062cb\libs\poco\include\poco\file_vms.h
+1310223532 c:\users\gameover\code\of062cb\libs\poco\include\poco\file_vms.h
 	"Poco/Foundation.h"
 
-1298946466 c:\users\gameover\code\of062cb\libs\poco\include\poco\path.h
+1310223531 c:\users\gameover\code\of062cb\libs\poco\include\poco\path.h
 	"Poco/Foundation.h"
 	<vector>
 
-1298946467 c:\users\gameover\code\of062cb\libs\poco\include\poco\datetimeformatter.h
+1310223532 c:\users\gameover\code\of062cb\libs\poco\include\poco\datetimeformatter.h
 	"Poco/Foundation.h"
 
-1298946466 c:\users\gameover\code\of062cb\libs\poco\include\poco\datetimeformat.h
+1310223531 c:\users\gameover\code\of062cb\libs\poco\include\poco\datetimeformat.h
 	"Poco/Foundation.h"
 
 1312018843 source:c:\users\gameover\code\of062cb\addons\gothreadedvideo\src\gothreadedvideo.cpp
@@ -1882,9 +1882,9 @@
 	<sstream>
 	"tinystr.h"
 
-1312158296 c:\users\gameover\code\of062cb\addons\ofxboost\src\lib\boost\algorithm
+1315534593 c:\users\gameover\code\of062cb\addons\ofxboost\src\lib\boost\algorithm
 
-1312158298 c:\users\gameover\code\of062cb\addons\ofxboost\src\lib\boost\functional
+1315534613 c:\users\gameover\code\of062cb\addons\ofxboost\src\lib\boost\functional
 
 1286415984 source:c:\users\gameover\code\of062cb\addons\ofxfbo\src\ofxfbo.cpp
 	"ofxFbo.h"
@@ -1893,11 +1893,11 @@
 	"ofAppRunner.h"
 	"ofGraphics.h"
 
-1313192502 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appcontroller.cpp
+1315635916 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appcontroller.cpp
 	"AppController.h"
 	"Logger.h"
 
-1313176129 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appcontroller.h
+1315635916 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appcontroller.h
 	"ofMain.h"
 	"AppView.h"
 	"AppModel.h"
@@ -1910,7 +1910,7 @@
 	"ArdController.h"
 	"Analyzer.h"
 
-1313041780 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appview.h
+1315558525 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appview.h
 	"BaseView.h"
 	"SceneView.h"
 	"LoadingView.h"
@@ -1918,11 +1918,11 @@
 	"AttackView.h"
 	"VictimView.h"
 
-1313048236 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\baseview.h
+1315558525 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\baseview.h
 	"AppModel.h"
 	"ofxFbo.h"
 
-1313192621 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appmodel.h
+1315563312 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appmodel.h
 	"BaseState.h"
 	"Singleton.h"
 	"AppDataTypes.h"
@@ -1932,23 +1932,23 @@
 	<assert.h>
 	<string>
 
-1312941206 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\basestate.h
+1315558525 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\basestate.h
 	"Logger.h"
 	<map>
 	<string>
 
-1312941206 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\logger.h
+1315557588 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\logger.h
 	<iostream>
 	<fstream>
 	<typeinfo>
 	"Singleton.h"
 	"ofUtils.h"
 
-1312941206 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\singleton.h
+1315557588 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\singleton.h
 	"assert.h"
 	<cstdlib>
 
-1313186422 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appdatatypes.h
+1315563312 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appdatatypes.h
 	<boost/serialization/serialization.hpp>
 	<boost/serialization/vector.hpp>
 	<boost/archive/text_oarchive.hpp>
@@ -4886,7 +4886,7 @@
 1236007336 c:\users\gameover\code\of062cb\addons\ofxboost\src\lib\boost\detail\quick_allocator.hpp
 	<boost/smart_ptr/detail/quick_allocator.hpp>
 
-1312941206 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\constants.h
+1315558525 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\constants.h
 
 1252848015 c:\users\gameover\code\of062cb\addons\ofxboost\src\lib\boost\any.hpp
 	<algorithm>
@@ -4898,7 +4898,7 @@
 	<boost/static_assert.hpp>
 	<cstring>
 
-1313179449 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\sceneview.h
+1315558525 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\sceneview.h
 	"BaseView.h"
 	"ofxShader.h"
 
@@ -4906,15 +4906,17 @@
 	"ofMain.h"
 	<fstream>
 
-1312946472 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\loadingview.h
+1315558525 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\loadingview.h
 	"BaseView.h"
 
-1313130295 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\debugview.h
+1315558525 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\debugview.h
 	"BaseView.h"
 	"goVideoPlayer.h"
 	"AppDataTypes.h"
 
-1313135280 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\datacontroller.h
+1315563312 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\datacontroller.h
+	<iostream>
+	<fstream>
 	<boost/serialization/serialization.hpp>
 	<boost/serialization/vector.hpp>
 	<boost/archive/text_oarchive.hpp>
@@ -6070,7 +6072,7 @@
 	<boost/algorithm/string/finder.hpp>
 	<boost/algorithm/string/formatter.hpp>
 
-1312941206 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\scenexmlbuilder.h
+1315563312 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\scenexmlbuilder.h
 	<boost/algorithm/string.hpp>
 	<boost/regex.hpp>
 	<algorithm>
@@ -6085,6 +6087,9 @@
 	"IXMLBuilder.h"
 	"JungleExceptions.h"
 	"Constants.h"
+	"SerializationUtils.h"
+	"AppModel.h"
+	"StringHelpers.h"
 
 1106324559 c:\users\gameover\code\of062cb\addons\ofxboost\src\lib\boost\regex.hpp
 	<boost/regex/config.hpp>
@@ -6415,19 +6420,21 @@
 
 1196010439 c:\users\gameover\code\of062cb\addons\ofxboost\src\lib\boost\regex\v4\regex_split.hpp
 
-1312941206 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\ixmlbuilder.h
+1315558525 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\ixmlbuilder.h
 	"ofxXmlSettings.h"
 	"Logger.h"
 
-1312941206 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\jungleexceptions.h
+1315563312 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\jungleexceptions.h
 	<string>
 	<vector>
 
-1312941206 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\scenexmlparser.h
+1317183673 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\scenexmlparser.h
+	<stdio.h>
 	<stdlib.h>
 	<set>
 	<map>
 	<vector>
+	<boost/lexical_cast.hpp>
 	<boost/algorithm/string.hpp>
 	<boost/regex.hpp>
 	"IXMLParser.h"
@@ -6436,9 +6443,9 @@
 	"AppDataTypes.h"
 	"SerializationUtils.h"
 	"goDirList.h"
-	"goVideoPlayer.h"
+	"StringHelpers.h"
 
-1312941206 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\ixmlparser.h
+1315558525 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\ixmlparser.h
 	"ofxXmlSettings.h"
 	"Logger.h"
 	"JungleExceptions.h"
@@ -6447,15 +6454,15 @@
 	<string>
 	<vector>
 
-1312941206 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\propertyxmlparser.h
+1315558525 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\propertyxmlparser.h
 	"IXMLParser.h"
 	"AppModel.h"
 
-1312941206 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\propertyxmlbuilder.h
+1315558525 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\propertyxmlbuilder.h
 	"IXMLBuilder.h"
 	"AppModel.h"
 
-1313187800 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\camcontroller.h
+1315558525 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\camcontroller.h
 	"BaseState.h"
 	"AppModel.h"
 	"Logger.h"
@@ -6463,76 +6470,76 @@
 	"goVideoGrabber.h"
 	<map>
 
-1313173884 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\videocontroller.h
+1315635916 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\videocontroller.h
 	"BaseState.h"
 	"AppModel.h"
 
-1313176211 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\miccontroller.h
+1315558525 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\miccontroller.h
 	"BaseState.h"
 	"AppModel.h"
 	"ofxFft.h"
 
-1313152202 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\ardcontroller.h
+1315558525 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\ardcontroller.h
 	"ofMain.h"
 	"BaseState.h"
 	"AppModel.h"
 
-1313186725 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appmodel.cpp
+1315635916 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appmodel.cpp
 	"AppModel.h"
 
-1313192582 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appview.cpp
+1315558525 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\appview.cpp
 	"AppView.h"
 
-1313153627 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\ardcontroller.cpp
+1315558525 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\ardcontroller.cpp
 	"ArdController.h"
 
-1312941206 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\basestate.cpp
+1315558525 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\basestate.cpp
 	"BaseState.h"
 
-1313048227 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\baseview.cpp
+1315558525 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\baseview.cpp
 	"BaseView.h"
 
-1313188082 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\camcontroller.cpp
+1315558525 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\camcontroller.cpp
 	"CamController.h"
 
-1313191687 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\datacontroller.cpp
+1317178799 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\datacontroller.cpp
 	"DataController.h"
 
-1313130470 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\debugview.cpp
+1315558525 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\debugview.cpp
 	"DebugView.h"
 
-1312941206 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\jungleexception.cpp
+1315558525 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\jungleexception.cpp
 	"JungleExceptions.h"
 
-1313054581 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\loadingview.cpp
+1315558525 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\loadingview.cpp
 	"LoadingView.h"
 
-1312941206 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\logger.cpp
+1315558525 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\logger.cpp
 	"Logger.h"
 
-1313153637 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\miccontroller.cpp
+1315558525 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\miccontroller.cpp
 	"MicController.h"
 
-1312942959 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\propertyxmlbuilder.cpp
+1315558525 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\propertyxmlbuilder.cpp
 	"PropertyXMLBuilder.h"
 
-1312942956 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\propertyxmlparser.cpp
+1315558525 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\propertyxmlparser.cpp
 	"PropertyXMLParser.h"
 
-1313190163 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\sceneview.cpp
+1315558525 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\sceneview.cpp
 	"SceneView.h"
 
-1313170735 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\scenexmlbuilder.cpp
+1315635916 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\scenexmlbuilder.cpp
 	"SceneXMLBuilder.h"
 
-1313169446 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\scenexmlparser.cpp
+1317183997 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\scenexmlparser.cpp
 	"SceneXMLParser.h"
 	"JungleExceptions.h"
 
-1313173881 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\videocontroller.cpp
+1315635916 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\videocontroller.cpp
 	"VideoController.h"
 
-1312941206 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\main.cpp
+1315558525 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\main.cpp
 	"ofMain.h"
 	"AppController.h"
 	"ofAppGlutWindow.h"
@@ -6556,11 +6563,15 @@
 1308409390 source:c:\users\gameover\code\of062cb\addons\ofxshader\src\ofxshader.cpp
 	"ofxShader.h"
 
-1312941206 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\serializationutils.h
+1315563312 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\serializationutils.h
+	<boost/serialization/serialization.hpp>
+	<boost/serialization/vector.hpp>
+	<boost/archive/text_oarchive.hpp>
+	<boost/archive/text_iarchive.hpp>
 	<string>
 	<vector>
 
-1312941205 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\analyzer.h
+1315558525 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\analyzer.h
 	"Logger.h"
 	"AppModel.h"
 	"BaseState.h"
@@ -6571,10 +6582,10 @@
 	<set>
 	<map>
 
-1313148238 source:c:\users\gameover\code\of062cb\addons\goflexcom\goflexcom.cpp
+1313194791 source:c:\users\gameover\code\of062cb\addons\goflexcom\goflexcom.cpp
 	"goFlexCOM.h"
 
-1312941468 c:\users\gameover\code\of062cb\addons\goflexcom\goflexcom.h
+1313194791 c:\users\gameover\code\of062cb\addons\goflexcom\goflexcom.h
 	"ofMain.h"
 	"ofxNetwork.h"
 
@@ -6662,7 +6673,7 @@
 	"ofxUDPManager.h"
 	"ofxNetworkUtils.h"
 
-1313164256 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\analyzer.cpp
+1315563312 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\analyzer.cpp
 	"Analyzer.h"
 
 1312852612 source:c:\users\gameover7\code\of062cb\addons\goflexcom\goflexcom.cpp
@@ -11461,20 +11472,20 @@
 	"ArdController.h"
 	"Analyzer.h"
 
-1312158316 c:\users\gameover\code\of062cb\addons\ofxboost\src\lib\boost\utility
+1315534712 c:\users\gameover\code\of062cb\addons\ofxboost\src\lib\boost\utility
 
-1312158300 c:\users\gameover\code\of062cb\addons\ofxboost\src\lib\boost\iterator
+1315534642 c:\users\gameover\code\of062cb\addons\ofxboost\src\lib\boost\iterator
 
-1312158298 c:\users\gameover\code\of062cb\addons\ofxboost\src\lib\boost\exception
+1315534611 c:\users\gameover\code\of062cb\addons\ofxboost\src\lib\boost\exception
 
 1190863194 c:\users\gameover\code\of062cb\addons\govideograbber\src\uuids.h
 	"ksuuids.h"
 	<codecapi.h>
 
-1313076934 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\attackview.h
+1315558525 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\attackview.h
 	"BaseMeterView.h"
 
-1313128684 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\attackview.cpp
+1315558525 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\attackview.cpp
 	"AttackView.h"
 
 1313038342 source:c:\users\gameover\code\of062cb\addons\ofxfft\src\ofxfft.cpp
@@ -11526,25 +11537,25 @@
 	"kiss_fftr.h"
 	"_kiss_fft_guts.h"
 
-1313078487 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\victimview.h
+1315558525 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\victimview.h
 	"BaseMeterView.h"
 
-1313143219 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\victimview.cpp
+1315558525 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\victimview.cpp
 	"VictimView.h"
 
-1313043121 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\graphicloader.h
+1315558525 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\graphicloader.h
 	"goDirList.h"
 	"AppModel.h"
 	"Logger.h"
 
-1313050919 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\graphicloader.cpp
+1315558525 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\graphicloader.cpp
 	"GraphicLoader.h"
 
-1313146494 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\basemeterview.h
+1315558525 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\basemeterview.h
 	"BaseView.h"
 	"ofxShader.h"
 
-1313172129 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\basemeterview.cpp
+1315558525 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\basemeterview.cpp
 	"BaseMeterView.h"
 
 1298946454 c:\users\gameover\code\of062cb\libs\rtaudio\include\rtaudio.h
@@ -23304,5 +23315,109 @@
 	"Logger.h"
 
 1315561968 source:c:\users\jungle\code\of062cb\apps\devdonotdelete\jungle\src\stringhelpers.cpp
+	"StringHelpers.h"
+
+1315563312 c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\stringhelpers.h
+	<boost/algorithm/string.hpp>
+	<boost/regex.hpp>
+	<string>
+
+1252794275 c:\users\gameover\code\of062cb\addons\ofxboost\src\lib\boost\lexical_cast.hpp
+	<climits>
+	<cstddef>
+	<istream>
+	<string>
+	<typeinfo>
+	<exception>
+	<boost/config.hpp>
+	<boost/limits.hpp>
+	<boost/mpl/if.hpp>
+	<boost/throw_exception.hpp>
+	<boost/type_traits/is_pointer.hpp>
+	<boost/type_traits/make_unsigned.hpp>
+	<boost/call_traits.hpp>
+	<boost/static_assert.hpp>
+	<boost/detail/lcast_precision.hpp>
+	<boost/detail/workaround.hpp>
+	<locale>
+	<strstream>
+	<sstream>
+
+1215771279 c:\users\gameover\code\of062cb\addons\ofxboost\src\lib\boost\type_traits\make_unsigned.hpp
+	<boost/mpl/if.hpp>
+	<boost/type_traits/is_integral.hpp>
+	<boost/type_traits/is_signed.hpp>
+	<boost/type_traits/is_unsigned.hpp>
+	<boost/type_traits/is_enum.hpp>
+	<boost/type_traits/is_same.hpp>
+	<boost/type_traits/remove_cv.hpp>
+	<boost/type_traits/is_const.hpp>
+	<boost/type_traits/is_volatile.hpp>
+	<boost/type_traits/add_const.hpp>
+	<boost/type_traits/add_volatile.hpp>
+	<boost/type_traits/detail/ice_or.hpp>
+	<boost/type_traits/detail/ice_and.hpp>
+	<boost/type_traits/detail/ice_not.hpp>
+	<boost/static_assert.hpp>
+	<boost/type_traits/detail/type_trait_def.hpp>
+	<boost/type_traits/detail/type_trait_undef.hpp>
+
+1285931476 c:\users\gameover\code\of062cb\addons\ofxboost\src\lib\boost\type_traits\is_signed.hpp
+	<boost/type_traits/is_integral.hpp>
+	<boost/type_traits/remove_cv.hpp>
+	<boost/type_traits/is_enum.hpp>
+	<boost/type_traits/detail/ice_or.hpp>
+	<boost/type_traits/detail/bool_trait_def.hpp>
+	<boost/type_traits/detail/bool_trait_undef.hpp>
+
+1285931476 c:\users\gameover\code\of062cb\addons\ofxboost\src\lib\boost\type_traits\is_unsigned.hpp
+	<boost/type_traits/is_integral.hpp>
+	<boost/type_traits/is_enum.hpp>
+	<boost/type_traits/remove_cv.hpp>
+	<boost/type_traits/detail/ice_or.hpp>
+	<boost/type_traits/detail/bool_trait_def.hpp>
+	<boost/type_traits/detail/bool_trait_undef.hpp>
+
+1128691598 c:\users\gameover\code\of062cb\addons\ofxboost\src\lib\boost\type_traits\add_volatile.hpp
+	<boost/config.hpp>
+	<boost/type_traits/detail/type_trait_def.hpp>
+	<boost/type_traits/detail/type_trait_undef.hpp>
+
+1070454851 c:\users\gameover\code\of062cb\addons\ofxboost\src\lib\boost\call_traits.hpp
+	<boost/config.hpp>
+	<boost/detail/ob_call_traits.hpp>
+	<boost/detail/call_traits.hpp>
+
+1070454851 c:\users\gameover\code\of062cb\addons\ofxboost\src\lib\boost\detail\ob_call_traits.hpp
+	<boost/config.hpp>
+	<boost/type_traits/arithmetic_traits.hpp>
+	<boost/type_traits/composite_traits.hpp>
+
+1128691598 c:\users\gameover\code\of062cb\addons\ofxboost\src\lib\boost\type_traits\arithmetic_traits.hpp
+	<boost/type_traits/is_arithmetic.hpp>
+	<boost/type_traits/is_float.hpp>
+	<boost/type_traits/is_fundamental.hpp>
+	<boost/type_traits/is_integral.hpp>
+	<boost/type_traits/is_void.hpp>
+
+1223922063 c:\users\gameover\code\of062cb\addons\ofxboost\src\lib\boost\detail\call_traits.hpp
+	<boost/config.hpp>
+	<cstddef>
+	<boost/type_traits/is_arithmetic.hpp>
+	<boost/type_traits/is_pointer.hpp>
+	<boost/detail/workaround.hpp>
+
+1266161481 c:\users\gameover\code\of062cb\addons\ofxboost\src\lib\boost\detail\lcast_precision.hpp
+	<climits>
+	<ios>
+	<limits>
+	<boost/config.hpp>
+	<boost/integer_traits.hpp>
+	<boost/mpl/if.hpp>
+	<boost/type_traits/is_abstract.hpp>
+	<boost/assert.hpp>
+	<boost/static_assert.hpp>
+
+1315563312 source:c:\users\gameover\code\of062cb\apps\devdonotdelete\jungle\src\stringhelpers.cpp
 	"StringHelpers.h"
 

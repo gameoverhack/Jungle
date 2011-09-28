@@ -86,5 +86,6 @@
         <property name="xmlForceSceneBuildOnLoad" type="bool">false</property>
         <property name="xmlIgnoreErrors" type="bool">false</property>
         <property name="xmlIgnoreTransformErrors" type="bool">true</property>
+        <property name="xmlForceFileDateTime" type="bool">true</property>
     </properties>
 </config>

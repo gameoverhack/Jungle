@@ -15,7 +15,7 @@ SceneXMLParser::SceneXMLParser(string dataPath, string xmlFile) : IXMLParser(xml
 	_dataPath = dataPath;
 	load();
 	setupFileListers();
-	
+
 	parseXML();
 }
 
@@ -25,24 +25,24 @@ void SceneXMLParser::setupFileListers(){
 	_moviesFileLister.allowExt("mov");
 	_moviesFileLister.allowExt("MOV");
 	_moviesFileLister.listDir(true);
-	
-	
+
+
 	_assetsFileLister.reset();
 	_assetsFileLister.addDir(_dataPath);
 	_assetsFileLister.allowExt("bin");
 	_assetsFileLister.allowExt("BIN");
 	_assetsFileLister.listDir(true);
-	
+
 	// quick error check
 	if(_moviesFileLister.size() == 0){
 		LOG_ERROR("Could not load scene config, goDirList reported 0 movie files found.");
 		throw JungleException("0 movie files found");
 	}
-	
+
 	if(_assetsFileLister.size() == 0){
 		LOG_ERROR("Could not load scene config, goDirList reported 0 asset files found.");
 		throw JungleException("0 asset files found");
-	}	
+	}
 }
 
 void SceneXMLParser::parseXML(){
@@ -54,7 +54,7 @@ void SceneXMLParser::parseXML(){
 
 	Scene *scene;
 	Sequence *sequence;
-	
+
 	// Set up _xml root node
 	if(!_xml.tagExists("config")){ // quick check
 		LOG_ERROR("No config node in xml");
@@ -80,7 +80,7 @@ void SceneXMLParser::parseXML(){
 		attributesToCheck.clear();
 		attributesToCheck.push_back("name");
 		checkTagAttributesExist("scene", attributesToCheck, whichScene);
-		
+
 		scene = new Scene();
 		scene->setName(_xml.getAttribute("scene", "name", "", whichScene));
 		LOG_VERBOSE("Parsing xml=>scene: " + scene->getName());
@@ -103,12 +103,12 @@ void SceneXMLParser::parseXML(){
 			attributesToCheck.push_back("dateCreated");
 			attributesToCheck.push_back("nextSequence");
 			attributesToCheck.push_back("attackerResult");
-			attributesToCheck.push_back("victimResult");			
+			attributesToCheck.push_back("victimResult");
 			attributesToCheck.push_back("faked");
 			attributesToCheck.push_back("sequenceType");
 			attributesToCheck.push_back("filename");
 			checkTagAttributesExist("sequence", attributesToCheck, whichSequence);
-			
+
 			sequence = new Sequence();
 
 			sequence->setName(_xml.getAttribute("sequence", "name", "", whichSequence));
@@ -119,18 +119,25 @@ void SceneXMLParser::parseXML(){
 			sequence->setNextSequenceName(_xml.getAttribute("sequence", "nextSequence", "", whichSequence));
 			sequence->setIsSequenceFaked((_xml.getAttribute("sequence", "faked", "", whichSequence) == "true") ? true : false);
 			sequence->setNumber(findSequenceNumberFromString(sequence->getName()));
-			
+
 			// check movie file metadata
-			fileId = _moviesFileLister.findFileByName(_xml.getAttribute("sequence", "filename", "", whichSequence));			
+			fileId = _moviesFileLister.findFileByName(_xml.getAttribute("sequence", "filename", "", whichSequence));
+
+			// force file date time create/modified to actual file create/modified dates in case of copying...
+			if (boost::any_cast<bool>(_appModel->getProperty("xmlForceFileDateTime"))) {
+                forceTagAttribute("sequence", "dateCreated", _moviesFileLister.getCreated(fileId), whichSequence);
+                forceTagAttribute("sequence", "dateModified", _moviesFileLister.getModified(fileId), whichSequence);
+			}
+
 			if(fileId == -1 ||
-			   !compareTagAttribute("sequence", "dateCreated", _moviesFileLister.getCreated(fileId), whichSequence) || 
+			   !compareTagAttribute("sequence", "dateCreated", _moviesFileLister.getCreated(fileId), whichSequence) ||
 			   !compareTagAttribute("sequence", "dateModified", _moviesFileLister.getModified(fileId), whichSequence) ||
 			   !compareTagAttribute("sequence", "size", boost::lexical_cast<std::string>(_moviesFileLister.getSize(fileId)), whichSequence)){
 				LOG_VERBOSE("Comparision failure or file missing on " + _moviesFileLister.getName(fileId));
 				throw GenericXMLParseException("Missing movie file");
 			}
 			sequence->setMovieFullFilePath(_moviesFileLister.getPath(fileId));
-			
+
 			// push in
 			_xml.pushTag("sequence", whichSequence);
 
@@ -138,8 +145,8 @@ void SceneXMLParser::parseXML(){
 			if(_xml.getNumTags("interactivity") == 0 || _xml.getNumTags("transform") == 0 ){
 				LOG_ERROR("No interactivity or transform nodes in xml for " + sequence->getName());
 				throw GenericXMLParseException("No interactivity or transform nodes in xml for " + sequence->getName());
-			}			
-			
+			}
+
 			// interactivity
 			attributesToCheck.clear();
 			attributesToCheck.push_back("filename");
@@ -147,10 +154,17 @@ void SceneXMLParser::parseXML(){
 			attributesToCheck.push_back("dateCreated");
 			attributesToCheck.push_back("dateModified");
 			checkTagAttributesExist("interactivity", attributesToCheck, 0);
-			
+
 			fileId = _assetsFileLister.findFileByName(_xml.getAttribute("interactivity", "filename", "", 0));
+
+            // force file date time create/modified to actual file create/modified dates in case of copying...
+			if (boost::any_cast<bool>(_appModel->getProperty("xmlForceFileDateTime"))) {
+			   forceTagAttribute("interactivity", "dateCreated", _assetsFileLister.getCreated(fileId), 0);
+			   forceTagAttribute("interactivity", "dateModified", _assetsFileLister.getModified(fileId), 0);
+			}
+
 			if(fileId == -1 ||
-			   !compareTagAttribute("interactivity", "dateCreated", _assetsFileLister.getCreated(fileId), 0) || 
+			   !compareTagAttribute("interactivity", "dateCreated", _assetsFileLister.getCreated(fileId), 0) ||
 			   !compareTagAttribute("interactivity", "dateModified", _assetsFileLister.getModified(fileId), 0) ||
 			   !compareTagAttribute("interactivity", "size", boost::lexical_cast<std::string>(_assetsFileLister.getSize(fileId)), 0)){
 				LOG_VERBOSE("Comparision failure on interactivity for " + sequence->getName());
@@ -210,14 +224,21 @@ void SceneXMLParser::parseXML(){
 
 				// save table
 				sequence->setInteractionTable(interactionTable);
-				
+
 			}
-			
+
 			// transforms
 			for(int witchTransform = 0; witchTransform < _xml.getNumTags("transform"); witchTransform++){
 				fileId = _assetsFileLister.findFileByName(_xml.getAttribute("transform", "filename", "", witchTransform));
+
+                // force file date time create/modified to actual file create/modified dates in case of copying...
+                if (boost::any_cast<bool>(_appModel->getProperty("xmlForceFileDateTime"))) {
+                   forceTagAttribute("transform", "dateCreated", _assetsFileLister.getCreated(fileId), witchTransform);
+				   forceTagAttribute("transform", "dateModified", _assetsFileLister.getModified(fileId), witchTransform);
+                }
+
 				if(fileId == -1 ||
-				   !compareTagAttribute("transform", "dateCreated", _assetsFileLister.getCreated(fileId), witchTransform) || 
+				   !compareTagAttribute("transform", "dateCreated", _assetsFileLister.getCreated(fileId), witchTransform) ||
 				   !compareTagAttribute("transform", "dateModified", _assetsFileLister.getModified(fileId), witchTransform) ||
 				   !compareTagAttribute("transform", "size", boost::lexical_cast<std::string>(_assetsFileLister.getSize(fileId)), witchTransform)){
 					LOG_VERBOSE("Comparision failure on transform for " + sequence->getName());
@@ -234,12 +255,12 @@ void SceneXMLParser::parseXML(){
 					LOG_VERBOSE("Adding transform for " + name);
 				}
 			}
-			
+
 			_xml.popTag(); // pop out of sequence
-			
+
 			// add the scene
 			scene->setSequence(sequence->getName(), sequence);
-			
+
 			if(whichSequence == 0){
 				// first sequence, set it to the 'current sequence' in the scene
 				scene->setCurrentSequence(sequence->getName());
@@ -253,7 +274,7 @@ void SceneXMLParser::parseXML(){
 			_appModel->setCurrentScene(scene->getName());
 		}
 	} // end scene tag for loop
-	
+
 	// check if we had broken files
 //	if(brokenfiles.size() != 0){
 //		// reset app model because its invalid
@@ -261,17 +282,17 @@ void SceneXMLParser::parseXML(){
 //		// throw that up the broken files
 //		throw AnalysisRequiredException("Analysis required", brokenfiles);
 //	}
-	
+
 }
 
-void SceneXMLParser::checkTagAttributesExist(string xmltag, vector<string> attributes, int which){
+void SceneXMLParser::checkTagAttributesExist(string xmltag, vector<string> attributes, int which) {
 	string message = "";
 	for(vector<string>::iterator iter = attributes.begin(); iter != attributes.end(); iter++){
 		if(!_xml.attributeExists(xmltag, *iter, which)){
 			message = message + *iter + ","; // build list of missing
 		}
 	}
-	
+
 	// if we've added to message, it has a length
 	if(message.length() != 0){
 		// remove last comma
@@ -283,11 +304,26 @@ void SceneXMLParser::checkTagAttributesExist(string xmltag, vector<string> attri
 	}
 }
 
-bool SceneXMLParser::compareTagAttribute(string xmltag, string attribute, string target, int which){
+bool SceneXMLParser::compareTagAttribute(string xmltag, string attribute, string target, int which) {
+
 	vector<string> attributesToCheck;
 	attributesToCheck.push_back(attribute);
 	checkTagAttributesExist(xmltag, attributesToCheck, which);
-	
 	string value = _xml.getAttribute(xmltag, attribute, "1@#$21238(&$*&^@#*^saltsaltsaltsalt", which);
+
+	LOG_VERBOSE("Comparing: [value] " + value + " == [target] " + target + (string)(value == target ? " TRUE" : " FALSE"));
+
 	return (value == target);
+
+}
+
+void SceneXMLParser::forceTagAttribute(string xmltag, string attribute, string target, int which) {
+
+    LOG_WARNING("Forcing " + xmltag + "::" + attribute + " to " + target);
+
+	vector<string> attributesToForce;
+	attributesToForce.push_back(attribute);
+	checkTagAttributesExist(xmltag, attributesToForce, which);
+	_xml.setAttribute(xmltag, attribute, target, which);
+
 }

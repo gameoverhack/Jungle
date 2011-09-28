@@ -42,6 +42,7 @@ public:
 	SceneXMLParser(string dataPath, string xmlFile);
 
 	bool compareTagAttribute(string xmltag, string attribute, string target, int which);
+	void forceTagAttribute(string xmltag, string attribute, string target, int which);
 	void checkTagAttributesExist(string xmltag, vector<string> attributes, int which);
 	void setupFileListers();
 	void parseXML();
