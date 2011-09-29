@@ -13,18 +13,18 @@
         <property name="camScale1" type="float">0.500000</property>
         <property name="cameraPropToAdjust" type="string">POSITION</property>
         <property name="cameraToAdjust" type="string">0</property>
-        <property name="flashDataPath" type="string">/Users/gameover/Desktop/StrangerDanger/flash</property>
-        <property name="fullScreen" type="bool">false</property>
+        <property name="flashDataPath" type="string">E:/gameoverload/VideoProjects/Jungle/newmodel/flash</property>
+        <property name="fullScreen" type="bool">true</property>
         <property name="graphicDataPath" type="string">graphics</property>
         <property name="loadingMessage" type="string">STATE == kANAL_READY (0) :: </property>
-        <property name="loadingProgress" type="float">1.000000</property>
+        <property name="loadingProgress" type="float">0.100000</property>
         <property name="propBacklightCompensation_0" type="int">0</property>
         <property name="propBacklightCompensation_1" type="int">0</property>
         <property name="propBacklightCompensation_2" type="int">0</property>
         <property name="propBrightness_0" type="int">128</property>
         <property name="propBrightness_1" type="int">128</property>
         <property name="propBrightness_2" type="int">128</property>
-        <property name="propColorEnable_0" type="int">7247567</property>
+        <property name="propColorEnable_0" type="int">1</property>
         <property name="propColorEnable_1" type="int">1</property>
         <property name="propColorEnable_2" type="int">3330928</property>
         <property name="propContrast_0" type="int">32</property>
@@ -34,24 +34,24 @@
         <property name="propExposure_1" type="int">-5</property>
         <property name="propExposure_2" type="int">-5</property>
         <property name="propFocus_0" type="int">119</property>
-        <property name="propFocus_1" type="int">102</property>
+        <property name="propFocus_1" type="int">119</property>
         <property name="propFocus_2" type="int">102</property>
-        <property name="propGain_0" type="int">33</property>
-        <property name="propGain_1" type="int">31</property>
+        <property name="propGain_0" type="int">22</property>
+        <property name="propGain_1" type="int">23</property>
         <property name="propGain_2" type="int">22</property>
-        <property name="propGamma_0" type="int">7247567</property>
+        <property name="propGamma_0" type="int">1</property>
         <property name="propGamma_1" type="int">1</property>
         <property name="propGamma_2" type="int">3330928</property>
-        <property name="propHue_0" type="int">7247567</property>
+        <property name="propHue_0" type="int">1</property>
         <property name="propHue_1" type="int">1</property>
         <property name="propHue_2" type="int">3330928</property>
-        <property name="propIris_0" type="int">7247567</property>
+        <property name="propIris_0" type="int">1</property>
         <property name="propIris_1" type="int">1</property>
         <property name="propIris_2" type="int">3330928</property>
         <property name="propPan_0" type="int">0</property>
         <property name="propPan_1" type="int">0</property>
         <property name="propPan_2" type="int">0</property>
-        <property name="propRoll_0" type="int">7247567</property>
+        <property name="propRoll_0" type="int">1</property>
         <property name="propRoll_1" type="int">1</property>
         <property name="propRoll_2" type="int">3330928</property>
         <property name="propSaturation_0" type="int">32</property>
@@ -63,13 +63,13 @@
         <property name="propTilt_0" type="int">0</property>
         <property name="propTilt_1" type="int">0</property>
         <property name="propTilt_2" type="int">0</property>
-        <property name="propWhiteBalance_0" type="int">5572</property>
-        <property name="propWhiteBalance_1" type="int">4384</property>
+        <property name="propWhiteBalance_0" type="int">3988</property>
+        <property name="propWhiteBalance_1" type="int">4296</property>
         <property name="propWhiteBalance_2" type="int">5176</property>
         <property name="propZoom_0" type="int">1</property>
         <property name="propZoom_1" type="int">1</property>
         <property name="propZoom_2" type="int">1</property>
-        <property name="scenesDataPath" type="string">/Users/gameover/Desktop/StrangerDanger/video</property>
+        <property name="scenesDataPath" type="string">E:/gameoverload/VideoProjects/Jungle/newmodel/video</property>
         <property name="scenesXMLFile" type="string">config_scenes.xml</property>
         <property name="shaderBlendRatio" type="float">0.300000</property>
         <property name="shaderGammaCorrection" type="float">2.300000</property>
@@ -83,9 +83,9 @@
         <property name="showUnmaskedTextures" type="bool">false</property>
         <property name="tryScaleMethod" type="int">0</property>
         <property name="userAction" type="int">0</property>
+        <property name="xmlForceFileDateTime" type="bool">true</property>
         <property name="xmlForceSceneBuildOnLoad" type="bool">false</property>
         <property name="xmlIgnoreErrors" type="bool">false</property>
         <property name="xmlIgnoreTransformErrors" type="bool">true</property>
-        <property name="xmlForceFileDateTime" type="bool">true</property>
     </properties>
 </config>

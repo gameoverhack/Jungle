@@ -170,8 +170,7 @@ void SceneXMLParser::parseXML(){
 				LOG_VERBOSE("Comparision failure on interactivity for " + sequence->getName());
 				throw GenericXMLParseException("Interactivity file was missing of invalid");
 //				brokenfiles.push_back(_xml.getAttribute("interactivity", "filename", "", 0));
-			}
-			else{
+			} else {
 				LOG_VERBOSE("Adding interactivity for " + _assetsFileLister.getName(fileId));
 				// Load up stuff into the sequence
 				SequenceDescriptor *descriptor = new SequenceDescriptor();
@@ -244,8 +243,7 @@ void SceneXMLParser::parseXML(){
 					LOG_VERBOSE("Comparision failure on transform for " + sequence->getName());
 					throw GenericXMLParseException("Transform file was missing or invalid");
 //					brokenfiles.push_back(_xml.getAttribute("transform", "filename", "", witchTransform));
-				}
-				else{
+				} else {
 					// Load up transforms into the sequence
 					transform = new vector<CamTransform>();
 					loadVector(_assetsFileLister.getPath(fileId), transform);

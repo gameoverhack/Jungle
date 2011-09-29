@@ -13,6 +13,8 @@
 #include "BaseState.h"
 #include "AppModel.h"
 #include "Logger.h"
+#include "ofxOpenCv.h"
+#include "ofxCvHaarFinder.h"
 
 #ifdef TARGET_OSX
 #include "ofxQTKitVideoGrabber.h"	// better quality allows recording but OSX only....
@@ -30,7 +32,7 @@ public:
 	CamController();
 	~CamController();
 
-    bool		setup(int deviceID, int x, int y);
+    bool		setup(int deviceID, int w, int h);
 
     void        loadAttributes();
     void        saveAttributes();
@@ -40,7 +42,7 @@ public:
 	void        loadSettings();
 	void        saveSettings();
 #else
-	bool		setup(string deviceID, int x, int y);
+	bool		setup(string deviceID, int w, int h);
 #endif
 
 	void		update();
@@ -51,6 +53,11 @@ public:
 
 	ofTexture	* getCamTextureRef();
 
+	ofxCvGrayscaleImage     _greyImage;
+    ofxCvHaarFinder         _finder;
+
+    bool                    _doFaceDetection;
+
 private:
 
 #ifdef TARGET_OSX
@@ -59,6 +66,12 @@ private:
     goVideoGrabber	        _cam;
 #endif
 	int						_instanceID;
+
+	int                     _width;
+	int                     _height;
+
+    ofxCvColorImage         _camImage;
+    ofxCvColorImage         _colourImage;
 
 };
 

@@ -84,6 +84,7 @@
 			<Add directory="..\..\..\addons\ofxFft\libs\kiss" />
 			<Add directory="..\..\..\addons\ofxFft\src" />
 			<Add directory="..\..\..\addons\ofxFft\libs\fftw\lib\win32" />
+			<Add directory="..\..\..\addons\ofxCvHaarFinder\src" />
 		</Compiler>
 		<Linker>
 			<Add option="../../../libs/FreeImage/lib/win_cb/FreeImage.lib" />
@@ -141,6 +142,8 @@
 		<Unit filename="..\..\..\addons\goVideoPlayer\src\goQtUtils.h" />
 		<Unit filename="..\..\..\addons\goVideoPlayer\src\goVideoPlayer.cpp" />
 		<Unit filename="..\..\..\addons\goVideoPlayer\src\goVideoPlayer.h" />
+		<Unit filename="..\..\..\addons\ofxCvHaarFinder\src\ofxCvHaarFinder.cpp" />
+		<Unit filename="..\..\..\addons\ofxCvHaarFinder\src\ofxCvHaarFinder.h" />
 		<Unit filename="..\..\..\addons\ofxFbo\src\ofxFbo.cpp" />
 		<Unit filename="..\..\..\addons\ofxFbo\src\ofxFbo.h" />
 		<Unit filename="..\..\..\addons\ofxFft\libs\kiss\_kiss_fft_guts.h" />

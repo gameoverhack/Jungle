@@ -29,31 +29,56 @@ CamController::~CamController() {
 	_cam.close();
 }
 
-bool CamController::setup(int deviceID, int x, int y){
+bool CamController::setup(int deviceID, int w, int h){
+
 	LOG_NOTICE("Attemptimg to set instance " + ofToString(_instanceID) + " cam to deviceID: " + ofToString(deviceID));
+
 	_cam.close();					// to be sure, to be sure
 	bool ok = true; // bad mac change this
 #ifdef TARGET_WIN32
     _cam.setRequestedMediaSubType(VI_MEDIASUBTYPE_MJPG);
 #endif
 	_cam.setDeviceID(deviceID);
+	ok = _cam.initGrabber(w, h, true);
 #ifdef TARGET_WIN32
-	ok = _cam.initGrabber(x, y, true);
 	if (ok) loadSettings();
 #endif
-	_cam.initGrabber(x, y, true);
     loadAttributes();
+
+    _doFaceDetection = true;
+    //_finder.setScaleHaar(0.5);
+    _finder.setup("haarcascade_frontalface_default.xml");
+
+    _camImage.allocate(w, h);
+    _colourImage.allocate((float)w/5.0f, (float)h/5.0f);
+    _greyImage.allocate((float)w/5.0f, (float)h/5.0f);
+
+    _width  = w;
+    _height = h;
+
     return ok;
 }
 
 #ifdef TARGET_OSX
-bool CamController::setup(string deviceID, int x, int y){
+bool CamController::setup(string deviceID, int w, int h){
+
 	LOG_NOTICE("Attemptimg to set instance " + ofToString(_instanceID) + " cam to deviceID: " + deviceID);
+
 	_cam.close();					// to be sure, to be sure
 	_cam.setDeviceID(deviceID);
-	_cam.initGrabber(x, y, true);
+	_cam.initGrabber(w, h, true);
 
     loadAttributes();
+
+    _doFaceDetection = true;
+    _finder.setup("haarcascade_frontalface_default.xml");
+    _camImage.allocate(w, h);
+    _colourImage.allocate((float)w/4.0f, (float)h/4.0f);
+    _greyImage.allocate((float)w/4.0f, (float)h/4.0f);
+
+    _width  = w;
+    _height = h;
+
 }
 #endif
 
@@ -212,6 +237,14 @@ void CamController::setCameraAttributes(PosRotScale prs) {
 
 void CamController::update() {
 	_cam.update();
+
+	if (_cam.isFrameNew() && ofGetFrameNum()%2 == 0 && _doFaceDetection) {
+        _camImage = _cam.getPixels();
+        _colourImage.scaleIntoMe(_camImage);
+        _greyImage = _colourImage;
+        _finder.findHaarObjects(_greyImage);
+	}
+
 }
 
 int CamController::getInstanceID(){							// might be redundant

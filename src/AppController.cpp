@@ -85,7 +85,7 @@ void AppController::setup() {
 	_camControllers[1]->setup("ManyCam Virtual Webcam (RGB)", 640, 480);	// NB: had to use QTKit to get ManyCam working
 #else
 	_camControllers[0]->setup(0, 1920, 1080);
-	_camControllers[1]->setup(0, 1920, 1080);
+	_camControllers[1]->setup(1, 1920, 1080);
 #endif
 
 	// register pointers to textures from cams on the model
@@ -305,6 +305,31 @@ void AppController::draw() {
 	//	LOG_VERBOSE("Drawing");
 	ofSetColor(255, 255, 255, 255);
 	_appView->draw();
+	glPushMatrix();
+	glTranslatef(0.0f, 40.0f, 0.0f);
+	_camControllers[0]->_greyImage.draw(0,0);
+	for (int face = 0; face < _camControllers[0]->_finder.blobs.size(); face++) {
+	    ofSetColor(255,0,0);
+	    ofNoFill();
+	    ofRect(_camControllers[0]->_finder.blobs[face].boundingRect.x,
+               _camControllers[0]->_finder.blobs[face].boundingRect.y,
+               _camControllers[0]->_finder.blobs[face].boundingRect.width,
+               _camControllers[0]->_finder.blobs[face].boundingRect.height);
+
+	}
+	ofSetColor(255,255,255);
+	glTranslatef(1920.0f/5.0f, 0.0f, 0.0f);
+	_camControllers[1]->_greyImage.draw(0,0);
+    for (int face = 0; face < _camControllers[1]->_finder.blobs.size(); face++) {
+	    ofSetColor(255,0,0);
+	    ofNoFill();
+	    ofRect(_camControllers[1]->_finder.blobs[face].boundingRect.x,
+               _camControllers[1]->_finder.blobs[face].boundingRect.y,
+               _camControllers[1]->_finder.blobs[face].boundingRect.width,
+               _camControllers[1]->_finder.blobs[face].boundingRect.height);
+
+	}
+	ofSetColor(255,255,255);
 }
 
 //--------------------------------------------------------------
@@ -460,6 +485,10 @@ void AppController::keyPressed(int key){
 			break;
         case '0':
              _appModel->setProperty("showProps", !showProps);
+            break;
+        case 'w':
+             _camControllers[0]->_doFaceDetection ^= true;
+             _camControllers[1]->_doFaceDetection ^= true;
             break;
 		default:
 			break;

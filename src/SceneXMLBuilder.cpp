@@ -157,8 +157,7 @@ void SceneXMLBuilder::checkMovieAssets(){
 					// LOG_NOTICE("Loaded interactiviity file");
 					// We don't actually check this as long as the files there we assume its ok.
 					// if the interactivity doesnt cover the whole length it defaults to no interactivity anyway.
-				}
-				else{
+				} else {
 					// transform file
 					transform.clear();
 					loadVector(assetPath, &transform);
