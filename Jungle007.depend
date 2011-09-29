@@ -1267,13 +1267,13 @@
 	"ofUtils.h"
 	<gst/video/video.h>
 
-1315558525 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\main.cpp
+1317306932 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\main.cpp
 	"ofMain.h"
 	"AppController.h"
 	"ofAppGlutWindow.h"
 	"Logger.h"
 
-1317295244 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\appcontroller.h
+1317306932 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\appcontroller.h
 	"ofMain.h"
 	"AppView.h"
 	"AppModel.h"
@@ -1287,7 +1287,7 @@
 	"Analyzer.h"
 	"ofAppGlutWindow.h"
 
-1315558525 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\appview.h
+1317306932 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\appview.h
 	"BaseView.h"
 	"SceneView.h"
 	"LoadingView.h"
@@ -1295,11 +1295,11 @@
 	"AttackView.h"
 	"VictimView.h"
 
-1317296074 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\baseview.h
+1317306932 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\baseview.h
 	"AppModel.h"
 	"ofxFbo.h"
 
-1317266260 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\appmodel.h
+1317306932 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\appmodel.h
 	"BaseState.h"
 	"Singleton.h"
 	"AppDataTypes.h"
@@ -1309,7 +1309,7 @@
 	<assert.h>
 	<string>
 
-1315558525 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\basestate.h
+1317306932 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\basestate.h
 	"Logger.h"
 	<map>
 	<string>
@@ -1325,7 +1325,7 @@
 	"assert.h"
 	<cstdlib>
 
-1315563312 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\appdatatypes.h
+1317306932 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\appdatatypes.h
 	<boost/serialization/serialization.hpp>
 	<boost/serialization/vector.hpp>
 	<boost/archive/text_oarchive.hpp>
@@ -4275,29 +4275,29 @@
 	<boost/static_assert.hpp>
 	<cstring>
 
-1317305924 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\sceneview.h
+1317306932 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\sceneview.h
 	"BaseView.h"
 	"ofxShader.h"
 
-1315558525 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\loadingview.h
+1317306932 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\loadingview.h
 	"BaseView.h"
 
-1315558525 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\debugview.h
+1317306932 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\debugview.h
 	"BaseView.h"
 	"goVideoPlayer.h"
 	"AppDataTypes.h"
 
-1315558525 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\attackview.h
+1317306932 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\attackview.h
 	"BaseMeterView.h"
 
-1317295493 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\basemeterview.h
+1317306932 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\basemeterview.h
 	"BaseView.h"
 	"ofxShader.h"
 
-1315558525 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\victimview.h
+1317306932 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\victimview.h
 	"BaseMeterView.h"
 
-1315563312 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\datacontroller.h
+1317306932 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\datacontroller.h
 	<iostream>
 	<fstream>
 	<boost/serialization/serialization.hpp>
@@ -5471,7 +5471,7 @@
 	<sstream>
 	"tinystr.h"
 
-1317271589 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\scenexmlbuilder.h
+1317306932 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\scenexmlbuilder.h
 	<boost/algorithm/string.hpp>
 	<boost/regex.hpp>
 	<algorithm>
@@ -5823,11 +5823,11 @@
 	"ofxXmlSettings.h"
 	"Logger.h"
 
-1315563312 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\jungleexceptions.h
+1317306932 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\jungleexceptions.h
 	<string>
 	<vector>
 
-1315563312 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\serializationutils.h
+1317306932 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\serializationutils.h
 	<boost/serialization/serialization.hpp>
 	<boost/serialization/vector.hpp>
 	<boost/archive/text_oarchive.hpp>
@@ -5835,12 +5835,12 @@
 	<string>
 	<vector>
 
-1315563312 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\stringhelpers.h
+1317306932 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\stringhelpers.h
 	<boost/algorithm/string.hpp>
 	<boost/regex.hpp>
 	<string>
 
-1317183673 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\scenexmlparser.h
+1317306932 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\scenexmlparser.h
 	<stdio.h>
 	<stdlib.h>
 	<set>
@@ -5966,7 +5966,7 @@
 	"IXMLBuilder.h"
 	"AppModel.h"
 
-1315558525 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\analyzer.h
+1317306932 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\analyzer.h
 	"Logger.h"
 	"AppModel.h"
 	"BaseState.h"
@@ -5977,20 +5977,20 @@
 	<set>
 	<map>
 
-1315558525 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\graphicloader.h
+1317306932 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\graphicloader.h
 	"goDirList.h"
 	"AppModel.h"
 	"Logger.h"
 
-1317286787 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\camcontroller.h
+1317310050 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\camcontroller.h
 	"BaseState.h"
 	"AppModel.h"
 	"Logger.h"
 	"ofxOpenCv.h"
-	"ofxCvHaarFinder.h"
 	"ofxQTKitVideoGrabber.h"
 	"goVideoGrabber.h"
 	<map>
+	"ofxFaceTracker.h"
 
 1317284546 c:\users\gameover\code\of007\addons\ofxopencv\src\ofxopencv.h
 	"ofxCvConstants.h"
@@ -6290,16 +6290,16 @@
 	"ofMain.h"
 	"ofxOpenCv.h"
 
-1315635916 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\videocontroller.h
+1317306932 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\videocontroller.h
 	"BaseState.h"
 	"AppModel.h"
 
-1317303234 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\miccontroller.h
+1317306932 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\miccontroller.h
 	"BaseState.h"
 	"AppModel.h"
 	"ofxFft.h"
 
-1315558525 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\ardcontroller.h
+1317306932 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\ardcontroller.h
 	"ofMain.h"
 	"BaseState.h"
 	"AppModel.h"
@@ -6680,7 +6680,7 @@
 	<string>
 	<iostream>
 
-1315563312 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\analyzer.cpp
+1317306932 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\analyzer.cpp
 	"Analyzer.h"
 
 1313038342 source:c:\users\gameover\code\of007\addons\ofxfft\src\ofxfft.cpp
@@ -6721,78 +6721,78 @@
 	<stdio.h>
 	<stddef.h>
 
-1317304430 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\appcontroller.cpp
+1317312243 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\appcontroller.cpp
 	"AppController.h"
 	"Logger.h"
 
-1317195498 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\appmodel.cpp
+1317306932 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\appmodel.cpp
 	"AppModel.h"
 
-1317296092 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\appview.cpp
+1317311541 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\appview.cpp
 	"AppView.h"
 
-1317268748 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\ardcontroller.cpp
+1317306932 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\ardcontroller.cpp
 	"ArdController.h"
 
-1315558525 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\basestate.cpp
+1317306932 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\basestate.cpp
 	"BaseState.h"
 
-1317296045 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\baseview.cpp
+1317306932 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\baseview.cpp
 	"BaseView.h"
 
-1315558525 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\debugview.cpp
+1317311684 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\debugview.cpp
 	"DebugView.h"
 
 1315558525 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\jungleexception.cpp
 	"JungleExceptions.h"
 
-1315558525 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\loadingview.cpp
+1317306932 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\loadingview.cpp
 	"LoadingView.h"
 
 1315558525 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\logger.cpp
 	"Logger.h"
 
-1315558525 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\propertyxmlbuilder.cpp
+1317306932 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\propertyxmlbuilder.cpp
 	"PropertyXMLBuilder.h"
 
-1315558525 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\propertyxmlparser.cpp
+1317306932 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\propertyxmlparser.cpp
 	"PropertyXMLParser.h"
 
-1317305953 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\sceneview.cpp
+1317306932 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\sceneview.cpp
 	"SceneView.h"
 
-1315563312 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\stringhelpers.cpp
+1317306932 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\stringhelpers.cpp
 	"StringHelpers.h"
 
-1317295474 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\attackview.cpp
+1317306932 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\attackview.cpp
 	"AttackView.h"
 
-1317295899 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\basemeterview.cpp
+1317306932 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\basemeterview.cpp
 	"BaseMeterView.h"
 
-1317286787 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\camcontroller.cpp
+1317310903 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\camcontroller.cpp
 	"CamController.h"
 
-1317178799 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\datacontroller.cpp
+1317306932 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\datacontroller.cpp
 	"DataController.h"
 
-1317266187 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\graphicloader.cpp
+1317306932 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\graphicloader.cpp
 	"GraphicLoader.h"
 
-1317305146 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\miccontroller.cpp
+1317306932 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\miccontroller.cpp
 	"MicController.h"
 
-1317271724 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\scenexmlbuilder.cpp
+1317306932 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\scenexmlbuilder.cpp
 	"SceneXMLBuilder.h"
 
-1317271724 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\scenexmlparser.cpp
+1317306932 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\scenexmlparser.cpp
 	"SceneXMLParser.h"
 	"JungleExceptions.h"
 
-1317303554 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\victimview.cpp
+1317306932 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\victimview.cpp
 	"VictimView.h"
 
-1315635916 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\videocontroller.cpp
+1317306932 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\videocontroller.cpp
 	"VideoController.h"
 
 1308409516 source:c:\users\gameover\code\of007\addons\ofxfft\libs\kiss\kiss_fft.c
@@ -6815,4 +6815,195 @@
 1317288303 c:\users\gameover\code\of007\addons\ofxboost\src\lib\boost\utility
 
 1317288296 c:\users\gameover\code\of007\addons\ofxboost\src\lib\boost\iterator
+
+1317281471 source:c:\users\gameover\code\of007\addons\ofxcv\src\calibration.cpp
+	"Calibration.h"
+	"ofFileUtils.h"
+	"Helpers.h"
+
+1317281471 c:\users\gameover\code\of007\addons\ofxcv\src\calibration.h
+	"ofxCv.h"
+
+1317281471 c:\users\gameover\code\of007\addons\ofxcv\src\ofxcv.h
+	"opencv2/opencv.hpp"
+	"Utilities.h"
+	"Wrappers.h"
+	"Helpers.h"
+	"Distance.h"
+	"Calibration.h"
+	"ContourFinder.h"
+	"Tracker.h"
+	"RunningBackground.h"
+
+1317284543 c:\users\gameover\code\of007\addons\ofxopencv\libs\opencv\include\opencv2\opencv.hpp
+	"opencv2/core/core_c.h"
+	"opencv2/core/core.hpp"
+	"opencv2/flann/flann.hpp"
+	"opencv2/imgproc/imgproc_c.h"
+	"opencv2/imgproc/imgproc.hpp"
+	"opencv2/video/tracking.hpp"
+	"opencv2/video/background_segm.hpp"
+	"opencv2/features2d/features2d.hpp"
+	"opencv2/objdetect/objdetect.hpp"
+	"opencv2/calib3d/calib3d.hpp"
+	"opencv2/ml/ml.hpp"
+	"opencv2/highgui/highgui_c.h"
+	"opencv2/highgui/highgui.hpp"
+	"opencv2/contrib/contrib.hpp"
+
+1317284543 c:\users\gameover\code\of007\addons\ofxopencv\libs\opencv\include\opencv2\video\background_segm.hpp
+	"opencv2/core/core.hpp"
+
+1317284543 c:\users\gameover\code\of007\addons\ofxopencv\libs\opencv\include\opencv2\ml\ml.hpp
+	"opencv2/core/core.hpp"
+	<limits.h>
+	<windows.h>
+	<map>
+	<string>
+	<iostream>
+
+1317284543 c:\users\gameover\code\of007\addons\ofxopencv\libs\opencv\include\opencv2\highgui\highgui_c.h
+	"opencv2/core/core_c.h"
+	<windows.h>
+
+1317284543 c:\users\gameover\code\of007\addons\ofxopencv\libs\opencv\include\opencv2\highgui\highgui.hpp
+	"opencv2/core/core.hpp"
+	"opencv2/highgui/highgui_c.h"
+
+1317284543 c:\users\gameover\code\of007\addons\ofxopencv\libs\opencv\include\opencv2\contrib\contrib.hpp
+	"opencv2/core/core.hpp"
+	"opencv2/features2d/features2d.hpp"
+	"opencv2/objdetect/objdetect.hpp"
+
+1317281471 c:\users\gameover\code\of007\addons\ofxcv\src\utilities.h
+	"ofMain.h"
+	"opencv2/opencv.hpp"
+
+1317281471 c:\users\gameover\code\of007\addons\ofxcv\src\wrappers.h
+	"ofMain.h"
+	"opencv2/opencv.hpp"
+	"Utilities.h"
+
+1317281471 c:\users\gameover\code\of007\addons\ofxcv\src\helpers.h
+	"opencv2/opencv.hpp"
+	"ofMain.h"
+
+1317281471 c:\users\gameover\code\of007\addons\ofxcv\src\distance.h
+	<string>
+	<vector>
+	<cstdlib>
+
+1317281471 c:\users\gameover\code\of007\addons\ofxcv\src\contourfinder.h
+	"Utilities.h"
+	"Tracker.h"
+
+1317281471 c:\users\gameover\code\of007\addons\ofxcv\src\tracker.h
+	"opencv2/opencv.hpp"
+	<utility>
+	<map>
+
+1317308730 c:\users\gameover\code\of007\addons\ofxcv\src\runningbackground.h
+	"Utilities.h"
+
+1317281471 source:c:\users\gameover\code\of007\addons\ofxcv\src\contourfinder.cpp
+	"ContourFinder.h"
+	"Wrappers.h"
+
+1317281471 source:c:\users\gameover\code\of007\addons\ofxcv\src\distance.cpp
+	"Distance.h"
+	<string.h>
+
+1317281471 source:c:\users\gameover\code\of007\addons\ofxcv\src\helpers.cpp
+	"Helpers.h"
+	"Utilities.h"
+
+1317281471 source:c:\users\gameover\code\of007\addons\ofxcv\src\runningbackground.cpp
+	"RunningBackground.h"
+
+1317281471 source:c:\users\gameover\code\of007\addons\ofxcv\src\tracker.cpp
+	"Tracker.h"
+
+1317281471 source:c:\users\gameover\code\of007\addons\ofxcv\src\utilities.cpp
+	"Utilities.h"
+	"ofMath.h"
+
+1317281471 source:c:\users\gameover\code\of007\addons\ofxcv\src\wrappers.cpp
+	"Wrappers.h"
+
+1317280914 source:c:\users\gameover\code\of007\addons\ofxfacetracker\src\expression.cpp
+	"Expression.h"
+
+1317280914 c:\users\gameover\code\of007\addons\ofxfacetracker\src\expression.h
+	"ofxCv.h"
+
+1317309192 source:c:\users\gameover\code\of007\addons\ofxfacetracker\libs\tracker\clm.cc
+	<CLM.h>
+
+1317309192 c:\users\gameover\code\of007\addons\ofxfacetracker\libs\tracker\clm.h
+	<PDM.h>
+	<Patch.h>
+	<vector>
+
+1317309192 c:\users\gameover\code\of007\addons\ofxfacetracker\libs\tracker\pdm.h
+	<IO.h>
+
+1317309192 c:\users\gameover\code\of007\addons\ofxfacetracker\libs\tracker\io.h
+	<opencv/cv.h>
+	<fstream>
+
+1317309192 c:\users\gameover\code\of007\addons\ofxfacetracker\libs\tracker\patch.h
+	<IO.h>
+
+1317309192 source:c:\users\gameover\code\of007\addons\ofxfacetracker\libs\tracker\fcheck.cc
+	<FCheck.h>
+
+1317309192 c:\users\gameover\code\of007\addons\ofxfacetracker\libs\tracker\fcheck.h
+	<PAW.h>
+	<vector>
+
+1317309192 c:\users\gameover\code\of007\addons\ofxfacetracker\libs\tracker\paw.h
+	<IO.h>
+
+1317309192 source:c:\users\gameover\code\of007\addons\ofxfacetracker\libs\tracker\fdet.cc
+	<FDet.h>
+
+1317309192 c:\users\gameover\code\of007\addons\ofxfacetracker\libs\tracker\fdet.h
+	<IO.h>
+
+1317309192 source:c:\users\gameover\code\of007\addons\ofxfacetracker\libs\tracker\io.cc
+	<IO.h>
+	<stdio.h>
+
+1317309192 source:c:\users\gameover\code\of007\addons\ofxfacetracker\libs\tracker\paw.cc
+	<PAW.h>
+
+1317309192 source:c:\users\gameover\code\of007\addons\ofxfacetracker\libs\tracker\pdm.cc
+	<PDM.h>
+
+1317309192 source:c:\users\gameover\code\of007\addons\ofxfacetracker\libs\tracker\patch.cc
+	<Patch.h>
+
+1317309327 source:c:\users\gameover\code\of007\addons\ofxfacetracker\libs\tracker\tracker.cc
+	<Tracker.h>
+
+1317309192 c:\users\gameover\code\of007\addons\ofxfacetracker\libs\tracker\tracker.h
+	<CLM.h>
+	<FDet.h>
+	<FCheck.h>
+
+1317280914 source:c:\users\gameover\code\of007\addons\ofxfacetracker\src\expressionclassifier.cpp
+	"ExpressionClassifier.h"
+
+1317280914 c:\users\gameover\code\of007\addons\ofxfacetracker\src\expressionclassifier.h
+	"ofxCv.h"
+	"Expression.h"
+	"ofxFaceTracker.h"
+
+1317280914 c:\users\gameover\code\of007\addons\ofxfacetracker\src\ofxfacetracker.h
+	"ofxCv.h"
+	"Tracker.h"
+	"ExpressionClassifier.h"
+
+1317311150 source:c:\users\gameover\code\of007\addons\ofxfacetracker\src\ofxfacetracker.cpp
+	"ofxFaceTracker.h"
 

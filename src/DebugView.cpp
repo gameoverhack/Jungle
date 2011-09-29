@@ -76,7 +76,7 @@ void DebugView::update(){
      ********************************************************/
 
 	ofSetColor(0, 255, 255, 255);
-	ofDrawBitmapString(msg, 20, 20); // this gets rendered upside down for some reason ?*/
+	ofDrawBitmapString(msg, 20, 50); // this gets rendered upside down for some reason ?*/
 
     /********************************************************
      *               Draw Movie Progress Bar                *
@@ -187,8 +187,8 @@ void DebugView::update(){
 
         ofNoFill();
 
-        glScalef(1.0f, -1.0f, 1.0);
-        glTranslatef((float)ofGetWidth()/2.0f, -_viewHeight, 1.0);
+        //glScalef(1.0f, -1.0f, 1.0);
+        //glTranslatef((float)ofGetWidth()/2.0f, -_viewHeight, 1.0);
 		ofSetColor(255, 255, 255, 255);
 
         glTranslatef(16.0f, 16.0f, 0.0f);

@@ -14,7 +14,7 @@
 #include "AppModel.h"
 #include "Logger.h"
 #include "ofxOpenCv.h"
-#include "ofxCvHaarFinder.h"
+//#include "ofxCvHaarFinder.h"
 
 #ifdef TARGET_OSX
 #include "ofxQTKitVideoGrabber.h"	// better quality allows recording but OSX only....
@@ -22,6 +22,10 @@
 #include "goVideoGrabber.h"			// X-platform and will work with multiple cams but not with ManyCam for some reason...
 #include <map>
 #endif
+
+#include "ofxFaceTracker.h"
+
+using namespace FACETRACKER;
 
 static int _instanceCount = 0;
 
@@ -57,6 +61,9 @@ public:
     ofxCvHaarFinder         _finder;
 
     bool                    _doFaceDetection;
+    bool                    _doFaceTracking;
+
+    ofxFaceTracker          _tracker;
 
 private:
 
@@ -72,6 +79,8 @@ private:
 
     ofxCvColorImage         _camImage;
     ofxCvColorImage         _colourImage;
+
+
 
 };
 

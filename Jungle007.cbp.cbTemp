@@ -149,10 +149,6 @@
 			<Add directory="..\..\..\addons\ofxBoost\src\lib\boost" />
 			<Add directory="..\..\..\addons\ofxBoost\lib\win" />
 			<Add directory="..\..\..\addons\ofxBoost\src\lib" />
-			<Add directory="..\..\..\addons\ofxFaceTracker\src" />
-			<Add directory="..\..\..\addons\ofxFaceTracker\libs\Tracker" />
-			<Add directory="..\..\..\addons\ofxFaceTracker\libs" />
-			<Add directory="..\..\..\addons\ofxCv\src" />
 		</Compiler>
 		<Linker>
 			<Add option="..\..\..\addons\ofxOpenCv\libs\opencv\lib\win_cb\libopencv_legacy220.a" />
@@ -400,48 +396,9 @@
 		<Unit filename="..\..\..\addons\ofxAssimpModelLoader\src\ofxAssimpModelLoader.h">
 			<Option virtualFolder="addons\ofxAssimpModelLoader\src" />
 		</Unit>
-		<Unit filename="..\..\..\addons\ofxCv\src\Calibration.cpp" />
-		<Unit filename="..\..\..\addons\ofxCv\src\Calibration.h" />
-		<Unit filename="..\..\..\addons\ofxCv\src\ContourFinder.cpp" />
-		<Unit filename="..\..\..\addons\ofxCv\src\ContourFinder.h" />
-		<Unit filename="..\..\..\addons\ofxCv\src\Distance.cpp" />
-		<Unit filename="..\..\..\addons\ofxCv\src\Distance.h" />
-		<Unit filename="..\..\..\addons\ofxCv\src\Helpers.cpp" />
-		<Unit filename="..\..\..\addons\ofxCv\src\Helpers.h" />
-		<Unit filename="..\..\..\addons\ofxCv\src\RunningBackground.cpp" />
-		<Unit filename="..\..\..\addons\ofxCv\src\RunningBackground.h" />
-		<Unit filename="..\..\..\addons\ofxCv\src\Tracker.cpp" />
-		<Unit filename="..\..\..\addons\ofxCv\src\Tracker.h" />
-		<Unit filename="..\..\..\addons\ofxCv\src\Utilities.cpp" />
-		<Unit filename="..\..\..\addons\ofxCv\src\Utilities.h" />
-		<Unit filename="..\..\..\addons\ofxCv\src\Wrappers.cpp" />
-		<Unit filename="..\..\..\addons\ofxCv\src\Wrappers.h" />
-		<Unit filename="..\..\..\addons\ofxCv\src\ofxCv.h" />
 		<Unit filename="..\..\..\addons\ofxDirList\src\ofxDirList.h">
 			<Option virtualFolder="addons\ofxDirList\src" />
 		</Unit>
-		<Unit filename="..\..\..\addons\ofxFaceTracker\libs\Tracker\CLM.cc" />
-		<Unit filename="..\..\..\addons\ofxFaceTracker\libs\Tracker\CLM.h" />
-		<Unit filename="..\..\..\addons\ofxFaceTracker\libs\Tracker\FCheck.cc" />
-		<Unit filename="..\..\..\addons\ofxFaceTracker\libs\Tracker\FCheck.h" />
-		<Unit filename="..\..\..\addons\ofxFaceTracker\libs\Tracker\FDet.cc" />
-		<Unit filename="..\..\..\addons\ofxFaceTracker\libs\Tracker\FDet.h" />
-		<Unit filename="..\..\..\addons\ofxFaceTracker\libs\Tracker\IO.cc" />
-		<Unit filename="..\..\..\addons\ofxFaceTracker\libs\Tracker\IO.h" />
-		<Unit filename="..\..\..\addons\ofxFaceTracker\libs\Tracker\PAW.cc" />
-		<Unit filename="..\..\..\addons\ofxFaceTracker\libs\Tracker\PAW.h" />
-		<Unit filename="..\..\..\addons\ofxFaceTracker\libs\Tracker\PDM.cc" />
-		<Unit filename="..\..\..\addons\ofxFaceTracker\libs\Tracker\PDM.h" />
-		<Unit filename="..\..\..\addons\ofxFaceTracker\libs\Tracker\Patch.cc" />
-		<Unit filename="..\..\..\addons\ofxFaceTracker\libs\Tracker\Patch.h" />
-		<Unit filename="..\..\..\addons\ofxFaceTracker\libs\Tracker\Tracker.cc" />
-		<Unit filename="..\..\..\addons\ofxFaceTracker\libs\Tracker\Tracker.h" />
-		<Unit filename="..\..\..\addons\ofxFaceTracker\src\Expression.cpp" />
-		<Unit filename="..\..\..\addons\ofxFaceTracker\src\Expression.h" />
-		<Unit filename="..\..\..\addons\ofxFaceTracker\src\ExpressionClassifier.cpp" />
-		<Unit filename="..\..\..\addons\ofxFaceTracker\src\ExpressionClassifier.h" />
-		<Unit filename="..\..\..\addons\ofxFaceTracker\src\ofxFaceTracker.cpp" />
-		<Unit filename="..\..\..\addons\ofxFaceTracker\src\ofxFaceTracker.h" />
 		<Unit filename="..\..\..\addons\ofxFft\libs\kiss\_kiss_fft_guts.h" />
 		<Unit filename="..\..\..\addons\ofxFft\libs\kiss\kiss_fft.c">
 			<Option compilerVar="CC" />
@@ -787,18 +744,10 @@
 		<Unit filename="bin\data\config_scenes.xml">
 			<Option virtualFolder="src\" />
 		</Unit>
-		<Unit filename="bin\data\leveltextureblend.frag">
-			<Option virtualFolder="src\" />
-		</Unit>
-		<Unit filename="bin\data\leveltexturevertex.vert">
-			<Option virtualFolder="src\" />
-		</Unit>
-		<Unit filename="bin\data\multitexturemerge.frag">
-			<Option virtualFolder="src\" />
-		</Unit>
-		<Unit filename="bin\data\vertex.vert">
-			<Option virtualFolder="src\" />
-		</Unit>
+		<Unit filename="bin\data\leveltextureblend.frag" />
+		<Unit filename="bin\data\leveltexturevertex.vert" />
+		<Unit filename="bin\data\multitexturemerge.frag" />
+		<Unit filename="bin\data\vertex.vert" />
 		<Unit filename="src\Analyzer.cpp">
 			<Option virtualFolder="src\" />
 		</Unit>

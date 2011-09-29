@@ -49,6 +49,7 @@ void AppController::setup() {
 
 	ofSetFrameRate(60);          // has to be as we can't set hammer ofArduino too hard...hmmm
 	ofSetVerticalSync(true);
+    ofSetDrawBitmapMode(OF_BITMAPMODE_MODEL_BILLBOARD);
 
 	_isFullScreen		= false; // change this when we start in fullscreen mode
 	_switchToSequence	= NULL;
@@ -107,7 +108,7 @@ void AppController::setup() {
 
     _appModel->setProperty("showProps", false);
 	_appModel->setProperty("autoTest", false);
-	_appModel->setProperty("fullScreen", true);
+	_appModel->setProperty("fullScreen", false);
 	_appModel->setProperty("tryScaleMethod", 0);
 
 /*	_appModel->setProperty("cameraToAdjust", (string)"0");
@@ -308,6 +309,10 @@ void AppController::draw() {
 	glPushMatrix();
 	glTranslatef(0.0f, 40.0f, 0.0f);
 	_camControllers[0]->_greyImage.draw(0,0);
+	glPushMatrix();
+	glScalef(0.25f,0.25f,1.0f);
+	_camControllers[0]->_tracker.draw();
+	glPopMatrix();
 	for (int face = 0; face < _camControllers[0]->_finder.blobs.size(); face++) {
 	    ofSetColor(255,0,0);
 	    ofNoFill();
@@ -318,8 +323,12 @@ void AppController::draw() {
 
 	}
 	ofSetColor(255,255,255);
-	glTranslatef(1920.0f/5.0f, 0.0f, 0.0f);
+	glTranslatef(1920.0f/6.0f, 0.0f, 0.0f);
 	_camControllers[1]->_greyImage.draw(0,0);
+    glPushMatrix();
+	glScalef(0.25f,0.25f,1.0f);
+	_camControllers[1]->_tracker.draw();
+	glPopMatrix();
     for (int face = 0; face < _camControllers[1]->_finder.blobs.size(); face++) {
 	    ofSetColor(255,0,0);
 	    ofNoFill();
@@ -487,6 +496,8 @@ void AppController::keyPressed(int key){
              _appModel->setProperty("showProps", !showProps);
             break;
         case 'w':
+             _camControllers[0]->_doFaceTracking ^= true;
+             _camControllers[1]->_doFaceTracking ^= true;
              _camControllers[0]->_doFaceDetection ^= true;
              _camControllers[1]->_doFaceDetection ^= true;
             break;
@@ -560,8 +571,8 @@ void AppController::setFullscreen() {
 
 void AppController::toggleFullscreen(){
 #ifdef TARGET_WIN32
-    if (!boost::any_cast<bool>(_appModel->getProperty("fullScreen")))
-    {
+
+    if (!boost::any_cast<bool>(_appModel->getProperty("fullScreen"))) {
         int currentWidth = ofGetWidth();
         LOG_VERBOSE("Trying to force fullscreen on Windows 7: " + ofToString(currentWidth));
         _windowTitle = "Jungle";
@@ -582,9 +593,7 @@ void AppController::toggleFullscreen(){
         SetWindowLong(vWnd, GWL_STYLE, windowStyle);
         SetWindowPos(vWnd, HWND_TOP, x, y, width, height, SWP_FRAMECHANGED);
         //_isFullScreen = true;
-    }
-    else
-    {
+    } else {
         int x = 0;
         int y = 0;
         int width = 1280; // TODO: set in config

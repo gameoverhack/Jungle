@@ -54,6 +54,8 @@ void AppView::update() {
 
 void AppView::draw() {
 
+    ofEnableAlphaBlending();
+
     // fullscreen shenanigans
     //bool isFullScreen = boost::any_cast<bool>(_appModel->getProperty("fullScreen"));
 #ifdef EXTENDED_DISPLAY
@@ -91,8 +93,14 @@ void AppView::draw() {
 
 
 		if(boost::any_cast<bool>(_appModel->getProperty("showDebugView"))){
+#if OF_VERSION < 7
 			_debugView->draw(0, height, width, -height);
+#else
+            _debugView->draw(0, 0, width, height);
+#endif
 		}
 	}
+
+    ofDisableAlphaBlending();
 
 }
