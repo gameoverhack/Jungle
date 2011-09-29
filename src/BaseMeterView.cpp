@@ -25,7 +25,7 @@ void BaseMeterView::update(interaction_t interactionType) {
     int   currentInteractivity  = _appModel->getCurrentInteractivity();
     bool  isInteractive         = (currentInteractivity == kINTERACTION_BOTH || currentInteractivity == interactionType);
 
-    bool  isBlocked             = (_scaledInputLevel > 0.05f);   // make more complex soon ;-)
+    //bool  isBlocked             = (_scaledInputLevel > 0.05f);   // make more complex soon ;-)
 
     int   totalNumSequences     = _appModel->getCurrentScene()->getNumOfSequences();
     int   thisNumSequence       = _appModel->getCurrentSequence()->getNumber();
@@ -36,8 +36,8 @@ void BaseMeterView::update(interaction_t interactionType) {
     /********************************************************
      *      Draw the Meter to the ViewFBO                   *
      ********************************************************/
-
-    drawMeterMask(_scaledInputLevel);
+    drawMeterMask(_scaledInputLevel, _meterSteps, _meterPixelsForStep, &_meterMaskFBO);
+    if (interactionType == kINTERACTION_ATTACKER) drawMeterMask(thisNumSequence - 1, _stationSteps, _stationPixelsForStep, &_stationMaskFBO);
 
     _viewFBO.begin();
     glPushMatrix();
@@ -45,28 +45,49 @@ void BaseMeterView::update(interaction_t interactionType) {
     glClearColor(0.0, 0.0, 0.0, 1.0); // black background no transparency
     glClear(GL_COLOR_BUFFER_BIT);
 
+    switch(interactionType) {
+        case kINTERACTION_ATTACKER:
+        {
+            _bird->draw(_bird_x, _bird_y);
+            drawMeterShader(_stations_x, _stations_y, &_stationMaskTex, _stations_on, _stations_off);
+            _button_off->draw(_button_x, _button_y);
+
+            if (isInteractive && _scaledInputLevel > 0.05f) {
+                _button_on->draw(_button_x, _button_y);
+            } else if (!isInteractive && _scaledInputLevel > 0.05f) {
+                _button_off->draw(_button_x, _button_y);
+                _button_deny->draw(_button_x, _button_y);
+            }
+
+            break;
+        }
+        case kINTERACTION_VICTIM:
+        {
+            _turtle_bar->draw(_turtle_bar_x, _turtle_bar_y);
+            _turtle->draw(_turtle_x, _turtle_y);
+            _top_off->draw(_top_x, _top_y);
+
+            if (isInteractive && _scaledInputLevel > 0.99f) {
+                _top_on->draw(_top_x, _top_y);
+            } else if (!isInteractive && _scaledInputLevel > 0.05f) {
+                _top_off->draw(_top_x, _top_y);
+                _top_deny->draw(_top_x, _top_y);
+            }
+
+            break;
+        }
+    }
+
     if (isInteractive) {
 
-        //if (_scaledInputLevel > threshold) ofSetColor(255, 0, 0, 255); // no tinting
-
-        drawMeterBlend(_meter_x, _meter_y);
-
-         ofSetColor(255, 255, 255, 255); // no tinting
-        //_meter_level->draw(_bar_x, bar_y - 5);
-       // _icon_on->draw(_icon_x, _icon_y);
+        drawMeterShader(_meter_x, _meter_y, &_meterMaskTex, _meter_on, _meter_off);
 
     } else {
 
-        float blend = 0.0f; // TODO: make prop
-
-        drawMeterBlend(_meter_x, _meter_y, blend);
-
-        ofSetColor(255.0f*blend, 255.0f*blend, 255.0f*blend, 255.0f*blend); // no tinting
-        //_icon_off->draw(_icon_x, _icon_y);
-
-        //if (isBlocked) _icon_bar->draw(_icon_x, _icon_y);
+        _meter_off->draw(_meter_x, _meter_y);
 
     }
+
 
     glPopMatrix();
 
@@ -74,13 +95,13 @@ void BaseMeterView::update(interaction_t interactionType) {
 
 }
 
-void BaseMeterView::drawMeterMask(float input) {
+void BaseMeterView::drawMeterMask(float input, int meterSteps, float meterPixelsForStep, ofxFbo * maskFBO) {
 
     /********************************************************
      *    Draw a rect in an FBO to mask the level meter     *
      ********************************************************/
 
-    _maskFBO.begin();
+    maskFBO->begin();
     glPushMatrix();
 
     glClearColor(0.0, 0.0, 0.0, 0.0); // transparent clear colour
@@ -88,17 +109,41 @@ void BaseMeterView::drawMeterMask(float input) {
 
 	ofSetColor(255, 255, 255, 255); // no tinting
 	ofFill();
-	glTranslatef(0.0f, _maskFBO.getHeight(), 0.0f);
+	glTranslatef(0.0f, maskFBO->getHeight(), 0.0f);
 	glScalef(1.0f, -1.0f, 1.0f);
-    ofRect(0, 0, _maskFBO.getWidth(), floor(input * _meterSteps) * _meterPixelsForStep);
+    ofRect(0, 0, maskFBO->getWidth(), floor(input * meterSteps) * meterPixelsForStep);
     //ofNoFill();
 
     glPopMatrix();
-    _maskFBO.end();
+    maskFBO->end();
 
 }
 
-void BaseMeterView::drawMeterBlend(float x, float y, float blend) {
+void BaseMeterView::drawMeterMask(int input, int meterSteps, float meterPixelsForStep, ofxFbo * maskFBO) {
+
+    /********************************************************
+     *    Draw a rect in an FBO to mask the level meter     *
+     ********************************************************/
+
+    maskFBO->begin();
+    glPushMatrix();
+
+    glClearColor(0.0, 0.0, 0.0, 0.0); // transparent clear colour
+    glClear(GL_COLOR_BUFFER_BIT);
+
+	ofSetColor(255, 255, 255, 255); // no tinting
+	ofFill();
+	glTranslatef(0.0f, maskFBO->getHeight(), 0.0f);
+	glScalef(1.0f, -1.0f, 1.0f);
+    ofRect(0, 0, maskFBO->getWidth(), input * meterPixelsForStep);
+    //ofNoFill();
+
+    glPopMatrix();
+    maskFBO->end();
+
+}
+
+void BaseMeterView::drawMeterShader(float x, float y, ofTexture *maskTex, ofTexture *meterOnTex, ofTexture *meterOffTex) {
 
     /********************************************************
      *    Use a shader to mask the meter_on/off png         *
@@ -108,19 +153,19 @@ void BaseMeterView::drawMeterBlend(float x, float y, float blend) {
     _shader.begin();
     glPushMatrix();
 
-	_shader.setTexture("textures[0]", _maskTex, 10);
-	_shader.setTexture("textures[1]", *_meter_on, 11);
-	_shader.setTexture("textures[2]", *_meter_off, 12);
+	_shader.setTexture("textures[0]", *maskTex, 10);
+	_shader.setTexture("textures[1]", *meterOnTex, 11);
+	_shader.setTexture("textures[2]", *meterOffTex, 12);
 
-    _shader.setUniform1f("level", blend);
+    _shader.setUniform1f("level", 1.0f);
 
     glTranslatef(x, y, 1.0f);
 
 	glBegin(GL_TRIANGLE_STRIP);
 	glTexCoord2f(0, 0);	glVertex2f(0, 0);
-	glTexCoord2f(0, _maskTex.getHeight()); glVertex2f(0, _maskTex.getHeight());
-	glTexCoord2f(_maskTex.getWidth(), 0); glVertex2f(_maskTex.getWidth(), 0);
-	glTexCoord2f(_maskTex.getWidth(), _maskTex.getHeight()); glVertex2f(_maskTex.getWidth(), _maskTex.getHeight());
+	glTexCoord2f(0, maskTex->getHeight()); glVertex2f(0, maskTex->getHeight());
+	glTexCoord2f(maskTex->getWidth(), 0); glVertex2f(maskTex->getWidth(), 0);
+	glTexCoord2f(maskTex->getWidth(), maskTex->getHeight()); glVertex2f(maskTex->getWidth(), maskTex->getHeight());
 	glEnd();
 
 	glPopMatrix();

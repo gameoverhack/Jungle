@@ -15,21 +15,49 @@ public:
 
 protected:
 
-    void drawMeterMask(float input);
-    void drawMeterBlend(float x, float y, float blend = 1.0f);
+    void drawMeterMask(float input, int meterSteps, float meterPixelsForStep, ofxFbo * maskFBO);
+    void drawMeterMask(int input, int meterSteps, float meterPixelsForStep, ofxFbo * maskFBO);
+    void drawMeterShader(float x, float y, ofTexture *_maskTex, ofTexture *meterOnTex, ofTexture *meterOffTex);
 
     ofxShader       _shader;
-    ofTexture       _maskTex;
-    ofxFbo          _maskFBO;
+    ofTexture       _meterMaskTex;
+    ofxFbo          _meterMaskFBO;
+    ofTexture       _stationMaskTex;
+    ofxFbo          _stationMaskFBO;
 
     ofTexture *     _meter_on;
     ofTexture *     _meter_off;
+    ofTexture *     _top_on;
+    ofTexture *     _top_off;
+    ofTexture *     _top_deny;
+    ofTexture *     _button_on;
+    ofTexture *     _button_off;
+    ofTexture *     _button_deny;
+    ofTexture *     _stations_on;
+    ofTexture *     _stations_off;
+    ofTexture *     _turtle_bar;
+    ofTexture *     _turtle;
+    ofTexture *     _bird;
 
+    float           _top_x;
+    float           _top_y;
+    float           _button_x;
+    float           _button_y;
+    float           _stations_x;
+    float           _stations_y;
+    float           _turtle_bar_x;
+    float           _turtle_bar_y;
+    float           _turtle_x;
+    float           _turtle_y;
+    float           _bird_x;
+    float           _bird_y;
     float           _meter_x;
     float           _meter_y;
 
     int             _meterSteps;
     float           _meterPixelsForStep;
+    int             _stationSteps;
+    float           _stationPixelsForStep;
 
     float           _scaledInputLevel;
 

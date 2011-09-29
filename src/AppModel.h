@@ -44,6 +44,7 @@ enum {
     kGFX_METER_OFF,
     kGFX_TOP_ON,
     kGFX_TOP_OFF,
+    kGFX_TOP_DENY,
     kGFX_STATIONS_ON,
     kGFX_STATIONS_OFF,
     kGFX_BIRD,

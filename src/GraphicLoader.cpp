@@ -29,6 +29,7 @@ GraphicLoader::GraphicLoader(string assetPath) {
         if (name.find("button_no")      != string::npos) ok = _appModel->loadGraphicAsset(path, kGFX_BUTTON_DENY);
         if (name.find("top_on")         != string::npos) ok = _appModel->loadGraphicAsset(path, kGFX_TOP_ON);
         if (name.find("top_off")        != string::npos) ok = _appModel->loadGraphicAsset(path, kGFX_TOP_OFF);
+        if (name.find("top_no")         != string::npos) ok = _appModel->loadGraphicAsset(path, kGFX_TOP_DENY);
         if (name.find("stations_on")    != string::npos) ok = _appModel->loadGraphicAsset(path, kGFX_STATIONS_ON);
         if (name.find("stations_off")   != string::npos) ok = _appModel->loadGraphicAsset(path, kGFX_STATIONS_OFF);
         if (name.find("bird")           != string::npos) ok = _appModel->loadGraphicAsset(path, kGFX_BIRD);

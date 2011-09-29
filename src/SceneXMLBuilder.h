@@ -42,25 +42,24 @@ using std::string;
 class SceneXMLBuilder : public IXMLBuilder {
 public:
 	SceneXMLBuilder(string dataPath, string xmlFile);
-	
-	
+
+
 private:
 	map<string, Scene*> _builderModel;
-	
+
 	string			_xmlFile;
 	string			_dataPath;
 
 	goDirList		_moviesFileLister;
 	goDirList		_assetsFileLister;
 
-
 	void setupFileListers();
-	void santiseFiles(); // lowercases all files ON DISK, any other checks?	
+	void santiseFiles(); // lowercases all files ON DISK, any other checks?
 	void checkMovieAssets();
 	void buildAppModel();
 	void buildXML(); // builds actual xml from the info map
 
-	
+
 };
 
 #endif
