@@ -46,6 +46,9 @@ private:
     int         _audioBufferSize;
     int         _fftCyclicBufferSize;
     int         _fftCyclicBufferOffset;
+#if OF_VERSION > 6
+    ofSoundStream soundStream;
+#endif
 
 };
 

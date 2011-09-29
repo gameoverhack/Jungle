@@ -39,6 +39,7 @@ AttackView::AttackView(float width, float height) : BaseMeterView(width, height)
      ********************************************************/
 
     // allocate fbo's
+#if OF_VERSION < 7
     _meterMaskTex.allocate(147, 225, GL_RGBA); // size of the meter_on/off png
     _meterMaskFBO.setup(147, 225);
     _meterMaskFBO.attach(_meterMaskTex);
@@ -46,7 +47,10 @@ AttackView::AttackView(float width, float height) : BaseMeterView(width, height)
     _stationMaskTex.allocate(147, 515, GL_RGBA); // size of the meter_on/off png
     _stationMaskFBO.setup(147, 515);
     _stationMaskFBO.attach(_stationMaskTex);
-
+#else
+    _meterMaskFBO.allocate(147, 225);
+    _stationMaskFBO.allocate(147, 515);
+#endif
 }
 
 void AttackView::update() {

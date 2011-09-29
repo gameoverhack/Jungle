@@ -16,7 +16,7 @@ SceneView::SceneView(float width, float height) : BaseView(width ,height) {
     /********************************************************
      *              Allocate Textures and FBO's           	*
      ********************************************************/
-
+#if OF_VERSION < 7
 	// Allocate texture and attach*/
 	_vic1Tex.allocate(_viewWidth, _viewHeight, GL_RGBA);
 	_vic1FBO.setup(_viewWidth, _viewHeight);
@@ -29,13 +29,19 @@ SceneView::SceneView(float width, float height) : BaseView(width ,height) {
 	_atk2Tex.allocate(_viewWidth, _viewHeight, GL_RGBA);
 	_atk2FBO.setup(_viewWidth, _viewHeight);
 	_atk2FBO.attach(_atk2Tex);
-
+#else
+    _vic1FBO.allocate(_viewWidth, _viewHeight);
+    _atk1FBO.allocate(_viewWidth, _viewHeight);
+    _atk2FBO.allocate(_viewWidth, _viewHeight);
+#endif
 	// set up shader
 	string vertPath = boost::any_cast<string>(_appModel->getProperty("shaderHeadVertPath"));
 	string fragPath = boost::any_cast<string>(_appModel->getProperty("shaderHeadFragPath"));
-
+#if OF_VERSION < 7
 	_shader.setup(ofToDataPath(vertPath), ofToDataPath(fragPath));
-
+#else
+    _shader.load(ofToDataPath(vertPath), ofToDataPath(fragPath));
+#endif
 }
 
 void SceneView::update() {
@@ -86,13 +92,23 @@ void SceneView::update() {
 
 	// set up shader stuff
 	_shader.begin();
+#if OF_VERSION < 7
 	_shader.setTexture("textures[0]", *sceneTexture, 10);
 	_shader.setTexture("textures[1]", _vic1Tex, 11);
 	_shader.setTexture("textures[2]", _atk1Tex, 12);
+#else
+	_shader.setUniformTexture("textures[0]", *sceneTexture, 10);
+	_shader.setUniformTexture("textures[1]", _vic1FBO.getTextureReference(), 11);
+	_shader.setUniformTexture("textures[2]", _vic1FBO.getTextureReference(), 12);
+#endif
 
 	int numTextures = 3;
 	if (_appModel->getCurrentSequence()->getTransformCount() > 2) {
+#if OF_VERSION < 7
 		_shader.setTexture("textures[3]", _atk2Tex, 13);
+#else
+        _shader.setUniformTexture("textures[3]", _atk2FBO.getTextureReference(), 13);
+#endif
 		numTextures++;
 	}
 	_shader.setUniform1i("numTextures", numTextures);
@@ -116,12 +132,17 @@ void SceneView::update() {
 	_viewFBO.end();
 
 }
-
+#if OF_VERSION < 7
 void SceneView::drawCharacter(ofxFbo * targetFBO,
 							  ofTexture * faceTexture,
 							  CamTransform *transform,
 							  PosRotScale prs) {
-
+#else
+void SceneView::drawCharacter(ofFbo * targetFBO,
+							  ofTexture * faceTexture,
+							  CamTransform *transform,
+							  PosRotScale prs) {
+#endif
 
     float width  = faceTexture->getWidth();
     float height = faceTexture->getHeight();

@@ -11,7 +11,9 @@
 #define _H_BASEVIEW
 
 #include "AppModel.h"
+#if OF_VERSION < 7
 #include "ofxFbo.h"
+#endif
 
 class BaseView {
 
@@ -27,7 +29,11 @@ public:
 	virtual void draw(float x, float y, float width, float height);
 
 	// Returns the views fbo
+#if OF_VERSION < 7
 	ofxFbo		* getViewFBO();
+#else
+    ofFbo       * getViewFBO();
+#endif
 	ofTexture	* getViewFBOTexture();
 
     float         getWidth();
@@ -38,10 +44,12 @@ private:
 protected:
 
 	float		_viewWidth, _viewHeight;
-
+#if OF_VERSION < 7
 	ofxFbo		_viewFBO; // final output FBO
-
-	ofTexture	_viewFBOTexture; // Texture for final output FBO
+    ofTexture	_viewFBOTexture; // Texture for final output FBO
+#else
+    ofFbo		_viewFBO; // final output FBO
+#endif
 
 };
 

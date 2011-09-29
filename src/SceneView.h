@@ -11,7 +11,9 @@
 #define _H_SCENEVIEW
 
 #include "BaseView.h"
+#if OF_VERSION < 7
 #include "ofxShader.h"
+#endif
 
 class SceneView : public BaseView {
 
@@ -22,12 +24,17 @@ public:
 
 	void update();
 	//void draw();
-
+#if OF_VERSION < 7
 	void drawCharacter(ofxFbo * targetFBO,
 					   ofTexture * faceTexture,
 					   CamTransform *transform,
 					   PosRotScale prs);
-
+#else
+	void drawCharacter(ofFbo * targetFBO,
+					   ofTexture * faceTexture,
+					   CamTransform *transform,
+					   PosRotScale prs);
+#endif
 private:
 
     int currentFrame;
@@ -36,13 +43,20 @@ private:
 	ofTexture _cameraTwo;
 
 	// fbo stuff
+#if OF_VERSION < 7
 	ofTexture _vic1Tex, _atk1Tex, _atk2Tex;
 	ofxFbo _vic1FBO, _atk1FBO, _atk2FBO;
-
+#else
+    ofFbo _vic1FBO, _atk1FBO, _atk2FBO;
+#endif
 	float   currentVideoHeight, currentVideoWidth;
 
 	// Shader stuff
+#if OF_VERSION < 7
 	ofxShader _shader;
+#else
+    ofShader  _shader;
+#endif
 
 protected:
 

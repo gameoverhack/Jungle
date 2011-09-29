@@ -23,9 +23,10 @@ AppView::AppView(float width, float height) : BaseView(width ,height) {
 AppView::~AppView() {
 
     LOG_NOTICE("Destroying all other (sub) views");
-
+#if OF_VERSION < 7
     _viewFBO.detach();
     _viewFBOTexture.clear();
+#endif
 
     delete _loadingView;
     delete _sceneView;

@@ -23,11 +23,13 @@
 #include "ArdController.h"
 #include "Analyzer.h"
 
+#include "ofAppGlutWindow.h"
+
 class AppController : public BaseState, public ofBaseApp {
 
 public:
 
-	AppController(ofAppBaseWindow * windowPtr);
+	AppController(ofAppGlutWindow * windowPtr);
 	~AppController();
 
 	void setup();
@@ -66,7 +68,7 @@ private:
 	MicController	* _micController;
 	ArdController	* _ardController;
 
-    ofAppBaseWindow * _windowPtr;
+    ofAppGlutWindow * _windowPtr;
 	bool			  _isFullScreen;
 #ifdef TARGET_WIN32
     char            * _windowTitle;

@@ -2,7 +2,9 @@
 #define _H_BASEMETERVIEW
 
 #include "BaseView.h"
+#if OF_VERSION < 7
 #include "ofxShader.h"
+#endif
 
 class BaseMeterView : public BaseView
 {
@@ -14,16 +16,26 @@ public:
     void    update(interaction_t interactionType);
 
 protected:
-
+#if OF_VERSION < 7
     void drawMeterMask(float input, int meterSteps, float meterPixelsForStep, ofxFbo * maskFBO);
     void drawMeterMask(int input, int meterSteps, float meterPixelsForStep, ofxFbo * maskFBO);
+#else
+    void drawMeterMask(float input, int meterSteps, float meterPixelsForStep, ofFbo * maskFBO);
+    void drawMeterMask(int input, int meterSteps, float meterPixelsForStep, ofFbo * maskFBO);
+#endif
     void drawMeterShader(float x, float y, ofTexture *_maskTex, ofTexture *meterOnTex, ofTexture *meterOffTex);
 
+#if OF_VERSION < 7
     ofxShader       _shader;
-    ofTexture       _meterMaskTex;
     ofxFbo          _meterMaskFBO;
-    ofTexture       _stationMaskTex;
     ofxFbo          _stationMaskFBO;
+    ofTexture       _meterMaskTex;
+    ofTexture       _stationMaskTex;
+#else
+    ofShader        _shader;
+    ofFbo           _meterMaskFBO;
+    ofFbo           _stationMaskFBO;
+#endif
 
     ofTexture *     _meter_on;
     ofTexture *     _meter_off;

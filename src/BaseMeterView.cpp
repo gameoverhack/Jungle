@@ -7,9 +7,11 @@ BaseMeterView::BaseMeterView(float width, float height) : BaseView(width, height
     // set up shader
 	string vertPath = boost::any_cast<string>(_appModel->getProperty("shaderLevelVertPath"));
 	string fragPath = boost::any_cast<string>(_appModel->getProperty("shaderLevelFragPath"));
-
+#if OF_VERSION < 7
 	_shader.setup(ofToDataPath(vertPath), ofToDataPath(fragPath));
-
+#else
+    _shader.load(ofToDataPath(vertPath), ofToDataPath(fragPath));
+#endif
 }
 
 BaseMeterView::~BaseMeterView() {
@@ -49,7 +51,11 @@ void BaseMeterView::update(interaction_t interactionType) {
         case kINTERACTION_ATTACKER:
         {
             _bird->draw(_bird_x, _bird_y);
+#if OF_VERSION < 7
             drawMeterShader(_stations_x, _stations_y, &_stationMaskTex, _stations_on, _stations_off);
+#else
+            drawMeterShader(_stations_x, _stations_y, &_stationMaskFBO.getTextureReference(), _stations_on, _stations_off);
+#endif
             _button_off->draw(_button_x, _button_y);
 
             if (isInteractive && _scaledInputLevel > 0.05f) {
@@ -79,9 +85,11 @@ void BaseMeterView::update(interaction_t interactionType) {
     }
 
     if (isInteractive) {
-
+#if OF_VERSION < 7
         drawMeterShader(_meter_x, _meter_y, &_meterMaskTex, _meter_on, _meter_off);
-
+#else
+        drawMeterShader(_meter_x, _meter_y, &_meterMaskFBO.getTextureReference(), _meter_on, _meter_off);
+#endif
     } else {
 
         _meter_off->draw(_meter_x, _meter_y);
@@ -94,9 +102,11 @@ void BaseMeterView::update(interaction_t interactionType) {
     _viewFBO.end();
 
 }
-
+#if OF_VERSION < 7
 void BaseMeterView::drawMeterMask(float input, int meterSteps, float meterPixelsForStep, ofxFbo * maskFBO) {
-
+#else
+void BaseMeterView::drawMeterMask(float input, int meterSteps, float meterPixelsForStep, ofFbo * maskFBO) {
+#endif
     /********************************************************
      *    Draw a rect in an FBO to mask the level meter     *
      ********************************************************/
@@ -118,9 +128,11 @@ void BaseMeterView::drawMeterMask(float input, int meterSteps, float meterPixels
     maskFBO->end();
 
 }
-
+#if OF_VERSION < 7
 void BaseMeterView::drawMeterMask(int input, int meterSteps, float meterPixelsForStep, ofxFbo * maskFBO) {
-
+#else
+void BaseMeterView::drawMeterMask(int input, int meterSteps, float meterPixelsForStep, ofFbo * maskFBO) {
+#endif
     /********************************************************
      *    Draw a rect in an FBO to mask the level meter     *
      ********************************************************/
@@ -152,10 +164,15 @@ void BaseMeterView::drawMeterShader(float x, float y, ofTexture *maskTex, ofText
 
     _shader.begin();
     glPushMatrix();
-
+#if OF_VERSION < 7
 	_shader.setTexture("textures[0]", *maskTex, 10);
 	_shader.setTexture("textures[1]", *meterOnTex, 11);
 	_shader.setTexture("textures[2]", *meterOffTex, 12);
+#else
+	_shader.setUniformTexture("textures[0]", *maskTex, 10);
+	_shader.setUniformTexture("textures[1]", *meterOnTex, 11);
+	_shader.setUniformTexture("textures[2]", *meterOffTex, 12);
+#endif
 
     _shader.setUniform1f("level", 1.0f);
 

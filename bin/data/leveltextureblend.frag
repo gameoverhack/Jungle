@@ -1,3 +1,4 @@
+#extension GL_ARB_texture_rectangle : enable
 // sampler2DRect because we're using NPOT texture sizes
 /*
 Order for textures is assumed to be

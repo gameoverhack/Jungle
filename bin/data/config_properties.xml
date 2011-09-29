@@ -1,31 +1,31 @@
 <config>
     <properties>
-        <property name="appRenderHeight" type="float">1080.000000</property>
-        <property name="appRenderWidth" type="float">1920.000000</property>
+        <property name="appRenderHeight" type="float">1080</property>
+        <property name="appRenderWidth" type="float">1920</property>
         <property name="autoTest" type="bool">false</property>
-        <property name="camPositionX0" type="float">-625.000000</property>
-        <property name="camPositionX1" type="float">-135.000000</property>
-        <property name="camPositionY0" type="float">-380.000000</property>
-        <property name="camPositionY1" type="float">155.000000</property>
-        <property name="camRotation0" type="float">23.500000</property>
-        <property name="camRotation1" type="float">0.000000</property>
-        <property name="camScale0" type="float">0.230000</property>
-        <property name="camScale1" type="float">0.500000</property>
+        <property name="camPositionX0" type="float">-625</property>
+        <property name="camPositionX1" type="float">-135</property>
+        <property name="camPositionY0" type="float">-380</property>
+        <property name="camPositionY1" type="float">155</property>
+        <property name="camRotation0" type="float">23.5</property>
+        <property name="camRotation1" type="float">0</property>
+        <property name="camScale0" type="float">0.23</property>
+        <property name="camScale1" type="float">0.5</property>
         <property name="cameraPropToAdjust" type="string">POSITION</property>
         <property name="cameraToAdjust" type="string">0</property>
         <property name="flashDataPath" type="string">E:/gameoverload/VideoProjects/Jungle/newmodel/flash</property>
         <property name="fullScreen" type="bool">true</property>
         <property name="graphicDataPath" type="string">graphics</property>
         <property name="loadingMessage" type="string">STATE == kANAL_READY (0) :: </property>
-        <property name="loadingProgress" type="float">0.100000</property>
+        <property name="loadingProgress" type="float">0.1</property>
         <property name="propBacklightCompensation_0" type="int">0</property>
         <property name="propBacklightCompensation_1" type="int">0</property>
         <property name="propBacklightCompensation_2" type="int">0</property>
         <property name="propBrightness_0" type="int">128</property>
         <property name="propBrightness_1" type="int">128</property>
         <property name="propBrightness_2" type="int">128</property>
-        <property name="propColorEnable_0" type="int">1</property>
-        <property name="propColorEnable_1" type="int">1</property>
+        <property name="propColorEnable_0" type="int">11228787</property>
+        <property name="propColorEnable_1" type="int">11228787</property>
         <property name="propColorEnable_2" type="int">3330928</property>
         <property name="propContrast_0" type="int">32</property>
         <property name="propContrast_1" type="int">32</property>
@@ -36,23 +36,23 @@
         <property name="propFocus_0" type="int">119</property>
         <property name="propFocus_1" type="int">119</property>
         <property name="propFocus_2" type="int">102</property>
-        <property name="propGain_0" type="int">22</property>
-        <property name="propGain_1" type="int">23</property>
+        <property name="propGain_0" type="int">23</property>
+        <property name="propGain_1" type="int">30</property>
         <property name="propGain_2" type="int">22</property>
-        <property name="propGamma_0" type="int">1</property>
-        <property name="propGamma_1" type="int">1</property>
+        <property name="propGamma_0" type="int">11228787</property>
+        <property name="propGamma_1" type="int">11228787</property>
         <property name="propGamma_2" type="int">3330928</property>
-        <property name="propHue_0" type="int">1</property>
-        <property name="propHue_1" type="int">1</property>
+        <property name="propHue_0" type="int">11228787</property>
+        <property name="propHue_1" type="int">11228787</property>
         <property name="propHue_2" type="int">3330928</property>
-        <property name="propIris_0" type="int">1</property>
-        <property name="propIris_1" type="int">1</property>
+        <property name="propIris_0" type="int">11228787</property>
+        <property name="propIris_1" type="int">11228787</property>
         <property name="propIris_2" type="int">3330928</property>
         <property name="propPan_0" type="int">0</property>
         <property name="propPan_1" type="int">0</property>
         <property name="propPan_2" type="int">0</property>
-        <property name="propRoll_0" type="int">1</property>
-        <property name="propRoll_1" type="int">1</property>
+        <property name="propRoll_0" type="int">11228787</property>
+        <property name="propRoll_1" type="int">11228787</property>
         <property name="propRoll_2" type="int">3330928</property>
         <property name="propSaturation_0" type="int">32</property>
         <property name="propSaturation_1" type="int">32</property>
@@ -71,12 +71,12 @@
         <property name="propZoom_2" type="int">1</property>
         <property name="scenesDataPath" type="string">E:/gameoverload/VideoProjects/Jungle/newmodel/video</property>
         <property name="scenesXMLFile" type="string">config_scenes.xml</property>
-        <property name="shaderBlendRatio" type="float">0.300000</property>
-        <property name="shaderGammaCorrection" type="float">2.300000</property>
-        <property name="shaderHeadFragPath" type="string">multitexturemerge</property>
-        <property name="shaderHeadVertPath" type="string">vertex</property>
-        <property name="shaderLevelFragPath" type="string">leveltextureblend</property>
-        <property name="shaderLevelVertPath" type="string">leveltexturevertex</property>
+        <property name="shaderBlendRatio" type="float">0.3</property>
+        <property name="shaderGammaCorrection" type="float">2.3</property>
+        <property name="shaderHeadFragPath" type="string">multitexturemerge.frag</property>
+        <property name="shaderHeadVertPath" type="string">vertex.vert</property>
+        <property name="shaderLevelFragPath" type="string">leveltextureblend.frag</property>
+        <property name="shaderLevelVertPath" type="string">leveltexturevertex.vert</property>
         <property name="showDebugView" type="bool">true</property>
         <property name="showFFT" type="bool">false</property>
         <property name="showProps" type="bool">false</property>

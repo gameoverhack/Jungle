@@ -34,12 +34,14 @@ VictimView::VictimView(float width, float height) : BaseMeterView(width, height)
     /********************************************************
      *      setup meter FBO and Shader                      *
      ********************************************************/
-
+#if OF_VERSION < 7
     // allocate fbo's
     _meterMaskTex.allocate(147, 285, GL_RGBA); // size of the meter_on/off png
     _meterMaskFBO.setup(147, 285);
     _meterMaskFBO.attach(_meterMaskTex);
-
+#else
+    _meterMaskFBO.allocate(147, 285);
+#endif
 }
 
 void VictimView::update() {

@@ -14,6 +14,7 @@ BaseView::BaseView(float width, float height) {
 	_viewWidth = width;
 	_viewHeight = height;
 
+#if OF_VERSION < 7
 	// Create black pixels for inital texture, TODO: Potentially not required
 	unsigned char * black = (unsigned char *)calloc(_viewWidth * _viewHeight * 4, sizeof(unsigned char));
 
@@ -25,22 +26,36 @@ BaseView::BaseView(float width, float height) {
 	_viewFBO.setup(_viewWidth, _viewHeight);
 	_viewFBO.attach(_viewFBOTexture);
 
-	// Free black pixels
+    // Free black pixels
 	free(black);
+#else
+    _viewFBO.allocate(_viewWidth, _viewHeight);
+#endif
+
 }
 
 BaseView::~BaseView() {
+#if OF_VERSION < 7
 	_viewFBO.detach(0);
 	_viewFBOTexture.clear();
+#endif
 }
 
 // Returns the views fbo
-ofxFbo * BaseView::getViewFBO(){
+#if OF_VERSION < 7
+ofxFbo * BaseView::getViewFBO() {
+#else
+ofFbo * BaseView::getViewFBO() {
+#endif
 	return &_viewFBO;
 }
 
-ofTexture * BaseView::getViewFBOTexture(){
+ofTexture * BaseView::getViewFBOTexture() {
+#if OF_VERSION < 7
 	return &_viewFBOTexture;
+#else
+    return &_viewFBO.getTextureReference();
+#endif
 }
 
 float BaseView::getWidth() {
