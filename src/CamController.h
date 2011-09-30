@@ -29,7 +29,7 @@ using namespace FACETRACKER;
 
 static int _instanceCount = 0;
 
-class CamController : public BaseState {
+class CamController : public BaseState, public ofThread {
 
 public:
 
@@ -57,7 +57,6 @@ public:
 
 	ofTexture	* getCamTextureRef();
 
-	ofxCvGrayscaleImage     _greyImage;
     ofxCvHaarFinder         _finder;
 
     bool                    _doFaceDetection;
@@ -66,6 +65,8 @@ public:
     ofxFaceTracker          _tracker;
 
 private:
+
+    void threadedFunction();
 
 #ifdef TARGET_OSX
 	ofxQTKitVideoGrabber	_cam;			// this is not X-platform but of/goVideoPlayer does not play well with ManyCam
@@ -77,10 +78,9 @@ private:
 	int                     _width;
 	int                     _height;
 
-    ofxCvColorImage         _camImage;
+	ofxCvGrayscaleImage     _greyImage;
     ofxCvColorImage         _colourImage;
-
-
+    ofxCvColorImage         _camImage;
 
 };
 

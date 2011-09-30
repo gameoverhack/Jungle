@@ -12,20 +12,20 @@
         <property name="camScale0" type="float">0.23</property>
         <property name="camScale1" type="float">0.5</property>
         <property name="cameraPropToAdjust" type="string">POSITION</property>
-        <property name="cameraToAdjust" type="string">0</property>
+        <property name="cameraToAdjust" type="string">1</property>
         <property name="flashDataPath" type="string">E:/gameoverload/VideoProjects/Jungle/newmodel/flash</property>
-        <property name="fullScreen" type="bool">true</property>
+        <property name="fullScreen" type="bool">false</property>
         <property name="graphicDataPath" type="string">graphics</property>
         <property name="loadingMessage" type="string">STATE == kANAL_READY (0) :: </property>
         <property name="loadingProgress" type="float">0.1</property>
         <property name="propBacklightCompensation_0" type="int">0</property>
         <property name="propBacklightCompensation_1" type="int">0</property>
         <property name="propBacklightCompensation_2" type="int">0</property>
-        <property name="propBrightness_0" type="int">128</property>
-        <property name="propBrightness_1" type="int">128</property>
+        <property name="propBrightness_0" type="int">148</property>
+        <property name="propBrightness_1" type="int">148</property>
         <property name="propBrightness_2" type="int">128</property>
-        <property name="propColorEnable_0" type="int">11562515</property>
-        <property name="propColorEnable_1" type="int">11562515</property>
+        <property name="propColorEnable_0" type="int">11784895</property>
+        <property name="propColorEnable_1" type="int">11784895</property>
         <property name="propColorEnable_2" type="int">3330928</property>
         <property name="propContrast_0" type="int">32</property>
         <property name="propContrast_1" type="int">32</property>
@@ -34,25 +34,25 @@
         <property name="propExposure_1" type="int">-5</property>
         <property name="propExposure_2" type="int">-5</property>
         <property name="propFocus_0" type="int">85</property>
-        <property name="propFocus_1" type="int">102</property>
+        <property name="propFocus_1" type="int">85</property>
         <property name="propFocus_2" type="int">102</property>
-        <property name="propGain_0" type="int">26</property>
-        <property name="propGain_1" type="int">27</property>
+        <property name="propGain_0" type="int">64</property>
+        <property name="propGain_1" type="int">64</property>
         <property name="propGain_2" type="int">22</property>
-        <property name="propGamma_0" type="int">11562515</property>
-        <property name="propGamma_1" type="int">11562515</property>
+        <property name="propGamma_0" type="int">11784895</property>
+        <property name="propGamma_1" type="int">11784895</property>
         <property name="propGamma_2" type="int">3330928</property>
-        <property name="propHue_0" type="int">11562515</property>
-        <property name="propHue_1" type="int">11562515</property>
+        <property name="propHue_0" type="int">11784895</property>
+        <property name="propHue_1" type="int">11784895</property>
         <property name="propHue_2" type="int">3330928</property>
-        <property name="propIris_0" type="int">11562515</property>
-        <property name="propIris_1" type="int">11562515</property>
+        <property name="propIris_0" type="int">11784895</property>
+        <property name="propIris_1" type="int">11784895</property>
         <property name="propIris_2" type="int">3330928</property>
         <property name="propPan_0" type="int">0</property>
         <property name="propPan_1" type="int">0</property>
         <property name="propPan_2" type="int">0</property>
-        <property name="propRoll_0" type="int">11562515</property>
-        <property name="propRoll_1" type="int">11562515</property>
+        <property name="propRoll_0" type="int">11784895</property>
+        <property name="propRoll_1" type="int">11784895</property>
         <property name="propRoll_2" type="int">3330928</property>
         <property name="propSaturation_0" type="int">32</property>
         <property name="propSaturation_1" type="int">32</property>
@@ -63,8 +63,8 @@
         <property name="propTilt_0" type="int">0</property>
         <property name="propTilt_1" type="int">0</property>
         <property name="propTilt_2" type="int">0</property>
-        <property name="propWhiteBalance_0" type="int">3988</property>
-        <property name="propWhiteBalance_1" type="int">4164</property>
+        <property name="propWhiteBalance_0" type="int">4971</property>
+        <property name="propWhiteBalance_1" type="int">4971</property>
         <property name="propWhiteBalance_2" type="int">5176</property>
         <property name="propZoom_0" type="int">1</property>
         <property name="propZoom_1" type="int">1</property>

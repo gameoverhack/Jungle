@@ -26,6 +26,7 @@ CamController::CamController() {
 //--------------------------------------------------------------
 CamController::~CamController() {
 	LOG_NOTICE("Destruction");
+	stopThread();
 	_cam.close();
 }
 
@@ -56,10 +57,12 @@ bool CamController::setup(int deviceID, int w, int h){
     _greyImage.allocate((float)w/6.0f, (float)h/6.0f);
 
     _tracker.setup();
-    _tracker.setScale(1);
+    _tracker.setScale(0.33);
 
     _width  = w;
     _height = h;
+
+    startThread(false, false);
 
     return ok;
 }
@@ -76,14 +79,24 @@ bool CamController::setup(string deviceID, int w, int h){
     loadAttributes();
 
     _doFaceDetection = false;
+    _doFaceTracking = true;
+    //_finder.setScaleHaar(0.5);
     _finder.setup("haarcascade_frontalface_default.xml");
+    _finder.setNeighbors(4);
+    _finder.setScaleHaar(1.09);
     _camImage.allocate(w, h);
     _colourImage.allocate((float)w/6.0f, (float)h/6.0f);
     _greyImage.allocate((float)w/6.0f, (float)h/6.0f);
 
+    _tracker.setup();
+    _tracker.setScale(1);
+
     _width  = w;
     _height = h;
 
+    startThread(false, false);
+
+    return true; //bad mac need to change grabber?
 }
 #endif
 
@@ -241,22 +254,34 @@ void CamController::setCameraAttributes(PosRotScale prs) {
 }
 
 void CamController::update() {
-	_cam.update();
 
-	if (_cam.isFrameNew() && ofGetFrameNum()%25 == 0 && _doFaceDetection) {
-        _camImage = _cam.getPixels();
-        _colourImage.scaleIntoMe(_camImage);
-        _greyImage = _colourImage;
-        _finder.findHaarObjects(_greyImage);
-	}
+    _cam.update();
 
-	if (_cam.isFrameNew() && _doFaceTracking) {
-        _camImage = _cam.getPixels();
-        _colourImage.scaleIntoMe(_camImage);
-        //_greyImage = _colourImage;
-        _tracker.update(toCv(_colourImage));
+}
 
-	}
+void CamController::threadedFunction() {
+
+    while(isThreadRunning() != 0) {
+        if(lock()){
+
+            if (_cam.isFrameNew() && ofGetFrameNum()%2 == 0 && _doFaceDetection) {
+                _camImage = _cam.getPixels();
+                _colourImage.scaleIntoMe(_camImage);
+                _greyImage = _colourImage;
+                _finder.findHaarObjects(_greyImage);
+            }
+
+            if (_cam.isFrameNew() && _doFaceTracking) {
+                _camImage = _cam.getPixels();
+                //_colourImage.scaleIntoMe(_camImage);
+                //_greyImage = _colourImage;
+               _tracker.update(toCv(_camImage));
+                //ofSleepMillis(100);
+            }
+
+        }
+    }
+
 
 }
 

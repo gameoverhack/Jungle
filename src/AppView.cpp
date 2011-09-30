@@ -96,7 +96,7 @@ void AppView::draw() {
 #if OF_VERSION < 7
 			_debugView->draw(0, height, width, -height);
 #else
-            _debugView->draw(0, 0, width, height);
+            _debugView->draw(0, height, width, -height);
 #endif
 		}
 	}

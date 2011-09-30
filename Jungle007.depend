@@ -5982,7 +5982,7 @@
 	"AppModel.h"
 	"Logger.h"
 
-1317310050 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\camcontroller.h
+1317355296 c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\camcontroller.h
 	"BaseState.h"
 	"AppModel.h"
 	"Logger.h"
@@ -6721,14 +6721,14 @@
 	<stdio.h>
 	<stddef.h>
 
-1317312243 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\appcontroller.cpp
+1317363074 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\appcontroller.cpp
 	"AppController.h"
 	"Logger.h"
 
 1317306932 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\appmodel.cpp
 	"AppModel.h"
 
-1317311541 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\appview.cpp
+1317362886 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\appview.cpp
 	"AppView.h"
 
 1317306932 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\ardcontroller.cpp
@@ -6740,7 +6740,7 @@
 1317306932 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\baseview.cpp
 	"BaseView.h"
 
-1317311684 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\debugview.cpp
+1317362933 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\debugview.cpp
 	"DebugView.h"
 
 1315558525 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\jungleexception.cpp
@@ -6770,7 +6770,7 @@
 1317306932 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\basemeterview.cpp
 	"BaseMeterView.h"
 
-1317310903 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\camcontroller.cpp
+1317360891 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\camcontroller.cpp
 	"CamController.h"
 
 1317306932 source:c:\users\gameover\code\of007\apps\devdonotdelete\jungle\src\datacontroller.cpp
@@ -6923,7 +6923,7 @@
 1317281471 source:c:\users\gameover\code\of007\addons\ofxcv\src\tracker.cpp
 	"Tracker.h"
 
-1317281471 source:c:\users\gameover\code\of007\addons\ofxcv\src\utilities.cpp
+1317358440 source:c:\users\gameover\code\of007\addons\ofxcv\src\utilities.cpp
 	"Utilities.h"
 	"ofMath.h"
 
@@ -6983,7 +6983,7 @@
 1317309192 source:c:\users\gameover\code\of007\addons\ofxfacetracker\libs\tracker\patch.cc
 	<Patch.h>
 
-1317309327 source:c:\users\gameover\code\of007\addons\ofxfacetracker\libs\tracker\tracker.cc
+1317362307 source:c:\users\gameover\code\of007\addons\ofxfacetracker\libs\tracker\tracker.cc
 	<Tracker.h>
 
 1317309192 c:\users\gameover\code\of007\addons\ofxfacetracker\libs\tracker\tracker.h
@@ -7004,6 +7004,6 @@
 	"Tracker.h"
 	"ExpressionClassifier.h"
 
-1317311150 source:c:\users\gameover\code\of007\addons\ofxfacetracker\src\ofxfacetracker.cpp
+1317360891 source:c:\users\gameover\code\of007\addons\ofxfacetracker\src\ofxfacetracker.cpp
 	"ofxFaceTracker.h"
 

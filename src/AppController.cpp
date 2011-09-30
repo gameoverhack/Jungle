@@ -306,39 +306,31 @@ void AppController::draw() {
 	//	LOG_VERBOSE("Drawing");
 	ofSetColor(255, 255, 255, 255);
 	_appView->draw();
-	glPushMatrix();
-	glTranslatef(0.0f, 40.0f, 0.0f);
-	_camControllers[0]->_greyImage.draw(0,0);
+
 	glPushMatrix();
 	glScalef(0.25f,0.25f,1.0f);
-	_camControllers[0]->_tracker.draw();
-	glPopMatrix();
-	for (int face = 0; face < _camControllers[0]->_finder.blobs.size(); face++) {
-	    ofSetColor(255,0,0);
-	    ofNoFill();
-	    ofRect(_camControllers[0]->_finder.blobs[face].boundingRect.x,
-               _camControllers[0]->_finder.blobs[face].boundingRect.y,
-               _camControllers[0]->_finder.blobs[face].boundingRect.width,
-               _camControllers[0]->_finder.blobs[face].boundingRect.height);
 
+	glTranslatef(0.0f, 80.0f, 0.0f);
+	_appModel->getVictimCamTexRef()->draw(0,0);;
+	if (_camControllers[0]->_doFaceTracking) _camControllers[0]->_tracker.draw();
+	if (_camControllers[0]->_doFaceDetection) {
+	    glPushMatrix();
+	    glScalef(1920.0f/_camControllers[0]->_finder.getWidth(), 1080.0f/_camControllers[0]->_finder.getHeight(), 1.0f);
+        _camControllers[0]->_finder.draw(0,0);
+        glPopMatrix();
 	}
-	ofSetColor(255,255,255);
-	glTranslatef(1920.0f/6.0f, 0.0f, 0.0f);
-	_camControllers[1]->_greyImage.draw(0,0);
-    glPushMatrix();
-	glScalef(0.25f,0.25f,1.0f);
-	_camControllers[1]->_tracker.draw();
-	glPopMatrix();
-    for (int face = 0; face < _camControllers[1]->_finder.blobs.size(); face++) {
-	    ofSetColor(255,0,0);
-	    ofNoFill();
-	    ofRect(_camControllers[1]->_finder.blobs[face].boundingRect.x,
-               _camControllers[1]->_finder.blobs[face].boundingRect.y,
-               _camControllers[1]->_finder.blobs[face].boundingRect.width,
-               _camControllers[1]->_finder.blobs[face].boundingRect.height);
+	glTranslatef(1920.0f, 0.0f, 0.0f);
+	_appModel->getAttackCamTexRef()->draw(0,0);
+	if (_camControllers[1]->_doFaceTracking) _camControllers[1]->_tracker.draw();
+	if (_camControllers[1]->_doFaceDetection) {
+	    glPushMatrix();
+	    glScalef(1920.0f/_camControllers[1]->_finder.getWidth(), 1080.0f/_camControllers[1]->_finder.getHeight(), 1.0f);
+        _camControllers[1]->_finder.draw(0,0);
+        glPopMatrix();
+	}
 
-	}
-	ofSetColor(255,255,255);
+
+    glPopMatrix();
 }
 
 //--------------------------------------------------------------
