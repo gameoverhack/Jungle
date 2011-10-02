@@ -38,9 +38,10 @@ bool CamController::setup(int deviceID, int w, int h){
 	bool ok = true; // bad mac change this
 #ifdef TARGET_WIN32
     _cam.setRequestedMediaSubType(VI_MEDIASUBTYPE_MJPG);
+	ok = _cam.initGrabber(w, h, true);
 #endif
 	_cam.setDeviceID(deviceID);
-	ok = _cam.initGrabber(w, h, true);
+	_cam.initGrabber(w, h, true);
 #ifdef TARGET_WIN32
 	if (ok) loadSettings();
 #endif

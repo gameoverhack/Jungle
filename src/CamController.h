@@ -23,9 +23,12 @@
 #include <map>
 #endif
 
+#include "ofxCv.h"
+using namespace ofxCv;
+using namespace cv;
 #include "ofxFaceTracker.h"
 
-using namespace FACETRACKER;
+//using namespace FACETRACKER;
 
 static int _instanceCount = 0;
 
