@@ -49,6 +49,7 @@ void SceneXMLParser::parseXML(){
 	vector<string> attributesToCheck;
 	vector<CamTransform> *transform = NULL;
 	int fileId;
+	string fileName;
 	char int2str[512];
 	vector<string> brokenfiles;
 
@@ -119,12 +120,13 @@ void SceneXMLParser::parseXML(){
 			sequence->setNextSequenceName(_xml.getAttribute("sequence", "nextSequence", "", whichSequence));
 			sequence->setIsSequenceFaked((_xml.getAttribute("sequence", "faked", "", whichSequence) == "true") ? true : false);
 			sequence->setNumber(findSequenceNumberFromString(sequence->getName()));
-
+			
 			// check movie file metadata
-			fileId = _moviesFileLister.findFileByName(_xml.getAttribute("sequence", "filename", "", whichSequence));
+			fileName = _xml.getAttribute("sequence", "filename", "", whichSequence);
+			fileId = _moviesFileLister.findFileByName(fileName);
 
 			// force file date time create/modified to actual file create/modified dates in case of copying...
-			if (boost::any_cast<bool>(_appModel->getProperty("xmlForceFileDateTime"))) {
+			if (fileId != -1 && boost::any_cast<bool>(_appModel->getProperty("xmlForceFileDateTime"))) {
                 forceTagAttribute("sequence", "dateCreated", _moviesFileLister.getCreated(fileId), whichSequence);
                 forceTagAttribute("sequence", "dateModified", _moviesFileLister.getModified(fileId), whichSequence);
 			}
@@ -133,7 +135,7 @@ void SceneXMLParser::parseXML(){
 			   !compareTagAttribute("sequence", "dateCreated", _moviesFileLister.getCreated(fileId), whichSequence) ||
 			   !compareTagAttribute("sequence", "dateModified", _moviesFileLister.getModified(fileId), whichSequence) ||
 			   !compareTagAttribute("sequence", "size", boost::lexical_cast<std::string>(_moviesFileLister.getSize(fileId)), whichSequence)){
-				LOG_VERBOSE("Comparision failure or file missing on " + _moviesFileLister.getName(fileId));
+				LOG_VERBOSE("Comparision failure or file missing on " + fileName);
 				throw GenericXMLParseException("Missing movie file");
 			}
 			sequence->setMovieFullFilePath(_moviesFileLister.getPath(fileId));
@@ -155,10 +157,11 @@ void SceneXMLParser::parseXML(){
 			attributesToCheck.push_back("dateModified");
 			checkTagAttributesExist("interactivity", attributesToCheck, 0);
 
-			fileId = _assetsFileLister.findFileByName(_xml.getAttribute("interactivity", "filename", "", 0));
+			fileName = _xml.getAttribute("interactivity", "filename", "", 0);
+			fileId = _assetsFileLister.findFileByName(fileName);
 
             // force file date time create/modified to actual file create/modified dates in case of copying...
-			if (boost::any_cast<bool>(_appModel->getProperty("xmlForceFileDateTime"))) {
+			if (fileId != -1 && boost::any_cast<bool>(_appModel->getProperty("xmlForceFileDateTime"))) {
 			   forceTagAttribute("interactivity", "dateCreated", _assetsFileLister.getCreated(fileId), 0);
 			   forceTagAttribute("interactivity", "dateModified", _assetsFileLister.getModified(fileId), 0);
 			}
@@ -228,10 +231,12 @@ void SceneXMLParser::parseXML(){
 
 			// transforms
 			for(int witchTransform = 0; witchTransform < _xml.getNumTags("transform"); witchTransform++){
-				fileId = _assetsFileLister.findFileByName(_xml.getAttribute("transform", "filename", "", witchTransform));
+				
+				fileName = _xml.getAttribute("transform", "filename", "", witchTransform);
+				fileId = _assetsFileLister.findFileByName(fileName);
 
                 // force file date time create/modified to actual file create/modified dates in case of copying...
-                if (boost::any_cast<bool>(_appModel->getProperty("xmlForceFileDateTime"))) {
+                if (fileId != -1 && boost::any_cast<bool>(_appModel->getProperty("xmlForceFileDateTime"))) {
                    forceTagAttribute("transform", "dateCreated", _assetsFileLister.getCreated(fileId), witchTransform);
 				   forceTagAttribute("transform", "dateModified", _assetsFileLister.getModified(fileId), witchTransform);
                 }

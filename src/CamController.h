@@ -16,12 +16,12 @@
 #include "ofxOpenCv.h"
 //#include "ofxCvHaarFinder.h"
 
-#ifdef TARGET_OSX
-#include "ofxQTKitVideoGrabber.h"	// better quality allows recording but OSX only....
-#else
+//#ifdef TARGET_OSX
+//#include "ofxQTKitVideoGrabber.h"	// better quality allows recording but OSX only....
+//#else
 #include "goVideoGrabber.h"			// X-platform and will work with multiple cams but not with ManyCam for some reason...
 #include <map>
-#endif
+//#endif
 
 #include "ofxCv.h"
 using namespace ofxCv;
@@ -71,11 +71,11 @@ private:
 
     void threadedFunction();
 
-#ifdef TARGET_OSX
-	ofxQTKitVideoGrabber	_cam;			// this is not X-platform but of/goVideoPlayer does not play well with ManyCam
-#else
+//#ifdef TARGET_OSX
+//	ofxQTKitVideoGrabber	_cam;			// this is not X-platform but of/goVideoPlayer does not play well with ManyCam
+//#else
     goVideoGrabber	        _cam;
-#endif
+//#endif
 	int						_instanceID;
 
 	int                     _width;
