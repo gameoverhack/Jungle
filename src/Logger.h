@@ -25,9 +25,17 @@ enum juLogLevel{
 	JU_LOG_FATAL_ERROR
 };
 
+#if __STDC_VERSION__ < 199901L
+# if __GNUC__ >= 2
+#  define __func__ __FUNCTION__
+# else
+#  define __func__ "<unknown>"
+# endif
+#endif
+
 #define LOGGER				LoggerSingleton::Instance()
 
-#define LOG(level, str)		LoggerSingleton::Instance()->log(level, typeid(*this).name(), (str))
+#define LOG(level, str)		LoggerSingleton::Instance()->log(level, typeid(*this).name(), __func__, (str))
 #define LOG_ERROR(str)		LOG(JU_LOG_ERROR, (str))
 #define LOG_WARNING(str)	LOG(JU_LOG_WARNING, (str))
 #define LOG_NOTICE(str)		LOG(JU_LOG_NOTICE, (str))
@@ -38,8 +46,7 @@ enum juLogLevel{
 
 using namespace std;
 
-class Logger
-{
+class Logger {
 	
 public:
 	
@@ -47,17 +54,17 @@ public:
 		
         _toFile = false;
 		_logLevel = JU_LOG_WARNING;
-		_padLength	= 1; // default whitespace padding (self adjusting so we can set to 1 but could be any num)
+		_padLength	= 30; // default whitespace padding (self adjusting so we can set to 1 but could be any num)
 		
 		// wont ever by written cause we default to a higher level of logging ...
-        log(JU_LOG_NOTICE, typeid(this).name(), "Created logger");
+        log(JU_LOG_NOTICE, typeid(this).name(), __func__, "Created logger");
     
 	};
 	
     ~Logger() {	
 		
-        log(JU_LOG_NOTICE, typeid(this).name(), "Logging off...");
-        log(JU_LOG_NOTICE, typeid(this).name(), "\\___________________________________________________//");	
+        log(JU_LOG_NOTICE, typeid(this).name(), __func__, "Logging off...");
+        log(JU_LOG_NOTICE, typeid(this).name(), __func__, "\\___________________________________________________//");	
         
 		if (_toFile) closeLogFile();
 
@@ -66,7 +73,7 @@ public:
     bool	openLogFile(string _filename);
     bool	closeLogFile();
 	
-    void	log(juLogLevel l, string obj, string	_msg);
+    void	log(juLogLevel l, string obj, string funcName, string msg);
 	
 	void	setLogLevel(juLogLevel l);
 	
