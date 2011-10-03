@@ -1,6 +1,6 @@
 <config>
     <scenes>
-        <scene name="t">
+        <scene name="t" totalFrames="2035">
             <sequence name="seq00a" sequenceType="a" faceResult="" attackerResult="" victimResult="_not_forging_" nextSequence="_not_forging_" faked="false" filename="t_seq00a.mov" frames="168" dateCreated="2011-10-03 07:08:36" dateModified="2011-10-03 06:48:23" size="557829982">
                 <interactivity filename="t_seq00a_interactivity.bin" dateCreated="2011-10-03 11:23:21" dateModified="2011-10-03 10:06:28" size="53"></interactivity>
                 <transform filename="t_seq00a_transform_vic1.bin" dateCreated="2011-10-03 11:23:21" dateModified="2011-10-03 10:06:29" size="6427"></transform>

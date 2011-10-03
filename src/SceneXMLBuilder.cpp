@@ -369,6 +369,7 @@ void SceneXMLBuilder::buildXML(){
 
 		which = _xml.addTag("scene");
 		_xml.addAttribute("scene", "name", scene->getName(), which);
+		_xml.addAttribute("scene", "totalFrames", scene->getTotalFrames(), which);
 		seqi = sequences.begin();
 		_xml.pushTag("scene", which);
 		// iterate the sequences in this scene

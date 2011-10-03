@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="debug" />
-	<File name="..\..\..\addons\goFlexCOM\goFlexCOM.cpp" open="1" top="0" tabpos="18">
+	<File name="..\..\..\addons\goFlexCOM\goFlexCOM.cpp" open="0" top="0" tabpos="18">
 		<Cursor position="2378" topLine="70" />
 	</File>
 	<File name="..\..\..\addons\goThreadedVideo\src\goThreadedVideo.cpp" open="0" top="0" tabpos="1">
@@ -91,10 +91,10 @@
 	<File name="..\..\..\addons\ofxFft\src\ofxFftBasic.h" open="0" top="0" tabpos="8">
 		<Cursor position="150" topLine="0" />
 	</File>
-	<File name="..\..\..\addons\ofxNetwork\src\ofxTCPServer.cpp" open="1" top="0" tabpos="19">
+	<File name="..\..\..\addons\ofxNetwork\src\ofxTCPServer.cpp" open="0" top="0" tabpos="19">
 		<Cursor position="2507" topLine="85" />
 	</File>
-	<File name="..\..\..\addons\ofxNetwork\src\ofxTCPServer.h" open="1" top="0" tabpos="20">
+	<File name="..\..\..\addons\ofxNetwork\src\ofxTCPServer.h" open="0" top="0" tabpos="20">
 		<Cursor position="2392" topLine="49" />
 	</File>
 	<File name="..\..\..\addons\ofxOpenCv\libs\opencv\include\opencv2\core\core_c.h" open="0" top="0" tabpos="20">
@@ -121,10 +121,10 @@
 	<File name="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.h" open="0" top="0" tabpos="12">
 		<Cursor position="2011" topLine="10" />
 	</File>
-	<File name="bin\data\config_properties.xml" open="1" top="0" tabpos="13">
+	<File name="bin\data\config_properties.xml" open="0" top="0" tabpos="13">
 		<Cursor position="6201" topLine="50" />
 	</File>
-	<File name="bin\data\config_scenes.xml" open="1" top="1" tabpos="21">
+	<File name="bin\data\config_scenes.xml" open="1" top="1" tabpos="3">
 		<Cursor position="190" topLine="0" />
 	</File>
 	<File name="bin\data\leveltextureblend.frag" open="0" top="0" tabpos="34">
@@ -133,19 +133,19 @@
 	<File name="bin\data\multitexturemerge.frag" open="0" top="0" tabpos="35">
 		<Cursor position="44" topLine="0" />
 	</File>
-	<File name="src\Analyzer.cpp" open="1" top="0" tabpos="6">
+	<File name="src\Analyzer.cpp" open="0" top="0" tabpos="6">
 		<Cursor position="3101" topLine="175" />
 	</File>
-	<File name="src\AppController.cpp" open="1" top="0" tabpos="2">
+	<File name="src\AppController.cpp" open="0" top="0" tabpos="2">
 		<Cursor position="1774" topLine="47" />
 	</File>
-	<File name="src\AppController.h" open="1" top="0" tabpos="3">
+	<File name="src\AppController.h" open="0" top="0" tabpos="3">
 		<Cursor position="1220" topLine="31" />
 	</File>
-	<File name="src\AppDataTypes.h" open="1" top="0" tabpos="23">
+	<File name="src\AppDataTypes.h" open="0" top="0" tabpos="23">
 		<Cursor position="3565" topLine="179" />
 	</File>
-	<File name="src\AppModel.cpp" open="1" top="0" tabpos="22">
+	<File name="src\AppModel.cpp" open="0" top="0" tabpos="22">
 		<Cursor position="450" topLine="117" />
 	</File>
 	<File name="src\AppView.cpp" open="0" top="0" tabpos="10">
@@ -154,10 +154,10 @@
 	<File name="src\AppView.h" open="0" top="0" tabpos="17">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="src\ArdController.cpp" open="1" top="0" tabpos="8">
+	<File name="src\ArdController.cpp" open="0" top="0" tabpos="8">
 		<Cursor position="875" topLine="111" />
 	</File>
-	<File name="src\ArdController.h" open="1" top="0" tabpos="7">
+	<File name="src\ArdController.h" open="0" top="0" tabpos="7">
 		<Cursor position="595" topLine="0" />
 	</File>
 	<File name="src\AttackView.cpp" open="0" top="0" tabpos="18">
@@ -166,7 +166,7 @@
 	<File name="src\AttackView.h" open="0" top="0" tabpos="19">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="src\BaseMeterView.cpp" open="1" top="0" tabpos="11">
+	<File name="src\BaseMeterView.cpp" open="0" top="0" tabpos="11">
 		<Cursor position="2279" topLine="20" />
 	</File>
 	<File name="src\BaseMeterView.h" open="0" top="0" tabpos="9">
@@ -178,16 +178,16 @@
 	<File name="src\BaseView.h" open="0" top="0" tabpos="26">
 		<Cursor position="799" topLine="8" />
 	</File>
-	<File name="src\CamController.cpp" open="1" top="0" tabpos="1">
+	<File name="src\CamController.cpp" open="0" top="0" tabpos="1">
 		<Cursor position="8106" topLine="252" />
 	</File>
-	<File name="src\CamController.h" open="1" top="0" tabpos="4">
+	<File name="src\CamController.h" open="0" top="0" tabpos="4">
 		<Cursor position="1613" topLine="31" />
 	</File>
-	<File name="src\Constants.h" open="1" top="0" tabpos="5">
+	<File name="src\Constants.h" open="0" top="0" tabpos="5">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="src\DataController.cpp" open="1" top="0" tabpos="14">
+	<File name="src\DataController.cpp" open="0" top="0" tabpos="14">
 		<Cursor position="5363" topLine="133" />
 	</File>
 	<File name="src\DebugView.cpp" open="0" top="0" tabpos="9">
@@ -202,16 +202,16 @@
 	<File name="src\JungleException.cpp" open="0" top="0" tabpos="24">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="src\JungleExceptions.h" open="1" top="0" tabpos="16">
+	<File name="src\JungleExceptions.h" open="0" top="0" tabpos="16">
 		<Cursor position="962" topLine="15" />
 	</File>
-	<File name="src\MicController.cpp" open="1" top="0" tabpos="9">
+	<File name="src\MicController.cpp" open="0" top="0" tabpos="9">
 		<Cursor position="2316" topLine="27" />
 	</File>
-	<File name="src\MicController.h" open="1" top="0" tabpos="10">
+	<File name="src\MicController.h" open="0" top="0" tabpos="10">
 		<Cursor position="546" topLine="7" />
 	</File>
-	<File name="src\PropertyXMLBuilder.cpp" open="1" top="0" tabpos="25">
+	<File name="src\PropertyXMLBuilder.cpp" open="0" top="0" tabpos="25">
 		<Cursor position="925" topLine="12" />
 	</File>
 	<File name="src\SceneView.cpp" open="0" top="0" tabpos="26">
@@ -220,16 +220,16 @@
 	<File name="src\SceneView.h" open="0" top="0" tabpos="4">
 		<Cursor position="919" topLine="20" />
 	</File>
-	<File name="src\SceneXMLBuilder.cpp" open="1" top="0" tabpos="15">
-		<Cursor position="7628" topLine="215" />
+	<File name="src\SceneXMLBuilder.cpp" open="1" top="0" tabpos="2">
+		<Cursor position="12572" topLine="350" />
 	</File>
-	<File name="src\SceneXMLBuilder.h" open="1" top="0" tabpos="24">
+	<File name="src\SceneXMLBuilder.h" open="0" top="0" tabpos="24">
 		<Cursor position="1032" topLine="21" />
 	</File>
-	<File name="src\SceneXMLParser.cpp" open="1" top="0" tabpos="17">
-		<Cursor position="0" topLine="0" />
+	<File name="src\SceneXMLParser.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="5839" topLine="125" />
 	</File>
-	<File name="src\VictimView.cpp" open="1" top="0" tabpos="12">
+	<File name="src\VictimView.cpp" open="0" top="0" tabpos="12">
 		<Cursor position="1571" topLine="0" />
 	</File>
 	<File name="src\VideoController.cpp" open="0" top="0" tabpos="30">

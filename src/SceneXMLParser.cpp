@@ -84,6 +84,8 @@ void SceneXMLParser::parseXML(){
 
 		scene = new Scene();
 		scene->setName(_xml.getAttribute("scene", "name", "", whichScene));
+		scene->setTotalFrames(_xml.getAttribute("scene", "totalFrames", -1, whichScene)); // no loop or b seq's
+
 		LOG_VERBOSE("Parsing xml=>scene: " + scene->getName());
 		// set new root
 		_xml.pushTag("scene", whichScene);
@@ -100,9 +102,11 @@ void SceneXMLParser::parseXML(){
 			attributesToCheck.clear();
 			attributesToCheck.push_back("name");
 			attributesToCheck.push_back("size");
+			attributesToCheck.push_back("frames");
 			attributesToCheck.push_back("dateModified");
 			attributesToCheck.push_back("dateCreated");
 			attributesToCheck.push_back("nextSequence");
+			attributesToCheck.push_back("faceResult");
 			attributesToCheck.push_back("attackerResult");
 			attributesToCheck.push_back("victimResult");
 			attributesToCheck.push_back("faked");
@@ -115,12 +119,13 @@ void SceneXMLParser::parseXML(){
 			sequence->setName(_xml.getAttribute("sequence", "name", "", whichSequence));
 			LOG_VERBOSE("Parsing xml=>sequence: " + sequence->getName());
 			sequence->setType(_xml.getAttribute("sequence", "sequenceType", "", whichSequence));
+			sequence->setFaceResult(_xml.getAttribute("sequence", "faceResult", "", whichSequence));
 			sequence->setAttackerResult(_xml.getAttribute("sequence", "attackerResult", "", whichSequence));
 			sequence->setVictimResult(_xml.getAttribute("sequence", "victimResult", "", whichSequence));
 			sequence->setNextSequenceName(_xml.getAttribute("sequence", "nextSequence", "", whichSequence));
 			sequence->setIsSequenceFaked((_xml.getAttribute("sequence", "faked", "", whichSequence) == "true") ? true : false);
 			sequence->setNumber(findSequenceNumberFromString(sequence->getName()));
-			
+
 			// check movie file metadata
 			fileName = _xml.getAttribute("sequence", "filename", "", whichSequence);
 			fileId = _moviesFileLister.findFileByName(fileName);
@@ -138,7 +143,9 @@ void SceneXMLParser::parseXML(){
 				LOG_VERBOSE("Comparision failure or file missing on " + fileName);
 				throw GenericXMLParseException("Missing movie file");
 			}
+
 			sequence->setMovieFullFilePath(_moviesFileLister.getPath(fileId));
+            sequence->setNumFrames(_xml.getAttribute("sequence", "frames", -1, whichSequence));
 
 			// push in
 			_xml.pushTag("sequence", whichSequence);
@@ -231,7 +238,7 @@ void SceneXMLParser::parseXML(){
 
 			// transforms
 			for(int witchTransform = 0; witchTransform < _xml.getNumTags("transform"); witchTransform++){
-				
+
 				fileName = _xml.getAttribute("transform", "filename", "", witchTransform);
 				fileId = _assetsFileLister.findFileByName(fileName);
 
