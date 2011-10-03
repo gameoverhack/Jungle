@@ -40,14 +40,18 @@ bool CamController::setup(int deviceID, int w, int h){
 
 	LOG_NOTICE("Attemptimg to set instance " + ofToString(_instanceID) + " cam to deviceID: " + ofToString(deviceID));
 
-	_cam.close();					// to be sure, to be sure
+	_cam.close();// to be sure, to be sure
 	bool ok = true; // bad mac change this
+
 #ifdef TARGET_WIN32
     _cam.setRequestedMediaSubType(VI_MEDIASUBTYPE_MJPG);
 	ok = _cam.initGrabber(w, h, true);
+#else
+    _cam.initGrabber(w, h, true);
 #endif
+
 	_cam.setDeviceID(deviceID);
-	_cam.initGrabber(w, h, true);
+
 #ifdef TARGET_WIN32
 	if (ok) loadSettings();
 #endif
@@ -266,8 +270,19 @@ void CamController::setCameraAttributes(PosRotScale prs) {
 void CamController::update() {
 
     _cam.update();
-    if (ofGetElapsedTimeMillis() - _lastFaceTime < _lastFaceTimeTillLost) _isFacePresent = true;
-    else _isFacePresent = false;
+    if (ofGetElapsedTimeMillis() - _lastFaceTime < _lastFaceTimeTillLost) {
+        if (!_isFacePresent) {  // arrived
+            int instanceID = _instanceID + 2;
+            ofNotifyEvent(faceAction, instanceID, this);
+            _isFacePresent = true;
+        }
+    } else {                    // gone
+         if (_isFacePresent) {
+             int instanceID = _instanceID + 0;
+            ofNotifyEvent(faceAction, instanceID, this);
+             _isFacePresent = false;
+         }
+    }
 }
 
 void CamController::threadedFunction() {

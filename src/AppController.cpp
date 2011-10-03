@@ -68,7 +68,7 @@ void AppController::setup() {
 	//_vidController->registerStates();
     ofSetLogLevel(OF_LOG_NOTICE);
 	// setup micController
-	_micController = new MicController("Microphone (USB Audio Device)", 2); // other is Microphone (2- HD Pro Webcam C910) // TODO: make these a property
+	_micController = new MicController("Microphone (2- USB Audio Device)", 2); // other is Microphone (2- HD Pro Webcam C910) // TODO: make these a property
 	ofAddListener(_micController->victimAction, this, &AppController::VictimEvent);
 	//_micController->registerStates();
 
@@ -88,6 +88,9 @@ void AppController::setup() {
 	_camControllers[0]->setup(0, 1920, 1080);
 	_camControllers[1]->setup(1, 1920, 1080);
 #endif
+
+    ofAddListener(_camControllers[0]->faceAction, this, &AppController::FaceEvent);
+    ofAddListener(_camControllers[1]->faceAction, this, &AppController::FaceEvent);
 
 	// register pointers to textures from cams on the model
 	_appModel->setCameraTextures(_camControllers[0]->getCamTextureRef(), _camControllers[1]->getCamTextureRef());
@@ -174,14 +177,14 @@ void AppController::AttackEvent(float & level) {
 }
 
 //--------------------------------------------------------------
-void AppController::FaceEvent(float & level) {
-
+void AppController::FaceEvent(int & level) {
+    // level == instanceID == GONE; level == instanceID+2 == HERE;
     if (ofGetElapsedTimeMillis() - _lastActionTime > 500) {
         if (_switchToSequence == NULL && !_vidController->isPreRolling()) {
-            if (_appModel->checkCurrentInteractivity(kINTERACTION_FACE)) {
+            if (_appModel->checkCurrentInteractivity(kINTERACTION_FACE) && level > 1) {
                 _lastActionTime = ofGetElapsedTimeMillis();
                 string res ="seq01a"; // hack
-                LOG_NOTICE("FAKE FACE ACTION [" + ofToString(level) + "] == " + res);
+                LOG_NOTICE("FACE ACTION [" + ofToString(level) + "] == " + res);
                 if (res != kLAST_SEQUENCE_TOKEN) {
                     _switchToSequence = _appModel->getCurrentScene()->getSequence(res);
                     _vidController->loadMovie(_switchToSequence, true);
@@ -429,8 +432,13 @@ void AppController::keyPressed(int key){
 			_dataController->saveProperties();
 			break;
 		case ' ':
-            FaceEvent(fakeInput);
-			break;
+		{
+		    int fakeInstanceID = 2;
+            FaceEvent(fakeInstanceID);
+            break;
+		}
+
+
         case 'm':
             _appModel->getCurrentVideoPlayer()->togglePaused();
             break;

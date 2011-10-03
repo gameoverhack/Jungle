@@ -44,7 +44,7 @@ MicController::MicController(string deviceName, int fftBufferLengthSecs, int aud
 #ifdef TARGET_WIN32
     // instantiate the soundstream
     LOG_NOTICE("Setting up soundstream");
-#if OF_VERSION < 7
+#if OF_VERSION > 7
     vector<ofStreamDevice> deviceVec = ofSoundStreamListDevices();
 
     int inputDeviceID = -1;
@@ -58,9 +58,7 @@ MicController::MicController(string deviceName, int fftBufferLengthSecs, int aud
     }
 	ofSoundStreamSetup(0, channels, this, sampleRate, _audioBufferSize, 4, inputDeviceID);
 #else
-cout << "jesus" << endl;
     soundStream.setDeviceID(deviceName);
-    cout << "jesuddds" << endl;
     ofSoundStreamSetup(0, channels, this, sampleRate, _audioBufferSize, 4);
 #endif
 #else

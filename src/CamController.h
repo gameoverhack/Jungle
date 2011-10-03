@@ -69,11 +69,12 @@ public:
     ofxCvColorImage         _colourImage;
     ofxCvGrayscaleImage     _greyImage;
 
-    bool        getIsFacePresent() {return _isFacePresent;}
+    bool                    getIsFacePresent() {return _isFacePresent;}
+    ofEvent<int>            faceAction;
 
 private:
 
-    void threadedFunction();
+    void                    threadedFunction();
 
 #ifdef TARGET_OSX
 	ofxQTKitVideoGrabber	_cam;			// this is not X-platform but of/goVideoPlayer does not play well with ManyCam

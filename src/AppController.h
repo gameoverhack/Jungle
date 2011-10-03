@@ -54,7 +54,7 @@ private:
 
     void            VictimEvent(float & level);
     void            AttackEvent(float & level);
-    void            FaceEvent(float & level);
+    void            FaceEvent(int & level);
 
     void              nextScene();
 
