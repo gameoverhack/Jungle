@@ -64,6 +64,13 @@ public:
 
     ofxFaceTracker          _tracker;
 
+    // lazy!!
+    ofxCvColorImage         _camImage;
+    ofxCvColorImage         _colourImage;
+    ofxCvGrayscaleImage     _greyImage;
+
+    bool        getIsFacePresent() {return _isFacePresent;}
+
 private:
 
     void threadedFunction();
@@ -78,9 +85,9 @@ private:
 	int                     _width;
 	int                     _height;
 
-	ofxCvGrayscaleImage     _greyImage;
-    ofxCvColorImage         _colourImage;
-    ofxCvColorImage         _camImage;
+    int                     _lastFaceTime;
+    int                     _lastFaceTimeTillLost;
+    bool                    _isFacePresent;
 
 };
 

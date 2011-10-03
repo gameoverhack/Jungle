@@ -17,6 +17,12 @@ CamController::CamController() {
     registerStates();
 
 	_cam.listDevices();
+
+	_isFacePresent = false;
+    _lastFaceTimeTillLost   = 10000;
+    _lastFaceTime           = ofGetElapsedTimeMillis() - _lastFaceTimeTillLost;
+
+
 	_instanceID = _instanceCount;
     _instanceCount++;				// use instance counts to keep track of which cam belongs to which viewer - may be redundant??
 	LOG_NOTICE("Initialisation complete. Instance ID: " + ofToString(_instanceID));
@@ -50,11 +56,13 @@ bool CamController::setup(int deviceID, int w, int h){
     _doFaceTracking = true;
     //_finder.setScaleHaar(0.5);
     _finder.setup("haarcascade_frontalface_default.xml");
-    _finder.setNeighbors(4);
-    _finder.setScaleHaar(1.09);
+    //_finder.setNeighbors(4);
+    //_finder.setScaleHaar(1.09);
     _camImage.allocate(w, h);
-    _colourImage.allocate((float)w/6.0f, (float)h/6.0f);
-    _greyImage.allocate((float)w/6.0f, (float)h/6.0f);
+    _colourImage.allocate(640,640);
+    _greyImage.allocate(640,640);
+
+    _camImage.setROI(200, 200, 640,640);
 
     _tracker.setup();
     _tracker.setScale(0.33);
@@ -85,8 +93,10 @@ bool CamController::setup(string deviceID, int w, int h){
     _finder.setNeighbors(4);
     _finder.setScaleHaar(1.09);
     _camImage.allocate(w, h);
-    _colourImage.allocate((float)w/6.0f, (float)h/6.0f);
-    _greyImage.allocate((float)w/6.0f, (float)h/6.0f);
+    _colourImage.allocate(640,640);
+    _greyImage.allocate(640,640);
+
+    _camImage.setROI(200, 200, 640,640);
 
     _tracker.setup();
     _tracker.setScale(1);
@@ -256,7 +266,8 @@ void CamController::setCameraAttributes(PosRotScale prs) {
 void CamController::update() {
 
     _cam.update();
-
+    if (ofGetElapsedTimeMillis() - _lastFaceTime < _lastFaceTimeTillLost) _isFacePresent = true;
+    else _isFacePresent = false;
 }
 
 void CamController::threadedFunction() {
@@ -264,25 +275,38 @@ void CamController::threadedFunction() {
     while(isThreadRunning() != 0) {
         if(lock()){
 
-            if (_cam.isFrameNew() && ofGetFrameNum()%2 == 0 && _doFaceDetection) {
+            if (_cam.isFrameNew() && _doFaceDetection) { //&& ofGetFrameNum()%2 == 0
                 _camImage = _cam.getPixels();
-                _colourImage.scaleIntoMe(_camImage);
-                _greyImage = _colourImage;
-                _finder.findHaarObjects(_greyImage);
+                _greyImage = _camImage;
+                cvTranspose(_greyImage.getCvImage(), _greyImage.getCvImage()); // rotate ROI
+
+                if(_finder.findHaarObjects(_greyImage, 200, 200) > 0) { // has a face
+                    _lastFaceTime = ofGetElapsedTimeMillis();
+                }
+
             }
 
             if (_cam.isFrameNew() && _doFaceTracking) {
                 _camImage = _cam.getPixels();
-                //_colourImage.scaleIntoMe(_camImage);
-                //_greyImage = _colourImage;
-               _tracker.update(toCv(_camImage));
-                //ofSleepMillis(100);
+                _colourImage = _camImage;
+                cvTranspose(_colourImage.getCvImage(), _colourImage.getCvImage()); // rotate ROI
+
+                if (_tracker.update(toCv(_colourImage))) { // has a face
+                    _lastFaceTime = ofGetElapsedTimeMillis();
+                }
             }
 
         }
     }
 
-
+//                Mat originalMat = Mat(_camImage.getHeight(), _camImage.getWidth(), getCvImageType(_camImage), _camImage.getPixels(), 0);
+//                Mat rotatedMat =  Mat(_colourImage.getHeight(), _colourImage.getWidth(), getCvImageType(_colourImage), _colourImage.getPixels(), 0);
+//
+//                Point2f center(originalMat.rows / 2, originalMat.cols / 2);
+//                Mat rotationMatrix = getRotationMatrix2D(center, 90.0f, 1);
+//                warpAffine(originalMat, rotatedMat, rotationMatrix, originalMat.size(), INTER_LINEAR, BORDER_CONSTANT, Scalar(0));
+//                cvMat* matT, hdr;
+//                matT = cvReshape( mat, &hdr, CV_MAT_CN(mat->type), mat->cols );
 }
 
 int CamController::getInstanceID(){							// might be redundant

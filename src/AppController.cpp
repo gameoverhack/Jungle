@@ -310,27 +310,46 @@ void AppController::draw() {
 	glPushMatrix();
 	glScalef(0.25f,0.25f,1.0f);
 
-	glTranslatef(0.0f, 80.0f, 0.0f);
-	_appModel->getVictimCamTexRef()->draw(0,0);;
-	if (_camControllers[0]->_doFaceTracking) _camControllers[0]->_tracker.draw();
+	glTranslatef(0.0f, 150.0f, 0.0f);
+	//_appModel->getVictimCamTexRef()->draw(0,0);
+	//_camControllers[0]->_camImage.draw(0,0);
+	if (_camControllers[0]->_doFaceTracking) {
+	    _camControllers[0]->_colourImage.draw(0,0);
+	    _camControllers[0]->_tracker.draw();
+	}
 	if (_camControllers[0]->_doFaceDetection) {
+	    _camControllers[0]->_greyImage.draw(0,0);
 	    glPushMatrix();
-	    glScalef(1920.0f/_camControllers[0]->_finder.getWidth(), 1080.0f/_camControllers[0]->_finder.getHeight(), 1.0f);
+	    glScalef(640.0f/_camControllers[0]->_finder.getWidth(), 640.0f/_camControllers[0]->_finder.getHeight(), 1.0f);
         _camControllers[0]->_finder.draw(0,0);
         glPopMatrix();
 	}
-	glTranslatef(1920.0f, 0.0f, 0.0f);
-	_appModel->getAttackCamTexRef()->draw(0,0);
-	if (_camControllers[1]->_doFaceTracking) _camControllers[1]->_tracker.draw();
+	glTranslatef(640.0f, 0.0f, 0.0f);
+	//_appModel->getAttackCamTexRef()->draw(0,0);
+	//_camControllers[1]->_camImage.draw(0,0);
+	if (_camControllers[1]->_doFaceTracking) {
+	    _camControllers[1]->_colourImage.draw(0,0);
+	    _camControllers[1]->_tracker.draw();
+	}
 	if (_camControllers[1]->_doFaceDetection) {
+	    _camControllers[1]->_greyImage.draw(0,0);
 	    glPushMatrix();
-	    glScalef(1920.0f/_camControllers[1]->_finder.getWidth(), 1080.0f/_camControllers[1]->_finder.getHeight(), 1.0f);
+	    glScalef(640.0f/_camControllers[1]->_finder.getWidth(), 640.0f/_camControllers[1]->_finder.getHeight(), 1.0f);
         _camControllers[1]->_finder.draw(0,0);
         glPopMatrix();
 	}
 
 
     glPopMatrix();
+
+    ofSetColor(255, 0, 0);
+    ofFill();
+
+    if (_camControllers[0]->getIsFacePresent()) ofCircle(50, 120, 20);
+    if (_camControllers[1]->getIsFacePresent()) ofCircle(90, 120, 20);
+
+    ofNoFill();
+    ofSetColor(255, 255, 255, 255);
 }
 
 //--------------------------------------------------------------
