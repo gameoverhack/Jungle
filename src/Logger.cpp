@@ -12,7 +12,7 @@
 //--------------------------------------------------------------
 bool Logger::openLogFile(string filename) {
 	
-    log(JU_LOG_NOTICE, typeid(this).name(), "Attempting to open log file...");
+    log(JU_LOG_NOTICE, typeid(this).name(), __func__, "Attempting to open log file...");
 	
     _filename = filename;
     _toFile = true;
@@ -20,13 +20,13 @@ bool Logger::openLogFile(string filename) {
 	
     if (_logFile.good()) {
 		
-        log(JU_LOG_NOTICE, typeid(this).name(), "//___________________________________________________\\");
-        log(JU_LOG_NOTICE, typeid(this).name(), "Log started...");
+        log(JU_LOG_NOTICE, typeid(this).name(), __func__, "//___________________________________________________\\");
+        log(JU_LOG_NOTICE, typeid(this).name(), __func__, "Log started...");
         return true;
 		
     } else {
 		
-        log(JU_LOG_NOTICE, typeid(this).name(), "Cannot open file");
+        log(JU_LOG_NOTICE, typeid(this).name(), __func__, "Cannot open file");
         return false;
 		
     }
@@ -36,7 +36,7 @@ bool Logger::openLogFile(string filename) {
 //--------------------------------------------------------------
 bool Logger::closeLogFile() {
 	
-    log(JU_LOG_NOTICE, typeid(this).name(), "Closing log file");
+    log(JU_LOG_NOTICE, typeid(this).name(), __func__, "Closing log file");
 	
     _toFile = false;
     _logFile.close();
@@ -48,12 +48,13 @@ bool Logger::closeLogFile() {
 }
 
 //--------------------------------------------------------------
-void Logger::log(juLogLevel l, string objectName, string _msg) {
+void Logger::log(juLogLevel l, string objectName, string funcName, string msg) {
 	
 	if(l < _logLevel) return;
 
 	stringstream outstring;
-	outstring << "[" << getTimeStamp() << " :: " << getLogLevelName(l) << " :: " << pad(objectName) << "]: " << _msg.c_str() << "\n";
+	string objectAndFunc = objectName+"::"+funcName;
+	outstring << "[" << getTimeStamp() << " :: " << getLogLevelName(l) << " :: " << pad(objectAndFunc) << "]: " << msg.c_str() << "\n";
     
 	if(_toFile) {
 		

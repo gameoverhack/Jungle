@@ -623,4 +623,3 @@ void AppController::toggleFullscreen(){
     _appModel->setProperty("fullScreen", !boost::any_cast<bool>(_appModel->getProperty("fullScreen")));
 
 }
-
