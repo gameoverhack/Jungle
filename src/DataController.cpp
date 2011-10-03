@@ -38,8 +38,8 @@ DataController::DataController(string configFilePath) {
     #else TARGET_WIN32
     //_appModel->setProperty("scenesDataPath", (string)"E:/Users/gameover/Desktop/StrangerDanger/video");
     //_appModel->setProperty("flashDataPath", (string)"E:/Users/gameover/Desktop/StrangerDanger/flash");
-    _appModel->setProperty("scenesDataPath", (string)"E:/gameoverload/VideoProjects/Jungle/newmodel/video");
-    _appModel->setProperty("flashDataPath", (string)"E:/gameoverload/VideoProjects/Jungle/newmodel/flash");
+    _appModel->setProperty("scenesDataPath", (string)"E:/gameoverload/VideoProjects/Jungle/newtease/video");
+    _appModel->setProperty("flashDataPath", (string)"E:/gameoverload/VideoProjects/Jungle/newtease/flash");
     //_appModel->setProperty("scenesDataPath", (string)"D:/newmodel/video");
     //_appModel->setProperty("flashDataPath", (string)"D:/newmodel/flash");
     _appModel->setProperty("graphicDataPath", (string)"graphics");
@@ -109,6 +109,7 @@ void DataController::update(){
 			break;
 
 		case kDATACONTROLLER_SCENE_ANALYSING:
+
 			if (_flashAnalyzer->checkState(kANAL_FINISHED)) {
 				_flashAnalyzer->setState(kANAL_READY);
 				LOG_WARNING("Rebuilding XML to handle mal-transforms");
@@ -177,18 +178,22 @@ void DataController::buildXML(){
 	catch (AnalysisRequiredException ex) {
 
 		LOG_WARNING("Analysis required due to builder throwing AnalysisRequiredException");
+
 		string message = "";
-		for(vector<string>::iterator iter = ex.getFiles().begin(); iter != ex.getFiles().end(); iter++){
-			message = *iter + ", " + message;
-		}
+		vector<string> brokenFiles = ex.getFiles();
+        for (int i = 0; i < brokenFiles.size(); i++) {
+            message = brokenFiles[i] + ", " + message;
+        }
+
 		message[message.length()-1] = ' ';
+
 		LOG_ERROR("Require reanalysis/creation of transform files: " + message);
 
 		if(boost::any_cast<bool>(_appModel->getProperty("xmlIgnoreTransformErrors"))){
 			LOG_WARNING("xmlIgnoreTransformErrors true, continuing without rebuilding transforms");
 		} else {
 			if (!_hasAttemptedReparse) {
-				runAnalyser(ex.getFiles());
+				runAnalyser(brokenFiles);
 			} else {
 				LOG_WARNING("hasAttemptedReparse already, continuing without rebuilding transforms");
 			}

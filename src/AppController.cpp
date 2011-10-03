@@ -66,7 +66,7 @@ void AppController::setup() {
 	// setup videoController
 	_vidController = new VideoController();
 	//_vidController->registerStates();
-    ofSetLogLevel(OF_LOG_NOTICE);
+    //ofSetLogLevel(OF_LOG_NOTICE);
 	// setup micController
 	_micController = new MicController("Microphone (2- USB Audio Device)", 2); // other is Microphone (2- HD Pro Webcam C910) // TODO: make these a property
 	ofAddListener(_micController->victimAction, this, &AppController::VictimEvent);

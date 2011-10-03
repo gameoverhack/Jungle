@@ -166,9 +166,18 @@ public:
 		return _nextSequenceName;
 	}
 
-	void setAttackerResult(string str) {
-		_attackerResult = str;
+	void setFaceResult(string str) {
+		_faceResult = str;
 	}
+
+	string getFaceResult() {
+		return _attackerResult;
+	}
+
+	void setAttackerResult(string str) {
+		_faceResult = str;
+	}
+
 	string getAttackerResult() {
 		return _attackerResult;
 	}
@@ -176,6 +185,7 @@ public:
 	void setVictimResult(string str) {
 		_victimResult = str;
 	}
+
 	string getVictimResult() {
 		return _victimResult;
 	}
@@ -187,6 +197,9 @@ public:
 	string getMovieFullFilePath() {
 		return _movieFullFilePath;
 	}
+
+    void setNumFrames(int frames) {_frames = frames;};
+    int  getNumFrames() {return _frames;};
 
 	void setIsMovieFaked(bool b) {
 		_isMovieFaked = b;
@@ -290,7 +303,9 @@ private:
 	string					_type;
 	bool                    _loop; // TODO: DEPRECIATED, use _type
 	int						_number;
+	int                     _frames;
 	string					_nextSequenceName; //TODO: DEPRECIATED?
+	string                  _faceResult;
 	string					_attackerResult;
 	string					_victimResult;
 	string					_interactivity; //TODO: DEPRECIATED
@@ -301,11 +316,11 @@ private:
 	interaction_t			*_interactionTable;
 
 public:
-	
+
 	// used for SceneXMLBuilder when it has to save out a model.
 	vector<string> _transformsFilenames;
 	string _interactivityFilename;
-	
+
 	map<string, vector<CamTransform> *> _transforms;
 };
 
@@ -330,11 +345,11 @@ public:
 	int getNumOfSequences() {
 		return _sequences.size();
 	}
-	
+
 	map<string, Sequence*> getSequences(){
 		return _sequences;
 	}
-	
+
 
 	string getName() {
 		return _name;
@@ -424,6 +439,9 @@ public:
 		return true;
 	}
 
+    void setTotalFrames(int frames) {_totalFrames = frames;};
+    int  getTotalFrames() {return _totalFrames;};
+
 	// increments the current sequence to the next sequence (of the current sequence)
 	bool nextSequence() {
 
@@ -461,7 +479,8 @@ public:
 		// print details of scene
 		printf("%s\n", line.c_str());
 		tabs = "\t\t";
-		line = tabs + "_name => " + _name + "\n";
+		line = tabs + "name => " + _name + "\n";
+		line = tabs + "totalFrames => " + ofToString(_totalFrames) + "\n";
 		printf("%s\n", line.c_str());
 		line = tabs + "sequences => {";
 		printf("%s\n", line.c_str());
@@ -472,7 +491,9 @@ public:
 			printf("%s\n", line.c_str());
 			tabs = tabs + "\t";
 			line = tabs + "name => " + iter->second->getName() + "\n";
+			line = tabs + "duration => " + ofToString(iter->second->getNumFrames()) + "\n";
 			line = line + tabs + "nextSequence => " + iter->second->getNextSequenceName() + "\n";
+			line = line + tabs + "faceResult => " + iter->second->getFaceResult() + "\n";
 			line = line + tabs + "victimResult => " + iter->second->getVictimResult() + "\n";
 			line = line + tabs + "attackerResult => " + iter->second->getAttackerResult() + "\n";
 			printf("%s\n", line.c_str());
@@ -495,6 +516,7 @@ private:
 
 	map<string, Sequence*>	_sequences;
 
+	int                     _totalFrames; // not counting b or loop movies
 
 };
 

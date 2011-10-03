@@ -109,11 +109,13 @@ void SceneXMLBuilder::santiseFiles(){
 
 
 // checks that movie files have transforms files and an interactivity file
-void SceneXMLBuilder::checkMovieAssets(){
+void SceneXMLBuilder::checkMovieAssets() {
+
 	int assetFileId;
 	string movieFilename, assetFilename, assetPath;
 	vector<string> brokenFiles; // list of things that need reanalisis
 	vector<string> assetFilenameParts;
+	_movieFrameLengths.clear();
 
 	goVideoPlayer movie;
 
@@ -128,6 +130,7 @@ void SceneXMLBuilder::checkMovieAssets(){
 		LOG_NOTICE("Loading movie: " + movieFilename);
 		movie.setUseTexture(false);
 		movie.loadMovie(_moviesFileLister.getPath(movieFileId));
+        _movieFrameLengths.insert(pair<string, int>(_moviesFileLister.getName(movieFileId), movie.getTotalNumFrames()));
 
 		assetFilenameParts.clear();
 		assetFilenameParts.push_back("_interactivity.bin");
@@ -142,7 +145,7 @@ void SceneXMLBuilder::checkMovieAssets(){
 
 			// check for interactifity file
 			assetFilename = movieFilename+*iter;
-			LOG_NOTICE("CHecking for " + assetFilename);
+			LOG_NOTICE("Checking for " + assetFilename);
 			assetFileId = _assetsFileLister.findFileByName(assetFilename);
 			if(assetFileId == -1){
 				LOG_NOTICE("Did not find");
@@ -184,7 +187,7 @@ void SceneXMLBuilder::buildAppModel(){
 	Sequence *sequence = NULL;
 	vector<CamTransform> *transform = NULL;
 	goVideoPlayer *movie;
-
+    int totalFrames = 0;
 	string movieFilename;
 	for(int movieFileId = 0; movieFileId < _moviesFileLister.size(); movieFileId++){
 		movieFilename = _moviesFileLister.getNameWithoutExtension(movieFileId);
@@ -195,9 +198,12 @@ void SceneXMLBuilder::buildAppModel(){
 			scene = new Scene();
 			scene->setName(movieFilenameParts[0]);
 			_builderModel.insert(make_pair(movieFilenameParts[0], scene));
+			totalFrames = 0;
+			scene->setTotalFrames(0);
 		}
 		else{
 			scene = _builderModel.find(movieFilenameParts[0])->second;
+			totalFrames = scene->getTotalFrames();
 		}
 		// next part is sequence name
 		sequence = new Sequence();
@@ -207,8 +213,11 @@ void SceneXMLBuilder::buildAppModel(){
 		sequence->setNumber(findSequenceNumberFromString(sequence->getName())); //t_seq[01]a
 
 		sequence->setNextSequenceName("_not_forging_");
+		sequence->setFaceResult("_not_forging_");
 		sequence->setAttackerResult("_not_forging_");
 		sequence->setVictimResult("_not_forging_");
+
+        int frames = _movieFrameLengths[_moviesFileLister.getName(movieFileId)];
 
 		if(regex_search(movieFilename, regex("_loop"))){
 			// is a loop movie
@@ -219,6 +228,7 @@ void SceneXMLBuilder::buildAppModel(){
 		else{
 			if(regex_search(movieFilenameParts[1], regex("a$"))){
 				sequence->setType("a"); // t_seq01[a]
+				totalFrames += frames;
 			}
 			else{
 			   sequence->setType("b");
@@ -226,6 +236,7 @@ void SceneXMLBuilder::buildAppModel(){
 		}
 
 		sequence->setMovieFullFilePath(_moviesFileLister.getPath(movieFileId));
+		sequence->setNumFrames(frames);
 		sequence->_interactivityFilename = movieFilename+"_interactivity.bin";
 		sequence->_transformsFilenames.push_back(movieFilename+"_transform_vic1.bin");
 		sequence->_transformsFilenames.push_back(movieFilename+"_transform_atk1.bin");
@@ -233,7 +244,7 @@ void SceneXMLBuilder::buildAppModel(){
 			sequence->_transformsFilenames.push_back(movieFilename+"_transform_atk2.bin");
 		}
 
-
+        scene->setTotalFrames(totalFrames);
 		scene->setSequence(sequence->getName(), sequence);
 	}
 
@@ -262,12 +273,15 @@ void SceneXMLBuilder::buildAppModel(){
 				sequence = rseqi->second;
 				if(sequence->getType() == "a"){
 					sequence->setNextSequenceName(kLAST_SEQUENCE_TOKEN);
+					sequence->setFaceResult(kLAST_SEQUENCE_TOKEN);
 					sequence->setAttackerResult(kLAST_SEQUENCE_TOKEN);
 					sequence->setVictimResult(kLAST_SEQUENCE_TOKEN);
 					a = true;
 				}
 				if(sequence->getType() == "b"){
+
 					sequence->setNextSequenceName(kLAST_SEQUENCE_TOKEN);
+					sequence->setFaceResult(kLAST_SEQUENCE_TOKEN);
 					sequence->setAttackerResult(kLAST_SEQUENCE_TOKEN);
 					sequence->setVictimResult(kLAST_SEQUENCE_TOKEN);
 					b = true;
@@ -281,6 +295,7 @@ void SceneXMLBuilder::buildAppModel(){
 					sequence = sequences.rbegin()->second;
 					// save absolute last as final sequence since we found no a
 					sequence->setNextSequenceName(kLAST_SEQUENCE_TOKEN);
+					sequence->setFaceResult(kLAST_SEQUENCE_TOKEN);
 					sequence->setAttackerResult(kLAST_SEQUENCE_TOKEN);
 					sequence->setVictimResult(kLAST_SEQUENCE_TOKEN);
 					break;
@@ -363,6 +378,7 @@ void SceneXMLBuilder::buildXML(){
 			which = _xml.addTag("sequence");
 			_xml.addAttribute("sequence", "name", sequence->getName(), which);
 			_xml.addAttribute("sequence", "sequenceType", sequence->getType(), which);
+			_xml.addAttribute("sequence", "faceResult", sequence->getFaceResult(), which);
 			_xml.addAttribute("sequence", "attackerResult", sequence->getAttackerResult(), which);
 			_xml.addAttribute("sequence", "victimResult", sequence->getVictimResult(), which);
 			_xml.addAttribute("sequence", "nextSequence", sequence->getNextSequenceName(), which);
@@ -371,6 +387,7 @@ void SceneXMLBuilder::buildXML(){
 			string movieFilename = sequence->getMovieFullFilePath();
 			movieFilename = movieFilename.substr(movieFilename.rfind(scene->getName()+"_"));
 			_xml.addAttribute("sequence", "filename", movieFilename, which);
+			_xml.addAttribute("sequence", "frames", sequence->getNumFrames(), which);
 			fileId = _moviesFileLister.findFileByName(movieFilename);
 			_xml.addAttribute("sequence", "dateCreated", _moviesFileLister.getCreated(fileId), which);
 			_xml.addAttribute("sequence", "dateModified", _moviesFileLister.getModified(fileId), which);

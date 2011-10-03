@@ -46,6 +46,7 @@ public:
 
 private:
 	map<string, Scene*> _builderModel;
+    map<string, int>    _movieFrameLengths;
 
 	string			_xmlFile;
 	string			_dataPath;
