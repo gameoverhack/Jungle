@@ -108,7 +108,7 @@ void AppController::setup() {
 	// set app default properties - COMMENT TO STOP SETTING BACK TO DEFAULTS
 	_appModel->setProperty("loadingMessage", string("AppController loading"));
 	_appModel->setProperty("loadingProgress", 0.1f);
-
+    //_appModel->setProperty("showCameras", false);
     _appModel->setProperty("showProps", false);
 	_appModel->setProperty("autoTest", false);
 	_appModel->setProperty("fullScreen", false);
@@ -311,49 +311,16 @@ void AppController::draw() {
 	ofSetColor(255, 255, 255, 255);
 	_appView->draw();
 
-	glPushMatrix();
-	glScalef(0.25f,0.25f,1.0f);
-
-	glTranslatef(0.0f, 150.0f, 0.0f);
-	//_appModel->getVictimCamTexRef()->draw(0,0);
-	//_camControllers[0]->_camImage.draw(0,0);
-	if (_camControllers[0]->_doFaceTracking) {
-	    _camControllers[0]->_colourImage.draw(0,0);
-	    _camControllers[0]->_tracker.draw();
-	}
-	if (_camControllers[0]->_doFaceDetection) {
-	    _camControllers[0]->_greyImage.draw(0,0);
+    if (boost::any_cast<bool>(_appModel->getProperty("showCameras"))) {
 	    glPushMatrix();
-	    glScalef(640.0f/_camControllers[0]->_finder.getWidth(), 640.0f/_camControllers[0]->_finder.getHeight(), 1.0f);
-        _camControllers[0]->_finder.draw(0,0);
+	    glScalef(0.25f,0.25f,1.0f);
+	    glTranslatef(ofGetWidth() - 640.0f/4.0f, 20.0f, 0.0f);
+	    _camControllers[0]->drawDebug();
+	    glTranslatef(640.0f, 0.0f, 0.0f);
+        _camControllers[1]->drawDebug();
         glPopMatrix();
-	}
-	glTranslatef(640.0f, 0.0f, 0.0f);
-	//_appModel->getAttackCamTexRef()->draw(0,0);
-	//_camControllers[1]->_camImage.draw(0,0);
-	if (_camControllers[1]->_doFaceTracking) {
-	    _camControllers[1]->_colourImage.draw(0,0);
-	    _camControllers[1]->_tracker.draw();
-	}
-	if (_camControllers[1]->_doFaceDetection) {
-	    _camControllers[1]->_greyImage.draw(0,0);
-	    glPushMatrix();
-	    glScalef(640.0f/_camControllers[1]->_finder.getWidth(), 640.0f/_camControllers[1]->_finder.getHeight(), 1.0f);
-        _camControllers[1]->_finder.draw(0,0);
-        glPopMatrix();
-	}
+    }
 
-
-    glPopMatrix();
-
-    ofSetColor(255, 0, 0);
-    ofFill();
-
-    if (_camControllers[0]->getIsFacePresent()) ofCircle(50, 120, 20);
-    if (_camControllers[1]->getIsFacePresent()) ofCircle(90, 120, 20);
-
-    ofNoFill();
-    ofSetColor(255, 255, 255, 255);
 }
 
 //--------------------------------------------------------------
@@ -366,6 +333,7 @@ void AppController::keyPressed(int key){
     bool showProps              = boost::any_cast<bool>(_appModel->getProperty("showProps"));
     bool showFFT                = boost::any_cast<bool>(_appModel->getProperty("showFFT"));
     bool showDebug              = boost::any_cast<bool>(_appModel->getProperty("showDebugView"));
+    bool showCameras            = boost::any_cast<bool>(_appModel->getProperty("showCameras"));
     int scaleMethod             = boost::any_cast<int>(_appModel->getProperty("tryScaleMethod"));
     string cameraToAdjust       = boost::any_cast<string>(_appModel->getProperty("cameraToAdjust"));
     string cameraPropToAdjust   = boost::any_cast<string>(_appModel->getProperty("cameraPropToAdjust"));
@@ -397,6 +365,9 @@ void AppController::keyPressed(int key){
 			_camControllers[1]->loadSettings();
 			break;
 #endif
+        case 'b':
+            _appModel->setProperty("showCameras", !showCameras);
+            break;
         case 'n':
 			swapCameras();
 			break;

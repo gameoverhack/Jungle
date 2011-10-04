@@ -50,6 +50,7 @@ public:
 #endif
 
 	void		update();
+    void        drawDebug();
 
 	int			getInstanceID();
 	void		setInstanceID(int instanceID);

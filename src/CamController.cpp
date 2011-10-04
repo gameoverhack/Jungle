@@ -324,6 +324,30 @@ void CamController::threadedFunction() {
 //                matT = cvReshape( mat, &hdr, CV_MAT_CN(mat->type), mat->cols );
 }
 
+void CamController::drawDebug() {
+
+	if (_doFaceTracking) {
+	    _colourImage.draw(0,0);
+	    _tracker.draw();
+	}
+	if (_doFaceDetection) {
+	    _greyImage.draw(0,0);
+	    glPushMatrix();
+	    glScalef(640.0f/_finder.getWidth(), 640.0f/_finder.getHeight(), 1.0f);
+        _finder.draw(0,0);
+        glPopMatrix();
+	}
+
+	if (_isFacePresent) {
+	    ofFill();
+	    ofSetColor(0, 255, 0);
+	    ofCircle(25, 25, 50);
+	    ofNoFill();
+	    ofSetColor(255, 255, 255, 255);
+	}
+
+}
+
 int CamController::getInstanceID(){							// might be redundant
 	return _instanceID;
 }
