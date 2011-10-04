@@ -148,7 +148,7 @@ void AppController::VictimEvent(float & level) {
                 LOG_NOTICE("VICTIM ACTION [" + ofToString(level) + "]" + res);
                 if (res != kLAST_SEQUENCE_TOKEN) {
                     _switchToSequence = _appModel->getCurrentScene()->getSequence(res);
-                    _vidController->loadMovie(_switchToSequence, true, _appModel->getCurrentFrame()+1);
+                    _vidController->loadMovie(_switchToSequence, true, _appModel->getCurrentSceneFrame()+1);
                 } else nextScene();
 
             } //else cout << "Clocked by type " << _appModel->getCurrentInteractivity() << " = " << kINTERACTION_VICTIM << endl;
@@ -272,7 +272,7 @@ void AppController::update() {
 					break;
 				case 1:
 					LOG_VERBOSE("AUTO ACTION: Fast-forward movie (13 frames from end)");
-					_appModel->getCurrentVideoPlayer()->setFrame(_appModel->getCurrentFrameTotal()-13);
+					_appModel->getCurrentVideoPlayer()->setFrame(_appModel->getCurrentSequenceNumFrames()-13);
 					break;
 				default:
 					LOG_VERBOSE("AUTO ACTION: kAttackerAction");
@@ -443,7 +443,7 @@ void AppController::keyPressed(int key){
             _appModel->getCurrentVideoPlayer()->togglePaused();
             break;
         case '/':
-            _appModel->getCurrentVideoPlayer()->setFrame(_appModel->getCurrentFrameTotal()-13);
+            _appModel->getCurrentVideoPlayer()->setFrame(_appModel->getCurrentSequenceNumFrames()-13);
             break;
 		case '.':
             _appModel->getCurrentVideoPlayer()->nextFrame();

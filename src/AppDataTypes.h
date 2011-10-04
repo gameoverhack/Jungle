@@ -79,12 +79,13 @@ private:
 	{
 		ar & _start;
 		ar & _end;
-
+        ar & _to;
 	}
 
 public:
-	int _start;
-	int _end;
+	int     _start;
+	int     _end;
+	string  _to;
 };
 
 class SequenceDescriptor {
@@ -97,6 +98,7 @@ private:
 		ar & _face;
 		ar & _attacker;
 		ar & _victim;
+		ar & _next;
 	}
 
 public:
@@ -104,6 +106,7 @@ public:
 	vector<FramePair> _face;
 	vector<FramePair> _attacker;
 	vector<FramePair> _victim;
+	vector<FramePair> _next;
 };
 
 

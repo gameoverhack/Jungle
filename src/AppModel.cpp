@@ -97,7 +97,8 @@ bool AppModel::setCurrentScene(string sceneName){
 
 		LOG_NOTICE("Set current scene to " + sceneName);
 
-        _currentScene->setSequenceThresholds();
+        _currentSceneFrame = _lastSequenceFrame = 0;
+        //_currentScene->setSequenceThresholds();
 
 		return true;
 	}
@@ -402,20 +403,34 @@ void AppModel::toggleVideoPlayers(int forceFrame) {
 }
 
 //--------------------------------------------------------------
-void AppModel::setCurrentFrame(int frame) {
+void AppModel::setCurrentSequenceFrame(int frame) {
 	//_frame = CLAMP(frame, 0, getCurrentFrameTotal()-1); //frame clamped to one less than total number;
-	_frame = CLAMP(frame, 0, _currentScene->getCurrentSequence()->getTransformVector("atk1")->size()-1); // to be sure, to be sure!
-	setCurrentInteractivity(_frame); // see notes below in Interactivity getter/setters section as to why this is here
+	_currentSequenceFrame = CLAMP(frame, 0, _currentScene->getCurrentSequence()->getTransformVector("atk1")->size()-1); // to be sure, to be sure!
+	if (_currentScene->getCurrentSequence()->getType() == "a" && _currentScene->getCurrentSequence()->getNumber() > 0) {
+	    _currentSceneFrame = _currentSceneFrame + _currentSequenceFrame - _lastSequenceFrame;
+	    _lastSequenceFrame = _currentSequenceFrame;
+	}
+	setCurrentInteractivity(_currentSequenceFrame); // see notes below in Interactivity getter/setters section as to why this is here
 }
 
 //--------------------------------------------------------------
-int AppModel::getCurrentFrame() {
-	return _frame;
+int AppModel::getCurrentSequenceFrame() {
+	return _currentSequenceFrame;
 }
 
 //--------------------------------------------------------------
-int AppModel::getCurrentFrameTotal() { // for now no setter just do it on the actual movie....
-	return _videoPlayers[0]->getTotalNumFrames();
+int AppModel::getCurrentSceneFrame() {
+	return _currentSceneFrame; //not including loops and bs
+}
+
+//--------------------------------------------------------------
+int AppModel::getCurrentSequenceNumFrames() {
+	return _currentScene->getCurrentSequence()->getNumFrames(); //_videoPlayers[0]->getTotalNumFrames();
+}
+
+//--------------------------------------------------------------
+int AppModel::getCurrentSceneNumFrames() {
+	return _currentScene->getTotalFrames(); //not including loops and bs
 }
 
 //--------------------------------------------------------------

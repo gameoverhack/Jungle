@@ -181,7 +181,7 @@ void Analyzer::update() {
 //--------------------------------------------------------------
 void Analyzer::serializeMessage(string & msg) {
 
-	//LOG_VERBOSE(msg);
+	LOG_VERBOSE(msg);
 	_publicMsg = msg;
 
 	FileScenes * thisFileScene = _files[_processedFiles - 1];
@@ -316,9 +316,10 @@ void Analyzer::finalizeSerialization() {
 		sd._totalFrames = _currentSceneTotalFrames;
 
 		// parse the interactivity frame info
-		sd._face = convertVecStringToFramePairs(interactivityVec[0]);
-		sd._attacker = convertVecStringToFramePairs(interactivityVec[1]);
-		sd._victim = convertVecStringToFramePairs(interactivityVec[2]);
+		sd._face        = convertVecStringToFramePairs(interactivityVec[0]);
+		sd._attacker    = convertVecStringToFramePairs(interactivityVec[1]);
+		sd._victim      = convertVecStringToFramePairs(interactivityVec[2]);
+        sd._next        = convertVecStringToFramePairs(interactivityVec[3]);
 
 		LOG_NOTICE("Attempting to save interactivity map");
 
@@ -385,9 +386,13 @@ vector<FramePair> Analyzer::convertVecStringToFramePairs(string pairsAsString) {
 		FramePair fp;
 
 		vector<string> fpVec = ofSplitString(pairs[i], ";");
+        vector<string> fpTo = ofSplitString(fpVec[1], "[");
 
 		fp._start	= ofToInt(fpVec[0]);
-		fp._end		= ofToInt(fpVec[1]);
+		fp._end		= ofToInt(fpTo[0]);
+		fp._to      = fpTo[1].substr(0,fpTo[1].size() - 1);
+
+        LOG_VERBOSE("Parsing FramePair: " + ofToString(fp._start) + ", " + ofToString(fp._end) + " = " + fp._to);
 
 		// n,-1 pair indicates from n to last frame
 		if (fp._start >= 0 && fp._end == -1) {

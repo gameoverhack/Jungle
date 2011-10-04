@@ -145,9 +145,12 @@ public:
 	goThreadedVideo *	getNextVideoPlayer();
 	void				toggleVideoPlayers(int forceFrame = 0);
 
-	void				setCurrentFrame(int frame);
-	int					getCurrentFrame();
-	int					getCurrentFrameTotal();
+	void				setCurrentSequenceFrame(int frame);
+	int					getCurrentSequenceFrame();
+	int					getCurrentSequenceNumFrames();
+    int                 getCurrentSceneFrame();
+    int                 getCurrentSceneNumFrames();
+
 
 	void				setCurrentIsFrameNew(bool isFrameNew);
 	bool				getCurrentIsFrameNew();
@@ -195,7 +198,9 @@ private:
 
     // video vars
 	goThreadedVideo *			_videoPlayers[2];
-	int							_frame;
+	int							_currentSequenceFrame;
+	int                         _lastSequenceFrame;
+	int                         _currentSceneFrame; // not inlcuding loops and bs
 	bool						_isFrameNew;
 
     // arduino vars

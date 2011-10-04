@@ -210,7 +210,10 @@ void SceneXMLBuilder::buildAppModel(){
 
 		// t_seq01a
 		sequence->setName(movieFilenameParts[1]); //t_[seq01a]
-		sequence->setNumber(findSequenceNumberFromString(sequence->getName())); //t_seq[01]a
+
+		int sequenceNumber = findSequenceNumberFromString(sequence->getName());
+
+		sequence->setNumber(sequenceNumber); //t_seq[01]a
 
 		sequence->setNextSequenceName("_not_forging_");
 		sequence->setFaceResult("_not_forging_");
@@ -228,7 +231,7 @@ void SceneXMLBuilder::buildAppModel(){
 		else{
 			if(regex_search(movieFilenameParts[1], regex("a$"))){
 				sequence->setType("a"); // t_seq01[a]
-				totalFrames += frames;
+				if (sequenceNumber > 0) totalFrames += frames; // don't include loops, bs or the first ("waiting") sequence in the count
 			}
 			else{
 			   sequence->setType("b");

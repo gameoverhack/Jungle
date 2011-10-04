@@ -76,7 +76,7 @@ void VideoController::update() {
 	int	 totalFrames	= currentMovie->getTotalNumFrames();
 	bool isFrameNew		= currentMovie->isFrameNew();
 
-	_appModel->setCurrentFrame(currentFrame);
+	_appModel->setCurrentSequenceFrame(currentFrame);
 	//_appModel->setCurrentFrameTotal(totalFrames); // no need for now?
 	_appModel->setCurrentIsFrameNew(isFrameNew);
 

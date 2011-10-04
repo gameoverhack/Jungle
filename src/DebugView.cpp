@@ -46,15 +46,17 @@ void DebugView::update(){
      ********************************************************/
 
 	// get transform info and current movie frame
-	int currentFrame	= _appModel->getCurrentFrame(); //currentMovie->getCurrentFrame();
-	int totalFrames		= _appModel->getCurrentFrameTotal(); //currentMovie->getTotalNumFrames();
+	int sequenceCurrentFrame	= _appModel->getCurrentSequenceFrame(); //currentMovie->getCurrentFrame();
+	int sequenceTotalFrames		= _appModel->getCurrentSequenceNumFrames(); //currentMovie->getTotalNumFrames();
+	int sceneCurrentFrame       = _appModel->getCurrentSceneFrame();
+	int sceneTotalFrames        = _appModel->getCurrentSceneNumFrames();
 
 	//currentFrame = CLAMP(currentFrame, 0, totalFrames-1); // why are you so cruel?
     if (showProps) {
-        msg += "vic1 Transform: " + currentSequence->getTransformAsString("vic1", currentFrame) + "\n";
-        msg += "atk1 Transform: " + currentSequence->getTransformAsString("atk1", currentFrame) + "\n";
+        msg += "vic1 Transform: " + currentSequence->getTransformAsString("vic1", sequenceCurrentFrame) + "\n";
+        msg += "atk1 Transform: " + currentSequence->getTransformAsString("atk1", sequenceCurrentFrame) + "\n";
         if (currentSequence->getTransformCount() > 2) {
-            msg += "atk2 Transform: " + currentSequence->getTransformAsString("atk2", currentFrame) + "\n";
+            msg += "atk2 Transform: " + currentSequence->getTransformAsString("atk2", sequenceCurrentFrame) + "\n";
         }
 
         // get all the properties on the AppModel
@@ -82,8 +84,8 @@ void DebugView::update(){
      *               Draw Movie Progress Bar                *
      ********************************************************/
 
-	// draw scene progression
-	float progressionPercentage = (float)currentFrame/(float)(totalFrames);
+	// draw sequence progression
+	float progressionPercentage = (float)sequenceCurrentFrame/(float)(sequenceTotalFrames);
 	float progressionWidth = 300;
 	float progressionHeight = 20;
 
@@ -107,11 +109,32 @@ void DebugView::update(){
 	ofRect(6, _viewHeight-progressionHeight-9, progressionWidth*progressionPercentage, progressionHeight);
     ofNoFill();
 
-	// give us info about progression
-	msg = currentScene->getName() + "::" + currentSequence->getName() + "::" + ofToString(currentFrame) + "/" + ofToString(totalFrames);
+    	// give us info about progression
+	msg = currentScene->getName() + "::" + currentSequence->getName() + "::" + ofToString(sequenceCurrentFrame) + "/" + ofToString(sequenceTotalFrames);
 
 	ofSetColor(255, 255, 255, 255);
 	ofDrawBitmapString(msg, 6, _viewHeight-progressionHeight-4);
+
+    // draw total scene progression
+	float totalProgressionPercentage = (float)sceneCurrentFrame/(float)(sceneTotalFrames);
+	float totalProgressionWidth = 300;
+	float totalProgressionHeight = 20;
+
+    // draw the outline of the bar
+	ofSetColor(50, 50, 50, 220);
+	ofNoFill();
+	ofRect(5, _viewHeight-totalProgressionHeight-30, totalProgressionWidth+4, totalProgressionHeight+2);
+
+        // draw the actual progress
+    ofFill();
+	ofRect(6, _viewHeight-totalProgressionHeight-29, totalProgressionWidth*totalProgressionPercentage, totalProgressionHeight);
+    ofNoFill();
+
+    	// give us info about progression
+	msg = currentScene->getName() + "::" + currentSequence->getName() + "::" + ofToString(sceneCurrentFrame) + "/" + ofToString(sceneTotalFrames);
+
+	ofSetColor(255, 255, 255, 255);
+	ofDrawBitmapString(msg, 6, _viewHeight-totalProgressionHeight-24);
 
     if (showFFT) {
 
