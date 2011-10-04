@@ -56,8 +56,8 @@ bool CamController::setup(int deviceID, int w, int h){
 	if (ok) loadSettings();
 #endif
 
-    _doFaceDetection = false;
-    _doFaceTracking = true;
+    _doFaceDetection = true;
+    _doFaceTracking = false;
     //_finder.setScaleHaar(0.5);
     _finder.setup("haarcascade_frontalface_default.xml");
     //_finder.setNeighbors(4);
@@ -90,8 +90,8 @@ bool CamController::setup(string deviceID, int w, int h){
 
     loadAttributes();
 
-    _doFaceDetection = false;
-    _doFaceTracking = true;
+    _doFaceDetection = true;
+    _doFaceTracking = false;
     //_finder.setScaleHaar(0.5);
     _finder.setup("haarcascade_frontalface_default.xml");
     _finder.setNeighbors(4);

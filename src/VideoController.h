@@ -48,6 +48,7 @@ private:
 	void	error(int & err);
 
 	int     _lastFrameWhenForced;
+	string  _lastSequenceWhenForced;
 
 };
 

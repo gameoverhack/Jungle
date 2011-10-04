@@ -144,8 +144,8 @@ void AppController::VictimEvent(float & level) {
         if (_switchToSequence == NULL && !_vidController->isPreRolling()) {
             if (_appModel->checkCurrentInteractivity(kINTERACTION_BOTH) || _appModel->checkCurrentInteractivity(kINTERACTION_VICTIM)) {
                 _lastActionTime = ofGetElapsedTimeMillis();
-                string res = _appModel->getCurrentSequence()->getVictimResult();
-                LOG_NOTICE("VICTIM ACTION [" + ofToString(level) + "]" + res);
+                string res = _appModel->getCurrentSequence()->getVictimResult()[_appModel->getCurrentSequenceFrame()];
+                LOG_NOTICE("VICTIM ACTION [" + ofToString(level) + "] == " + res);
                 if (res != kLAST_SEQUENCE_TOKEN) {
                     _switchToSequence = _appModel->getCurrentScene()->getSequence(res);
                     _vidController->loadMovie(_switchToSequence, true, _appModel->getCurrentSceneFrame()+1);
@@ -164,7 +164,7 @@ void AppController::AttackEvent(float & level) {
         if (_switchToSequence == NULL && !_vidController->isPreRolling()) {
             if (_appModel->checkCurrentInteractivity(kINTERACTION_BOTH) || _appModel->checkCurrentInteractivity(kINTERACTION_ATTACKER)) {
                 _lastActionTime = ofGetElapsedTimeMillis();
-                string res = _appModel->getCurrentSequence()->getAttackerResult();
+                string res = _appModel->getCurrentSequence()->getAttackerResult()[_appModel->getCurrentSequenceFrame()];
                 LOG_NOTICE("ATTACK ACTION [" + ofToString(level) + "] == " + res);
                 if (res != kLAST_SEQUENCE_TOKEN) {
                     _switchToSequence = _appModel->getCurrentScene()->getSequence(res);
@@ -183,7 +183,7 @@ void AppController::FaceEvent(int & level) {
         if (_switchToSequence == NULL && !_vidController->isPreRolling()) {
             if (_appModel->checkCurrentInteractivity(kINTERACTION_FACE) && level > 1) {
                 _lastActionTime = ofGetElapsedTimeMillis();
-                string res ="seq01a"; // hack
+                string res = _appModel->getCurrentSequence()->getFaceResult()[_appModel->getCurrentSequenceFrame()];
                 LOG_NOTICE("FACE ACTION [" + ofToString(level) + "] == " + res);
                 if (res != kLAST_SEQUENCE_TOKEN) {
                     _switchToSequence = _appModel->getCurrentScene()->getSequence(res);
@@ -240,6 +240,7 @@ void AppController::update() {
 
 		if (_vidController->checkState(kVIDCONTROLLER_CURRENTVIDONE)) {
 			// the video just finished and we toggled to next video if there is one
+            LOG_VERBOSE("Trying to go to next sequence");
 
 			if(currentScene->nextSequence()) {
 				// loaded next sequence in this scene, keep going
@@ -294,7 +295,7 @@ void AppController::update() {
 void AppController::nextScene() {
     LOG_VERBOSE("Current scene ended, rewind current scene to first sequence. Loading next scene.");
 
-    Scene			* currentScene		= _appModel->getCurrentScene();
+    Scene* currentScene = _appModel->getCurrentScene();
     // rewind last scene
     currentScene->rewindScene();
     // load next scene
@@ -423,7 +424,7 @@ void AppController::keyPressed(int key){
 			//_appModel->setProperty("autoTest", !autoTest);
 			break;
 		case 'q':
-			_micController->fakeVictimAction(fakeInput*8.0f);
+			_micController->fakeVictimAction(fakeInput*32.0f);
 			break;
 		case 'p':
 			_ardController->fakeAttackAction(fakeInput);
@@ -437,8 +438,6 @@ void AppController::keyPressed(int key){
             FaceEvent(fakeInstanceID);
             break;
 		}
-
-
         case 'm':
             _appModel->getCurrentVideoPlayer()->togglePaused();
             break;
@@ -539,7 +538,7 @@ void AppController::keyPressed(int key){
     prs.r           = camRotation;
     prs.s           = camScale;
 
-    LOG_NOTICE(cameraPropToAdjust + " on camera " + cameraToAdjust);
+    //LOG_NOTICE(cameraPropToAdjust + " on camera " + cameraToAdjust);
 
     if (cameraToAdjust == "0") {
         _camControllers[0]->setCameraAttributes(prs); // could do this direct on model but seems more apt to go cia the cam controllers

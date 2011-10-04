@@ -105,10 +105,10 @@ void SceneXMLParser::parseXML(){
 			attributesToCheck.push_back("frames");
 			attributesToCheck.push_back("dateModified");
 			attributesToCheck.push_back("dateCreated");
-			attributesToCheck.push_back("nextSequence");
-			attributesToCheck.push_back("faceResult");
-			attributesToCheck.push_back("attackerResult");
-			attributesToCheck.push_back("victimResult");
+			//attributesToCheck.push_back("nextSequence");
+			//attributesToCheck.push_back("faceResult");
+			//attributesToCheck.push_back("attackerResult");
+			//attributesToCheck.push_back("victimResult");
 			attributesToCheck.push_back("faked");
 			attributesToCheck.push_back("sequenceType");
 			attributesToCheck.push_back("filename");
@@ -119,10 +119,10 @@ void SceneXMLParser::parseXML(){
 			sequence->setName(_xml.getAttribute("sequence", "name", "", whichSequence));
 			LOG_VERBOSE("Parsing xml=>sequence: " + sequence->getName());
 			sequence->setType(_xml.getAttribute("sequence", "sequenceType", "", whichSequence));
-			sequence->setFaceResult(_xml.getAttribute("sequence", "faceResult", "", whichSequence));
-			sequence->setAttackerResult(_xml.getAttribute("sequence", "attackerResult", "", whichSequence));
-			sequence->setVictimResult(_xml.getAttribute("sequence", "victimResult", "", whichSequence));
-			sequence->setNextSequenceName(_xml.getAttribute("sequence", "nextSequence", "", whichSequence));
+			//sequence->setFaceResult(_xml.getAttribute("sequence", "faceResult", "", whichSequence));
+			//sequence->setAttackerResult(_xml.getAttribute("sequence", "attackerResult", "", whichSequence));
+			//sequence->setVictimResult(_xml.getAttribute("sequence", "victimResult", "", whichSequence));
+			//sequence->setNextSequenceName(_xml.getAttribute("sequence", "nextSequence", "", whichSequence));
 			sequence->setIsSequenceFaked((_xml.getAttribute("sequence", "faked", "", whichSequence) == "true") ? true : false);
 			sequence->setNumber(findSequenceNumberFromString(sequence->getName()));
 
@@ -189,51 +189,73 @@ void SceneXMLParser::parseXML(){
 				loadClass(_assetsFileLister.getPath(fileId), descriptor);
 				vector<FramePair>::iterator vecIter;
 
-				interaction_t *interactionTable;
+				interaction_t*  interactionTable;
+				string*         faceResult;
+                string*         attackResult;
+                string*         victimResult;
+                string*         nextResult; // technically doesn't need to be an array but easier to make these all work the same
 
-				// get total number of frames, set up array
-				interactionTable = new interaction_t[descriptor->_totalFrames];
+				// get total number of frames, set up arrays
+				interactionTable    = new interaction_t[descriptor->_totalFrames+1];
+                faceResult          = new string[descriptor->_totalFrames+1];
+                attackResult        = new string[descriptor->_totalFrames+1];
+                victimResult        = new string[descriptor->_totalFrames+1];
+                nextResult          = new string[descriptor->_totalFrames+1];
 
 				// "zero" out the table with kINTERACTION_NONE
-				for(int i = 0; i < descriptor->_totalFrames; i++){
+				for(int i = 0; i <= descriptor->_totalFrames; i++){
 					interactionTable[i] = kINTERACTION_NONE;
 				}
 
 				// set up face
-				for(vecIter = descriptor->_face.begin(); vecIter != descriptor->_face.end(); vecIter++){
+				for(vecIter = descriptor->_face.begin(); vecIter != descriptor->_face.end(); vecIter++) {
 					FramePair fp = *vecIter;
 					LOG_VERBOSE("FACE FramePair: " + ofToString(fp._start) + " to " + ofToString(fp._end));
-					for(int i = fp._start; i < fp._end; i++){
+					for(int i = fp._start; i <= fp._end; i++) {
 						interactionTable[i] = kINTERACTION_FACE;
+						faceResult[i]       = fp._to;
 					}
 				}
 
 				// set up victim
-				for(vecIter = descriptor->_victim.begin(); vecIter != descriptor->_victim.end(); vecIter++){
+				for(vecIter = descriptor->_victim.begin(); vecIter != descriptor->_victim.end(); vecIter++) {
 					FramePair fp = *vecIter;
 					LOG_VERBOSE("VIC  FramePair: " + ofToString(fp._start) + " to " + ofToString(fp._end));
-					for(int i = fp._start; i < fp._end; i++){
+					for(int i = fp._start; i <= fp._end; i++){
 						interactionTable[i] = kINTERACTION_VICTIM;
+						victimResult[i]     = fp._to;
 					}
 				}
 
 				// set up attacker
-				for(vecIter = descriptor->_attacker.begin(); vecIter != descriptor->_attacker.end(); vecIter++){
+				for(vecIter = descriptor->_attacker.begin(); vecIter != descriptor->_attacker.end(); vecIter++) {
 					FramePair fp = *vecIter;
 					LOG_VERBOSE("ATK  FramePair: " + ofToString(fp._start) + " to " + ofToString(fp._end));
-					for(int i = fp._start; i < fp._end; i++){
-						if(interactionTable[i] == kINTERACTION_VICTIM){
+					for(int i = fp._start; i <= fp._end; i++) {
+						if(interactionTable[i] == kINTERACTION_VICTIM) {
 							interactionTable[i] = kINTERACTION_BOTH;
-						}
-						else{
+						} else {
 							interactionTable[i] = kINTERACTION_ATTACKER;
 						}
+						attackResult[i]         = fp._to;
 					}
 				}
 
-				// save table
-				sequence->setInteractionTable(interactionTable);
+                // set up next -> technically doesn't need to be an array but easier to make these all work the same
+				for(vecIter = descriptor->_next.begin(); vecIter != descriptor->_next.end(); vecIter++) {
+					FramePair fp = *vecIter;
+					LOG_VERBOSE("NEXT FramePair: " + ofToString(fp._start) + " to " + ofToString(fp._end));
+					for(int i = fp._start; i <= fp._end; i++) {
+						nextResult[i] = fp._to;
+					}
+				}
 
+				// save tables
+				sequence->setInteractionTable(interactionTable);
+                sequence->setFaceResult(faceResult);
+                sequence->setVictimResult(victimResult);
+                sequence->setAttackerResult(attackResult);
+                sequence->setNextResult(nextResult);
 			}
 
 			// transforms

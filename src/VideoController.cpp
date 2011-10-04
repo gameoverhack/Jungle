@@ -82,21 +82,22 @@ void VideoController::update() {
 
 	if (currentFrame > totalFrames - 12 && !_preRolling) {
 
+        string nextResult = currentSequence->getNextResult()[currentFrame]; // technically all members in getNextResult should point to the same next sequence name...
+
 		// set loopstate
-		if (currentSequence->getType() == "loop") { // this does get hammered...hmmm
+		if (nextResult == currentSequence->getName()) { //(currentSequence->getType() == "loop") {
 			currentMovie->setLoopState(OF_LOOP_NORMAL);
 		} else {
 			currentMovie->setLoopState(OF_LOOP_NONE);
 		}
 
 		// 'cache' (ie., half) load loop sequence if we're on an 'a' type movie
-
-		string nextSequenceName = currentSequence->getNextSequenceName();
-		if (nextSequenceName != "" && nextSequenceName != "__FINAL_SEQUENCE__" && nextSequenceName != currentSequence->getName()) {
-		    LOG_NOTICE("End of last mov start: " + nextSequenceName);
-			loadMovie(currentScene->getSequence(nextSequenceName));
+        if (nextResult == "__RETURN_SEQUENCE__") nextResult = _lastSequenceWhenForced; // return to whence thy came ;-) this is for b movies
+		if (nextResult != "" && nextResult != "__FINAL_SEQUENCE__" && nextResult != currentSequence->getName()) {
+		    LOG_NOTICE("End of last mov start: " + nextResult);
+			loadMovie(currentScene->getSequence(nextResult));
 			_preRolling = true;
-		} else if (nextSequenceName == "__FINAL_SEQUENCE__") {
+		} else if (nextResult == "__FINAL_SEQUENCE__") {
 			// end of SCENE? which seq to cache?
 			_preRolling = false;
 		}
@@ -126,7 +127,10 @@ void VideoController::loadMovie(Sequence * seq, bool forceCurrentLoad, int lastF
 	LOG_VERBOSE("Next video start to load: " + path + (string)(forceCurrentLoad ? " FORCED: " + ofToString(lastFrameWhenForced) : " NORMAL"));
 
 	_forceCurrentLoad       = forceCurrentLoad;
-    if (lastFrameWhenForced != 0) _lastFrameWhenForced    = lastFrameWhenForced; // not using this now but will when we want to jump to specific frame...did it while hacking...is on appModel toggleVideo too...
+    if (lastFrameWhenForced != 0) {
+        _lastFrameWhenForced    = lastFrameWhenForced;
+        _lastSequenceWhenForced = _appModel->getCurrentSequence()->getName();
+    }
 
 	goThreadedVideo * nextMovie			= _appModel->getNextVideoPlayer();
 

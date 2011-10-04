@@ -161,35 +161,35 @@ public:
 		_name = name;
 	}
 
-	void setNextSequenceName(string ns) {
-		_nextSequenceName = ns;
+	void setNextResult(string *str) { // technically doesn't need to be an array
+		_nextResult = str;
 	}
 
-	string getNextSequenceName() {
-		return _nextSequenceName;
+	string* getNextResult() { // technically doesn't need to be an array
+		return _nextResult;
 	}
 
-	void setFaceResult(string str) {
+	void setFaceResult(string *str) {
 		_faceResult = str;
 	}
 
-	string getFaceResult() {
+	string* getFaceResult() {
+		return _faceResult;
+	}
+
+	void setAttackerResult(string *str) {
+		_attackerResult = str;
+	}
+
+	string* getAttackerResult() {
 		return _attackerResult;
 	}
 
-	void setAttackerResult(string str) {
-		_faceResult = str;
-	}
-
-	string getAttackerResult() {
-		return _attackerResult;
-	}
-
-	void setVictimResult(string str) {
+	void setVictimResult(string *str) {
 		_victimResult = str;
 	}
 
-	string getVictimResult() {
+	string* getVictimResult() {
 		return _victimResult;
 	}
 
@@ -252,21 +252,21 @@ public:
 		return tranString;
 	}
 
-	void setInteractivity(string s) {
-		_interactivity = s;
-	}
+//	void setInteractivity(string s) {
+//		_interactivity = s;
+//	}
+//
+//	string getInteractivity() {
+//		return _interactivity;
+//	}
 
-	string getInteractivity() {
-		return _interactivity;
-	}
-
-	bool getLoop() {
-		return _loop;
-	}
-
-	void setLoop(bool loop){
-		_loop = loop;
-	}
+//	bool getLoop() {
+//		return _loop;
+//	}
+//
+//	void setLoop(bool loop){
+//		_loop = loop;
+//	}
 
 	string getType() {
 		return _type;
@@ -304,19 +304,19 @@ private:
 
 	string					_name;
 	string					_type;
-	bool                    _loop; // TODO: DEPRECIATED, use _type
+	//bool                    _loop; // TODO: DEPRECIATED, use _type
 	int						_number;
 	int                     _frames;
-	string					_nextSequenceName; //TODO: DEPRECIATED?
-	string                  _faceResult;
-	string					_attackerResult;
-	string					_victimResult;
-	string					_interactivity; //TODO: DEPRECIATED
+	string*					_nextResult; // technically doesn't need to be an array
+	string*                 _faceResult;
+	string* 				_attackerResult;
+	string*					_victimResult;
+	//string					_interactivity; //TODO: DEPRECIATED
 	bool					_isMovieFaked;
 	bool					_isSequenceFaked;
 	string					_movieFullFilePath;
     float                   _thresholdLevel;
-	interaction_t			*_interactionTable;
+	interaction_t*          _interactionTable;
 
 public:
 
@@ -382,7 +382,6 @@ public:
     }
 
 	Sequence * getSequence(string key) {
-	    cout <<key << endl;
 		map<string, Sequence *>::iterator iter;
 		iter = _sequences.find(key);
 		return iter->second;
@@ -404,15 +403,12 @@ public:
 		map<string, Sequence *>::iterator iter;
 		iter = _sequences.find(seq);
 		if(iter != _sequences.end()){
-			if(_currentSequence != NULL) {
-				// reset video state for current sequence
-				//_currentSequence->resetMovie();
-			}
 
 			// set new current sequence
 			_currentSequence = iter->second;
-			// play new current sequence movie
-			//_currentSequence->setPaused(false);
+
+            // cache the last sequence name for returning after a b seq completes
+            if (_currentSequence->getType() != "b") _lastSequenceName = _currentSequence->getName();
 
 			LOG_NOTICE("Set current sequence to " + seq);
 			return true;
@@ -428,6 +424,9 @@ public:
 		// Search through the map by value to find if the sequence is a valid
 		// sequence? Linear search so "slow", (our data size is always going
 		// to be so small it doesn't matter though.
+
+        // cache the last sequence name for returning after a b seq completes
+        if (seq->getType() != "b") _lastSequenceName = seq->getName();
 		return setCurrentSequence(seq->getName());
 	}
 
@@ -445,33 +444,30 @@ public:
     void setTotalFrames(int frames) {_totalFrames = frames;};
     int  getTotalFrames() {return _totalFrames;};
 
-	// increments the current sequence to the next sequence (of the current sequence)
+	// increments the current sequence to the next sequence (of the current scene)
 	bool nextSequence() {
 
-        LOG_VERBOSE("Scene has been requested nextSequence");
+        LOG_VERBOSE("Scene has been requested nextSequence...");
 
 		Sequence * seq = getCurrentSequence();
-		LOG_VERBOSE(seq->getName());
-		/*
-			we're on the last sequence of this scene if
-				- sequence is not interactive
-				- the next sequence for this sequence is its self
-			Kind of magic logic, might be better to set either
-				- bool _isLastSequence = true;
-				or
-				- string _nextSequence = "####FINALSEQUENCETOKEN####";
 
-			Using the string means making a define
+		LOG_VERBOSE("..." + seq->getName());
 
-		 */
+        string nextResult = _currentSequence->getNextResult()[0];
 
-		if(_currentSequence->getNextSequenceName() == kLAST_SEQUENCE_TOKEN){
-			LOG_VERBOSE("getNextSequenceName == kLAST_SEQUENCE_TOKEN");
+		if(nextResult == "__FINAL_SEQUENCE__") { // all values in getNextResult (which is an array) should be set to correct value, so let's just use 0
+		    LOG_VERBOSE("getNextSequenceName == __FINAL_SEQUENCE__");
             return false;
 		}
-		LOG_VERBOSE("getNextSequenceName != kLAST_SEQUENCE_TOKEN");
+
+		if (nextResult == "__RETURN_SEQUENCE__") { // so we can jump back to the correct sequence after a b movie is called
+		    LOG_VERBOSE("getNextSequenceName == __RETURN_SEQUENCE__ => forcing to cached last sequence: " + _lastSequenceName);
+            nextResult = _lastSequenceName;
+		}
+
 		// not last sequence, so set next
-		setCurrentSequence(_currentSequence->getNextSequenceName());
+		setCurrentSequence(nextResult); // all values in getNextResult (which is an array) should be set to correct value, so let's just use 0
+
 		return true;
 	}
 
@@ -495,10 +491,6 @@ public:
 			tabs = tabs + "\t";
 			line = tabs + "name => " + iter->second->getName() + "\n";
 			line = tabs + "duration => " + ofToString(iter->second->getNumFrames()) + "\n";
-			line = line + tabs + "nextSequence => " + iter->second->getNextSequenceName() + "\n";
-			line = line + tabs + "faceResult => " + iter->second->getFaceResult() + "\n";
-			line = line + tabs + "victimResult => " + iter->second->getVictimResult() + "\n";
-			line = line + tabs + "attackerResult => " + iter->second->getAttackerResult() + "\n";
 			printf("%s\n", line.c_str());
 			tabs = "\t\t\t";
 			line = tabs + "}";
@@ -515,7 +507,8 @@ private:
 
 	string					_name;
 
-	Sequence *				_currentSequence;
+	Sequence*				_currentSequence;
+    string                  _lastSequenceName;
 
 	map<string, Sequence*>	_sequences;
 

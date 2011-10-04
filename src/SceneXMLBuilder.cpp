@@ -215,10 +215,10 @@ void SceneXMLBuilder::buildAppModel(){
 
 		sequence->setNumber(sequenceNumber); //t_seq[01]a
 
-		sequence->setNextSequenceName("_not_forging_");
-		sequence->setFaceResult("_not_forging_");
-		sequence->setAttackerResult("_not_forging_");
-		sequence->setVictimResult("_not_forging_");
+		//sequence->setNextSequenceName("_not_forging_");
+		//sequence->setFaceResult("_not_forging_");
+		//sequence->setAttackerResult("_not_forging_");
+		//sequence->setVictimResult("_not_forging_");
 
         int frames = _movieFrameLengths[_moviesFileLister.getName(movieFileId)];
 
@@ -258,7 +258,7 @@ void SceneXMLBuilder::buildAppModel(){
 	map<string, Sequence*>::iterator seqi;
 	map<string, Sequence*>::reverse_iterator rseqi;
 
-#pragma mark FORGE SETTINGS
+/*#pragma mark FORGE SETTINGS
 	// _ FORGING flag _
 	bool forgefinals = true; // final sequences
 	bool forgenexts = false; // next sequences
@@ -344,6 +344,7 @@ void SceneXMLBuilder::buildAppModel(){
 		}
 		scenei++;
 	}
+	*/
 }
 
 void SceneXMLBuilder::buildXML(){
@@ -382,10 +383,10 @@ void SceneXMLBuilder::buildXML(){
 			which = _xml.addTag("sequence");
 			_xml.addAttribute("sequence", "name", sequence->getName(), which);
 			_xml.addAttribute("sequence", "sequenceType", sequence->getType(), which);
-			_xml.addAttribute("sequence", "faceResult", sequence->getFaceResult(), which);
-			_xml.addAttribute("sequence", "attackerResult", sequence->getAttackerResult(), which);
-			_xml.addAttribute("sequence", "victimResult", sequence->getVictimResult(), which);
-			_xml.addAttribute("sequence", "nextSequence", sequence->getNextSequenceName(), which);
+			//_xml.addAttribute("sequence", "faceResult", sequence->getFaceResult(), which);
+			//_xml.addAttribute("sequence", "attackerResult", sequence->getAttackerResult(), which);
+			//_xml.addAttribute("sequence", "victimResult", sequence->getVictimResult(), which);
+			//_xml.addAttribute("sequence", "nextSequence", sequence->getNextSequenceName(), which);
 			_xml.addAttribute("sequence", "faked", (sequence->getIsSequenceFaked() ? "true" : "false"), which);
 
 			string movieFilename = sequence->getMovieFullFilePath();
