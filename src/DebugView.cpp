@@ -125,7 +125,8 @@ void DebugView::update(){
 	ofNoFill();
 	ofRect(5, _viewHeight-totalProgressionHeight-30, totalProgressionWidth+4, totalProgressionHeight+2);
 
-        // draw the actual progress
+    // draw the actual progress
+    ofSetColor(50, 50, 220, 220);
     ofFill();
 	ofRect(6, _viewHeight-totalProgressionHeight-29, totalProgressionWidth*totalProgressionPercentage, totalProgressionHeight);
     ofNoFill();

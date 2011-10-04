@@ -27,13 +27,8 @@ void BaseMeterView::update(interaction_t interactionType) {
     int   currentInteractivity  = _appModel->getCurrentInteractivity();
     bool  isInteractive         = (currentInteractivity == kINTERACTION_BOTH || currentInteractivity == interactionType);
 
-    //bool  isBlocked             = (_scaledInputLevel > 0.05f);   // make more complex soon ;-)
-
     int   totalNumSequences     = _appModel->getCurrentScene()->getNumOfSequences();
     int   thisNumSequence       = _appModel->getCurrentSequence()->getNumber();
-
-    //float threshold             = _appModel->getCurrentSequence()->getThresholdLevel();//(3.0/(float)totalNumSequences)+((float)thisNumSequence/(float)totalNumSequences); // TODO: move to the model
-    //float bar_y                 = (672.0 - 6*42.0f) - floor((float)thisNumSequence/(float)totalNumSequences*12.0f)*42.0f; // magic numbers...bad boy
 
     /********************************************************
      *      Draw the Meter to the ViewFBO                   *
@@ -42,7 +37,9 @@ void BaseMeterView::update(interaction_t interactionType) {
     if (interactionType == kINTERACTION_ATTACKER) drawMeterMask(thisNumSequence - 1, _stationSteps, _stationPixelsForStep, &_stationMaskFBO);
 
     _viewFBO.begin();
+
     glPushMatrix();
+    ofEnableAlphaBlending();
 
     glClearColor(0.0, 0.0, 0.0, 1.0); // black background no transparency
     glClear(GL_COLOR_BUFFER_BIT);
@@ -69,8 +66,12 @@ void BaseMeterView::update(interaction_t interactionType) {
         }
         case kINTERACTION_VICTIM:
         {
+            int sceneCurrentFrame   = _appModel->getCurrentSceneFrame();
+            int sceneTotalFrames    = _appModel->getCurrentSceneNumFrames();
+            float turtlePosY        = _turtle_bar->getHeight() * ((float)sceneCurrentFrame/(float)sceneTotalFrames);
+
             _turtle_bar->draw(_turtle_bar_x, _turtle_bar_y);
-            _turtle->draw(_turtle_x, _turtle_y);
+            _turtle->draw(_turtle_x, _turtle_y - turtlePosY);
             _top_off->draw(_top_x, _top_y);
 
             if (isInteractive && _scaledInputLevel > 0.99f) {
@@ -96,7 +97,7 @@ void BaseMeterView::update(interaction_t interactionType) {
 
     }
 
-
+    ofDisableAlphaBlending();
     glPopMatrix();
 
     _viewFBO.end();
