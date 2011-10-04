@@ -68,7 +68,7 @@ void BaseMeterView::update(interaction_t interactionType) {
         {
             int sceneCurrentFrame   = _appModel->getCurrentSceneFrame();
             int sceneTotalFrames    = _appModel->getCurrentSceneNumFrames();
-            float turtlePosY        = _turtle_bar->getHeight() * ((float)sceneCurrentFrame/(float)sceneTotalFrames);
+            float turtlePosY        = 500 * ((float)sceneCurrentFrame/(float)sceneTotalFrames); // 500 distance between T intersections on turtle_bar
 
             _turtle_bar->draw(_turtle_bar_x, _turtle_bar_y);
             _turtle->draw(_turtle_x, _turtle_y - turtlePosY);
