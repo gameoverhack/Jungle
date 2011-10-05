@@ -23,8 +23,8 @@ void main(){
 	vec4 sceneTexel, vic1Texel, atk1Texel, atk2Texel;
 	// these values are pretty aproximate right now
 	float atk1AlphaValue	= 104.0/255.0;
-	float atk2Alphavalue	= 178.0/255.0;
-	float vic1AlphaValue	= 226.0/255.0;
+	float vic1AlphaValue	= 178.0/255.0;
+	float atk2Alphavalue	= 226.0/255.0;
 	float alphaDelta		= 0.1;
 
 

@@ -6,7 +6,7 @@
 		<Option makefile="makefile" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
-		<Option virtualFolders="addons\;src\;addons\ofx3DModelLoader\src\3DS\;addons\ofx3DModelLoader\src\;addons\ofxAssimpModelLoader\libs\assimp\include\Compiler\;addons\ofxAssimpModelLoader\libs\assimp\include\;addons\ofxAssimpModelLoader\src\;addons\ofxDirList\src\;addons\ofxNetwork\src\;addons\ofxOpenCv\libs\opencv\include\opencv2\core\;addons\ofxOpenCv\libs\opencv\include\opencv2\flann\;addons\ofxOpenCv\libs\opencv\include\opencv2\highgui\;addons\ofxOpenCv\libs\opencv\include\opencv2\imgproc\;addons\ofxOpenCv\libs\opencv\include\opencv\;addons\ofxOpenCv\src\;addons\ofxOsc\libs\oscpack\include\ip\;addons\ofxOsc\libs\oscpack\include\osc\;addons\ofxOsc\src\;addons\ofxThread\src\;addons\ofxThreadedImageLoader\src\;addons\ofxVectorGraphics\libs\;addons\ofxVectorGraphics\src\;addons\ofxVectorMath\src\;addons\ofxXmlSettings\libs\;addons\ofxXmlSettings\src\;" />
+		<Option virtualFolders="addons\;src\;addons\ofx3DModelLoader\src\3DS\;addons\ofx3DModelLoader\src\;addons\ofxAssimpModelLoader\libs\assimp\include\Compiler\;addons\ofxAssimpModelLoader\libs\assimp\include\;addons\ofxAssimpModelLoader\src\;addons\ofxDirList\src\;addons\ofxNetwork\src\;addons\ofxOpenCv\libs\opencv\include\opencv2\core\;addons\ofxOpenCv\libs\opencv\include\opencv2\flann\;addons\ofxOpenCv\libs\opencv\include\opencv2\highgui\;addons\ofxOpenCv\libs\opencv\include\opencv2\imgproc\;addons\ofxOpenCv\libs\opencv\include\opencv\;addons\ofxOpenCv\src\;addons\ofxOsc\libs\oscpack\include\ip\;addons\ofxOsc\libs\oscpack\include\osc\;addons\ofxOsc\src\;addons\ofxThread\src\;addons\ofxThreadedImageLoader\src\;addons\ofxVectorGraphics\libs\;addons\ofxVectorGraphics\src\;addons\ofxVectorMath\src\;addons\ofxXmlSettings\libs\;addons\ofxXmlSettings\src\;src\config\;src\shaders\;src\controllers\;src\models\;src\views\;src\utils\;src\utils\xml\;" />
 		<Build>
 			<Target title="release">
 				<Option output="bin\$(PROJECT_NAME)" prefix_auto="1" extension_auto="1" />
@@ -782,190 +782,190 @@
 			<Option virtualFolder="addons\ofxXmlSettings\src" />
 		</Unit>
 		<Unit filename="bin\data\config_properties.xml">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\config\" />
 		</Unit>
 		<Unit filename="bin\data\config_scenes.xml">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\config\" />
 		</Unit>
 		<Unit filename="bin\data\leveltextureblend.frag">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\shaders\" />
 		</Unit>
 		<Unit filename="bin\data\leveltexturevertex.vert">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\shaders\" />
 		</Unit>
 		<Unit filename="bin\data\multitexturemerge.frag">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\shaders\" />
 		</Unit>
 		<Unit filename="bin\data\vertex.vert">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\shaders\" />
 		</Unit>
 		<Unit filename="src\Analyzer.cpp">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\utils\" />
 		</Unit>
 		<Unit filename="src\Analyzer.h">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\utils\" />
 		</Unit>
 		<Unit filename="src\AppController.cpp">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\controllers\" />
 		</Unit>
 		<Unit filename="src\AppController.h">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\controllers\" />
 		</Unit>
 		<Unit filename="src\AppDataTypes.h">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\models\" />
 		</Unit>
 		<Unit filename="src\AppModel.cpp">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\models\" />
 		</Unit>
 		<Unit filename="src\AppModel.h">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\models\" />
 		</Unit>
 		<Unit filename="src\AppView.cpp">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\views\" />
 		</Unit>
 		<Unit filename="src\AppView.h">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\views\" />
 		</Unit>
 		<Unit filename="src\ArdController.cpp">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\controllers\" />
 		</Unit>
 		<Unit filename="src\ArdController.h">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\controllers\" />
 		</Unit>
 		<Unit filename="src\AttackView.cpp">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\views\" />
 		</Unit>
 		<Unit filename="src\AttackView.h">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\views\" />
 		</Unit>
 		<Unit filename="src\BaseMeterView.cpp">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\views\" />
 		</Unit>
 		<Unit filename="src\BaseMeterView.h">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\views\" />
 		</Unit>
 		<Unit filename="src\BaseState.cpp">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\utils\" />
 		</Unit>
 		<Unit filename="src\BaseState.h">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\utils\" />
 		</Unit>
 		<Unit filename="src\BaseView.cpp">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\views\" />
 		</Unit>
 		<Unit filename="src\BaseView.h">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\views\" />
 		</Unit>
 		<Unit filename="src\CamController.cpp">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\controllers\" />
 		</Unit>
 		<Unit filename="src\CamController.h">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\controllers\" />
 		</Unit>
 		<Unit filename="src\Constants.h">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\utils\" />
 		</Unit>
 		<Unit filename="src\DataController.cpp">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\controllers\" />
 		</Unit>
 		<Unit filename="src\DataController.h">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\controllers\" />
 		</Unit>
 		<Unit filename="src\DebugView.cpp">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\views\" />
 		</Unit>
 		<Unit filename="src\DebugView.h">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\views\" />
 		</Unit>
 		<Unit filename="src\GraphicLoader.cpp">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\utils\" />
 		</Unit>
 		<Unit filename="src\GraphicLoader.h">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\utils\" />
 		</Unit>
 		<Unit filename="src\IXMLBuilder.h">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\utils\xml\" />
 		</Unit>
 		<Unit filename="src\IXMLParser.h">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\utils\xml\" />
 		</Unit>
 		<Unit filename="src\JungleException.cpp">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\utils\" />
 		</Unit>
 		<Unit filename="src\JungleExceptions.h">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\utils\" />
 		</Unit>
 		<Unit filename="src\LoadingView.cpp">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\views\" />
 		</Unit>
 		<Unit filename="src\LoadingView.h">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\views\" />
 		</Unit>
 		<Unit filename="src\Logger.cpp">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\utils\" />
 		</Unit>
 		<Unit filename="src\Logger.h">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\utils\" />
 		</Unit>
 		<Unit filename="src\MicController.cpp">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\controllers\" />
 		</Unit>
 		<Unit filename="src\MicController.h">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\controllers\" />
 		</Unit>
 		<Unit filename="src\PropertyXMLBuilder.cpp">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\utils\xml\" />
 		</Unit>
 		<Unit filename="src\PropertyXMLBuilder.h">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\utils\xml\" />
 		</Unit>
 		<Unit filename="src\PropertyXMLParser.cpp">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\utils\xml\" />
 		</Unit>
 		<Unit filename="src\PropertyXMLParser.h">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\utils\xml\" />
 		</Unit>
 		<Unit filename="src\SceneView.cpp">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\views\" />
 		</Unit>
 		<Unit filename="src\SceneView.h">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\views\" />
 		</Unit>
 		<Unit filename="src\SceneXMLBuilder.cpp">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\utils\xml\" />
 		</Unit>
 		<Unit filename="src\SceneXMLBuilder.h">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\utils\xml\" />
 		</Unit>
 		<Unit filename="src\SceneXMLParser.cpp">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\utils\xml\" />
 		</Unit>
 		<Unit filename="src\SceneXMLParser.h">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\utils\xml\" />
 		</Unit>
 		<Unit filename="src\SerializationUtils.h">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\utils\" />
 		</Unit>
 		<Unit filename="src\Singleton.h">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\utils\" />
 		</Unit>
 		<Unit filename="src\StringHelpers.cpp">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\utils\" />
 		</Unit>
 		<Unit filename="src\StringHelpers.h">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\utils\" />
 		</Unit>
 		<Unit filename="src\VictimView.cpp">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\views\" />
 		</Unit>
 		<Unit filename="src\VictimView.h">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\views\" />
 		</Unit>
 		<Unit filename="src\VideoController.cpp">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\controllers\" />
 		</Unit>
 		<Unit filename="src\VideoController.h">
-			<Option virtualFolder="src\" />
+			<Option virtualFolder="src\controllers\" />
 		</Unit>
 		<Unit filename="src\main.cpp">
 			<Option virtualFolder="src" />

@@ -74,7 +74,7 @@ void BaseMeterView::update(interaction_t interactionType) {
             _turtle->draw(_turtle_x, _turtle_y - turtlePosY);
             _top_off->draw(_top_x, _top_y);
 
-            if (isInteractive && _scaledInputLevel > 0.99f) {
+            if (isInteractive && _scaledInputLevel > 1.00f) {
                 _top_on->draw(_top_x, _top_y);
             } else if (!isInteractive && _scaledInputLevel > 0.05f) {
                 _top_off->draw(_top_x, _top_y);

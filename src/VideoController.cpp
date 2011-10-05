@@ -136,7 +136,7 @@ void VideoController::loadMovie(Sequence * seq, bool forceCurrentLoad, int lastF
 
 	nextMovie->loadMovie(path);
 
-	ofAddListener(nextMovie->loadDone, this, &VideoController::loaded);
+	ofAddListener(nextMovie->success, this, &VideoController::loaded);
 	ofAddListener(nextMovie->error, this, &VideoController::error);
 
 	setState(kVIDCONTROLLER_NEXTVIDLOADING);
@@ -159,7 +159,7 @@ void VideoController::toggleVideoPlayers(int lastFrameWhenForced) {
 void VideoController::loaded(string & path) {
 	LOG_NOTICE("Next video successfully loaded: " + path);
 	goThreadedVideo * nextMovie = _appModel->getNextVideoPlayer();
-	ofRemoveListener(nextMovie->loadDone, this, &VideoController::loaded);
+	ofRemoveListener(nextMovie->success, this, &VideoController::loaded);
 	ofRemoveListener(nextMovie->error, this, &VideoController::error);
 	_preRolling = false;
 	_forceCurrentLoad = false;

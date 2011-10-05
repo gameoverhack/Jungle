@@ -14,7 +14,7 @@ DebugView::DebugView(float width, float height) : BaseView(width, height){
 	LOG_NOTICE("Setting up DebugView");
 }
 
-void DebugView::update(){
+void DebugView::update() {
 
     /********************************************************
      *  Set pointers for current Scene, Sequence Movie etc  *
@@ -28,7 +28,7 @@ void DebugView::update(){
     bool showProps                      = boost::any_cast<bool>(_appModel->getProperty("showProps"));
     bool showFFT                        = boost::any_cast<bool>(_appModel->getProperty("showFFT"));
 
-    string            msg;
+    string msg = "DEBUG\n";
 
     /********************************************************
      *        Print info for Mic and Ard Controllers        *
@@ -53,6 +53,7 @@ void DebugView::update(){
 
 	//currentFrame = CLAMP(currentFrame, 0, totalFrames-1); // why are you so cruel?
     if (showProps) {
+
         msg += "vic1 Transform: " + currentSequence->getTransformAsString("vic1", sequenceCurrentFrame) + "\n";
         msg += "atk1 Transform: " + currentSequence->getTransformAsString("atk1", sequenceCurrentFrame) + "\n";
         if (currentSequence->getTransformCount() > 2) {
@@ -77,8 +78,9 @@ void DebugView::update(){
      *                    Draw MSG info                     *
      ********************************************************/
 
-	ofSetColor(0, 255, 255, 255);
-	ofDrawBitmapString(msg, 20, 50); // this gets rendered upside down for some reason ?*/
+    ofSetColor(0, 255, 255, 255);
+
+	ofDrawBitmapString(msg, 20, 100);
 
     /********************************************************
      *               Draw Movie Progress Bar                *
@@ -91,8 +93,9 @@ void DebugView::update(){
 
     // draw the outline of the bar
 	ofSetColor(50, 50, 50, 220);
+
 	ofNoFill();
-	ofRect(5, _viewHeight-progressionHeight-10, progressionWidth+4, progressionHeight+2);
+	ofRect(5, progressionHeight+10, progressionWidth+4, progressionHeight+2);
 
 	// valid movie file/sequence stuff
 	if(currentSequence->getIsSequenceFaked()) {
@@ -106,14 +109,14 @@ void DebugView::update(){
 
     // draw the actual progress
     ofFill();
-	ofRect(6, _viewHeight-progressionHeight-9, progressionWidth*progressionPercentage, progressionHeight);
+	ofRect(6, progressionHeight+9, progressionWidth*progressionPercentage, progressionHeight);
     ofNoFill();
 
     	// give us info about progression
 	msg = currentScene->getName() + "::" + currentSequence->getName() + "::" + ofToString(sequenceCurrentFrame) + "/" + ofToString(sequenceTotalFrames);
 
 	ofSetColor(255, 255, 255, 255);
-	ofDrawBitmapString(msg, 6, _viewHeight-progressionHeight-4);
+	ofDrawBitmapString(msg, 6, progressionHeight+10);
 
     // draw total scene progression
 	float totalProgressionPercentage = (float)sceneCurrentFrame/(float)(sceneTotalFrames);
@@ -123,19 +126,19 @@ void DebugView::update(){
     // draw the outline of the bar
 	ofSetColor(50, 50, 50, 220);
 	ofNoFill();
-	ofRect(5, _viewHeight-totalProgressionHeight-30, totalProgressionWidth+4, totalProgressionHeight+2);
+	ofRect(5, totalProgressionHeight+30, totalProgressionWidth+4, totalProgressionHeight+2);
 
     // draw the actual progress
     ofSetColor(50, 50, 220, 220);
     ofFill();
-	ofRect(6, _viewHeight-totalProgressionHeight-29, totalProgressionWidth*totalProgressionPercentage, totalProgressionHeight);
+	ofRect(6, totalProgressionHeight+29, totalProgressionWidth*totalProgressionPercentage, totalProgressionHeight);
     ofNoFill();
 
     	// give us info about progression
 	msg = currentScene->getName() + "::" + currentSequence->getName() + "::" + ofToString(sceneCurrentFrame) + "/" + ofToString(sceneTotalFrames);
 
 	ofSetColor(255, 255, 255, 255);
-	ofDrawBitmapString(msg, 6, _viewHeight-totalProgressionHeight-24);
+	ofDrawBitmapString(msg, 6, totalProgressionHeight+30);
 
     if (showFFT) {
 
@@ -159,17 +162,12 @@ void DebugView::update(){
         glPushMatrix();
 
         ofNoFill();
-
-        glScalef(1.0f, -1.0f, 1.0);
-        glTranslatef(1.0, -_viewHeight, 0.0f);
 		ofSetColor(255, 255, 255, 255);
 
-        glTranslatef(16.0f, 16.0f, 0.0f);
-		ofDrawBitmapString("Frequency Domain", 0, plotHeight);      // upside down Mr Squiggle - totally screwy
+        glTranslatef(ofGetWidth()/4.0f, 300.0f, 0.0f);
 		plot(audioInput, bufferSize, plotHeight / 2, 0);
 
-		glTranslatef(0.0f, (float)plotHeight + 16.0f, 0.0f);
-		ofDrawBitmapString("Time Domain", 0, plotHeight*2);         // upside down Mr Squiggle - totally screwy
+		glTranslatef(0.0f, plotHeight, 0.0f);
 		plotDraw(fftInput, bufferSize, plotHeight, binSize);
 
         ofSetColor(255, 0, 0);
@@ -179,11 +177,11 @@ void DebugView::update(){
 		plotDraw(fftCyclicSum, bufferSize, plotHeight, binSize, 1.0f, 1.0f/(float)binSize);
 
 		ofSetColor(0, 255, 255, 255);
-		plotDraw(fftPostFilter, bufferSize, plotHeight, binSize);
+        plotDraw(fftPostFilter, bufferSize, plotHeight, binSize);
 
         glPushMatrix();
 
-        glTranslatef(bufferSize, (float)ofGetHeight()/2.0f, 0.0f);
+        glTranslatef(0.0f, plotHeight*3, 0.0f);
 
 		//glRotatef(-(mouseY/ofGetHeight())*360.0f, fftBandSamples, 0.0f, 0.0f);
 		//glRotatef((mouseX/ofGetWidth())*360.0f, 0.0f, fftBandSamples, 0.0f);
@@ -196,8 +194,7 @@ void DebugView::update(){
 
 		}
 
-		glPopMatrix();
-
+        glPopMatrix();
         glPopMatrix();
 
         /********************************************************
@@ -210,14 +207,9 @@ void DebugView::update(){
         glPushMatrix();
 
         ofNoFill();
-
-        //glScalef(1.0f, -1.0f, 1.0);
-        //glTranslatef((float)ofGetWidth()/2.0f, -_viewHeight, 1.0);
 		ofSetColor(255, 255, 255, 255);
 
-        glTranslatef(16.0f, 16.0f, 0.0f);
-		ofDrawBitmapString("Ard Cyclic Buffer", 0, plotHeight);      // upside down Mr Squiggle - totally screwy
-		glTranslatef(0.0f, plotHeight, 0.0f);
+		glTranslatef(ofGetWidth()/4.0f + 500.0f, 300.0f + plotHeight, 0.0f);
 		plotDraw(ardCyclicBuffer, ardCycicBufferSize, plotHeight, ardCycicBufferSize, 10.0f, 2.0f);
 
 		glPopMatrix();
@@ -231,7 +223,7 @@ void DebugView::update(){
 void DebugView::plotDraw(float* array, int width, int height, int binSize, float scaleW, float scaleH) {
 
 	glPushMatrix();
-	glTranslatef(0, height, 0);
+	glTranslatef(0, -height, 0);
 	glScalef(width/binSize * scaleW, -scaleH, 0.0f);
 	ofBeginShape();
 	for (int i = 0; i < binSize; i++)
@@ -245,7 +237,7 @@ void DebugView::plot(float* array, int length, float scale, float offset) {
 	//ofNoFill();
 	//ofRect(0, 0, length, length*2.0);
 	glPushMatrix();
-	glTranslatef(0, length + offset, 0);
+	//glTranslatef(0, length + offset, 0);
 	ofBeginShape();
 	for (int i = 0; i < length; i++)
 		ofVertex(i, array[i] * scale);

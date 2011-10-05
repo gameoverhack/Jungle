@@ -56,6 +56,8 @@ bool CamController::setup(int deviceID, int w, int h){
 	if (ok) loadSettings();
 #endif
 
+    loadAttributes();
+
     _doFaceDetection = true;
     _doFaceTracking = false;
     //_finder.setScaleHaar(0.5);

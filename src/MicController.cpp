@@ -56,14 +56,14 @@ MicController::MicController(string deviceName, int fftBufferLengthSecs, int aud
             break;
         }
     }
-	ofSoundStreamSetup(0, channels, this, sampleRate, _audioBufferSize, 4, inputDeviceID);
+	ofSoundStreamSetup(0, channels, this, sampleRate, _audioBufferSize, 2, inputDeviceID);
 #else
     soundStream.setDeviceID(deviceName);
-    ofSoundStreamSetup(0, channels, this, sampleRate, _audioBufferSize, 4);
+    ofSoundStreamSetup(0, channels, this, sampleRate, _audioBufferSize, 2);
 #endif
 #else
 	LOG_WARNING("I made good changes to ofSoundStream -> impliment them by copying the file or making your own version");
-	ofSoundStreamSetup(0, channels, this, sampleRate, _audioBufferSize, 4);
+	ofSoundStreamSetup(0, channels, this, sampleRate, _audioBufferSize, 2);
 #endif
 
 }
@@ -136,11 +136,11 @@ void MicController::audioReceived(float* input, int bufferSize, int nChannels) {
 
         for (int i = 10; i < _fft->getBinSize(); i++) {
             float h = fftNoiseFloor[i]; //fftPostFilter[i]; // this is wrong but i like it!!
-            float w = 1.0f;
+            float w = 2.0f;
             area += w*h;
         }
 
-        area = sqrt(area) - 0.2f; //TODO: make prop
+        area = sqrt(area) - 0.1f; //TODO: make prop
 
         _appModel->setFFTArea(area);
 
@@ -150,12 +150,12 @@ void MicController::audioReceived(float* input, int bufferSize, int nChannels) {
         if (_appModel->checkState(kAPP_RUNNING)) {
             if (area > 1.0f) {
                 ofNotifyEvent(victimAction, area, this);
-                for (int i = 0; i < _fftCyclicBufferSize; i++) {
-                    for (int j = 0; j < _fft->getBinSize(); j++) {
-                        fftCyclicBuffer[i].fftBand[j] = fftCyclicSum[j] = fftNoiseFloor[j] = fftPostFilter[j] = 0;
-                    }
-                    _appModel->setFFTArea(0.0f);
-                }
+//                for (int i = 0; i < _fftCyclicBufferSize; i++) {
+//                    for (int j = 0; j < _fft->getBinSize(); j++) {
+//                        fftCyclicBuffer[i].fftBand[j] = fftCyclicSum[j] = fftNoiseFloor[j] = fftPostFilter[j] = 0;
+//                    }
+//                    //_appModel->setFFTArea(0.0f);
+//                }
             }
         }
     }

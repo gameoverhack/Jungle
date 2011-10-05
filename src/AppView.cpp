@@ -94,9 +94,9 @@ void AppView::draw() {
 
 		if(boost::any_cast<bool>(_appModel->getProperty("showDebugView"))){
 #if OF_VERSION < 7
-			_debugView->draw(0, height, width, -height);
+			_debugView->draw(0, 0, width, height);
 #else
-            _debugView->draw(0, height, width, -height);
+            _debugView->draw(0, 0, width, height);
 #endif
 		}
 	}

@@ -132,11 +132,11 @@ void ArdController::updateArduino(bool fake) {
     if (_appModel->checkState(kAPP_RUNNING)) {
         if (area > 1.0f) {
             ofNotifyEvent(attackAction, area, this);
-            for (int i = 0; i < _ardCyclicBufferSize; i++) {
-                ardCyclicBuffer[i] = 0;
-                ardCyclicSum = 0;
-            }
-            _appModel->setARDArea(0.0f);
+//            for (int i = 0; i < _ardCyclicBufferSize; i++) {
+//                ardCyclicBuffer[i] = 0;
+//                ardCyclicSum = 0;
+//            }
+//            //_appModel->setARDArea(0.0f);
         }
     }
 

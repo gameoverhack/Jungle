@@ -46,10 +46,11 @@ AppController::~AppController() {
 void AppController::setup() {
 
 	LOG_NOTICE("Initialising");
+    ofSetLogLevel(OF_LOG_VERBOSE);
 
 	ofSetFrameRate(60);          // has to be as we can't set hammer ofArduino too hard...hmmm
 	ofSetVerticalSync(true);
-    ofSetDrawBitmapMode(OF_BITMAPMODE_MODEL_BILLBOARD);
+    //ofSetDrawBitmapMode(OF_BITMAPMODE_SCREEN);
 
 	_isFullScreen		= false; // change this when we start in fullscreen mode
 	_switchToSequence	= NULL;
@@ -68,12 +69,12 @@ void AppController::setup() {
 	//_vidController->registerStates();
     //ofSetLogLevel(OF_LOG_NOTICE);
 	// setup micController
-	_micController = new MicController("Microphone (2- USB Audio Device)", 2); // other is Microphone (2- HD Pro Webcam C910) // TODO: make these a property
+	_micController = new MicController("Microphone (Realtek High Definition Audio", 2); // other is Microphone (2- HD Pro Webcam C910) // TODO: make these a property
 	ofAddListener(_micController->victimAction, this, &AppController::VictimEvent);
 	//_micController->registerStates();
 
 	// setup ardController
-	_ardController = new ArdController("COM5", 2); // TODO: make this a property
+	_ardController = new ArdController("COM3", 2); // TODO: make this a property
 	ofAddListener(_ardController->attackAction, this, &AppController::AttackEvent);
 	//_ardController->registerStates();
 
@@ -347,6 +348,8 @@ void AppController::keyPressed(int key){
     float positionAdjustment    = 5.0f;
 
     float fakeInput             = 1024.0f; // this could be faked more realistically using time between keys etc -> will do for now
+
+    LOG_VERBOSE("Key pressed: " + key);
 
 	switch (key) {
 #ifdef TARGET_WIN32
