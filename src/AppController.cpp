@@ -22,13 +22,13 @@ AppController::~AppController() {
     // need to comment out ofSoundStreamClose() in method ofExitCallback() in ofAppRunner -> some RTAUDIO bug wrecks clean exit!
 
     LOG_NOTICE("Saving properties");
-
+#ifndef USE_DUMMY
 #ifdef TARGET_WIN32
     // save cam props
 	_camControllers[0]->saveSettings();
 	_camControllers[1]->saveSettings();
 #endif
-
+#endif
 	_dataController->saveProperties();
 
     delete _appView;
@@ -352,6 +352,7 @@ void AppController::keyPressed(int key){
     LOG_VERBOSE("Key pressed: " + key);
 
 	switch (key) {
+#ifndef USE_DUMMY
 #ifdef TARGET_WIN32
 	    case '3':
 			_camControllers[0]-> showVideoSettings();
@@ -367,6 +368,7 @@ void AppController::keyPressed(int key){
 			_camControllers[0]->loadSettings();
 			_camControllers[1]->loadSettings();
 			break;
+#endif
 #endif
         case 'b':
             _appModel->setProperty("showCameras", !showCameras);

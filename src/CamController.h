@@ -10,6 +10,8 @@
 #ifndef _H_CAMCONTROLLER
 #define _H_CAMCONTROLLER
 
+#define USE_DUMMY
+
 #include "BaseState.h"
 #include "AppModel.h"
 #include "Logger.h"
@@ -58,17 +60,8 @@ public:
 
 	ofTexture	* getCamTextureRef();
 
-    ofxCvHaarFinder         _finder;
-
     bool                    _doFaceDetection;
     bool                    _doFaceTracking;
-
-    ofxFaceTracker          _tracker;
-
-    // lazy!!
-    ofxCvColorImage         _camImage;
-    ofxCvColorImage         _colourImage;
-    ofxCvGrayscaleImage     _greyImage;
 
     bool                    getIsFacePresent() {return _isFacePresent;}
     ofEvent<int>            faceAction;
@@ -77,10 +70,16 @@ private:
 
     void                    threadedFunction();
 
+
+
 #ifdef TARGET_OSX
 	ofxQTKitVideoGrabber	_cam;			// this is not X-platform but of/goVideoPlayer does not play well with ManyCam
 #else
+#ifdef USE_DUMMY
+    goVideoPlayer           _cam;
+#else
     goVideoGrabber	        _cam;
+#endif
 #endif
 	int						_instanceID;
 
@@ -90,6 +89,14 @@ private:
     int                     _lastFaceTime;
     int                     _lastFaceTimeTillLost;
     bool                    _isFacePresent;
+
+    ofxCvHaarFinder         _finder;
+    ofxFaceTracker          _tracker;
+
+    ofxCvColorImage         _camImage;
+    ofxCvColorImage         _colourImage;
+    ofxCvGrayscaleImage     _greyImage;
+
 
 };
 

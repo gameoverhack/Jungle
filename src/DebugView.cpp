@@ -116,7 +116,7 @@ void DebugView::update() {
 	msg = currentScene->getName() + "::" + currentSequence->getName() + "::" + ofToString(sequenceCurrentFrame) + "/" + ofToString(sequenceTotalFrames);
 
 	ofSetColor(255, 255, 255, 255);
-	ofDrawBitmapString(msg, 6, progressionHeight+10);
+	ofDrawBitmapString(msg, 6, progressionHeight+10+12);
 
     // draw total scene progression
 	float totalProgressionPercentage = (float)sceneCurrentFrame/(float)(sceneTotalFrames);
@@ -138,7 +138,7 @@ void DebugView::update() {
 	msg = currentScene->getName() + "::" + currentSequence->getName() + "::" + ofToString(sceneCurrentFrame) + "/" + ofToString(sceneTotalFrames);
 
 	ofSetColor(255, 255, 255, 255);
-	ofDrawBitmapString(msg, 6, totalProgressionHeight+30);
+	ofDrawBitmapString(msg, 6, totalProgressionHeight+progressionHeight+30+12);
 
     if (showFFT) {
 

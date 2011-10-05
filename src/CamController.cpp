@@ -38,11 +38,19 @@ CamController::~CamController() {
 
 bool CamController::setup(int deviceID, int w, int h){
 
-	LOG_NOTICE("Attemptimg to set instance " + ofToString(_instanceID) + " cam to deviceID: " + ofToString(deviceID));
 
-	_cam.close();// to be sure, to be sure
-	bool ok = true; // bad mac change this
 
+#ifdef USE_DUMMY
+    LOG_NOTICE("Attemptimg to set instance " + ofToString(_instanceID) + " cam to DUMMY");
+    _cam.setPixelType(GO_TV_RGB);
+    if (_instanceID == 0) _cam.loadMovie("E:/gameoverload/VideoProjects/Jungle/newtease/dummy/attackerCamBIG.mov");
+    if (_instanceID == 1) _cam.loadMovie("E:/gameoverload/VideoProjects/Jungle/newtease/dummy/victimCamBIG.mov");
+    _cam.play();
+    ofSleepMillis(1000);
+#else
+    LOG_NOTICE("Attemptimg to set instance " + ofToString(_instanceID) + " cam to deviceID: " + ofToString(deviceID));
+    _cam.close();// to be sure, to be sure
+    bool ok = true; // bad mac change this
 #ifdef TARGET_WIN32
     _cam.setRequestedMediaSubType(VI_MEDIASUBTYPE_MJPG);
 	ok = _cam.initGrabber(w, h, true);
@@ -54,6 +62,7 @@ bool CamController::setup(int deviceID, int w, int h){
 
 #ifdef TARGET_WIN32
 	if (ok) loadSettings();
+#endif
 #endif
 
     loadAttributes();
@@ -116,6 +125,7 @@ bool CamController::setup(string deviceID, int w, int h){
 }
 #endif
 
+#ifndef USE_DUMMY
 #ifdef TARGET_WIN32
 void CamController::showVideoSettings() {
     _cam.showSettingsWindow();
@@ -228,6 +238,7 @@ void CamController::saveSettings() {
 
 }
 #endif
+#endif
 
 void CamController::loadAttributes() {
 
@@ -327,7 +338,8 @@ void CamController::threadedFunction() {
 }
 
 void CamController::drawDebug() {
-
+    _cam.draw(0,0);
+    ofSetColor(255, 255, 255, 255);
 	if (_doFaceTracking) {
 	    _colourImage.draw(0,0);
 	    _tracker.draw();

@@ -24,7 +24,9 @@ AppModel::AppModel() {
 
 	// setup video players
 	_videoPlayers[0] = new goThreadedVideo();
+	_videoPlayers[0]->setPixelType(GO_TV_RGBA);
 	_videoPlayers[1] = new goThreadedVideo();
+	_videoPlayers[0]->setPixelType(GO_TV_RGBA);
 }
 
 AppModel::~AppModel() {
