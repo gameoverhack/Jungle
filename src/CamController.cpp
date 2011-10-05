@@ -22,6 +22,7 @@ CamController::CamController() {
     _lastFaceTimeTillLost   = 10000;
     _lastFaceTime           = ofGetElapsedTimeMillis() - _lastFaceTimeTillLost;
 
+    ofRegisterMouseEvents(this);
 
 	_instanceID = _instanceCount;
     _instanceCount++;				// use instance counts to keep track of which cam belongs to which viewer - may be redundant??
@@ -46,7 +47,7 @@ bool CamController::setup(int deviceID, int w, int h){
     if (_instanceID == 0) _cam.loadMovie("E:/gameoverload/VideoProjects/Jungle/newtease/dummy/attackerCamBIG.mov");
     if (_instanceID == 1) _cam.loadMovie("E:/gameoverload/VideoProjects/Jungle/newtease/dummy/victimCamBIG.mov");
     _cam.play();
-    ofSleepMillis(1000);
+    ofSleepMillis(200);
 #else
     LOG_NOTICE("Attemptimg to set instance " + ofToString(_instanceID) + " cam to deviceID: " + ofToString(deviceID));
     _cam.close();// to be sure, to be sure
@@ -306,6 +307,7 @@ void CamController::threadedFunction() {
             if (_cam.isFrameNew() && _doFaceDetection) { //&& ofGetFrameNum()%2 == 0
                 _camImage = _cam.getPixels();
                 _greyImage = _camImage;
+                if (_instanceID == 1) cvFlip(_greyImage.getCvImage(), _greyImage.getCvImage(), 1);
                 cvTranspose(_greyImage.getCvImage(), _greyImage.getCvImage()); // rotate ROI
 
                 if(_finder.findHaarObjects(_greyImage, 200, 200) > 0) { // has a face
@@ -317,6 +319,7 @@ void CamController::threadedFunction() {
             if (_cam.isFrameNew() && _doFaceTracking) {
                 _camImage = _cam.getPixels();
                 _colourImage = _camImage;
+                if (_instanceID == 1) cvFlip(_colourImage.getCvImage(), _colourImage.getCvImage(), 1);
                 cvTranspose(_colourImage.getCvImage(), _colourImage.getCvImage()); // rotate ROI
 
                 if (_tracker.update(toCv(_colourImage))) { // has a face
@@ -337,29 +340,39 @@ void CamController::threadedFunction() {
 //                matT = cvReshape( mat, &hdr, CV_MAT_CN(mat->type), mat->cols );
 }
 
-void CamController::drawDebug() {
-    _cam.draw(0,0);
-    ofSetColor(255, 255, 255, 255);
-	if (_doFaceTracking) {
-	    _colourImage.draw(0,0);
-	    _tracker.draw();
-	}
-	if (_doFaceDetection) {
-	    _greyImage.draw(0,0);
-	    glPushMatrix();
-	    glScalef(640.0f/_finder.getWidth(), 640.0f/_finder.getHeight(), 1.0f);
-        _finder.draw(0,0);
+void CamController::drawDebug(float x, float y, float width, float height) {
+
+    xROIDisplay = x;
+    yROIDisplay = y,
+    xScaleROIDisplay = width/640.0f;
+    yScaleROIDisplay = height/640.0f;
+
+    //if(!lock()){
+        glPushMatrix();
+        glScalef(xScaleROIDisplay, yScaleROIDisplay, 1.0f);
+        glTranslatef(x, y, 0.0f);
+        ofSetColor(255, 255, 255, 255);
+        if (_doFaceTracking) {
+            _colourImage.draw(0,0);
+            _tracker.draw();
+        }
+        if (_doFaceDetection) {
+            _greyImage.draw(0,0);
+            glPushMatrix();
+            glScalef(640.0f/_finder.getWidth(), 640.0f/_finder.getHeight(), 1.0f);
+            _finder.draw(0,0);
+            glPopMatrix();
+        }
+
+        if (_isFacePresent) {
+            ofFill();
+            ofSetColor(0, 255, 0);
+            ofCircle(25, 25, 50);
+            ofNoFill();
+            ofSetColor(255, 255, 255, 255);
+        }
         glPopMatrix();
-	}
-
-	if (_isFacePresent) {
-	    ofFill();
-	    ofSetColor(0, 255, 0);
-	    ofCircle(25, 25, 50);
-	    ofNoFill();
-	    ofSetColor(255, 255, 255, 255);
-	}
-
+    //}
 }
 
 int CamController::getInstanceID(){							// might be redundant
@@ -373,4 +386,35 @@ void CamController::setInstanceID(int instanceID){			// might be redundant
 
 ofTexture * CamController::getCamTextureRef() {				// Ugggh a ViewTroller!!! ;-)
 	return &(_cam.getTextureReference());
+}
+
+void CamController::mouseMoved(ofMouseEventArgs &e) {
+
+}
+
+void CamController::mouseDragged(ofMouseEventArgs &e) {
+    if (_doROIAdjust) {
+        cout << "yes" << endl;
+        ofRectangle R = _camImage.getROI();
+        _camImage.setROI((R.x + _startX - e.x), (R.y + _startY-e.y), 640, 640);
+        _startX = e.x;
+        _startY = e.y;
+    }
+}
+
+void CamController::mousePressed(ofMouseEventArgs &e) {
+    cout << " :: " << e.x << " :: " << e.y << " :: " << xROIDisplay*xScaleROIDisplay << " :: " << yROIDisplay*yScaleROIDisplay << " :: " << 640.0f*xScaleROIDisplay << " :: " << 640.0f*yScaleROIDisplay << endl;
+    if (e.x > xROIDisplay*xScaleROIDisplay && e.x < (xROIDisplay + 640.0f) * xScaleROIDisplay &&
+        e.y > yROIDisplay*yScaleROIDisplay && e.y < (yROIDisplay + 640.0f) * yScaleROIDisplay) {
+        cout << "hello" << endl;
+        _startX = e.x;
+        _startY = e.y;
+        _doROIAdjust = true;
+    }
+}
+
+void CamController::mouseReleased(ofMouseEventArgs &e) {
+    cout << "bye" << endl;
+    _doROIAdjust = false;
+    _startX = _startY = -1;
 }

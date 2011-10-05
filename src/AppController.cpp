@@ -313,13 +313,8 @@ void AppController::draw() {
 	_appView->draw();
 
     if (boost::any_cast<bool>(_appModel->getProperty("showCameras"))) {
-	    glPushMatrix();
-	    glScalef(0.25f,0.25f,1.0f);
-	    glTranslatef(ofGetWidth() - 640.0f/4.0f, 20.0f, 0.0f);
-	    _camControllers[0]->drawDebug();
-	    glTranslatef(640.0f, 0.0f, 0.0f);
-        _camControllers[1]->drawDebug();
-        glPopMatrix();
+	    _camControllers[0]->drawDebug(ofGetWidth() - 640.0f/4.0f, 20.0f, 640.0f/4.0f, 640.0f/4.0f);
+        _camControllers[1]->drawDebug(ofGetWidth() - 640.0f/4.0f + 640.0f, 0.0f, 640.0f/4.0f, 640.0f/4.0f);
     }
 
 }

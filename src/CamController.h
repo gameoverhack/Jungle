@@ -52,7 +52,7 @@ public:
 #endif
 
 	void		update();
-    void        drawDebug();
+    void        drawDebug(float x, float y, float width, float height);
 
 	int			getInstanceID();
 	void		setInstanceID(int instanceID);
@@ -66,11 +66,21 @@ public:
     bool                    getIsFacePresent() {return _isFacePresent;}
     ofEvent<int>            faceAction;
 
+    void mouseMoved(ofMouseEventArgs &e);
+	void mouseDragged(ofMouseEventArgs &e);
+	void mousePressed(ofMouseEventArgs &e);
+	void mouseReleased(ofMouseEventArgs &e);
+
 private:
 
+    int                     _startX, _startY;
+    bool                    _doROIAdjust;
+    float xROIDisplay;
+    float yROIDisplay;
+    float xScaleROIDisplay;
+    float yScaleROIDisplay;
+
     void                    threadedFunction();
-
-
 
 #ifdef TARGET_OSX
 	ofxQTKitVideoGrabber	_cam;			// this is not X-platform but of/goVideoPlayer does not play well with ManyCam
