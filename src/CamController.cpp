@@ -22,6 +22,10 @@ CamController::CamController() {
     _lastFaceTimeTillLost   = 10000;
     _lastFaceTime           = ofGetElapsedTimeMillis() - _lastFaceTimeTillLost;
 
+    _camROI.x       = _camROI.y = 200.0f;
+    _camROI.width   = 640.0f;
+    _camROI.height  = 640.0f;
+
     ofRegisterMouseEvents(this);
 
 	_instanceID = _instanceCount;
@@ -78,7 +82,7 @@ bool CamController::setup(int deviceID, int w, int h){
     _colourImage.allocate(640,640);
     _greyImage.allocate(640,640);
 
-    _camImage.setROI(200, 200, 640,640);
+    _camImage.setROI(_camROI.x, _camROI.y, _camROI.width, _camROI.height);
 
     _tracker.setup();
     _tracker.setScale(0.33);
@@ -112,7 +116,7 @@ bool CamController::setup(string deviceID, int w, int h){
     _colourImage.allocate(640,640);
     _greyImage.allocate(640,640);
 
-    _camImage.setROI(200, 200, 640,640);
+    _camImage.setROI(_camROI.x, _camROI.y, _camROI.width, _camROI.height);
 
     _tracker.setup();
     _tracker.setScale(1);
@@ -342,15 +346,15 @@ void CamController::threadedFunction() {
 
 void CamController::drawDebug(float x, float y, float width, float height) {
 
-    xROIDisplay = x;
-    yROIDisplay = y,
-    xScaleROIDisplay = width/640.0f;
-    yScaleROIDisplay = height/640.0f;
+    _xROIDisplay = x;
+    _yROIDisplay = y,
+    _xScaleROIDisplay = width/640.0f;
+    _yScaleROIDisplay = height/640.0f;
 
     //if(!lock()){
         glPushMatrix();
-        glScalef(xScaleROIDisplay, yScaleROIDisplay, 1.0f);
-        glTranslatef(x, y, 0.0f);
+        glScalef(_xScaleROIDisplay, _yScaleROIDisplay, 1.0f);
+        glTranslatef(_xROIDisplay, _yROIDisplay, 0.0f);
         ofSetColor(255, 255, 255, 255);
         if (_doFaceTracking) {
             _colourImage.draw(0,0);
@@ -393,28 +397,23 @@ void CamController::mouseMoved(ofMouseEventArgs &e) {
 }
 
 void CamController::mouseDragged(ofMouseEventArgs &e) {
-    if (_doROIAdjust) {
-        cout << "yes" << endl;
-        ofRectangle R = _camImage.getROI();
-        _camImage.setROI((R.x + _startX - e.x), (R.y + _startY-e.y), 640, 640);
-        _startX = e.x;
-        _startY = e.y;
+    if (_doROIAdjust && boost::any_cast<bool>(_appModel->getProperty("showCameras"))) {
+        _camImage.setROI((_camROI.x + (_startX - e.x) * 2.0), (_camROI.y + (_startY - e.y) * 2.0), 640, 640);
     }
 }
 
 void CamController::mousePressed(ofMouseEventArgs &e) {
-    cout << " :: " << e.x << " :: " << e.y << " :: " << xROIDisplay*xScaleROIDisplay << " :: " << yROIDisplay*yScaleROIDisplay << " :: " << 640.0f*xScaleROIDisplay << " :: " << 640.0f*yScaleROIDisplay << endl;
-    if (e.x > xROIDisplay*xScaleROIDisplay && e.x < (xROIDisplay + 640.0f) * xScaleROIDisplay &&
-        e.y > yROIDisplay*yScaleROIDisplay && e.y < (yROIDisplay + 640.0f) * yScaleROIDisplay) {
-        cout << "hello" << endl;
+    if (e.x > _xROIDisplay * _xScaleROIDisplay && e.x < (_xROIDisplay + 640.0f) * _xScaleROIDisplay &&
+        e.y > _yROIDisplay * _yScaleROIDisplay && e.y < (_yROIDisplay + 640.0f) * _yScaleROIDisplay &&
+        boost::any_cast<bool>(_appModel->getProperty("showCameras"))) {
         _startX = e.x;
         _startY = e.y;
+        _camROI = _camImage.getROI();
         _doROIAdjust = true;
     }
 }
 
 void CamController::mouseReleased(ofMouseEventArgs &e) {
-    cout << "bye" << endl;
     _doROIAdjust = false;
     _startX = _startY = -1;
 }

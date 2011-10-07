@@ -10,7 +10,7 @@
 #ifndef _H_CAMCONTROLLER
 #define _H_CAMCONTROLLER
 
-#define USE_DUMMY
+//#define USE_DUMMY
 
 #include "BaseState.h"
 #include "AppModel.h"
@@ -71,14 +71,18 @@ public:
 	void mousePressed(ofMouseEventArgs &e);
 	void mouseReleased(ofMouseEventArgs &e);
 
+    ofRectangle*            getCamROI() {return &_camROI;};
+    void                    setCamROI(ofRectangle R) {_camROI = R;};
+
 private:
 
     int                     _startX, _startY;
     bool                    _doROIAdjust;
-    float xROIDisplay;
-    float yROIDisplay;
-    float xScaleROIDisplay;
-    float yScaleROIDisplay;
+    float                   _xROIDisplay;
+    float                   _yROIDisplay;
+    float                   _xScaleROIDisplay;
+    float                   _yScaleROIDisplay;
+    ofRectangle             _camROI;
 
     void                    threadedFunction();
 

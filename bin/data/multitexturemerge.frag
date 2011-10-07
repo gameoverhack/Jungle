@@ -1,4 +1,4 @@
-#extension GL_ARB_texture_rectangle : enable
+//#extension GL_ARB_texture_rectangle : enable
 // sampler2DRect because we're using NPOT texture sizes
 /*
  Order for textures is assumed to be
@@ -20,12 +20,13 @@ vec4 blend(vec4 a, vec4 b){
 }
 
 void main(){
+
 	vec4 sceneTexel, vic1Texel, atk1Texel, atk2Texel;
-	// these values are pretty aproximate right now
+
 	float atk1AlphaValue	= 104.0/255.0;
 	float vic1AlphaValue	= 178.0/255.0;
 	float atk2Alphavalue	= 226.0/255.0;
-	float alphaDelta		= 0.1;
+	float alphaDelta		= 0.2;
 
 
 	// Get texels from textures
@@ -37,7 +38,6 @@ void main(){
 		atk2Texel = texture2DRect(textures[3], gl_TexCoord[0].xy);
 	} else atk2Texel.rgba = vec4(0.0, 0.0, 0.0, 0.0); // fake null value
 
-	// Uncomment this to see actor textures unmasked
 	if (showUnmaskedTextures == 1) {
 		if(vic1Texel.a > 0.0){
 			sceneTexel.rgb = vic1Texel.rgb;

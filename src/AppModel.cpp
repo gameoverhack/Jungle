@@ -26,7 +26,7 @@ AppModel::AppModel() {
 	_videoPlayers[0] = new goThreadedVideo();
 	_videoPlayers[0]->setPixelType(GO_TV_RGBA);
 	_videoPlayers[1] = new goThreadedVideo();
-	_videoPlayers[0]->setPixelType(GO_TV_RGBA);
+	_videoPlayers[1]->setPixelType(GO_TV_RGBA);
 }
 
 AppModel::~AppModel() {
@@ -400,8 +400,7 @@ void AppModel::toggleVideoPlayers(int forceFrame) {
     _videoPlayers[0]->setFrame(forceFrame);
 	delete _videoPlayers[1];
 	_videoPlayers[1] = new goThreadedVideo();
-    delete _videoPlayers[1];
-	_videoPlayers[1] = new goThreadedVideo();
+	_videoPlayers[1]->setPixelType(GO_TV_RGBA);
 }
 
 //--------------------------------------------------------------

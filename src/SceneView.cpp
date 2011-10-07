@@ -56,7 +56,6 @@ void SceneView::update() {
 	CamTransform	* actorTransform;
 
 	// get the video texture
-	//currentMovie->draw(0, 0);
 	sceneTexture = &(currentMovie->getTextureReference());
 
 	currentVideoWidth  = sceneTexture->getWidth();
@@ -98,7 +97,7 @@ void SceneView::update() {
 	_shader.setTexture("textures[2]", _atk1Tex, 12);
 #else
 	_shader.setUniformTexture("textures[0]", *sceneTexture, 10);
-	_shader.setUniformTexture("textures[1]", _vic1FBO.getTextureReference() , 11);
+	_shader.setUniformTexture("textures[1]", _vic1FBO.getTextureReference(), 11);
 	_shader.setUniformTexture("textures[2]", _atk1FBO.getTextureReference(), 12);
 #endif
 
@@ -112,11 +111,12 @@ void SceneView::update() {
 		numTextures++;
 	}
 	_shader.setUniform1i("numTextures", numTextures);
-	_shader.setUniform1i("showUnmaskedTextures", boost::any_cast<bool>(_appModel->getProperty("showUnmaskedTextures")));
+	_shader.setUniform1i("showUnmaskedTextures", (int)boost::any_cast<bool>(_appModel->getProperty("showUnmaskedTextures")));
 	_shader.setUniform1f("blendRatio", boost::any_cast<float>(_appModel->getProperty("shaderBlendRatio")));
 	_shader.setUniform1f("gammaCorrection", boost::any_cast<float>(_appModel->getProperty("shaderGammaCorrection")));
 
     glPushMatrix();
+
     // scale to screen
     glScalef(_viewWidth/currentVideoWidth, _viewHeight/currentVideoHeight, 0.0f);
 
@@ -126,6 +126,7 @@ void SceneView::update() {
 	glTexCoord2f(currentVideoWidth, 0); glVertex2f(currentVideoWidth, 0);
 	glTexCoord2f(currentVideoWidth, currentVideoHeight); glVertex2f(currentVideoWidth, currentVideoHeight);
 	glEnd();
+
     glPopMatrix();
 
 	_shader.end();
@@ -150,10 +151,9 @@ void SceneView::drawCharacter(ofFbo * targetFBO,
 	// set up draw state
 	targetFBO->begin();
 	glPushMatrix();
-    ofEnableAlphaBlending();
-    //glClearColor(0.0, 0.0, 0.0, 0.0); // black background no transparency
-	glClear(GL_COLOR_BUFFER_BIT); // clear frame
 
+	glClear(GL_COLOR_BUFFER_BIT); // clear frame
+    ofEnableAlphaBlending();
     /********************************************************
      *      Magic numbers on the Transform data         	*
      *      should be moved to the Analyzer eventually    	*
@@ -200,8 +200,6 @@ void SceneView::drawCharacter(ofFbo * targetFBO,
     glRotatef(rot, 0.0f, 0.0f, 1.0f);
     glTranslatef(-width/2.0f - transform->x, -height/2.0f - transform->y, 0.0f);*/
 
-
-
     /********************************************************
      *      Translate, Scale, Rotate webcam by User     	*
      ********************************************************/
@@ -217,8 +215,9 @@ void SceneView::drawCharacter(ofFbo * targetFBO,
 
 	// draw face texture
 	faceTexture->draw(0,0);
-    ofDisableAlphaBlending();
+
 	// end rendering
+	ofDisableAlphaBlending();
 	glPopMatrix();
 
 	targetFBO->end();
