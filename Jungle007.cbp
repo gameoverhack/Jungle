@@ -949,6 +949,12 @@
 		<Unit filename="src\Singleton.h">
 			<Option virtualFolder="src\utils\" />
 		</Unit>
+		<Unit filename="src\SoundController.cpp">
+			<Option virtualFolder="src\controllers\" />
+		</Unit>
+		<Unit filename="src\SoundController.h">
+			<Option virtualFolder="src\controllers\" />
+		</Unit>
 		<Unit filename="src\StringHelpers.cpp">
 			<Option virtualFolder="src\utils\" />
 		</Unit>
