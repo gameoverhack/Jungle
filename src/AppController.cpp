@@ -224,6 +224,8 @@ void AppController::update() {
 
 			// force load using _switchToSequence var which will be caught below when the movie is fully loaded...
 			_switchToSequence = currentScene->getCurrentSequence();
+			_soundController->loadSound(currentScene);
+			_soundController->fade(1.0, 2000, FADE_LOG);
 			_vidController->loadMovie(_switchToSequence, true);
 			_appModel->setState(kAPP_RUNNING);
 			_lastAutoActionTime = ofGetElapsedTimeMillis();
@@ -290,6 +292,7 @@ void AppController::update() {
         _camControllers[0]->update();
 		_camControllers[1]->update();
 
+        _soundController->update();
 		_vidController->update();
 
 	}
@@ -306,6 +309,8 @@ void AppController::nextScene() {
     _appModel->nextScene();
     currentScene = _appModel->getCurrentScene();
     _switchToSequence = currentScene->getCurrentSequence();
+    _soundController->loadSound(currentScene);
+    _soundController->fade(1.0, 2000, FADE_LOG);
     _vidController->loadMovie(_switchToSequence, true);
 }
 
@@ -412,6 +417,15 @@ void AppController::keyPressed(int key){
             FaceEvent(fakeInstanceID);
             break;
 		}
+		case '[':
+            _soundController->fade(1.0, 1000, FADE_LOG);
+            break;
+        case ']':
+            _soundController->fade(0.0, 2000, FADE_LOG);
+            break;
+        case '\\':
+            _soundController->fade(0.0, 2000, FADE_EXP);
+            break;
         case 'm':
             _appModel->getCurrentVideoPlayer()->togglePaused();
             break;

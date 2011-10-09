@@ -107,7 +107,7 @@ public:
     ~SoundController();
 
     void    update();
-    void    loadSound(Sequence * seq);
+    void    loadSound(Scene * scene);
 
     void    fade(float toVolume, int timeMillis, FaderType fadeType);
 
@@ -117,7 +117,7 @@ private:
 
     Fader*          _currentFade;
 
-    ofSoundPlayer*  _player;
+    ofSoundPlayer   _player;
 
 };
 
