@@ -38,8 +38,9 @@ DataController::DataController(string configFilePath) {
     #else TARGET_WIN32
     //_appModel->setProperty("scenesDataPath", (string)"E:/Users/gameover/Desktop/StrangerDanger/video");
     //_appModel->setProperty("flashDataPath", (string)"E:/Users/gameover/Desktop/StrangerDanger/flash");
-    _appModel->setProperty("scenesDataPath", (string)"E:/gameoverload/VideoProjects/Jungle/newsleaze/video");
-    _appModel->setProperty("flashDataPath", (string)"E:/gameoverload/VideoProjects/Jungle/newsleaze/flash");
+    _appModel->setProperty("scenesDataPath", (string)"E:/gameoverload/VideoProjects/Jungle/newtease/video");
+    _appModel->setProperty("flashDataPath", (string)"E:/gameoverload/VideoProjects/Jungle/newtease/flash");
+    _appModel->setProperty("audioDataPath", (string)"E:/gameoverload/VideoProjects/Jungle/newtease/audio");
     //_appModel->setProperty("scenesDataPath", (string)"D:/newmodel/video");
     //_appModel->setProperty("flashDataPath", (string)"D:/newmodel/flash");
     _appModel->setProperty("graphicDataPath", (string)"graphics");
