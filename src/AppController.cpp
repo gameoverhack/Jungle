@@ -235,7 +235,7 @@ void AppController::update() {
 			_soundController->fade(1.0, 2000, FADE_LOG);
 			_vidController->loadMovie(_switchToSequence, true);
 			_appModel->setState(kAPP_RUNNING);
-			_lastAutoActionTime = ofGetElapsedTimeMillis();
+			_lastActionTime = ofGetElapsedTimeMillis();
 
 		}
 	}
@@ -324,8 +324,8 @@ void AppController::nextScene() {
     _vidController->reset();
     currentScene = _appModel->getCurrentScene();
     _switchToSequence = currentScene->getCurrentSequence();
-    _soundController->loadSound(currentScene);
-    _soundController->fade(1.0, 2000, FADE_LOG);
+    //_soundController->loadSound(currentScene);
+    //_soundController->fade(1.0, 2000, FADE_LOG);
     _vidController->loadMovie(_switchToSequence, true);
 }
 

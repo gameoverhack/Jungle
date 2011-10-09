@@ -162,7 +162,7 @@ void Analyzer::update() {
 
         LOG_NOTICE("Attempting to Load: " + filePath);
 
-		int err = 0;//spawnl(P_NOWAIT,systemMsg.c_str(), systemMsg.c_str(),NULL);
+		int err = spawnl(P_NOWAIT,systemMsg.c_str(), systemMsg.c_str(),NULL);
 
 		if(err == -1) {
 			setState(kANAL_ERROR);

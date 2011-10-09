@@ -39,7 +39,7 @@ void SoundController::update() {
 void SoundController::loadSound(Scene * scene) {
     LOG_NOTICE("Attempting to load scene background sound...");
     if (_player.getIsPlaying()) _player.stop();
-    string path = boost::any_cast<string>(_appModel->getProperty("audioDataPath")) + "/" + "backgroundSound.wav"; // + scene->getName() + ".wav";
+    string path = boost::any_cast<string>(_appModel->getProperty("audioDataPath")) + "/" + "backgroundAudio.wav"; // + scene->getName() + ".wav";
     LOG_NOTICE(path);
     _player.loadSound(path);
     _player.setLoop(true);
