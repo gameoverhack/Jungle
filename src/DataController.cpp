@@ -9,8 +9,8 @@
 
 #include "DataController.h"
 
-#define USER_MATT
-//#define USER_OLLIE
+//#define USER_MATT
+#define USER_OLLIE
 
 DataController::DataController(string configFilePath) {
 
@@ -45,8 +45,8 @@ DataController::DataController(string configFilePath) {
     _appModel->setProperty("graphicDataPath", (string)"graphics");
     #endif
 #else defined(USER_OLLIE)
-    _appModel->setProperty("scenesDataPath", (string)"/Users/ollie/its_a_jungle_out_there/Newest/video");
-    _appModel->setProperty("flashDataPath", (string)"/Users/ollie/its_a_jungle_out_there/Newest/flash");
+    _appModel->setProperty("scenesDataPath", (string)"/Users/ollie/its_a_jungle_out_there/resources/video");
+    _appModel->setProperty("flashDataPath", (string)"/Users/ollie/its_a_jungle_out_there/resources/flash");
     _appModel->setProperty("graphicDataPath", (string)"graphics");
 #endif
 
