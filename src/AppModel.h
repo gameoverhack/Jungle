@@ -174,6 +174,9 @@ public:
 
 	void				printAllScenes();
 
+    void                setFacesPresent(bool present) {_facesPresent = present;};
+    bool                getFacesPresent() {return _facesPresent;};
+
 private:
 
 	inline string	    pad(string & objectName);
@@ -236,6 +239,8 @@ private:
     // interactivity vars
     int                         _currentInteractivity;
     float                       _currentSequenceLevel;
+
+    bool                        _facesPresent;
 
 };
 

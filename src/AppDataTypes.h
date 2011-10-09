@@ -465,6 +465,8 @@ public:
             nextResult = _lastSequenceName;
 		}
 
+        //if (nextResult == "seq00a") nextResult = "seq01a"; // hacking face detection (this should only happen when AppController::update checks for VIDEOISDONE
+
 		// not last sequence, so set next
 		setCurrentSequence(nextResult); // all values in getNextResult (which is an array) should be set to correct value, so let's just use 0
 

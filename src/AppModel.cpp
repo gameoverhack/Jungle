@@ -20,6 +20,8 @@ AppModel::AppModel() {
 	_currentScene = NULL;
 	_padLength = 1;
 
+    _facesPresent = false;
+
     _cameraPRS = new PosRotScale[2];
 
 	// setup video players

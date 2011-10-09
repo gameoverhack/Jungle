@@ -183,17 +183,24 @@ void AppController::AttackEvent(float & level) {
 //--------------------------------------------------------------
 void AppController::FaceEvent(int & level) {
     // level == instanceID == GONE; level == instanceID+2 == HERE;
-    if (ofGetElapsedTimeMillis() - _lastActionTime > 500) {
+    LOG_VERBOSE("FACE ACTION..." + ofToString(level));
+    _appModel->setFacesPresent(_camControllers[0]->getIsFacePresent() || _camControllers[1]->getIsFacePresent());
+
+    if (true) {
         if (_switchToSequence == NULL && !_vidController->isPreRolling()) {
             if (_appModel->checkCurrentInteractivity(kINTERACTION_FACE) && level > 1) {
+                // FACE APPEARS (level > 1) && FACE_INTERACTION set in Flash for seq00a
+
                 _lastActionTime = ofGetElapsedTimeMillis();
-                string res = _appModel->getCurrentSequence()->getFaceResult()[_appModel->getCurrentSequenceFrame()];
+                string res = "seq01a";
                 LOG_NOTICE("FACE ACTION [" + ofToString(level) + "] == " + res);
                 if (res != kLAST_SEQUENCE_TOKEN) {
                     _switchToSequence = _appModel->getCurrentScene()->getSequence(res);
-                    _vidController->loadMovie(_switchToSequence, true);
+                    _vidController->loadMovie(_switchToSequence);
+                    _appModel->getCurrentVideoPlayer()->setLoopState(OF_LOOP_NONE);
+                    _vidController->_preRolling = true;
                 } else nextScene();
-            } //else cout << "Clocked by type " << _appModel->getCurrentInteractivity() << " = " << kINTERACTION_ATTACKER << endl;
+            }
         } //else cout << "Blocked by null" << endl;
     } //else cout << "Blocked by time" << endl;
 
@@ -244,7 +251,7 @@ void AppController::update() {
 			_vidController->loadMovie(_switchToSequence, true);
 		}
 
-		if (_vidController->checkState(kVIDCONTROLLER_CURRENTVIDONE)) {
+		if (_switchToSequence == NULL && _vidController->checkState(kVIDCONTROLLER_CURRENTVIDONE)) {
 			// the video just finished and we toggled to next video if there is one
             LOG_VERBOSE("Trying to go to next sequence");
 
@@ -292,8 +299,15 @@ void AppController::update() {
         _camControllers[0]->update();
 		_camControllers[1]->update();
 
+        _appModel->setFacesPresent(_camControllers[0]->getIsFacePresent() || _camControllers[1]->getIsFacePresent());
+
         _soundController->update();
 		_vidController->update();
+
+        if (_appModel->getCurrentSequence()->getNumber() > 0 && !_appModel->getFacesPresent()) { //&& _lastActionTime > 10000
+            // FACE DISAPPEARS
+            nextScene();
+        }
 
 	}
 
@@ -307,6 +321,7 @@ void AppController::nextScene() {
     currentScene->rewindScene();
     // load next scene
     _appModel->nextScene();
+    _vidController->reset();
     currentScene = _appModel->getCurrentScene();
     _switchToSequence = currentScene->getCurrentSequence();
     _soundController->loadSound(currentScene);
