@@ -69,9 +69,9 @@
 		7753BC461438398F002F7A0D /* Distance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7753BC181438398F002F7A0D /* Distance.cpp */; };
 		7753BC471438398F002F7A0D /* Helpers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7753BC1A1438398F002F7A0D /* Helpers.cpp */; };
 		7753BC481438398F002F7A0D /* RunningBackground.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7753BC1D1438398F002F7A0D /* RunningBackground.cpp */; };
-		7753BC491438398F002F7A0D /* Tracker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7753BC1F1438398F002F7A0D /* Tracker.cpp */; };
 		7753BC4A1438398F002F7A0D /* Utilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7753BC211438398F002F7A0D /* Utilities.cpp */; };
 		7753BC4B1438398F002F7A0D /* Wrappers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7753BC231438398F002F7A0D /* Wrappers.cpp */; };
+		775DF425144161340001DCC3 /* SoundController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 775DF424144161340001DCC3 /* SoundController.cpp */; };
 		77A19ECC1435AAC900431411 /* kiss_fft.c in Sources */ = {isa = PBXBuildFile; fileRef = 77A19EC11435AAC900431411 /* kiss_fft.c */; };
 		77A19ECD1435AAC900431411 /* kiss_fftr.c in Sources */ = {isa = PBXBuildFile; fileRef = 77A19EC31435AAC900431411 /* kiss_fftr.c */; };
 		77A19ECE1435AAC900431411 /* ofxFft.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 77A19EC61435AAC900431411 /* ofxFft.cpp */; };
@@ -468,13 +468,13 @@
 		7753BC1C1438398F002F7A0D /* ofxCv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxCv.h; sourceTree = "<group>"; };
 		7753BC1D1438398F002F7A0D /* RunningBackground.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RunningBackground.cpp; sourceTree = "<group>"; };
 		7753BC1E1438398F002F7A0D /* RunningBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RunningBackground.h; sourceTree = "<group>"; };
-		7753BC1F1438398F002F7A0D /* Tracker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tracker.cpp; sourceTree = "<group>"; };
-		7753BC201438398F002F7A0D /* Tracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tracker.h; sourceTree = "<group>"; };
 		7753BC211438398F002F7A0D /* Utilities.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Utilities.cpp; sourceTree = "<group>"; };
 		7753BC221438398F002F7A0D /* Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utilities.h; sourceTree = "<group>"; };
 		7753BC231438398F002F7A0D /* Wrappers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Wrappers.cpp; sourceTree = "<group>"; };
 		7753BC241438398F002F7A0D /* Wrappers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Wrappers.h; sourceTree = "<group>"; };
 		7753BC251438398F002F7A0D /* update-projects.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = "update-projects.sh"; sourceTree = "<group>"; };
+		775DF423144161340001DCC3 /* SoundController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundController.h; sourceTree = "<group>"; };
+		775DF424144161340001DCC3 /* SoundController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoundController.cpp; sourceTree = "<group>"; };
 		77A19EBB1435AAC900431411 /* fftw3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fftw3.h; sourceTree = "<group>"; };
 		77A19EBE1435AAC900431411 /* libfftw3f-3.dll */ = {isa = PBXFileReference; lastKnownFileType = file; path = "libfftw3f-3.dll"; sourceTree = "<group>"; };
 		77A19EC01435AAC900431411 /* _kiss_fft_guts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _kiss_fft_guts.h; sourceTree = "<group>"; };
@@ -585,6 +585,8 @@
 		7750040713E6A32600DC545B /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				775DF423144161340001DCC3 /* SoundController.h */,
+				775DF424144161340001DCC3 /* SoundController.cpp */,
 				7750DE5413E6722600DC545B /* MicController.cpp */,
 				7750DE5513E6722600DC545B /* MicController.h */,
 				7750DE6213E6722600DC545B /* VideoController.cpp */,
@@ -2505,8 +2507,6 @@
 				7753BC1C1438398F002F7A0D /* ofxCv.h */,
 				7753BC1D1438398F002F7A0D /* RunningBackground.cpp */,
 				7753BC1E1438398F002F7A0D /* RunningBackground.h */,
-				7753BC1F1438398F002F7A0D /* Tracker.cpp */,
-				7753BC201438398F002F7A0D /* Tracker.h */,
 				7753BC211438398F002F7A0D /* Utilities.cpp */,
 				7753BC221438398F002F7A0D /* Utilities.h */,
 				7753BC231438398F002F7A0D /* Wrappers.cpp */,
@@ -2924,9 +2924,9 @@
 				7753BC461438398F002F7A0D /* Distance.cpp in Sources */,
 				7753BC471438398F002F7A0D /* Helpers.cpp in Sources */,
 				7753BC481438398F002F7A0D /* RunningBackground.cpp in Sources */,
-				7753BC491438398F002F7A0D /* Tracker.cpp in Sources */,
 				7753BC4A1438398F002F7A0D /* Utilities.cpp in Sources */,
 				7753BC4B1438398F002F7A0D /* Wrappers.cpp in Sources */,
+				775DF425144161340001DCC3 /* SoundController.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

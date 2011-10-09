@@ -87,8 +87,8 @@ private:
             }
             case FADE_EXP:
             {
-                float base = 10;
-                _pct = -pow(base, (_now * 1.04 - _over)/_over) + 1.09;
+                float base = 10.0f;
+                _pct = -pow((double)base, (double)((_now * 1.04 - _over)/_over)) + 1.09;
                 break;
             }
         }
