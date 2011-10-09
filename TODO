@@ -1,3 +1,4 @@
+THIS IS NEW FILE 
 - Parsing in DataController needs a bit more error checking when converting from xml values to model values. [ollie?]
 - SceneView does not perform a glRotate. [ollie]
 - SceneView update needs to be smarter with regards to whether there are 2 attackers or not.
