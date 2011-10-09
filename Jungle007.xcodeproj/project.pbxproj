@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0764C7B61441AF670068D456 /* TestController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0764C7B51441AF670068D456 /* TestController.cpp */; };
 		0783FE0214416EB100890A55 /* opencv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0783FE0114416EB100890A55 /* opencv.a */; };
 		775000E613E672D500DC545B /* libboost_regex-xgcc42-mt-1_46_1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7750E02613E672D000DC545B /* libboost_regex-xgcc42-mt-1_46_1.a */; };
 		775000E713E672D500DC545B /* libboost_serialization-xgcc42-mt-1_46_1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7750E02713E672D000DC545B /* libboost_serialization-xgcc42-mt-1_46_1.a */; };
@@ -138,6 +139,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0764C7B41441AF670068D456 /* TestController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestController.h; sourceTree = "<group>"; };
+		0764C7B51441AF670068D456 /* TestController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestController.cpp; sourceTree = "<group>"; };
 		0783FE0114416EB100890A55 /* opencv.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = opencv.a; path = ../../../addons/ofxOpenCv/libs/opencv/lib/osx/opencv.a; sourceTree = SOURCE_ROOT; };
 		7750012A13E6738200DC545B /* ofxThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxThread.h; sourceTree = "<group>"; };
 		7750028213E6796800DC545B /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
@@ -237,12 +240,9 @@
 		7750DE9113E6727D00DC545B /* master */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = master; sourceTree = "<group>"; };
 		7750DE9413E6727D00DC545B /* master */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = master; sourceTree = "<group>"; };
 		7750DE9713E6727D00DC545B /* ef6a0ea84d91997fc423286d991f1f1f70784d */ = {isa = PBXFileReference; lastKnownFileType = text; path = ef6a0ea84d91997fc423286d991f1f1f70784d; sourceTree = "<group>"; };
-		7750DE9913E6727D00DC545B /* a8dda85bcbe4caedeef2de19c7530cbd2764ee */ = {isa = PBXFileReference; lastKnownFileType = text; path = a8dda85bcbe4caedeef2de19c7530cbd2764ee; sourceTree = "<group>"; };
 		7750DE9B13E6727D00DC545B /* dd886bbddee840b3311516bebecb278df0f554 */ = {isa = PBXFileReference; lastKnownFileType = text; path = dd886bbddee840b3311516bebecb278df0f554; sourceTree = "<group>"; };
-		7750DE9D13E6727D00DC545B /* a29e17888920a7f205aa3b84b15a977c860c37 */ = {isa = PBXFileReference; lastKnownFileType = text; path = a29e17888920a7f205aa3b84b15a977c860c37; sourceTree = "<group>"; };
 		7750DE9F13E6727D00DC545B /* c3eac018aaac2f8d4f4c2a4d7985c9fbc0e4d5 */ = {isa = PBXFileReference; lastKnownFileType = text; path = c3eac018aaac2f8d4f4c2a4d7985c9fbc0e4d5; sourceTree = "<group>"; };
 		7750DEA113E6727D00DC545B /* f221b239729fe4521c1cb146d1eafd441214fd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = f221b239729fe4521c1cb146d1eafd441214fd; sourceTree = "<group>"; };
-		7750DEA313E6727D00DC545B /* 9de29bb2d1d6434b8b29ae775ad8c2e48c5391 */ = {isa = PBXFileReference; lastKnownFileType = text; path = 9de29bb2d1d6434b8b29ae775ad8c2e48c5391; sourceTree = "<group>"; };
 		7750DEA513E6727D00DC545B /* b30274a3dbee216fd164e8d5d34794bf334fd1 */ = {isa = PBXFileReference; lastKnownFileType = text; path = b30274a3dbee216fd164e8d5d34794bf334fd1; sourceTree = "<group>"; };
 		7750DEA713E6727D00DC545B /* c50ce65e9b0e2cd1905e54f03d46ea6efbf921 */ = {isa = PBXFileReference; lastKnownFileType = text; path = c50ce65e9b0e2cd1905e54f03d46ea6efbf921; sourceTree = "<group>"; };
 		7750DEA913E6727D00DC545B /* c181643820531332fd9e15cb045633f3a4a833 */ = {isa = PBXFileReference; lastKnownFileType = text; path = c181643820531332fd9e15cb045633f3a4a833; sourceTree = "<group>"; };
@@ -270,29 +270,11 @@
 		7750DECF13E6727D00DC545B /* HEAD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HEAD; sourceTree = "<group>"; };
 		7750DED213E6727D00DC545B /* master */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = master; sourceTree = "<group>"; };
 		7750DED513E6727D00DC545B /* master */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = master; sourceTree = "<group>"; };
-		7750DED813E6727D00DC545B /* 65926685facb3b79f476c0ae8d862823baf253 */ = {isa = PBXFileReference; lastKnownFileType = text; path = 65926685facb3b79f476c0ae8d862823baf253; sourceTree = "<group>"; };
-		7750DEDA13E6727D00DC545B /* 1dd0e71b1f4d54d7ea6f1e78033013a88cad33 */ = {isa = PBXFileReference; lastKnownFileType = text; path = 1dd0e71b1f4d54d7ea6f1e78033013a88cad33; sourceTree = "<group>"; };
-		7750DEDC13E6727D00DC545B /* 552f2f2cfe72cd549f0f869a228683b2a66fde */ = {isa = PBXFileReference; lastKnownFileType = text; path = 552f2f2cfe72cd549f0f869a228683b2a66fde; sourceTree = "<group>"; };
-		7750DEDE13E6727D00DC545B /* 7249bba0d96d26c39c65f6f07401d5164800ac */ = {isa = PBXFileReference; lastKnownFileType = text; path = 7249bba0d96d26c39c65f6f07401d5164800ac; sourceTree = "<group>"; };
-		7750DEE013E6727D00DC545B /* 9188f070091aeca63ffae0ba30b5351981fb5f */ = {isa = PBXFileReference; lastKnownFileType = text; path = 9188f070091aeca63ffae0ba30b5351981fb5f; sourceTree = "<group>"; };
-		7750DEE213E6727D00DC545B /* ac2ebb457bf8f61d0029b49407d22acf9e62a8 */ = {isa = PBXFileReference; lastKnownFileType = text; path = ac2ebb457bf8f61d0029b49407d22acf9e62a8; sourceTree = "<group>"; };
 		7750DEE413E6727D00DC545B /* f2eca65bb9b2205ef8418eac0f896acf1a5cf9 */ = {isa = PBXFileReference; lastKnownFileType = text; path = f2eca65bb9b2205ef8418eac0f896acf1a5cf9; sourceTree = "<group>"; };
 		7750DEE613E6727D00DC545B /* c59420656a62e3eb761d04d3b23046790c84fa */ = {isa = PBXFileReference; lastKnownFileType = text; path = c59420656a62e3eb761d04d3b23046790c84fa; sourceTree = "<group>"; };
 		7750DEE813E6727D00DC545B /* ef0a15eb77f9a44ae3175e90e9e3fce80f825d */ = {isa = PBXFileReference; lastKnownFileType = text; path = ef0a15eb77f9a44ae3175e90e9e3fce80f825d; sourceTree = "<group>"; };
-		7750DEEA13E6727D00DC545B /* 868154837d83b6797403dd304dc4844d61535f */ = {isa = PBXFileReference; lastKnownFileType = text; path = 868154837d83b6797403dd304dc4844d61535f; sourceTree = "<group>"; };
-		7750DEEC13E6727D00DC545B /* 83cb67721332cf0c902271f5c0b6770bc2ead2 */ = {isa = PBXFileReference; lastKnownFileType = text; path = 83cb67721332cf0c902271f5c0b6770bc2ead2; sourceTree = "<group>"; };
 		7750DEEE13E6727D00DC545B /* dcb8c1bb468d3c5d9a63786b5c289408ce60c4 */ = {isa = PBXFileReference; lastKnownFileType = text; path = dcb8c1bb468d3c5d9a63786b5c289408ce60c4; sourceTree = "<group>"; };
-		7750DEF013E6727D00DC545B /* 26a1d94b7ab2e30686f546c1e361aeb26bd749 */ = {isa = PBXFileReference; lastKnownFileType = text; path = 26a1d94b7ab2e30686f546c1e361aeb26bd749; sourceTree = "<group>"; };
-		7750DEF213E6727D00DC545B /* 874b5768f336915163bb88cd434575b859f936 */ = {isa = PBXFileReference; lastKnownFileType = text; path = 874b5768f336915163bb88cd434575b859f936; sourceTree = "<group>"; };
-		7750DEF413E6727D00DC545B /* 9f02e2377fdb641f8e77c6265d183b6ea246e6 */ = {isa = PBXFileReference; lastKnownFileType = text; path = 9f02e2377fdb641f8e77c6265d183b6ea246e6; sourceTree = "<group>"; };
 		7750DEF613E6727D00DC545B /* f6b323443d77e23d0a5c4eacc284d5c0d815e1 */ = {isa = PBXFileReference; lastKnownFileType = text; path = f6b323443d77e23d0a5c4eacc284d5c0d815e1; sourceTree = "<group>"; };
-		7750DEF813E6727D00DC545B /* 9599aeebb81effd1186126d7ea805413fa9e76 */ = {isa = PBXFileReference; lastKnownFileType = text; path = 9599aeebb81effd1186126d7ea805413fa9e76; sourceTree = "<group>"; };
-		7750DEFA13E6727D00DC545B /* 2a5d93a4ee025d97f24cfc934dfd51d7b68e10 */ = {isa = PBXFileReference; lastKnownFileType = text; path = 2a5d93a4ee025d97f24cfc934dfd51d7b68e10; sourceTree = "<group>"; };
-		7750DEFC13E6727D00DC545B /* 35e6504a2620646c665f3b29e16b5ad3f1fdde */ = {isa = PBXFileReference; lastKnownFileType = text; path = 35e6504a2620646c665f3b29e16b5ad3f1fdde; sourceTree = "<group>"; };
-		7750DEFE13E6727D00DC545B /* 17709bd6bbddc29a451c8de32f80afaef6bd00 */ = {isa = PBXFileReference; lastKnownFileType = text; path = 17709bd6bbddc29a451c8de32f80afaef6bd00; sourceTree = "<group>"; };
-		7750DF0013E6727D00DC545B /* 473ba4f3d6b4196752539db4328f50360c524c */ = {isa = PBXFileReference; lastKnownFileType = text; path = 473ba4f3d6b4196752539db4328f50360c524c; sourceTree = "<group>"; };
-		7750DF0213E6727D00DC545B /* 0bff84a3d833ebd0bb8c2a048824e5f64dd4c8 */ = {isa = PBXFileReference; lastKnownFileType = text; path = 0bff84a3d833ebd0bb8c2a048824e5f64dd4c8; sourceTree = "<group>"; };
-		7750DF0413E6727D00DC545B /* a67c015620b4a1d0036c9421813d6c18192102 */ = {isa = PBXFileReference; lastKnownFileType = text; path = a67c015620b4a1d0036c9421813d6c18192102; sourceTree = "<group>"; };
 		7750DF0913E6727D00DC545B /* master */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = master; sourceTree = "<group>"; };
 		7750DF0C13E6727D00DC545B /* master */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = master; sourceTree = "<group>"; };
 		7750DF0F13E6727D00DC545B /* goThreadedVideo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = goThreadedVideo.cpp; sourceTree = "<group>"; };
@@ -316,12 +298,7 @@
 		7750DF2613E6727D00DC545B /* HEAD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = HEAD; sourceTree = "<group>"; };
 		7750DF2913E6727D00DC545B /* master */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = master; sourceTree = "<group>"; };
 		7750DF2C13E6727D00DC545B /* master */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = master; sourceTree = "<group>"; };
-		7750DF2F13E6727D00DC545B /* 58c78b7d22d4ea0edd70ff4780e65e799aa0b9 */ = {isa = PBXFileReference; lastKnownFileType = text; path = 58c78b7d22d4ea0edd70ff4780e65e799aa0b9; sourceTree = "<group>"; };
-		7750DF3113E6727D00DC545B /* 3bb48e1a43ddb4a2ff2127a0d6f9844bbc782c */ = {isa = PBXFileReference; lastKnownFileType = text; path = 3bb48e1a43ddb4a2ff2127a0d6f9844bbc782c; sourceTree = "<group>"; };
-		7750DF3313E6727D00DC545B /* 101ef351a12b6af70d76a9b64e26e557a032bf */ = {isa = PBXFileReference; lastKnownFileType = text; path = 101ef351a12b6af70d76a9b64e26e557a032bf; sourceTree = "<group>"; };
-		7750DF3513E6727D00DC545B /* 94233b4cdc09b0112ef9ec24f4b79178edd494 */ = {isa = PBXFileReference; lastKnownFileType = text; path = 94233b4cdc09b0112ef9ec24f4b79178edd494; sourceTree = "<group>"; };
 		7750DF3713E6727D00DC545B /* c3781a51c9236f866dedba6e1affc03f53cab2 */ = {isa = PBXFileReference; lastKnownFileType = text; path = c3781a51c9236f866dedba6e1affc03f53cab2; sourceTree = "<group>"; };
-		7750DF3913E6727D00DC545B /* 9de29bb2d1d6434b8b29ae775ad8c2e48c5391 */ = {isa = PBXFileReference; lastKnownFileType = text; path = 9de29bb2d1d6434b8b29ae775ad8c2e48c5391; sourceTree = "<group>"; };
 		7750DF3E13E6727D00DC545B /* master */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = master; sourceTree = "<group>"; };
 		7750DF4113E6727D00DC545B /* master */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = master; sourceTree = "<group>"; };
 		7750DF4313E6727D00DC545B /* README.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.markdown; sourceTree = "<group>"; };
@@ -347,10 +324,7 @@
 		7750DF5F13E6727D00DC545B /* master */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = master; sourceTree = "<group>"; };
 		7750DF6213E6727D00DC545B /* master */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = master; sourceTree = "<group>"; };
 		7750DF6513E6727D00DC545B /* f40dccd74ee94be38bf2e4ea202c7ef66b7469 */ = {isa = PBXFileReference; lastKnownFileType = text; path = f40dccd74ee94be38bf2e4ea202c7ef66b7469; sourceTree = "<group>"; };
-		7750DF6713E6727D00DC545B /* 8202810c8bbd3929c22da7f3a8ec87b6376968 */ = {isa = PBXFileReference; lastKnownFileType = text; path = 8202810c8bbd3929c22da7f3a8ec87b6376968; sourceTree = "<group>"; };
-		7750DF6913E6727D00DC545B /* a24f523267c8346abafc4c22b8858c6f35f2fc */ = {isa = PBXFileReference; lastKnownFileType = text; path = a24f523267c8346abafc4c22b8858c6f35f2fc; sourceTree = "<group>"; };
 		7750DF6B13E6727D00DC545B /* c3ca5252ebca3bd7c982de70970a30d01bb43c */ = {isa = PBXFileReference; lastKnownFileType = text; path = c3ca5252ebca3bd7c982de70970a30d01bb43c; sourceTree = "<group>"; };
-		7750DF6D13E6727D00DC545B /* 7efe0348807103380e85778a385099dcf47de1 */ = {isa = PBXFileReference; lastKnownFileType = text; path = 7efe0348807103380e85778a385099dcf47de1; sourceTree = "<group>"; };
 		7750DF7213E6727D00DC545B /* master */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = master; sourceTree = "<group>"; };
 		7750DF7513E6727D00DC545B /* master */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = master; sourceTree = "<group>"; };
 		7750DF7813E6727D00DC545B /* goVideoGrabber.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = goVideoGrabber.cpp; sourceTree = "<group>"; };
@@ -376,52 +350,19 @@
 		7750DF9313E6727D00DC545B /* master */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = master; sourceTree = "<group>"; };
 		7750DF9613E6727D00DC545B /* master */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = master; sourceTree = "<group>"; };
 		7750DF9913E6727D00DC545B /* b020f284a168d1d11b2cf8554073bf1e15758e */ = {isa = PBXFileReference; lastKnownFileType = text; path = b020f284a168d1d11b2cf8554073bf1e15758e; sourceTree = "<group>"; };
-		7750DF9B13E6727D00DC545B /* 276676a89aa191436298a94761026ac5322df8 */ = {isa = PBXFileReference; lastKnownFileType = text; path = 276676a89aa191436298a94761026ac5322df8; sourceTree = "<group>"; };
-		7750DF9D13E6727D00DC545B /* 7c8097bfc4de13f62013cad705df0bf38c8bb0 */ = {isa = PBXFileReference; lastKnownFileType = text; path = 7c8097bfc4de13f62013cad705df0bf38c8bb0; sourceTree = "<group>"; };
-		7750DF9F13E6727D00DC545B /* 73b9d568e7f27455a496812bdb0e9fe78af7a0 */ = {isa = PBXFileReference; lastKnownFileType = text; path = 73b9d568e7f27455a496812bdb0e9fe78af7a0; sourceTree = "<group>"; };
-		7750DFA113E6727D00DC545B /* 63feb81376dd445c73ee37a974c1c9c20889ab */ = {isa = PBXFileReference; lastKnownFileType = text; path = 63feb81376dd445c73ee37a974c1c9c20889ab; sourceTree = "<group>"; };
 		7750DFA213E6727D00DC545B /* c66c1e61e312f68f0fff0d35a5860ee8989eee */ = {isa = PBXFileReference; lastKnownFileType = text; path = c66c1e61e312f68f0fff0d35a5860ee8989eee; sourceTree = "<group>"; };
 		7750DFA413E6727D00DC545B /* b1f8d5f757ac6aef3b8a8a638e0c41f4b1b40b */ = {isa = PBXFileReference; lastKnownFileType = text; path = b1f8d5f757ac6aef3b8a8a638e0c41f4b1b40b; sourceTree = "<group>"; };
 		7750DFA513E6727D00DC545B /* c0090fbe20d160733025059b1a088456bd59e7 */ = {isa = PBXFileReference; lastKnownFileType = text; path = c0090fbe20d160733025059b1a088456bd59e7; sourceTree = "<group>"; };
-		7750DFA713E6727D00DC545B /* 375154eed355eb8e30b383fcd1c76e750a677a */ = {isa = PBXFileReference; lastKnownFileType = text; path = 375154eed355eb8e30b383fcd1c76e750a677a; sourceTree = "<group>"; };
-		7750DFA813E6727D00DC545B /* 6ce95feff10bf6377b31df6a0936635be48a23 */ = {isa = PBXFileReference; lastKnownFileType = text; path = 6ce95feff10bf6377b31df6a0936635be48a23; sourceTree = "<group>"; };
-		7750DFAA13E6727D00DC545B /* 8f7cea80854f515ea9c5c2ccf5a3ba1c6158ce */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 8f7cea80854f515ea9c5c2ccf5a3ba1c6158ce; sourceTree = "<group>"; };
-		7750DFAC13E6727D00DC545B /* 030d2cb1774d73d2c3b1728474a088e30fd3f1 */ = {isa = PBXFileReference; lastKnownFileType = text; path = 030d2cb1774d73d2c3b1728474a088e30fd3f1; sourceTree = "<group>"; };
-		7750DFAD13E6727D00DC545B /* 1b101accb8217a07221eccaa2e2cd31d9d854c */ = {isa = PBXFileReference; lastKnownFileType = text; path = 1b101accb8217a07221eccaa2e2cd31d9d854c; sourceTree = "<group>"; };
 		7750DFAF13E6727D00DC545B /* e61bd061a1b16ac12c86ff6b13a3262733f481 */ = {isa = PBXFileReference; lastKnownFileType = text; path = e61bd061a1b16ac12c86ff6b13a3262733f481; sourceTree = "<group>"; };
 		7750DFB113E6727D00DC545B /* c5f52734457ff5a849659a682a40f4cabf1fe4 */ = {isa = PBXFileReference; lastKnownFileType = text; path = c5f52734457ff5a849659a682a40f4cabf1fe4; sourceTree = "<group>"; };
 		7750DFB213E6727D00DC545B /* cb5903f8646d069e894cb2b653dbc3bc7d87a2 */ = {isa = PBXFileReference; lastKnownFileType = text; path = cb5903f8646d069e894cb2b653dbc3bc7d87a2; sourceTree = "<group>"; };
-		7750DFB413E6727D00DC545B /* 65fa0864b77cd71664df11922bd1db4bc14999 */ = {isa = PBXFileReference; lastKnownFileType = text; path = 65fa0864b77cd71664df11922bd1db4bc14999; sourceTree = "<group>"; };
 		7750DFB613E6727D00DC545B /* e017b0737eb4f44b94cce5e57990db5080ed21 */ = {isa = PBXFileReference; lastKnownFileType = text; path = e017b0737eb4f44b94cce5e57990db5080ed21; sourceTree = "<group>"; };
 		7750DFB813E6727D00DC545B /* b4fb24923a191a755b37b40c0aedfcef535a04 */ = {isa = PBXFileReference; lastKnownFileType = text; path = b4fb24923a191a755b37b40c0aedfcef535a04; sourceTree = "<group>"; };
-		7750DFBA13E6727D00DC545B /* 8992eb35aa90792da1ef8c788f168ed04b791f */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 8992eb35aa90792da1ef8c788f168ed04b791f; sourceTree = "<group>"; };
-		7750DFBC13E6727D00DC545B /* 200e479fd841d6eea16063fb9eec6409732927 */ = {isa = PBXFileReference; lastKnownFileType = text; path = 200e479fd841d6eea16063fb9eec6409732927; sourceTree = "<group>"; };
-		7750DFBE13E6727D00DC545B /* 340ef14732228b9aa60d2c7e6fc7d2cc80abe3 */ = {isa = PBXFileReference; lastKnownFileType = text; path = 340ef14732228b9aa60d2c7e6fc7d2cc80abe3; sourceTree = "<group>"; };
-		7750DFBF13E6727D00DC545B /* 7fab816bed9c9c1a5693001cd123c72af15226 */ = {isa = PBXFileReference; lastKnownFileType = text; path = 7fab816bed9c9c1a5693001cd123c72af15226; sourceTree = "<group>"; };
-		7750DFC113E6727D00DC545B /* 8b3af4d3fd1ba86b789c415485c3bec7e86682 */ = {isa = PBXFileReference; lastKnownFileType = text; path = 8b3af4d3fd1ba86b789c415485c3bec7e86682; sourceTree = "<group>"; };
 		7750DFC313E6727D00DC545B /* fb5260ea7e8fa37bd0aa49b628b51d0f62d574 */ = {isa = PBXFileReference; lastKnownFileType = text; path = fb5260ea7e8fa37bd0aa49b628b51d0f62d574; sourceTree = "<group>"; };
-		7750DFC513E6727D00DC545B /* 45519004a9e84169f0325e923e2dfeb463edbc */ = {isa = PBXFileReference; lastKnownFileType = text; path = 45519004a9e84169f0325e923e2dfeb463edbc; sourceTree = "<group>"; };
 		7750DFC713E6727D00DC545B /* ebd14e25fc8124f2eb1b892cb60d1a3fb47944 */ = {isa = PBXFileReference; lastKnownFileType = text; path = ebd14e25fc8124f2eb1b892cb60d1a3fb47944; sourceTree = "<group>"; };
-		7750DFC913E6727D00DC545B /* 35db7b8ce1b369c2d7af262dfabdd4d87a7f0b */ = {isa = PBXFileReference; lastKnownFileType = text; path = 35db7b8ce1b369c2d7af262dfabdd4d87a7f0b; sourceTree = "<group>"; };
-		7750DFCB13E6727D00DC545B /* 24ae307cd9343f8407c4a97e74371879433838 */ = {isa = PBXFileReference; lastKnownFileType = text; path = 24ae307cd9343f8407c4a97e74371879433838; sourceTree = "<group>"; };
-		7750DFCD13E6727D00DC545B /* 1b5990ffa520acc24d0d8cc184d313c8784351 */ = {isa = PBXFileReference; lastKnownFileType = text; path = 1b5990ffa520acc24d0d8cc184d313c8784351; sourceTree = "<group>"; };
-		7750DFCF13E6727D00DC545B /* 7b1d685a71f0eb9da7435abf164db07e89eb29 */ = {isa = PBXFileReference; lastKnownFileType = text; path = 7b1d685a71f0eb9da7435abf164db07e89eb29; sourceTree = "<group>"; };
-		7750DFD113E6727D00DC545B /* 7aa96a1af4b288512f88cefd336f87bf204034 */ = {isa = PBXFileReference; lastKnownFileType = text; path = 7aa96a1af4b288512f88cefd336f87bf204034; sourceTree = "<group>"; };
-		7750DFD313E6727D00DC545B /* 6f037b29f51275c0d0750680b0de247c249f2b */ = {isa = PBXFileReference; lastKnownFileType = text; path = 6f037b29f51275c0d0750680b0de247c249f2b; sourceTree = "<group>"; };
-		7750DFD513E6727D00DC545B /* 34e16f6ff6eb8ad7d3a77f6b23437effe4173e */ = {isa = PBXFileReference; lastKnownFileType = text; path = 34e16f6ff6eb8ad7d3a77f6b23437effe4173e; sourceTree = "<group>"; };
-		7750DFD713E6727D00DC545B /* 9a5a576ec2d2b8faf6b39d593a7cf7e2ca646f */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 9a5a576ec2d2b8faf6b39d593a7cf7e2ca646f; sourceTree = "<group>"; };
-		7750DFD913E6727D00DC545B /* 618a50f2b10a80706aafd3987d5241223ac809 */ = {isa = PBXFileReference; lastKnownFileType = text; path = 618a50f2b10a80706aafd3987d5241223ac809; sourceTree = "<group>"; };
-		7750DFDB13E6727D00DC545B /* 6ce10e41129b7907ccd2f3c3b3ea7397940283 */ = {isa = PBXFileReference; lastKnownFileType = text; path = 6ce10e41129b7907ccd2f3c3b3ea7397940283; sourceTree = "<group>"; };
-		7750DFDD13E6727D00DC545B /* 3e1527e4e9a7a9951319379e4952b8017320b2 */ = {isa = PBXFileReference; lastKnownFileType = text; path = 3e1527e4e9a7a9951319379e4952b8017320b2; sourceTree = "<group>"; };
-		7750DFDF13E6727D00DC545B /* 0f43fdececb5b29589f955d574f529f3d0e4b3 */ = {isa = PBXFileReference; lastKnownFileType = text; path = 0f43fdececb5b29589f955d574f529f3d0e4b3; sourceTree = "<group>"; };
 		7750DFE113E6727D00DC545B /* c8032fee2650d92cad68488a05cdfe2307f3c9 */ = {isa = PBXFileReference; lastKnownFileType = text; path = c8032fee2650d92cad68488a05cdfe2307f3c9; sourceTree = "<group>"; };
-		7750DFE313E6727D00DC545B /* 70136f485eae36e738c1d72f42e098f9fa32e6 */ = {isa = PBXFileReference; lastKnownFileType = text; path = 70136f485eae36e738c1d72f42e098f9fa32e6; sourceTree = "<group>"; };
-		7750DFE513E6727D00DC545B /* 17c6440fadbf539fd31f99ef4e22288852aeca */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 17c6440fadbf539fd31f99ef4e22288852aeca; sourceTree = "<group>"; };
 		7750DFE713E6727D00DC545B /* c88493a9d5363aa9be9f75cb68baeaf27534ef */ = {isa = PBXFileReference; lastKnownFileType = text; path = c88493a9d5363aa9be9f75cb68baeaf27534ef; sourceTree = "<group>"; };
-		7750DFE913E6727D00DC545B /* aeab06f277fcf283a0798f51c52cc1db73d19a */ = {isa = PBXFileReference; lastKnownFileType = text; path = aeab06f277fcf283a0798f51c52cc1db73d19a; sourceTree = "<group>"; };
 		7750DFEB13E6727D00DC545B /* f4733cf50663787f4a202cde2c643e57e0d3d6 */ = {isa = PBXFileReference; lastKnownFileType = text; path = f4733cf50663787f4a202cde2c643e57e0d3d6; sourceTree = "<group>"; };
-		7750DFED13E6727D00DC545B /* 2d36b785d532cd34d1d39040bda43459163a73 */ = {isa = PBXFileReference; lastKnownFileType = text; path = 2d36b785d532cd34d1d39040bda43459163a73; sourceTree = "<group>"; };
-		7750DFEF13E6727D00DC545B /* 4162c976edc06fbc8ec8f65685c8b2f72c10eb */ = {isa = PBXFileReference; lastKnownFileType = text; path = 4162c976edc06fbc8ec8f65685c8b2f72c10eb; sourceTree = "<group>"; };
 		7750DFF113E6727D00DC545B /* c911dd9ddbe8b9660d17319e3a7022fc364c31 */ = {isa = PBXFileReference; lastKnownFileType = text; path = c911dd9ddbe8b9660d17319e3a7022fc364c31; sourceTree = "<group>"; };
 		7750DFF413E6727D00DC545B /* ORIG_HEAD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ORIG_HEAD; sourceTree = "<group>"; };
 		7750DFF713E6727D00DC545B /* master */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = master; sourceTree = "<group>"; };
@@ -479,7 +420,6 @@
 		775DF424144161340001DCC3 /* SoundController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoundController.cpp; sourceTree = "<group>"; };
 		77A19EBB1435AAC900431411 /* fftw3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fftw3.h; sourceTree = "<group>"; };
 		77A19EBE1435AAC900431411 /* libfftw3f-3.dll */ = {isa = PBXFileReference; lastKnownFileType = file; path = "libfftw3f-3.dll"; sourceTree = "<group>"; };
-		77A19EC01435AAC900431411 /* _kiss_fft_guts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _kiss_fft_guts.h; sourceTree = "<group>"; };
 		77A19EC11435AAC900431411 /* kiss_fft.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = kiss_fft.c; sourceTree = "<group>"; };
 		77A19EC21435AAC900431411 /* kiss_fft.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kiss_fft.h; sourceTree = "<group>"; };
 		77A19EC31435AAC900431411 /* kiss_fftr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = kiss_fftr.c; sourceTree = "<group>"; };
@@ -602,6 +542,8 @@
 				7750DE4813E6722600DC545B /* DataController.h */,
 				7750DE3713E6722600DC545B /* AppController.cpp */,
 				7750DE3813E6722600DC545B /* AppController.h */,
+				0764C7B41441AF670068D456 /* TestController.h */,
+				0764C7B51441AF670068D456 /* TestController.cpp */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -917,7 +859,6 @@
 		7750DE9813E6727D00DC545B /* 42 */ = {
 			isa = PBXGroup;
 			children = (
-				7750DE9913E6727D00DC545B /* a8dda85bcbe4caedeef2de19c7530cbd2764ee */,
 			);
 			path = 42;
 			sourceTree = "<group>";
@@ -933,7 +874,6 @@
 		7750DE9C13E6727D00DC545B /* 9a */ = {
 			isa = PBXGroup;
 			children = (
-				7750DE9D13E6727D00DC545B /* a29e17888920a7f205aa3b84b15a977c860c37 */,
 			);
 			path = 9a;
 			sourceTree = "<group>";
@@ -957,7 +897,6 @@
 		7750DEA213E6727D00DC545B /* e6 */ = {
 			isa = PBXGroup;
 			children = (
-				7750DEA313E6727D00DC545B /* 9de29bb2d1d6434b8b29ae775ad8c2e48c5391 */,
 			);
 			path = e6;
 			sourceTree = "<group>";
@@ -1179,7 +1118,6 @@
 		7750DED713E6727D00DC545B /* 02 */ = {
 			isa = PBXGroup;
 			children = (
-				7750DED813E6727D00DC545B /* 65926685facb3b79f476c0ae8d862823baf253 */,
 			);
 			path = 02;
 			sourceTree = "<group>";
@@ -1187,7 +1125,6 @@
 		7750DED913E6727D00DC545B /* 18 */ = {
 			isa = PBXGroup;
 			children = (
-				7750DEDA13E6727D00DC545B /* 1dd0e71b1f4d54d7ea6f1e78033013a88cad33 */,
 			);
 			path = 18;
 			sourceTree = "<group>";
@@ -1195,7 +1132,6 @@
 		7750DEDB13E6727D00DC545B /* 1e */ = {
 			isa = PBXGroup;
 			children = (
-				7750DEDC13E6727D00DC545B /* 552f2f2cfe72cd549f0f869a228683b2a66fde */,
 			);
 			path = 1e;
 			sourceTree = "<group>";
@@ -1203,7 +1139,6 @@
 		7750DEDD13E6727D00DC545B /* 20 */ = {
 			isa = PBXGroup;
 			children = (
-				7750DEDE13E6727D00DC545B /* 7249bba0d96d26c39c65f6f07401d5164800ac */,
 			);
 			path = 20;
 			sourceTree = "<group>";
@@ -1211,7 +1146,6 @@
 		7750DEDF13E6727D00DC545B /* 31 */ = {
 			isa = PBXGroup;
 			children = (
-				7750DEE013E6727D00DC545B /* 9188f070091aeca63ffae0ba30b5351981fb5f */,
 			);
 			path = 31;
 			sourceTree = "<group>";
@@ -1219,7 +1153,6 @@
 		7750DEE113E6727D00DC545B /* 33 */ = {
 			isa = PBXGroup;
 			children = (
-				7750DEE213E6727D00DC545B /* ac2ebb457bf8f61d0029b49407d22acf9e62a8 */,
 			);
 			path = 33;
 			sourceTree = "<group>";
@@ -1251,7 +1184,6 @@
 		7750DEE913E6727D00DC545B /* 67 */ = {
 			isa = PBXGroup;
 			children = (
-				7750DEEA13E6727D00DC545B /* 868154837d83b6797403dd304dc4844d61535f */,
 			);
 			path = 67;
 			sourceTree = "<group>";
@@ -1259,7 +1191,6 @@
 		7750DEEB13E6727D00DC545B /* 7d */ = {
 			isa = PBXGroup;
 			children = (
-				7750DEEC13E6727D00DC545B /* 83cb67721332cf0c902271f5c0b6770bc2ead2 */,
 			);
 			path = 7d;
 			sourceTree = "<group>";
@@ -1275,7 +1206,6 @@
 		7750DEEF13E6727D00DC545B /* 93 */ = {
 			isa = PBXGroup;
 			children = (
-				7750DEF013E6727D00DC545B /* 26a1d94b7ab2e30686f546c1e361aeb26bd749 */,
 			);
 			path = 93;
 			sourceTree = "<group>";
@@ -1283,7 +1213,6 @@
 		7750DEF113E6727D00DC545B /* 9a */ = {
 			isa = PBXGroup;
 			children = (
-				7750DEF213E6727D00DC545B /* 874b5768f336915163bb88cd434575b859f936 */,
 			);
 			path = 9a;
 			sourceTree = "<group>";
@@ -1291,7 +1220,6 @@
 		7750DEF313E6727D00DC545B /* a1 */ = {
 			isa = PBXGroup;
 			children = (
-				7750DEF413E6727D00DC545B /* 9f02e2377fdb641f8e77c6265d183b6ea246e6 */,
 			);
 			path = a1;
 			sourceTree = "<group>";
@@ -1307,7 +1235,6 @@
 		7750DEF713E6727D00DC545B /* b5 */ = {
 			isa = PBXGroup;
 			children = (
-				7750DEF813E6727D00DC545B /* 9599aeebb81effd1186126d7ea805413fa9e76 */,
 			);
 			path = b5;
 			sourceTree = "<group>";
@@ -1315,7 +1242,6 @@
 		7750DEF913E6727D00DC545B /* bc */ = {
 			isa = PBXGroup;
 			children = (
-				7750DEFA13E6727D00DC545B /* 2a5d93a4ee025d97f24cfc934dfd51d7b68e10 */,
 			);
 			path = bc;
 			sourceTree = "<group>";
@@ -1323,7 +1249,6 @@
 		7750DEFB13E6727D00DC545B /* c4 */ = {
 			isa = PBXGroup;
 			children = (
-				7750DEFC13E6727D00DC545B /* 35e6504a2620646c665f3b29e16b5ad3f1fdde */,
 			);
 			path = c4;
 			sourceTree = "<group>";
@@ -1331,7 +1256,6 @@
 		7750DEFD13E6727D00DC545B /* d6 */ = {
 			isa = PBXGroup;
 			children = (
-				7750DEFE13E6727D00DC545B /* 17709bd6bbddc29a451c8de32f80afaef6bd00 */,
 			);
 			path = d6;
 			sourceTree = "<group>";
@@ -1339,7 +1263,6 @@
 		7750DEFF13E6727D00DC545B /* e0 */ = {
 			isa = PBXGroup;
 			children = (
-				7750DF0013E6727D00DC545B /* 473ba4f3d6b4196752539db4328f50360c524c */,
 			);
 			path = e0;
 			sourceTree = "<group>";
@@ -1347,7 +1270,6 @@
 		7750DF0113E6727D00DC545B /* f1 */ = {
 			isa = PBXGroup;
 			children = (
-				7750DF0213E6727D00DC545B /* 0bff84a3d833ebd0bb8c2a048824e5f64dd4c8 */,
 			);
 			path = f1;
 			sourceTree = "<group>";
@@ -1355,7 +1277,6 @@
 		7750DF0313E6727D00DC545B /* ff */ = {
 			isa = PBXGroup;
 			children = (
-				7750DF0413E6727D00DC545B /* a67c015620b4a1d0036c9421813d6c18192102 */,
 			);
 			path = ff;
 			sourceTree = "<group>";
@@ -1537,7 +1458,6 @@
 		7750DF2E13E6727D00DC545B /* 01 */ = {
 			isa = PBXGroup;
 			children = (
-				7750DF2F13E6727D00DC545B /* 58c78b7d22d4ea0edd70ff4780e65e799aa0b9 */,
 			);
 			path = 01;
 			sourceTree = "<group>";
@@ -1545,7 +1465,6 @@
 		7750DF3013E6727D00DC545B /* 31 */ = {
 			isa = PBXGroup;
 			children = (
-				7750DF3113E6727D00DC545B /* 3bb48e1a43ddb4a2ff2127a0d6f9844bbc782c */,
 			);
 			path = 31;
 			sourceTree = "<group>";
@@ -1553,7 +1472,6 @@
 		7750DF3213E6727D00DC545B /* 45 */ = {
 			isa = PBXGroup;
 			children = (
-				7750DF3313E6727D00DC545B /* 101ef351a12b6af70d76a9b64e26e557a032bf */,
 			);
 			path = 45;
 			sourceTree = "<group>";
@@ -1561,7 +1479,6 @@
 		7750DF3413E6727D00DC545B /* 79 */ = {
 			isa = PBXGroup;
 			children = (
-				7750DF3513E6727D00DC545B /* 94233b4cdc09b0112ef9ec24f4b79178edd494 */,
 			);
 			path = 79;
 			sourceTree = "<group>";
@@ -1577,7 +1494,6 @@
 		7750DF3813E6727D00DC545B /* e6 */ = {
 			isa = PBXGroup;
 			children = (
-				7750DF3913E6727D00DC545B /* 9de29bb2d1d6434b8b29ae775ad8c2e48c5391 */,
 			);
 			path = e6;
 			sourceTree = "<group>";
@@ -1765,7 +1681,6 @@
 		7750DF6613E6727D00DC545B /* 24 */ = {
 			isa = PBXGroup;
 			children = (
-				7750DF6713E6727D00DC545B /* 8202810c8bbd3929c22da7f3a8ec87b6376968 */,
 			);
 			path = 24;
 			sourceTree = "<group>";
@@ -1773,7 +1688,6 @@
 		7750DF6813E6727D00DC545B /* 2f */ = {
 			isa = PBXGroup;
 			children = (
-				7750DF6913E6727D00DC545B /* a24f523267c8346abafc4c22b8858c6f35f2fc */,
 			);
 			path = 2f;
 			sourceTree = "<group>";
@@ -1789,7 +1703,6 @@
 		7750DF6C13E6727D00DC545B /* e2 */ = {
 			isa = PBXGroup;
 			children = (
-				7750DF6D13E6727D00DC545B /* 7efe0348807103380e85778a385099dcf47de1 */,
 			);
 			path = e2;
 			sourceTree = "<group>";
@@ -2016,7 +1929,6 @@
 		7750DF9A13E6727D00DC545B /* 04 */ = {
 			isa = PBXGroup;
 			children = (
-				7750DF9B13E6727D00DC545B /* 276676a89aa191436298a94761026ac5322df8 */,
 			);
 			path = 04;
 			sourceTree = "<group>";
@@ -2024,7 +1936,6 @@
 		7750DF9C13E6727D00DC545B /* 12 */ = {
 			isa = PBXGroup;
 			children = (
-				7750DF9D13E6727D00DC545B /* 7c8097bfc4de13f62013cad705df0bf38c8bb0 */,
 			);
 			path = 12;
 			sourceTree = "<group>";
@@ -2032,7 +1943,6 @@
 		7750DF9E13E6727D00DC545B /* 20 */ = {
 			isa = PBXGroup;
 			children = (
-				7750DF9F13E6727D00DC545B /* 73b9d568e7f27455a496812bdb0e9fe78af7a0 */,
 			);
 			path = 20;
 			sourceTree = "<group>";
@@ -2040,7 +1950,6 @@
 		7750DFA013E6727D00DC545B /* 24 */ = {
 			isa = PBXGroup;
 			children = (
-				7750DFA113E6727D00DC545B /* 63feb81376dd445c73ee37a974c1c9c20889ab */,
 				7750DFA213E6727D00DC545B /* c66c1e61e312f68f0fff0d35a5860ee8989eee */,
 			);
 			path = 24;
@@ -2058,8 +1967,6 @@
 		7750DFA613E6727D00DC545B /* 41 */ = {
 			isa = PBXGroup;
 			children = (
-				7750DFA713E6727D00DC545B /* 375154eed355eb8e30b383fcd1c76e750a677a */,
-				7750DFA813E6727D00DC545B /* 6ce95feff10bf6377b31df6a0936635be48a23 */,
 			);
 			path = 41;
 			sourceTree = "<group>";
@@ -2067,7 +1974,6 @@
 		7750DFA913E6727D00DC545B /* 45 */ = {
 			isa = PBXGroup;
 			children = (
-				7750DFAA13E6727D00DC545B /* 8f7cea80854f515ea9c5c2ccf5a3ba1c6158ce */,
 			);
 			path = 45;
 			sourceTree = "<group>";
@@ -2075,8 +1981,6 @@
 		7750DFAB13E6727D00DC545B /* 47 */ = {
 			isa = PBXGroup;
 			children = (
-				7750DFAC13E6727D00DC545B /* 030d2cb1774d73d2c3b1728474a088e30fd3f1 */,
-				7750DFAD13E6727D00DC545B /* 1b101accb8217a07221eccaa2e2cd31d9d854c */,
 			);
 			path = 47;
 			sourceTree = "<group>";
@@ -2101,7 +2005,6 @@
 		7750DFB313E6727D00DC545B /* 5f */ = {
 			isa = PBXGroup;
 			children = (
-				7750DFB413E6727D00DC545B /* 65fa0864b77cd71664df11922bd1db4bc14999 */,
 			);
 			path = 5f;
 			sourceTree = "<group>";
@@ -2125,7 +2028,6 @@
 		7750DFB913E6727D00DC545B /* 68 */ = {
 			isa = PBXGroup;
 			children = (
-				7750DFBA13E6727D00DC545B /* 8992eb35aa90792da1ef8c788f168ed04b791f */,
 			);
 			path = 68;
 			sourceTree = "<group>";
@@ -2133,7 +2035,6 @@
 		7750DFBB13E6727D00DC545B /* 6b */ = {
 			isa = PBXGroup;
 			children = (
-				7750DFBC13E6727D00DC545B /* 200e479fd841d6eea16063fb9eec6409732927 */,
 			);
 			path = 6b;
 			sourceTree = "<group>";
@@ -2141,8 +2042,6 @@
 		7750DFBD13E6727D00DC545B /* 7f */ = {
 			isa = PBXGroup;
 			children = (
-				7750DFBE13E6727D00DC545B /* 340ef14732228b9aa60d2c7e6fc7d2cc80abe3 */,
-				7750DFBF13E6727D00DC545B /* 7fab816bed9c9c1a5693001cd123c72af15226 */,
 			);
 			path = 7f;
 			sourceTree = "<group>";
@@ -2150,7 +2049,6 @@
 		7750DFC013E6727D00DC545B /* 88 */ = {
 			isa = PBXGroup;
 			children = (
-				7750DFC113E6727D00DC545B /* 8b3af4d3fd1ba86b789c415485c3bec7e86682 */,
 			);
 			path = 88;
 			sourceTree = "<group>";
@@ -2166,7 +2064,6 @@
 		7750DFC413E6727D00DC545B /* 92 */ = {
 			isa = PBXGroup;
 			children = (
-				7750DFC513E6727D00DC545B /* 45519004a9e84169f0325e923e2dfeb463edbc */,
 			);
 			path = 92;
 			sourceTree = "<group>";
@@ -2182,7 +2079,6 @@
 		7750DFC813E6727D00DC545B /* 9a */ = {
 			isa = PBXGroup;
 			children = (
-				7750DFC913E6727D00DC545B /* 35db7b8ce1b369c2d7af262dfabdd4d87a7f0b */,
 			);
 			path = 9a;
 			sourceTree = "<group>";
@@ -2190,7 +2086,6 @@
 		7750DFCA13E6727D00DC545B /* 9d */ = {
 			isa = PBXGroup;
 			children = (
-				7750DFCB13E6727D00DC545B /* 24ae307cd9343f8407c4a97e74371879433838 */,
 			);
 			path = 9d;
 			sourceTree = "<group>";
@@ -2198,7 +2093,6 @@
 		7750DFCC13E6727D00DC545B /* a0 */ = {
 			isa = PBXGroup;
 			children = (
-				7750DFCD13E6727D00DC545B /* 1b5990ffa520acc24d0d8cc184d313c8784351 */,
 			);
 			path = a0;
 			sourceTree = "<group>";
@@ -2206,7 +2100,6 @@
 		7750DFCE13E6727D00DC545B /* a2 */ = {
 			isa = PBXGroup;
 			children = (
-				7750DFCF13E6727D00DC545B /* 7b1d685a71f0eb9da7435abf164db07e89eb29 */,
 			);
 			path = a2;
 			sourceTree = "<group>";
@@ -2214,7 +2107,6 @@
 		7750DFD013E6727D00DC545B /* a5 */ = {
 			isa = PBXGroup;
 			children = (
-				7750DFD113E6727D00DC545B /* 7aa96a1af4b288512f88cefd336f87bf204034 */,
 			);
 			path = a5;
 			sourceTree = "<group>";
@@ -2222,7 +2114,6 @@
 		7750DFD213E6727D00DC545B /* a9 */ = {
 			isa = PBXGroup;
 			children = (
-				7750DFD313E6727D00DC545B /* 6f037b29f51275c0d0750680b0de247c249f2b */,
 			);
 			path = a9;
 			sourceTree = "<group>";
@@ -2230,7 +2121,6 @@
 		7750DFD413E6727D00DC545B /* aa */ = {
 			isa = PBXGroup;
 			children = (
-				7750DFD513E6727D00DC545B /* 34e16f6ff6eb8ad7d3a77f6b23437effe4173e */,
 			);
 			path = aa;
 			sourceTree = "<group>";
@@ -2238,7 +2128,6 @@
 		7750DFD613E6727D00DC545B /* b7 */ = {
 			isa = PBXGroup;
 			children = (
-				7750DFD713E6727D00DC545B /* 9a5a576ec2d2b8faf6b39d593a7cf7e2ca646f */,
 			);
 			path = b7;
 			sourceTree = "<group>";
@@ -2246,7 +2135,6 @@
 		7750DFD813E6727D00DC545B /* bd */ = {
 			isa = PBXGroup;
 			children = (
-				7750DFD913E6727D00DC545B /* 618a50f2b10a80706aafd3987d5241223ac809 */,
 			);
 			path = bd;
 			sourceTree = "<group>";
@@ -2254,7 +2142,6 @@
 		7750DFDA13E6727D00DC545B /* c0 */ = {
 			isa = PBXGroup;
 			children = (
-				7750DFDB13E6727D00DC545B /* 6ce10e41129b7907ccd2f3c3b3ea7397940283 */,
 			);
 			path = c0;
 			sourceTree = "<group>";
@@ -2262,7 +2149,6 @@
 		7750DFDC13E6727D00DC545B /* c7 */ = {
 			isa = PBXGroup;
 			children = (
-				7750DFDD13E6727D00DC545B /* 3e1527e4e9a7a9951319379e4952b8017320b2 */,
 			);
 			path = c7;
 			sourceTree = "<group>";
@@ -2270,7 +2156,6 @@
 		7750DFDE13E6727D00DC545B /* cb */ = {
 			isa = PBXGroup;
 			children = (
-				7750DFDF13E6727D00DC545B /* 0f43fdececb5b29589f955d574f529f3d0e4b3 */,
 			);
 			path = cb;
 			sourceTree = "<group>";
@@ -2286,7 +2171,6 @@
 		7750DFE213E6727D00DC545B /* dd */ = {
 			isa = PBXGroup;
 			children = (
-				7750DFE313E6727D00DC545B /* 70136f485eae36e738c1d72f42e098f9fa32e6 */,
 			);
 			path = dd;
 			sourceTree = "<group>";
@@ -2294,7 +2178,6 @@
 		7750DFE413E6727D00DC545B /* ec */ = {
 			isa = PBXGroup;
 			children = (
-				7750DFE513E6727D00DC545B /* 17c6440fadbf539fd31f99ef4e22288852aeca */,
 			);
 			path = ec;
 			sourceTree = "<group>";
@@ -2310,7 +2193,6 @@
 		7750DFE813E6727D00DC545B /* f0 */ = {
 			isa = PBXGroup;
 			children = (
-				7750DFE913E6727D00DC545B /* aeab06f277fcf283a0798f51c52cc1db73d19a */,
 			);
 			path = f0;
 			sourceTree = "<group>";
@@ -2326,7 +2208,6 @@
 		7750DFEC13E6727D00DC545B /* f9 */ = {
 			isa = PBXGroup;
 			children = (
-				7750DFED13E6727D00DC545B /* 2d36b785d532cd34d1d39040bda43459163a73 */,
 			);
 			path = f9;
 			sourceTree = "<group>";
@@ -2334,7 +2215,6 @@
 		7750DFEE13E6727D00DC545B /* fe */ = {
 			isa = PBXGroup;
 			children = (
-				7750DFEF13E6727D00DC545B /* 4162c976edc06fbc8ec8f65685c8b2f72c10eb */,
 			);
 			path = fe;
 			sourceTree = "<group>";
@@ -2573,7 +2453,6 @@
 		77A19EBF1435AAC900431411 /* kiss */ = {
 			isa = PBXGroup;
 			children = (
-				77A19EC01435AAC900431411 /* _kiss_fft_guts.h */,
 				77A19EC11435AAC900431411 /* kiss_fft.c */,
 				77A19EC21435AAC900431411 /* kiss_fft.h */,
 				77A19EC31435AAC900431411 /* kiss_fftr.c */,
@@ -2931,6 +2810,7 @@
 				7753BC4A1438398F002F7A0D /* Utilities.cpp in Sources */,
 				7753BC4B1438398F002F7A0D /* Wrappers.cpp in Sources */,
 				775DF425144161340001DCC3 /* SoundController.cpp in Sources */,
+				0764C7B61441AF670068D456 /* TestController.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

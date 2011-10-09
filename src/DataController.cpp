@@ -48,6 +48,7 @@ DataController::DataController(string configFilePath) {
 #else defined(USER_OLLIE)
     _appModel->setProperty("scenesDataPath", (string)"/Users/ollie/its_a_jungle_out_there/resources/video");
     _appModel->setProperty("flashDataPath", (string)"/Users/ollie/its_a_jungle_out_there/resources/flash");
+	_appModel->setProperty("audioDataPath", (string)"/Users/ollie/its_a_jungle_out_there/resources/audio");	
     _appModel->setProperty("graphicDataPath", (string)"graphics");
 #endif
 

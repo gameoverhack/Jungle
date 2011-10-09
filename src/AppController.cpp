@@ -39,7 +39,6 @@ AppController::~AppController() {
 	delete _dataController;
 	delete _ardController;
 	delete _micController;
-
 }
 
 //--------------------------------------------------------------
@@ -294,6 +293,11 @@ void AppController::update() {
 
         _soundController->update();
 		_vidController->update();
+		
+#ifdef RUN_IN_TEST_MODE
+		// throw fake update event, float is bogas.
+		ofNotifyEvent(updateEvent, 1.0, this);
+#endif
 
 	}
 
