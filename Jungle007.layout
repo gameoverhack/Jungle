@@ -4,8 +4,8 @@
 	<File name="..\..\..\addons\goDirList\src\goDirList.cpp" open="1" top="0" tabpos="20">
 		<Cursor position="1980" topLine="63" />
 	</File>
-	<File name="..\..\..\addons\goFlexCOM\goFlexCOM.cpp" open="0" top="0" tabpos="18">
-		<Cursor position="2378" topLine="70" />
+	<File name="..\..\..\addons\goFlexCOM\goFlexCOM.cpp" open="1" top="0" tabpos="64">
+		<Cursor position="852" topLine="33" />
 	</File>
 	<File name="..\..\..\addons\goThreadedVideo\src\goThreadedVideo.cpp" open="1" top="0" tabpos="26">
 		<Cursor position="4" topLine="0" />
@@ -176,10 +176,10 @@
 		<Cursor position="2011" topLine="10" />
 	</File>
 	<File name="bin\data\config_properties.xml" open="1" top="0" tabpos="11">
-		<Cursor position="5137" topLine="34" />
+		<Cursor position="6216" topLine="62" />
 	</File>
 	<File name="bin\data\config_scenes.xml" open="1" top="0" tabpos="3">
-		<Cursor position="21158" topLine="111" />
+		<Cursor position="0" topLine="0" />
 	</File>
 	<File name="bin\data\leveltextureblend.frag" open="1" top="0" tabpos="63">
 		<Cursor position="193" topLine="0" />
@@ -194,13 +194,13 @@
 		<Cursor position="0" topLine="0" />
 	</File>
 	<File name="src\Analyzer.cpp" open="1" top="0" tabpos="12">
-		<Cursor position="9169" topLine="296" />
+		<Cursor position="8199" topLine="257" />
 	</File>
 	<File name="src\AppController.cpp" open="1" top="0" tabpos="7">
-		<Cursor position="10400" topLine="258" />
+		<Cursor position="1804" topLine="55" />
 	</File>
 	<File name="src\AppController.h" open="1" top="0" tabpos="21">
-		<Cursor position="764" topLine="22" />
+		<Cursor position="1572" topLine="58" />
 	</File>
 	<File name="src\AppDataTypes.h" open="1" top="0" tabpos="13">
 		<Cursor position="4237" topLine="208" />
@@ -251,7 +251,7 @@
 		<Cursor position="292" topLine="0" />
 	</File>
 	<File name="src\DataController.cpp" open="1" top="0" tabpos="60">
-		<Cursor position="6161" topLine="13" />
+		<Cursor position="1569" topLine="28" />
 	</File>
 	<File name="src\DebugView.cpp" open="1" top="0" tabpos="6">
 		<Cursor position="4512" topLine="88" />
@@ -295,11 +295,11 @@
 	<File name="src\SceneXMLParser.cpp" open="1" top="0" tabpos="1">
 		<Cursor position="10121" topLine="211" />
 	</File>
-	<File name="src\SoundController.cpp" open="1" top="0" tabpos="84">
-		<Cursor position="445" topLine="0" />
+	<File name="src\SoundController.cpp" open="1" top="0" tabpos="90">
+		<Cursor position="121" topLine="0" />
 	</File>
-	<File name="src\SoundController.h" open="1" top="1" tabpos="83">
-		<Cursor position="1725" topLine="48" />
+	<File name="src\SoundController.h" open="1" top="1" tabpos="88">
+		<Cursor position="412" topLine="35" />
 	</File>
 	<File name="src\VictimView.cpp" open="1" top="0" tabpos="46">
 		<Cursor position="1710" topLine="5" />
@@ -310,7 +310,7 @@
 	<File name="src\VideoController.h" open="1" top="0" tabpos="16">
 		<Cursor position="626" topLine="2" />
 	</File>
-	<File name="src\main.cpp" open="0" top="0" tabpos="14">
-		<Cursor position="213" topLine="0" />
+	<File name="src\main.cpp" open="1" top="0" tabpos="89">
+		<Cursor position="0" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>

@@ -3,17 +3,17 @@
         <property name="appRenderHeight" type="float">1080</property>
         <property name="appRenderWidth" type="float">1920</property>
         <property name="autoTest" type="bool">false</property>
-        <property name="camPositionX0" type="float">-805</property>
+        <property name="camPositionX0" type="float">-435</property>
         <property name="camPositionX1" type="float">0</property>
-        <property name="camPositionY0" type="float">-245</property>
+        <property name="camPositionY0" type="float">-350</property>
         <property name="camPositionY1" type="float">0</property>
-        <property name="camRotation0" type="float">0</property>
+        <property name="camRotation0" type="float">92.5</property>
         <property name="camRotation1" type="float">0</property>
-        <property name="camScale0" type="float">0.5</property>
+        <property name="camScale0" type="float">0.46</property>
         <property name="camScale1" type="float">0.5</property>
-        <property name="cameraPropToAdjust" type="string">POSITION</property>
+        <property name="cameraPropToAdjust" type="string">SCALEROTATION</property>
         <property name="cameraToAdjust" type="string">0</property>
-        <property name="flashDataPath" type="string">E:/gameoverload/VideoProjects/Jungle/newtease/flash</property>
+        <property name="flashDataPath" type="string">E:/gameoverload/VideoProjects/Jungle/newsleaze/flash</property>
         <property name="fullScreen" type="bool">false</property>
         <property name="graphicDataPath" type="string">graphics</property>
         <property name="loadingMessage" type="string">STATE == kANAL_READY (0) :: </property>
@@ -24,7 +24,7 @@
         <property name="propBrightness_0" type="int">128</property>
         <property name="propBrightness_1" type="int">148</property>
         <property name="propBrightness_2" type="int">128</property>
-        <property name="propColorEnable_0" type="int">11840751</property>
+        <property name="propColorEnable_0" type="int">11840175</property>
         <property name="propColorEnable_1" type="int">11784895</property>
         <property name="propColorEnable_2" type="int">3330928</property>
         <property name="propContrast_0" type="int">32</property>
@@ -36,22 +36,22 @@
         <property name="propFocus_0" type="int">0</property>
         <property name="propFocus_1" type="int">85</property>
         <property name="propFocus_2" type="int">102</property>
-        <property name="propGain_0" type="int">49</property>
+        <property name="propGain_0" type="int">43</property>
         <property name="propGain_1" type="int">64</property>
         <property name="propGain_2" type="int">22</property>
-        <property name="propGamma_0" type="int">11840751</property>
+        <property name="propGamma_0" type="int">11840175</property>
         <property name="propGamma_1" type="int">11784895</property>
         <property name="propGamma_2" type="int">3330928</property>
-        <property name="propHue_0" type="int">11840751</property>
+        <property name="propHue_0" type="int">11840175</property>
         <property name="propHue_1" type="int">11784895</property>
         <property name="propHue_2" type="int">3330928</property>
-        <property name="propIris_0" type="int">11840751</property>
+        <property name="propIris_0" type="int">11840175</property>
         <property name="propIris_1" type="int">11784895</property>
         <property name="propIris_2" type="int">3330928</property>
         <property name="propPan_0" type="int">0</property>
         <property name="propPan_1" type="int">0</property>
         <property name="propPan_2" type="int">0</property>
-        <property name="propRoll_0" type="int">11840751</property>
+        <property name="propRoll_0" type="int">11840175</property>
         <property name="propRoll_1" type="int">11784895</property>
         <property name="propRoll_2" type="int">3330928</property>
         <property name="propSaturation_0" type="int">32</property>
@@ -63,13 +63,13 @@
         <property name="propTilt_0" type="int">0</property>
         <property name="propTilt_1" type="int">0</property>
         <property name="propTilt_2" type="int">0</property>
-        <property name="propWhiteBalance_0" type="int">5484</property>
+        <property name="propWhiteBalance_0" type="int">4076</property>
         <property name="propWhiteBalance_1" type="int">4971</property>
         <property name="propWhiteBalance_2" type="int">5176</property>
         <property name="propZoom_0" type="int">1</property>
         <property name="propZoom_1" type="int">1</property>
         <property name="propZoom_2" type="int">1</property>
-        <property name="scenesDataPath" type="string">E:/gameoverload/VideoProjects/Jungle/newtease/video</property>
+        <property name="scenesDataPath" type="string">E:/gameoverload/VideoProjects/Jungle/newsleaze/video</property>
         <property name="scenesXMLFile" type="string">config_scenes.xml</property>
         <property name="shaderBlendRatio" type="float">0.5</property>
         <property name="shaderGammaCorrection" type="float">2.3</property>
@@ -78,15 +78,15 @@
         <property name="shaderLevelFragPath" type="string">leveltextureblend.frag</property>
         <property name="shaderLevelVertPath" type="string">leveltexturevertex.vert</property>
         <property name="showCameras" type="bool">false</property>
-        <property name="showDebugView" type="bool">false</property>
+        <property name="showDebugView" type="bool">true</property>
         <property name="showFFT" type="bool">false</property>
         <property name="showProps" type="bool">false</property>
-        <property name="showUnmaskedTextures" type="bool">true</property>
+        <property name="showUnmaskedTextures" type="bool">false</property>
         <property name="tryScaleMethod" type="int">0</property>
         <property name="userAction" type="int">0</property>
         <property name="xmlForceFileDateTime" type="bool">true</property>
-        <property name="xmlForceSceneBuildOnLoad" type="bool">false</property>
+        <property name="xmlForceSceneBuildOnLoad" type="bool">true</property>
         <property name="xmlIgnoreErrors" type="bool">false</property>
-        <property name="xmlIgnoreTransformErrors" type="bool">true</property>
+        <property name="xmlIgnoreTransformErrors" type="bool">false</property>
     </properties>
 </config>

@@ -64,6 +64,9 @@ void AppController::setup() {
 	_dataController = new DataController(ofToDataPath("config_properties.xml"));
 	//_dataController->registerStates();
 
+    // setup background sound controller
+    _soundController = new SoundController();
+
 	// setup videoController
 	_vidController = new VideoController();
 	//_vidController->registerStates();

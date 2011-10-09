@@ -21,6 +21,7 @@
 #include "VideoController.h"
 #include "MicController.h"
 #include "ArdController.h"
+#include "SoundController.h"
 #include "Analyzer.h"
 
 #include "ofAppGlutWindow.h"
@@ -67,6 +68,7 @@ private:
 	VideoController * _vidController;
 	MicController	* _micController;
 	ArdController	* _ardController;
+    SoundController * _soundController;
 
     ofAppGlutWindow * _windowPtr;
 	bool			  _isFullScreen;
