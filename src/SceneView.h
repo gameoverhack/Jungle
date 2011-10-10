@@ -28,12 +28,12 @@ public:
 	void drawCharacter(ofxFbo * targetFBO,
 					   ofTexture * faceTexture,
 					   CamTransform *transform,
-					   PosRotScale prs);
+					   PosRotScale * prs);
 #else
 	void drawCharacter(ofFbo * targetFBO,
 					   ofTexture * faceTexture,
 					   CamTransform *transform,
-					   PosRotScale prs);
+					   PosRotScale * prs);
 #endif
 private:
 

@@ -20,15 +20,18 @@ AppModel::AppModel() {
 	_currentScene = NULL;
 	_padLength = 1;
 
-    _facesPresent = false;
+    _isFacePresent[0] = _isFacePresent[1] = false;
 
-    _cameraPRS = new PosRotScale[2];
+
 
 	// setup video players
-	_videoPlayers[0] = new goThreadedVideo();
-	_videoPlayers[0]->setPixelType(GO_TV_RGBA);
-	_videoPlayers[1] = new goThreadedVideo();
-	_videoPlayers[1]->setPixelType(GO_TV_RGBA);
+	for (int i = 0; i < 2; i++) {
+	    _fakePlayers[i] = new goVideoPlayer();
+	    _fakePlayers[i]->setPixelType(GO_TV_RGB);
+		_videoPlayers[i] = new goThreadedVideo();
+        _videoPlayers[i]->setPixelType(GO_TV_RGBA);
+	}
+
 }
 
 AppModel::~AppModel() {
@@ -41,8 +44,10 @@ AppModel::~AppModel() {
 	}
 
 	// clean up video players
-	delete _videoPlayers[0];
-	delete _videoPlayers[1];
+	for (int i = 0; i < 2; i++) {
+	    delete _fakePlayers[i];
+	    delete _videoPlayers[i];
+	}
 	delete [] _cameraPRS;
 	delete [] _ardCyclicBuffer;
 	delete [] _fftCyclicBuffer;
@@ -169,9 +174,46 @@ ofTexture * AppModel::getAttackCamTexRef() {
 	return _attackCamTex;
 }
 
-PosRotScale * AppModel::getCameraAttributes() {
-    // should check? // lazy pointer ways
-    return _cameraPRS;
+//--------------------------------------------------------------
+void AppModel::setCameraAttributes(int which, PosRotScale * prs) {
+    delete _cameraPRS[which];
+    _cameraPRS[which] = prs;
+}
+
+//--------------------------------------------------------------
+void AppModel::setFakeAttributes(int which, PosRotScale * prs) {
+    delete _fakePRS[which];
+    _fakePRS[which] = prs;
+}
+
+//--------------------------------------------------------------
+PosRotScale * AppModel::getCameraAttributes(int which) {
+    return _cameraPRS[which];
+}
+
+//--------------------------------------------------------------
+PosRotScale * AppModel::getFakeAttributes(int which) {
+    return _fakePRS[which];
+}
+
+//--------------------------------------------------------------
+ofTexture * AppModel::getFakeVictimCamTexRef() {
+	return &(_fakePlayers[0]->getTextureReference());
+}
+
+//--------------------------------------------------------------
+ofTexture * AppModel::getFakeAttackCamTexRef() {
+	return &(_fakePlayers[1]->getTextureReference());
+}
+
+//--------------------------------------------------------------
+goVideoPlayer * AppModel::getFakeVictimPlayer() {
+	return _fakePlayers[0];
+}
+
+//--------------------------------------------------------------
+goVideoPlayer * AppModel::getFakeAttackPlayer() {
+	return _fakePlayers[1];
 }
 
 /********************************************************

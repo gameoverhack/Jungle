@@ -7,6 +7,15 @@ SoundController::SoundController() {
 
 SoundController::~SoundController() {
     LOG_NOTICE("Destroying SoundController");
+
+    if (_currentFade != NULL) {
+        delete _currentFade;
+        _currentFade = NULL;
+    }
+
+    _player.stop();
+    _player.unloadSound();
+
 }
 
 void SoundController::update() {

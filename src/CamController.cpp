@@ -18,7 +18,6 @@ CamController::CamController() {
 
 	//_cam.listDevices();
 
-	_isFacePresent = false;
     _lastFaceTimeTillLost   = 10000;
     _lastFaceTime           = ofGetElapsedTimeMillis() - _lastFaceTimeTillLost;
 
@@ -253,12 +252,12 @@ void CamController::loadAttributes() {
     float camPositionX          = boost::any_cast<float>(_appModel->getProperty("camPositionX" + ofToString(_instanceID)));
     float camPositionY          = boost::any_cast<float>(_appModel->getProperty("camPositionY" + ofToString(_instanceID)));
 
-    PosRotScale prs;
+    PosRotScale * prs = new PosRotScale();
 
-    prs.x           = camPositionX;
-    prs.y           = camPositionY;
-    prs.r           = camRotation;
-    prs.s           = camScale;
+    prs->x           = camPositionX;
+    prs->y           = camPositionY;
+    prs->r           = camRotation;
+    prs->s           = camScale;
 
     setCameraAttributes(prs);
 
@@ -266,23 +265,21 @@ void CamController::loadAttributes() {
 
 void CamController::saveAttributes() {
 
-    PosRotScale * camAttributes = _appModel->getCameraAttributes();
-    PosRotScale prs             = camAttributes[_instanceID];
+    PosRotScale * prs = _appModel->getCameraAttributes(_instanceID);
 
-    _appModel->setProperty("camRotation" + ofToString(_instanceID), prs.r);
-    _appModel->setProperty("camScale" + ofToString(_instanceID), prs.s);
-    _appModel->setProperty("camPositionX" + ofToString(_instanceID), prs.x);
-    _appModel->setProperty("camPositionY" + ofToString(_instanceID), prs.y);
+    _appModel->setProperty("camRotation" + ofToString(_instanceID), prs->r);
+    _appModel->setProperty("camScale" + ofToString(_instanceID), prs->s);
+    _appModel->setProperty("camPositionX" + ofToString(_instanceID), prs->x);
+    _appModel->setProperty("camPositionY" + ofToString(_instanceID), prs->y);
 
     // save to drive here or just let it happen on quit??
 }
 
-void CamController::setCameraAttributes(PosRotScale prs) {
+void CamController::setCameraAttributes(PosRotScale * prs) {
 
-    LOG_NOTICE("Saving [" + prs.print(false) + "]");
+    LOG_NOTICE("Saving [" + prs->print(false) + "]");
 
-    PosRotScale * camAttributes = _appModel->getCameraAttributes();
-    camAttributes[_instanceID] = prs;
+    _appModel->setCameraAttributes(_instanceID, prs);
 
 }
 
@@ -290,16 +287,16 @@ void CamController::update() {
 
     _cam.update();
     if (ofGetElapsedTimeMillis() - _lastFaceTime < _lastFaceTimeTillLost) {
-        if (!_isFacePresent) {  // arrived
+        if (!_appModel->getFacePresent(_instanceID)) {  // arrived
             int instanceID = _instanceID + 2;
+            _appModel->setFacePresent(_instanceID, true);
             ofNotifyEvent(faceAction, instanceID, this);
-            _isFacePresent = true;
         }
-    } else {                    // gone
-         if (_isFacePresent) {
+    } else {                                            // gone
+         if (_appModel->getFacePresent(_instanceID)) {
              int instanceID = _instanceID + 0;
+             _appModel->setFacePresent(_instanceID, false);
             ofNotifyEvent(faceAction, instanceID, this);
-             _isFacePresent = false;
          }
     }
 }
@@ -369,7 +366,7 @@ void CamController::drawDebug(float x, float y, float width, float height) {
             glPopMatrix();
         }
 
-        if (_isFacePresent) {
+        if (_appModel->getFacePresent(_instanceID)) {
             ofFill();
             ofSetColor(0, 255, 0);
             ofCircle(25, 25, 50);

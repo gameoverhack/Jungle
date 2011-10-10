@@ -58,11 +58,32 @@ void AppController::setup() {
 	//_appModel->registerStates();
 	_appModel->setState(kAPP_INIT);
 
-	//_flashAnalyzer->registerStates();
+    // load fake faces
+    _appModel->getFakeVictimPlayer()->loadMovie("E:/gameoverload/VideoProjects/Jungle/finalALL/fake/SubstituteFace0.mov");
+    _appModel->getFakeVictimPlayer()->play();
+    _appModel->getFakeAttackPlayer()->loadMovie("E:/gameoverload/VideoProjects/Jungle/finalALL/fake/SubstituteFace1.mov");
+    _appModel->getFakeAttackPlayer()->play();
 
 	// set up datacontroller
 	_dataController = new DataController(ofToDataPath("config_properties.xml"));
-	//_dataController->registerStates();
+
+	// set fake position attributes
+    for (int i = 0; i < 2; i++) {
+        float fakeRotation           = boost::any_cast<float>(_appModel->getProperty("fakeRotation" + ofToString(i)));
+        float fakeScale              = boost::any_cast<float>(_appModel->getProperty("fakeScale" + ofToString(i)));
+        float fakePositionX          = boost::any_cast<float>(_appModel->getProperty("fakePositionX" + ofToString(i)));
+        float fakePositionY          = boost::any_cast<float>(_appModel->getProperty("fakePositionY" + ofToString(i)));
+
+        PosRotScale * prs = new PosRotScale();
+
+        prs->x           = fakePositionX;
+        prs->y           = fakePositionY;
+        prs->r           = fakeRotation;
+        prs->s           = fakeScale;
+
+        _appModel->setFakeAttributes(i, prs);
+
+    }
 
     // setup background sound controller
     _soundController = new SoundController();
@@ -184,25 +205,22 @@ void AppController::AttackEvent(float & level) {
 void AppController::FaceEvent(int & level) {
     // level == instanceID == GONE; level == instanceID+2 == HERE;
     LOG_VERBOSE("FACE ACTION..." + ofToString(level));
-    _appModel->setFacesPresent(_camControllers[0]->getIsFacePresent() || _camControllers[1]->getIsFacePresent());
 
-    if (true) {
+    if (_appModel->checkCurrentInteractivity(kINTERACTION_FACE) && level > 1) {
         if (_switchToSequence == NULL && !_vidController->isPreRolling()) {
-            if (_appModel->checkCurrentInteractivity(kINTERACTION_FACE) && level > 1) {
-                // FACE APPEARS (level > 1) && FACE_INTERACTION set in Flash for seq00a
+            // FACE APPEARS (level > 1) && FACE_INTERACTION set in Flash for seq00a
+            _lastActionTime = ofGetElapsedTimeMillis();
+            string res = "seq01a"; // hack -> que send to seq01a
+            LOG_NOTICE("FACE ACTION [" + ofToString(level) + "] == " + res);
+            if (res != kLAST_SEQUENCE_TOKEN) {
+                _switchToSequence = _appModel->getCurrentScene()->getSequence(res);
+                _vidController->loadMovie(_switchToSequence);
+                _appModel->getCurrentVideoPlayer()->setLoopState(OF_LOOP_NONE);
+                _vidController->_preRolling = true;
+            } else nextScene();
+        }
+    } //else cout << "Blocked by null" << endl;
 
-                _lastActionTime = ofGetElapsedTimeMillis();
-                string res = "seq01a";
-                LOG_NOTICE("FACE ACTION [" + ofToString(level) + "] == " + res);
-                if (res != kLAST_SEQUENCE_TOKEN) {
-                    _switchToSequence = _appModel->getCurrentScene()->getSequence(res);
-                    _vidController->loadMovie(_switchToSequence);
-                    _appModel->getCurrentVideoPlayer()->setLoopState(OF_LOOP_NONE);
-                    _vidController->_preRolling = true;
-                } else nextScene();
-            }
-        } //else cout << "Blocked by null" << endl;
-    } //else cout << "Blocked by time" << endl;
 
 }
 
@@ -299,14 +317,15 @@ void AppController::update() {
         _camControllers[0]->update();
 		_camControllers[1]->update();
 
-        _appModel->setFacesPresent(_camControllers[0]->getIsFacePresent() || _camControllers[1]->getIsFacePresent());
-
         _soundController->update();
 		_vidController->update();
 
-        if (_appModel->getCurrentSequence()->getNumber() > 0 && !_appModel->getFacesPresent()) { //&& _lastActionTime > 10000
+        _appModel->getFakeAttackPlayer()->update();
+        _appModel->getFakeVictimPlayer()->update();
+
+        if (_appModel->getCurrentSequence()->getNumber() > 0 && !_appModel->getAnyFacePresent()) { //&& _lastActionTime > 10000
             // FACE DISAPPEARS
-            nextScene();
+            //nextScene();
         }
 
 	}
@@ -366,6 +385,8 @@ void AppController::keyPressed(int key){
     float positionAdjustment    = 5.0f;
 
     float fakeInput             = 1024.0f; // this could be faked more realistically using time between keys etc -> will do for now
+
+    bool setCamera = false;
 
     LOG_VERBOSE("Key pressed: " + key);
 
@@ -466,6 +487,7 @@ void AppController::keyPressed(int key){
             _appModel->setProperty("cameraPropToAdjust", (string)"SCALEROTATION");
             break;
 		case 356: // left arrow
+            setCamera = true;
             if (cameraPropToAdjust == "SCALEROTATION") {
                 camRotation -= rotationAdjustment;
 
@@ -475,6 +497,7 @@ void AppController::keyPressed(int key){
             }
 			break;
 		case 358: // right arrow
+            setCamera = true;
             if (cameraPropToAdjust == "SCALEROTATION") {
                 camRotation += rotationAdjustment;
             }
@@ -483,6 +506,7 @@ void AppController::keyPressed(int key){
             }
 			break;
         case 359: // up arrow
+            setCamera = true;
             if (cameraPropToAdjust == "SCALEROTATION") {
                 camScale -= scaleAdjustment;
             }
@@ -491,6 +515,7 @@ void AppController::keyPressed(int key){
             }
 			break;
 		case 357: // down arrow
+            setCamera = true;
             if (cameraPropToAdjust == "SCALEROTATION") {
                 camScale += scaleAdjustment;
             }
@@ -499,6 +524,7 @@ void AppController::keyPressed(int key){
             }
 			break;
         case 'r':
+            setCamera = true;
             camPositionX = 0.0f;
             camPositionY = 0.0f;
             camScale = 0.5f;
@@ -529,26 +555,27 @@ void AppController::keyPressed(int key){
 	_appModel->setProperty("shaderBlendRatio", blend);
 	_appModel->setProperty("shaderGammaCorrection", gamma);
 
-    _appModel->setProperty("camRotation"+cameraToAdjust, camRotation);
-    _appModel->setProperty("camScale"+cameraToAdjust, camScale);
-    _appModel->setProperty("camPositionX"+cameraToAdjust, camPositionX);
-    _appModel->setProperty("camPositionY"+cameraToAdjust, camPositionY);
+    if (setCamera) {
+        _appModel->setProperty("camRotation"+cameraToAdjust, camRotation);
+        _appModel->setProperty("camScale"+cameraToAdjust, camScale);
+        _appModel->setProperty("camPositionX"+cameraToAdjust, camPositionX);
+        _appModel->setProperty("camPositionY"+cameraToAdjust, camPositionY);
 
-    PosRotScale prs;
+        PosRotScale * prs = new PosRotScale();
 
-    prs.x           = camPositionX;
-    prs.y           = camPositionY;
-    prs.r           = camRotation;
-    prs.s           = camScale;
+        prs->x           = camPositionX;
+        prs->y           = camPositionY;
+        prs->r           = camRotation;
+        prs->s           = camScale;
 
-    //LOG_NOTICE(cameraPropToAdjust + " on camera " + cameraToAdjust);
+        //LOG_NOTICE(cameraPropToAdjust + " on camera " + cameraToAdjust);
 
-    if (cameraToAdjust == "0") {
-        _camControllers[0]->setCameraAttributes(prs); // could do this direct on model but seems more apt to go cia the cam controllers
-    } else {
-        _camControllers[1]->setCameraAttributes(prs); // could do this direct on model but seems more apt to go cia the cam controllers
+        if (cameraToAdjust == "0") {
+            _camControllers[0]->setCameraAttributes(prs); // could do this direct on model but seems more apt to go cia the cam controllers
+        } else {
+            _camControllers[1]->setCameraAttributes(prs); // could do this direct on model but seems more apt to go cia the cam controllers
+        }
     }
-
 
 }
 
