@@ -19,13 +19,13 @@ ArdController::ArdController(string deviceName, int ardBufferLengthSecs) {
     _bufferIntervalMillis = 1000/60.0f;
 
     _ardCyclicBufferSize = ardBufferLengthSecs * _bufferIntervalMillis;
-    _ardCyclicBufferOffset = 0;
+    _ardCyclicBufferOffset = _ardLastCyclicBufferOffset = 0;
 
     _appModel->setARDCyclicBufferSize(_ardCyclicBufferSize);
     _appModel->allocateARDCyclicBuffer(_ardCyclicBufferSize);
     _appModel->allocateARDNoiseFloor();
     _appModel->allocateARDCyclicSum();
-    _appModel->allocateARDPostFilter();
+    _appModel->setARDPostFilter(0);
     _appModel->allocatePinInput(2);
 
     if(!_ard.connect(deviceName, 57600)) {
@@ -97,7 +97,7 @@ void ArdController::updateArduino(bool fake) {
     float * ardCyclicBuffer  = _appModel->getARDCyclicBuffer();
     float  ardNoiseFloor;//       = _appModel->getARDNoiseFloor();
     float  ardCyclicSum;//        = _appModel->getARDCyclicSum();
-    float  ardPostFilter;//       = _appModel->getARDPostFilter();
+    float  ardPostFilter       = _appModel->getARDPostFilter();
 
     int * pinInput              = _appModel->getPinInput();
 
@@ -112,21 +112,28 @@ void ArdController::updateArduino(bool fake) {
 
     _lastUpdateTime = ofGetElapsedTimeMillis();
 
-    ardCyclicBuffer[_ardCyclicBufferOffset] = pinInput[0]/650.0f;
+
+    ardCyclicBuffer[_ardCyclicBufferOffset] = pinInput[1]/450.0f;
 
     ardCyclicSum = 0;
 
-    for (int i = 0; i < _ardCyclicBufferSize; i++) {
-        ardCyclicSum = ardCyclicSum + ardCyclicBuffer[i];
+    for (int i = 1; i < _ardCyclicBufferSize; i++) {
+        //ardCyclicSum = ardCyclicSum + ardCyclicBuffer[i];
+        ardPostFilter = MAX (ardPostFilter, (ardCyclicBuffer[i-1] - ardCyclicBuffer[i]));
+        //ardPostFilter = MAX(ardPostFilter, ardCyclicBuffer[i]);
     }
 
-    ardNoiseFloor = ardCyclicSum/(float)_ardCyclicBufferSize;
-    ardPostFilter = pinInput[0]/650.0f - ardNoiseFloor;
+    //ardNoiseFloor = ardCyclicSum/(float)_ardCyclicBufferSize;
+    //ardPostFilter = ardCyclicBuffer[_ardLastCyclicBufferOffset] - ardCyclicBuffer[_ardCyclicBufferOffset];//pinInput[0]/650.0f - ardNoiseFloor;
 
-    float area = sqrt(ardNoiseFloor) - 0.2f; //TODO: make prop
+    float area = (ardPostFilter * 1.2) - 0.2; //sqrt(ardNoiseFloor); //TODO: make prop
 
     _appModel->setARDArea(area);
 
+    if (ardPostFilter > 0.0f) ardPostFilter -= 0.1;
+    _appModel->setARDPostFilter(ardPostFilter);
+
+    _ardLastCyclicBufferOffset = _ardCyclicBufferOffset;
     _ardCyclicBufferOffset = (_ardCyclicBufferOffset + 1) % _ardCyclicBufferSize;
 
     if (_appModel->checkState(kAPP_RUNNING)) {
@@ -151,7 +158,7 @@ void ArdController::fakeAttackAction(float input) {
     int * pinInput              = _appModel->getPinInput();
 
     pinInput[0] = input;
-    pinInput[1] = 1024;
+    pinInput[1] = input;
 
     updateArduino(true);
 

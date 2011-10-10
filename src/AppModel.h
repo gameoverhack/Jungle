@@ -100,12 +100,12 @@ public:
     void                allocateARDCyclicBuffer(int ardCyclicBufferSize);
     void                allocateARDNoiseFloor();
     void                allocateARDCyclicSum();
-    void                allocateARDPostFilter();
+    void                setARDPostFilter(float val);
 
     float *             getARDCyclicBuffer();
     float *             getARDNoiseFloor();
     float *             getARDCyclicSum();
-    float *             getARDPostFilter();
+    float               getARDPostFilter();
 
     // audio/mic getter/setters
     void                setFFTArea(float area);
@@ -187,6 +187,9 @@ public:
     bool                getFacePresent(int face) {return _isFacePresent[face];};
     bool                getAnyFacePresent() {return _isFacePresent[0] || _isFacePresent[1];};
 
+    void                setLastActionTime(int time) {_lastActionTime = time;};
+    int                 getLastActionTime() {return _lastActionTime;};
+
 private:
 
 	inline string	    pad(string & objectName);
@@ -228,7 +231,7 @@ private:
 
     float *                     _ardNoiseFloor;
     float *                     _ardCyclicSum;
-	float *                     _ardPostFilter;
+	float                       _ardPostFilter;
 
     // audio/fft vars
     float                       _fftArea;
@@ -253,6 +256,7 @@ private:
     float                       _currentSequenceLevel;
 
     bool                        _isFacePresent[2];
+    int                         _lastActionTime;
 
 };
 

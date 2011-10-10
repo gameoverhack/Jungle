@@ -98,7 +98,7 @@ void AppController::setup() {
 	//_micController->registerStates();
 
 	// setup ardController
-	_ardController = new ArdController("COM3", 2); // TODO: make this a property
+	_ardController = new ArdController("COM3", 1); // TODO: make this a property
 	ofAddListener(_ardController->attackAction, this, &AppController::AttackEvent);
 	//_ardController->registerStates();
 
@@ -165,15 +165,17 @@ void AppController::swapCameras() {
 //--------------------------------------------------------------
 void AppController::VictimEvent(float & level) {
 
-    if (ofGetElapsedTimeMillis() - _lastActionTime > 500) {
+    if (ofGetElapsedTimeMillis() -_appModel->getLastActionTime() > 500) {
         if (_switchToSequence == NULL && !_vidController->isPreRolling()) {
             if (_appModel->checkCurrentInteractivity(kINTERACTION_BOTH) || _appModel->checkCurrentInteractivity(kINTERACTION_VICTIM)) {
-                _lastActionTime = ofGetElapsedTimeMillis();
+                _appModel->setLastActionTime(ofGetElapsedTimeMillis());
                 string res = _appModel->getCurrentSequence()->getVictimResult()[_appModel->getCurrentSequenceFrame()];
                 LOG_NOTICE("VICTIM ACTION [" + ofToString(level) + "] == " + res);
                 if (res != kLAST_SEQUENCE_TOKEN) {
                     _switchToSequence = _appModel->getCurrentScene()->getSequence(res);
-                    _vidController->loadMovie(_switchToSequence, true, _appModel->getCurrentSceneFrame()+1);
+                    int returnFrame = _appModel->getCurrentSequenceFrame() + 1;
+                    if (returnFrame > _appModel->getCurrentSequenceNumFrames()) returnFrame = 0;
+                    _vidController->loadMovie(_switchToSequence, true, returnFrame);
                 } else nextScene();
 
             } //else cout << "Clocked by type " << _appModel->getCurrentInteractivity() << " = " << kINTERACTION_VICTIM << endl;
@@ -185,10 +187,10 @@ void AppController::VictimEvent(float & level) {
 //--------------------------------------------------------------
 void AppController::AttackEvent(float & level) {
 
-    if (ofGetElapsedTimeMillis() - _lastActionTime > 500) {
+    if (ofGetElapsedTimeMillis() -_appModel->getLastActionTime() > 500) {
         if (_switchToSequence == NULL && !_vidController->isPreRolling()) {
             if (_appModel->checkCurrentInteractivity(kINTERACTION_BOTH) || _appModel->checkCurrentInteractivity(kINTERACTION_ATTACKER)) {
-                _lastActionTime = ofGetElapsedTimeMillis();
+                _appModel->setLastActionTime(ofGetElapsedTimeMillis());
                 string res = _appModel->getCurrentSequence()->getAttackerResult()[_appModel->getCurrentSequenceFrame()];
                 LOG_NOTICE("ATTACK ACTION [" + ofToString(level) + "] == " + res);
                 if (res != kLAST_SEQUENCE_TOKEN) {
@@ -209,7 +211,7 @@ void AppController::FaceEvent(int & level) {
     if (_appModel->checkCurrentInteractivity(kINTERACTION_FACE) && level > 1) {
         if (_switchToSequence == NULL && !_vidController->isPreRolling()) {
             // FACE APPEARS (level > 1) && FACE_INTERACTION set in Flash for seq00a
-            _lastActionTime = ofGetElapsedTimeMillis();
+            _appModel->setLastActionTime(ofGetElapsedTimeMillis());
             string res = "seq01a"; // hack -> que send to seq01a
             LOG_NOTICE("FACE ACTION [" + ofToString(level) + "] == " + res);
             if (res != kLAST_SEQUENCE_TOKEN) {
@@ -253,7 +255,7 @@ void AppController::update() {
 			_soundController->fade(1.0, 2000, FADE_LOG);
 			_vidController->loadMovie(_switchToSequence, true);
 			_appModel->setState(kAPP_RUNNING);
-			_lastActionTime = ofGetElapsedTimeMillis();
+			_appModel->setLastActionTime(ofGetElapsedTimeMillis());
 
 		}
 	}
@@ -285,7 +287,7 @@ void AppController::update() {
 
 		// catch _switchToSequence when a movie is loaded completely
 		if (_switchToSequence != NULL && _vidController->checkState(kVIDCONTROLLER_NEXTVIDREADY)) {
-		     _lastActionTime = ofGetElapsedTimeMillis();
+		     _appModel->setLastActionTime(ofGetElapsedTimeMillis());
 			_vidController->toggleVideoPlayers();
 			_vidController->update();
 			_vidController->setState(kVIDCONTROLLER_READY);

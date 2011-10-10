@@ -393,11 +393,6 @@ void AppModel::allocateARDCyclicSum() {
 }
 
 //--------------------------------------------------------------
-void AppModel::allocateARDPostFilter() {
-    _ardPostFilter = new float;
-}
-
-//--------------------------------------------------------------
 
 float * AppModel::getARDCyclicBuffer() {
     return _ardCyclicBuffer;
@@ -414,7 +409,12 @@ float * AppModel::getARDCyclicSum() {
 }
 
 //--------------------------------------------------------------
-float * AppModel::getARDPostFilter() {
+void AppModel::setARDPostFilter(float val) {
+    _ardPostFilter = val;
+}
+
+//--------------------------------------------------------------
+float AppModel::getARDPostFilter() {
     return _ardPostFilter;
 }
 

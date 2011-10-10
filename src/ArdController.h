@@ -50,6 +50,7 @@ private:
 
     int         _ardCyclicBufferSize;
     int         _ardCyclicBufferOffset;
+    int         _ardLastCyclicBufferOffset;
 
 };
 

@@ -202,6 +202,7 @@ void DebugView::update() {
          ********************************************************/
 
         float * ardCyclicBuffer     = _appModel->getARDCyclicBuffer();
+        float ardPostFilter         = _appModel->getARDPostFilter();
         int ardCycicBufferSize      = _appModel->getARDCyclicBufferSize();
 
         glPushMatrix();
@@ -211,6 +212,9 @@ void DebugView::update() {
 
 		glTranslatef(ofGetWidth()/4.0f + 500.0f, 300.0f + plotHeight, 0.0f);
 		plotDraw(ardCyclicBuffer, ardCycicBufferSize, plotHeight, ardCycicBufferSize, 10.0f, 2.0f);
+
+        string msg = "ARD Post: " + ofToString(ardPostFilter);
+        ofDrawBitmapString(msg, 0, 0);
 
 		glPopMatrix();
 
