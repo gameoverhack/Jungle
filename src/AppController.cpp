@@ -360,10 +360,12 @@ void AppController::draw() {
 	ofSetColor(255, 255, 255, 255);
 	_appView->draw();
 
+#ifdef DEBUG_VIEW_ENABLED
     if (boost::any_cast<bool>(_appModel->getProperty("showCameras"))) {
 	    _camControllers[0]->drawDebug(ofGetWidth() - 640.0f/4.0f, 20.0f, 640.0f/4.0f, 640.0f/4.0f);
         _camControllers[1]->drawDebug(ofGetWidth() - 640.0f/4.0f + 640.0f, 0.0f, 640.0f/4.0f, 640.0f/4.0f);
     }
+#endif
 
 }
 
