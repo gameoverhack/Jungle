@@ -531,6 +531,21 @@ int AppModel::getCurrentInteractivity() {
  * matters but still seem pretty quick!					*
  ********************************************************/
 
+//--------------------------------------------------------------
+void AppModel::adjustIntProperty(string propName, int amount) {
+	setProperty(propName, boost::any_cast<int>(_anyProps[propName]) + amount);
+}
+
+//--------------------------------------------------------------
+void AppModel::adjustFloatProperty(string propName, float amount) {
+	setProperty(propName, boost::any_cast<float>(_anyProps[propName]) + amount);
+}
+
+//--------------------------------------------------------------
+void AppModel::toggleBoolProperty(string propName) {
+	setProperty(propName, !boost::any_cast<bool>(_anyProps[propName]));
+}
+
 // set any property in a map to propVal
 void AppModel::setProperty(string propName, boost::any propVal) {
 

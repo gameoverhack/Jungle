@@ -35,7 +35,7 @@
         <property name="propBrightness_0" type="int">128</property>
         <property name="propBrightness_1" type="int">148</property>
         <property name="propBrightness_2" type="int">128</property>
-        <property name="propColorEnable_0" type="int">11857919</property>
+        <property name="propColorEnable_0" type="int">11908395</property>
         <property name="propColorEnable_1" type="int">11784895</property>
         <property name="propColorEnable_2" type="int">3330928</property>
         <property name="propContrast_0" type="int">32</property>
@@ -47,22 +47,22 @@
         <property name="propFocus_0" type="int">102</property>
         <property name="propFocus_1" type="int">85</property>
         <property name="propFocus_2" type="int">102</property>
-        <property name="propGain_0" type="int">41</property>
+        <property name="propGain_0" type="int">62</property>
         <property name="propGain_1" type="int">64</property>
         <property name="propGain_2" type="int">22</property>
-        <property name="propGamma_0" type="int">11857919</property>
+        <property name="propGamma_0" type="int">11908395</property>
         <property name="propGamma_1" type="int">11784895</property>
         <property name="propGamma_2" type="int">3330928</property>
-        <property name="propHue_0" type="int">11857919</property>
+        <property name="propHue_0" type="int">11908395</property>
         <property name="propHue_1" type="int">11784895</property>
         <property name="propHue_2" type="int">3330928</property>
-        <property name="propIris_0" type="int">11857919</property>
+        <property name="propIris_0" type="int">11908395</property>
         <property name="propIris_1" type="int">11784895</property>
         <property name="propIris_2" type="int">3330928</property>
         <property name="propPan_0" type="int">0</property>
         <property name="propPan_1" type="int">0</property>
         <property name="propPan_2" type="int">0</property>
-        <property name="propRoll_0" type="int">11857919</property>
+        <property name="propRoll_0" type="int">11908395</property>
         <property name="propRoll_1" type="int">11784895</property>
         <property name="propRoll_2" type="int">3330928</property>
         <property name="propSaturation_0" type="int">32</property>
@@ -74,7 +74,7 @@
         <property name="propTilt_0" type="int">0</property>
         <property name="propTilt_1" type="int">0</property>
         <property name="propTilt_2" type="int">0</property>
-        <property name="propWhiteBalance_0" type="int">5572</property>
+        <property name="propWhiteBalance_0" type="int">5660</property>
         <property name="propWhiteBalance_1" type="int">4971</property>
         <property name="propWhiteBalance_2" type="int">5176</property>
         <property name="propZoom_0" type="int">1</property>

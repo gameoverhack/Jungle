@@ -15,6 +15,7 @@
 #include "BaseState.h"
 #include "AppModel.h"
 #include "Logger.h"
+#include "SerializationUtils.h"
 #include "ofxOpenCv.h"
 //#include "ofxCvHaarFinder.h"
 
@@ -108,6 +109,8 @@ private:
     ofxCvColorImage         _camImage;
     ofxCvColorImage         _colourImage;
     ofxCvGrayscaleImage     _greyImage;
+
+    bool                    _isCamInit;
 
 };
 

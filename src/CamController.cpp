@@ -17,7 +17,7 @@ CamController::CamController() {
     registerStates();
 
 	//_cam.listDevices();
-
+    _isCamInit = false;
     _lastFaceTimeTillLost   = 10000;
     _lastFaceTime           = ofGetElapsedTimeMillis() - _lastFaceTimeTillLost;
 
@@ -37,6 +37,10 @@ CamController::CamController() {
 //--------------------------------------------------------------
 CamController::~CamController() {
 	LOG_NOTICE("Destruction");
+#ifdef TARGET_WIN32
+	saveSettings();
+#endif
+	saveAttributes();
 	stopThread();
 	_cam.close();
 }
@@ -55,18 +59,19 @@ bool CamController::setup(int deviceID, int w, int h){
 #else
     LOG_NOTICE("Attemptimg to set instance " + ofToString(_instanceID) + " cam to deviceID: " + ofToString(deviceID));
     _cam.close();// to be sure, to be sure
-    bool ok = true; // bad mac change this
+    _isCamInit = false;
 #ifdef TARGET_WIN32
     _cam.setRequestedMediaSubType(VI_MEDIASUBTYPE_MJPG);
-	ok = _cam.initGrabber(w, h, true);
+	_isCamInit = _cam.initGrabber(w, h, true);
 #else
+    _isCamInit = true; // bad mac doesn't return a bool on setup!! change this
     _cam.initGrabber(w, h, true);
 #endif
 
 	_cam.setDeviceID(deviceID);
 
 #ifdef TARGET_WIN32
-	if (ok) loadSettings();
+	loadSettings();
 #endif
 #endif
 
@@ -92,7 +97,7 @@ bool CamController::setup(int deviceID, int w, int h){
 
     startThread(false, false);
 
-    return ok;
+    return _isCamInit;
 }
 
 #ifdef TARGET_OSX
@@ -138,108 +143,44 @@ void CamController::showVideoSettings() {
 
 void CamController::loadSettings() {
 
-    // fill maps with current (ie., default values)
+    if (_isCamInit) {
 
-    map<string, setting> camSettings    = _cam.getCameraSettings();
-    map<string, setting> filterSettings = _cam.getFilterSettings();
+        LOG_NOTICE("Loading Camera Settings for instance: " + ofToString(_instanceID));
 
-    map<string, setting> newCamSettings;
-    map<string, setting> newFilterSettings;
+        Settings * cS = new Settings();
+        Settings * fS = new Settings();
 
-    map<string, setting>::iterator it;
+        loadClass(ofToDataPath("cameraSettings" + ofToString(_instanceID) + ".bin"), cS);
+        loadClass(ofToDataPath("filterSettings" + ofToString(_instanceID) + ".bin"), fS);
 
-    // get property on the model for each prop's CurrentValue (camera settings)
-    for (it = camSettings.begin(); it != camSettings.end(); it++) {
+        if (cS->settings.size() > 0) _cam.setCameraSettings(cS->settings);
+        if (fS->settings.size() > 0) _cam.setFilterSettings(fS->settings);
 
-        setting s = it->second;
-
-        if (_appModel->hasProperty(s.propName)) {
-
-            setting n;
-
-            LOG_VERBOSE("CURRENT SETTING: " + s.print());
-
-            // copy props to new n setting
-            n.propName      = s.propName;
-            n.propID        = s.propID;
-            n.min           = s.min;
-            n.max           = s.max;
-            n.SteppingDelta = s.SteppingDelta;
-            n.flags         = 2;            // force all settings to manual
-            n.CurrentValue  = boost::any_cast<int>(_appModel->getProperty(n.propName + "_" + ofToString(_instanceID)));
-
-            LOG_VERBOSE("CHANGETO SETTING: " + n.print());
-
-            // stor in new settings map
-            newCamSettings.insert(pair<string, setting>(n.propName, n));
-        }
-
+        delete cS;
+        delete fS;
     }
-
-    // get property on the model for each prop's CurrentValue (filter settings)
-    for (it = filterSettings.begin(); it != filterSettings.end(); it++) {
-
-        setting s = it->second;
-
-         if (_appModel->hasProperty(s.propName)) {
-
-            setting n;
-
-            LOG_VERBOSE("CURRENT SETTING: " + s.print());
-
-            // copy props to new n setting
-            n.propName      = s.propName;
-            n.propID        = s.propID;
-            n.min           = s.min;
-            n.max           = s.max;
-            n.SteppingDelta = s.SteppingDelta;
-            n.flags         = 2;            // force all settings to manual
-            n.CurrentValue  = boost::any_cast<int>(_appModel->getProperty(n.propName + "_" + ofToString(_instanceID)));
-
-            LOG_VERBOSE("CHANGETO SETTING: " + n.print());
-
-            // stor in new settings map
-            newFilterSettings.insert(pair<string, setting>(n.propName, n));
-         }
-    }
-
-    // set to values
-     if (newCamSettings.size() > 0)     _cam.setCameraSettings(newCamSettings);
-     if (newFilterSettings.size() > 0)  _cam.setFilterSettings(newFilterSettings);
-
-    camSettings.clear();
-    filterSettings.clear();
-    newCamSettings.clear();
-    newFilterSettings.clear();
 
 }
 
 void CamController::saveSettings() {
 
-    // get properties from the camera and filters as a map
-    map<string, setting> camSettings    = _cam.getCameraSettings();
-    map<string, setting> filterSettings = _cam.getFilterSettings();
+    if (_isCamInit) {
 
-    map<string, setting>::iterator it;
+        LOG_NOTICE("Saving Camera Settings for instance: " + ofToString(_instanceID));
 
-    // set property on the model for each prop's CurrentValue (camera settings)
-    for (it = camSettings.begin(); it != camSettings.end(); it++) {
-        setting s = it->second;
-        LOG_VERBOSE(s.print());
-        _appModel->setProperty(s.propName + "_" + ofToString(_instanceID), (int)s.CurrentValue);
+        Settings * cS = new Settings();
+        cS->settings = _cam.getCameraSettings();
+
+        Settings * fS = new Settings();
+        fS->settings = _cam.getFilterSettings();
+
+        saveClass(ofToDataPath("cameraSettings" + ofToString(_instanceID) + ".bin"), cS);
+        saveClass(ofToDataPath("filterSettings" + ofToString(_instanceID) + ".bin"), fS);
+
+        delete cS;
+        delete fS;
+
     }
-
-    // set property on the model for each prop's CurrentValue (filter settings)
-    for (it = filterSettings.begin(); it != filterSettings.end(); it++) {
-        setting s = it->second;
-        LOG_VERBOSE(s.print());
-        _appModel->setProperty(s.propName + "_" + ofToString(_instanceID), (int)s.CurrentValue);
-    }
-
-    camSettings.clear();
-    filterSettings.clear();
-
-     // save to drive here or just let it happen on quit??
 
 }
 #endif
