@@ -17,13 +17,16 @@ CamController::CamController() {
     registerStates();
 
 	//_cam.listDevices();
-
+    _isCamInit = false;
     _lastFaceTimeTillLost   = 10000;
     _lastFaceTime           = ofGetElapsedTimeMillis() - _lastFaceTimeTillLost;
 
-    _camROI.x       = _camROI.y = 200.0f;
-    _camROI.width   = 640.0f;
-    _camROI.height  = 640.0f;
+    _camROI = new ofRectangle();
+    _camROI->x       = _camROI->y = 200.0f;
+    _camROI->width   = 640.0f;
+    _camROI->height  = 640.0f;
+
+    loadClass("camROI" + ofToString(_instanceID) + ".bin", _camROI);
 
     ofRegisterMouseEvents(this);
 
@@ -37,6 +40,7 @@ CamController::CamController() {
 //--------------------------------------------------------------
 CamController::~CamController() {
 	LOG_NOTICE("Destruction");
+	//saveAttributes();
 	stopThread();
 	_cam.close();
 }
@@ -44,7 +48,7 @@ CamController::~CamController() {
 bool CamController::setup(int deviceID, int w, int h){
 
 
-
+    _cam.setDeviceID(deviceID);
 #ifdef USE_DUMMY
     LOG_NOTICE("Attemptimg to set instance " + ofToString(_instanceID) + " cam to DUMMY");
     _cam.setPixelType(GO_TV_RGB);
@@ -54,23 +58,24 @@ bool CamController::setup(int deviceID, int w, int h){
     ofSleepMillis(200);
 #else
     LOG_NOTICE("Attemptimg to set instance " + ofToString(_instanceID) + " cam to deviceID: " + ofToString(deviceID));
-    _cam.close();// to be sure, to be sure
-    bool ok = true; // bad mac change this
+    //_cam.close();// to be sure, to be sure
+    _isCamInit = false;
 #ifdef TARGET_WIN32
     _cam.setRequestedMediaSubType(VI_MEDIASUBTYPE_MJPG);
-	ok = _cam.initGrabber(w, h, true);
+	_isCamInit = _cam.initGrabber(w, h, true);
 #else
+    _isCamInit = true; // bad mac doesn't return a bool on setup!! change this
     _cam.initGrabber(w, h, true);
 #endif
 
-	_cam.setDeviceID(deviceID);
+
 
 #ifdef TARGET_WIN32
-	if (ok) loadSettings();
+	loadSettings();
 #endif
 #endif
 
-    loadAttributes();
+    //loadAttributes();
 
     _doFaceDetection = true;
     _doFaceTracking = false;
@@ -82,7 +87,7 @@ bool CamController::setup(int deviceID, int w, int h){
     _colourImage.allocate(640,640);
     _greyImage.allocate(640,640);
 
-    _camImage.setROI(_camROI.x, _camROI.y, _camROI.width, _camROI.height);
+    _camImage.setROI(_camROI->x, _camROI->y, _camROI->width, _camROI->height);
 
     _tracker.setup();
     _tracker.setScale(0.33);
@@ -92,7 +97,7 @@ bool CamController::setup(int deviceID, int w, int h){
 
     startThread(false, false);
 
-    return ok;
+    return _isCamInit;
 }
 
 #ifdef TARGET_OSX
@@ -104,7 +109,7 @@ bool CamController::setup(string deviceID, int w, int h){
 	_cam.setDeviceID(deviceID);
 	_cam.initGrabber(w, h, true);
 
-    loadAttributes();
+    //loadAttributes();
 
     _doFaceDetection = true;
     _doFaceTracking = false;
@@ -116,7 +121,7 @@ bool CamController::setup(string deviceID, int w, int h){
     _colourImage.allocate(640,640);
     _greyImage.allocate(640,640);
 
-    _camImage.setROI(_camROI.x, _camROI.y, _camROI.width, _camROI.height);
+    _camImage.setROI(_camROI->x, _camROI->y, _camROI->width, _camROI->height);
 
     _tracker.setup();
     _tracker.setScale(1);
@@ -138,108 +143,44 @@ void CamController::showVideoSettings() {
 
 void CamController::loadSettings() {
 
-    // fill maps with current (ie., default values)
+    if (_isCamInit) {
 
-    map<string, setting> camSettings    = _cam.getCameraSettings();
-    map<string, setting> filterSettings = _cam.getFilterSettings();
+        LOG_NOTICE("Loading Camera Settings for instance: " + ofToString(_instanceID));
 
-    map<string, setting> newCamSettings;
-    map<string, setting> newFilterSettings;
+        Settings * cS = new Settings();
+        Settings * fS = new Settings();
 
-    map<string, setting>::iterator it;
+        loadClass(ofToDataPath("cameraSettings" + ofToString(_instanceID) + ".bin"), cS);
+        loadClass(ofToDataPath("filterSettings" + ofToString(_instanceID) + ".bin"), fS);
 
-    // get property on the model for each prop's CurrentValue (camera settings)
-    for (it = camSettings.begin(); it != camSettings.end(); it++) {
+        if (cS->settings.size() > 0) _cam.setCameraSettings(cS->settings);
+        if (fS->settings.size() > 0) _cam.setFilterSettings(fS->settings);
 
-        setting s = it->second;
-
-        if (_appModel->hasProperty(s.propName)) {
-
-            setting n;
-
-            LOG_VERBOSE("CURRENT SETTING: " + s.print());
-
-            // copy props to new n setting
-            n.propName      = s.propName;
-            n.propID        = s.propID;
-            n.min           = s.min;
-            n.max           = s.max;
-            n.SteppingDelta = s.SteppingDelta;
-            n.flags         = 2;            // force all settings to manual
-            n.CurrentValue  = boost::any_cast<int>(_appModel->getProperty(n.propName + "_" + ofToString(_instanceID)));
-
-            LOG_VERBOSE("CHANGETO SETTING: " + n.print());
-
-            // stor in new settings map
-            newCamSettings.insert(pair<string, setting>(n.propName, n));
-        }
-
+        delete cS;
+        delete fS;
     }
-
-    // get property on the model for each prop's CurrentValue (filter settings)
-    for (it = filterSettings.begin(); it != filterSettings.end(); it++) {
-
-        setting s = it->second;
-
-         if (_appModel->hasProperty(s.propName)) {
-
-            setting n;
-
-            LOG_VERBOSE("CURRENT SETTING: " + s.print());
-
-            // copy props to new n setting
-            n.propName      = s.propName;
-            n.propID        = s.propID;
-            n.min           = s.min;
-            n.max           = s.max;
-            n.SteppingDelta = s.SteppingDelta;
-            n.flags         = 2;            // force all settings to manual
-            n.CurrentValue  = boost::any_cast<int>(_appModel->getProperty(n.propName + "_" + ofToString(_instanceID)));
-
-            LOG_VERBOSE("CHANGETO SETTING: " + n.print());
-
-            // stor in new settings map
-            newFilterSettings.insert(pair<string, setting>(n.propName, n));
-         }
-    }
-
-    // set to values
-     if (newCamSettings.size() > 0)     _cam.setCameraSettings(newCamSettings);
-     if (newFilterSettings.size() > 0)  _cam.setFilterSettings(newFilterSettings);
-
-    camSettings.clear();
-    filterSettings.clear();
-    newCamSettings.clear();
-    newFilterSettings.clear();
 
 }
 
 void CamController::saveSettings() {
 
-    // get properties from the camera and filters as a map
-    map<string, setting> camSettings    = _cam.getCameraSettings();
-    map<string, setting> filterSettings = _cam.getFilterSettings();
+    if (_isCamInit) {
 
-    map<string, setting>::iterator it;
+        LOG_NOTICE("Saving Camera Settings for instance: " + ofToString(_instanceID));
 
-    // set property on the model for each prop's CurrentValue (camera settings)
-    for (it = camSettings.begin(); it != camSettings.end(); it++) {
-        setting s = it->second;
-        LOG_VERBOSE(s.print());
-        _appModel->setProperty(s.propName + "_" + ofToString(_instanceID), (int)s.CurrentValue);
+        Settings * cS = new Settings();
+        cS->settings = _cam.getCameraSettings();
+
+        Settings * fS = new Settings();
+        fS->settings = _cam.getFilterSettings();
+
+        saveClass(ofToDataPath("cameraSettings" + ofToString(_instanceID) + ".bin"), cS);
+        saveClass(ofToDataPath("filterSettings" + ofToString(_instanceID) + ".bin"), fS);
+
+        delete cS;
+        delete fS;
+
     }
-
-    // set property on the model for each prop's CurrentValue (filter settings)
-    for (it = filterSettings.begin(); it != filterSettings.end(); it++) {
-        setting s = it->second;
-        LOG_VERBOSE(s.print());
-        _appModel->setProperty(s.propName + "_" + ofToString(_instanceID), (int)s.CurrentValue);
-    }
-
-    camSettings.clear();
-    filterSettings.clear();
-
-     // save to drive here or just let it happen on quit??
 
 }
 #endif
@@ -247,39 +188,54 @@ void CamController::saveSettings() {
 
 void CamController::loadAttributes() {
 
-    float camRotation           = boost::any_cast<float>(_appModel->getProperty("camRotation" + ofToString(_instanceID)));
-    float camScale              = boost::any_cast<float>(_appModel->getProperty("camScale" + ofToString(_instanceID)));
-    float camPositionX          = boost::any_cast<float>(_appModel->getProperty("camPositionX" + ofToString(_instanceID)));
-    float camPositionY          = boost::any_cast<float>(_appModel->getProperty("camPositionY" + ofToString(_instanceID)));
+    LOG_NOTICE("Loading Camera Attributes for instance: " + ofToString(_instanceID));
 
-    PosRotScale * prs = new PosRotScale();
+    Scene * currentScene = _appModel->getCurrentScene();
 
-    prs->x           = camPositionX;
-    prs->y           = camPositionY;
-    prs->r           = camRotation;
-    prs->s           = camScale;
+    string sceneName = currentScene->getName();
+    string scenePath = boost::any_cast<string>(_appModel->getProperty("scenesDataPath")) + "/" + sceneName + "/" + sceneName + "_";
 
-    setCameraAttributes(prs);
+    PosRotScale * prsC = new PosRotScale();
+    loadClass(scenePath + "cameraAttributes" + ofToString(_instanceID) + ".bin", prsC);
+
+    PosRotScale * prsF = new PosRotScale();
+    loadClass(scenePath + "fakeAttributes" + ofToString(_instanceID) + ".bin", prsF);
+
+    setCameraAttributes(prsC);
+    setFakeAttributes(prsF);
 
 }
 
 void CamController::saveAttributes() {
 
-    PosRotScale * prs = _appModel->getCameraAttributes(_instanceID);
+    LOG_NOTICE("Saving Camera Attributes for instance: " + ofToString(_instanceID));
 
-    _appModel->setProperty("camRotation" + ofToString(_instanceID), prs->r);
-    _appModel->setProperty("camScale" + ofToString(_instanceID), prs->s);
-    _appModel->setProperty("camPositionX" + ofToString(_instanceID), prs->x);
-    _appModel->setProperty("camPositionY" + ofToString(_instanceID), prs->y);
+    Scene * currentScene = _appModel->getCurrentScene();
 
-    // save to drive here or just let it happen on quit??
+    string sceneName = currentScene->getName();
+    string scenePath = boost::any_cast<string>(_appModel->getProperty("scenesDataPath")) + "/" + sceneName + "/" + sceneName + "_";
+
+    PosRotScale * prsC = _appModel->getCameraAttributes(_instanceID);
+    saveClass(scenePath + "cameraAttributes" + ofToString(_instanceID) + ".bin", prsC);
+
+    PosRotScale * prsF = _appModel->getFakeAttributes(_instanceID);
+    saveClass(scenePath + "fakeAttributes" + ofToString(_instanceID) + ".bin", prsF);
+
 }
 
 void CamController::setCameraAttributes(PosRotScale * prs) {
 
-    LOG_NOTICE("Saving [" + prs->print(false) + "]");
+    LOG_NOTICE("Setting Camera Attributes[" + prs->print(false) + "]");
 
     _appModel->setCameraAttributes(_instanceID, prs);
+
+}
+
+void CamController::setFakeAttributes(PosRotScale * prs) {
+
+    LOG_NOTICE("Setting Fake Attributes [" + prs->print(false) + "]");
+
+    _appModel->setFakeAttributes(_instanceID, prs);
 
 }
 
@@ -396,7 +352,7 @@ void CamController::mouseMoved(ofMouseEventArgs &e) {
 
 void CamController::mouseDragged(ofMouseEventArgs &e) {
     if (_doROIAdjust && boost::any_cast<bool>(_appModel->getProperty("showCameras"))) {
-        _camImage.setROI((_camROI.x + (_startX - e.x) * 2.0), (_camROI.y + (_startY - e.y) * 2.0), 640, 640);
+        _camImage.setROI((_camROI->x + (_startX - e.x) * 2.0), (_camROI->y + (_startY - e.y) * 2.0), 640, 640);
     }
 }
 
@@ -406,12 +362,19 @@ void CamController::mousePressed(ofMouseEventArgs &e) {
         boost::any_cast<bool>(_appModel->getProperty("showCameras"))) {
         _startX = e.x;
         _startY = e.y;
-        _camROI = _camImage.getROI();
+        ofRectangle r = _camImage.getROI();
+        _camROI->x = r.x;
+        _camROI->y = r.y;
+        _camROI->width = r.width;
+        _camROI->height = r.height;
         _doROIAdjust = true;
     }
 }
 
 void CamController::mouseReleased(ofMouseEventArgs &e) {
-    _doROIAdjust = false;
-    _startX = _startY = -1;
+    if (_doROIAdjust && boost::any_cast<bool>(_appModel->getProperty("showCameras"))) {
+        _doROIAdjust = false;
+        _startX = _startY = -1;
+        saveClass("camROI" + ofToString(_instanceID) + ".bin", _camROI);
+    }
 }

@@ -176,13 +176,11 @@ ofTexture * AppModel::getAttackCamTexRef() {
 
 //--------------------------------------------------------------
 void AppModel::setCameraAttributes(int which, PosRotScale * prs) {
-    delete _cameraPRS[which];
     _cameraPRS[which] = prs;
 }
 
 //--------------------------------------------------------------
 void AppModel::setFakeAttributes(int which, PosRotScale * prs) {
-    delete _fakePRS[which];
     _fakePRS[which] = prs;
 }
 
@@ -436,15 +434,14 @@ void AppModel::toggleVideoPlayers(int forceFrame) {
 	LOG_VERBOSE("Swap Video Player pointers: " + ofToString(forceFrame));
 	//if (forceFrame != 0) {
     _videoPlayers[1]->setFrame(forceFrame);
-	//_videoPlayers[1]->setPosition(0.0f);
 	_videoPlayers[1]->update();
 	swap(_videoPlayers[0], _videoPlayers[1]);
 	_videoPlayers[1]->close();
-	_videoPlayers[0]->psuedoUpdate(); // here? or in controller?
-    _videoPlayers[0]->setFrame(forceFrame);
-	delete _videoPlayers[1];
-	_videoPlayers[1] = new goThreadedVideo();
-	_videoPlayers[1]->setPixelType(GO_TV_RGBA);
+	//_videoPlayers[0]->psuedoUpdate(); // here? or in controller?
+    //_videoPlayers[0]->setFrame(forceFrame);
+	//delete _videoPlayers[1];
+	//_videoPlayers[1] = new goThreadedVideo();
+	//_videoPlayers[1]->setPixelType(GO_TV_RGBA);
 }
 
 //--------------------------------------------------------------
@@ -530,6 +527,21 @@ int AppModel::getCurrentInteractivity() {
  * should NOT be used where efficiency really really	*
  * matters but still seem pretty quick!					*
  ********************************************************/
+
+//--------------------------------------------------------------
+void AppModel::adjustIntProperty(string propName, int amount) {
+	setProperty(propName, boost::any_cast<int>(_anyProps[propName]) + amount);
+}
+
+//--------------------------------------------------------------
+void AppModel::adjustFloatProperty(string propName, float amount) {
+	setProperty(propName, boost::any_cast<float>(_anyProps[propName]) + amount);
+}
+
+//--------------------------------------------------------------
+void AppModel::toggleBoolProperty(string propName) {
+	setProperty(propName, !boost::any_cast<bool>(_anyProps[propName]));
+}
 
 // set any property in a map to propVal
 void AppModel::setProperty(string propName, boost::any propVal) {

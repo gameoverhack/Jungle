@@ -12,6 +12,7 @@
 
 #include <boost/serialization/serialization.hpp>
 #include <boost/serialization/vector.hpp>
+#include <boost/serialization/map.hpp>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
 
@@ -20,6 +21,7 @@ using std::map;
 using std::pair;
 
 #include "goThreadedVideo.h"
+#include "goVideoGrabber.h"
 #include "Logger.h"
 #include "Constants.h"
 
@@ -51,14 +53,30 @@ enum interaction_t {
 
 // used for camera pos, rot scale
 class PosRotScale {
+private:
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive & ar, const unsigned int version) {
+		ar & x;
+		ar & y;
+        ar & r;
+        ar & s;
+	}
+
 public:
 
-    PosRotScale(){};
+    PosRotScale(){
+        x = 0.0f;
+        y = 0.0f;
+        s = 0.5f;
+        r = 0.0f;
+    };
 
 	float x;
 	float y;
 	float r;
 	float s;
+
 	string print(bool log) {
 	    string out = "PRS: x = " + ofToString(x) + " y = " + ofToString(y) + " r = " + ofToString(r) + " s = " + ofToString(s);
 	    if (log) cout << out << endl;
@@ -138,6 +156,45 @@ public:
 	{}
 };
 
+namespace boost {
+    namespace serialization {
+
+        template<class Archive>
+        void serialize(Archive & ar, setting & s, const unsigned int version) {
+            ar & s.propName;
+            ar & s.propID;
+            ar & s.min;
+            ar & s.max;
+            ar & s.SteppingDelta;
+            ar & s.CurrentValue;
+            ar & s.DefaultValue;
+            ar & s.flags;
+            ar & s.pctValue;
+        };
+
+        template<class Archive>
+        void serialize(Archive & ar, ofRectangle & r, const unsigned int version) {
+            ar & r.x;
+            ar & r.y;
+            ar & r.height;
+            ar & r.width;
+        };
+    };
+};
+
+
+class Settings {
+private:
+	friend class boost::serialization::access;
+	template<class Archive>
+	void serialize(Archive & ar, const unsigned int version)
+	{
+		ar & settings;
+	}
+public:
+    map<string, setting> settings;
+	Settings(){};
+};
 
 class Sequence {
 

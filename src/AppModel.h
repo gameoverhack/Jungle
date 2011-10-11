@@ -12,6 +12,7 @@
 
 #include "BaseState.h"
 #include "Singleton.h"
+#include "FunctionModel.h"
 #include "AppDataTypes.h"
 
 #include <boost/any.hpp>
@@ -171,6 +172,10 @@ public:
     // generic property getter/setters
     bool                hasProperty(string propName);
 	void		        setProperty(string propName, boost::any propVal);
+
+	void				adjustIntProperty(string propName, int amount);
+	void				adjustFloatProperty(string propName, float amount);
+    void                toggleBoolProperty(string propName);
 
 	void		        getProperty(string propName, int & propVal);
 	void		        getProperty(string propName, float & propVal);

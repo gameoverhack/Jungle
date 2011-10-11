@@ -107,7 +107,7 @@ public:
     ~SoundController();
 
     void    update();
-    void    loadSound(Scene * scene);
+    void    loadSound();
 
     void    fade(float toVolume, int timeMillis, FaderType fadeType);
 

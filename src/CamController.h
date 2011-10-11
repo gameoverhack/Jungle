@@ -15,6 +15,7 @@
 #include "BaseState.h"
 #include "AppModel.h"
 #include "Logger.h"
+#include "SerializationUtils.h"
 #include "ofxOpenCv.h"
 //#include "ofxCvHaarFinder.h"
 
@@ -57,8 +58,9 @@ public:
 	int			getInstanceID();
 	void		setInstanceID(int instanceID);
     void        setCameraAttributes(PosRotScale * prs);
+    void        setFakeAttributes(PosRotScale * prs);
 
-	ofTexture	* getCamTextureRef();
+	ofTexture* getCamTextureRef();
 
     bool                    _doFaceDetection;
     bool                    _doFaceTracking;
@@ -72,8 +74,8 @@ public:
 
 private:
 
-    ofRectangle*            getCamROI() {return &_camROI;};
-    void                    setCamROI(ofRectangle R) {_camROI = R;};
+    //ofRectangle*            getCamROI() {return _camROI;};
+    //void                    setCamROI(ofRectangle R) {_camROI = R;};
 
     int                     _startX, _startY;
     bool                    _doROIAdjust;
@@ -81,7 +83,7 @@ private:
     float                   _yROIDisplay;
     float                   _xScaleROIDisplay;
     float                   _yScaleROIDisplay;
-    ofRectangle             _camROI;
+    ofRectangle*            _camROI;
 
     void                    threadedFunction();
 
@@ -108,6 +110,8 @@ private:
     ofxCvColorImage         _camImage;
     ofxCvColorImage         _colourImage;
     ofxCvGrayscaleImage     _greyImage;
+
+    bool                    _isCamInit;
 
 };
 
