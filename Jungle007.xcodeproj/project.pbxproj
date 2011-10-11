@@ -148,6 +148,7 @@
 		07FC43F4144403CA00A8B7D5 /* leveltextureblend.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = leveltextureblend.frag; path = bin/data/leveltextureblend.frag; sourceTree = SOURCE_ROOT; };
 		07FC43F5144403CA00A8B7D5 /* leveltexturevertex.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = leveltexturevertex.vert; path = bin/data/leveltexturevertex.vert; sourceTree = SOURCE_ROOT; };
 		07FC43F6144403CA00A8B7D5 /* multitexturemerge_optimised.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = multitexturemerge_optimised.frag; path = bin/data/multitexturemerge_optimised.frag; sourceTree = SOURCE_ROOT; };
+		07FC43FA14440C1800A8B7D5 /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
 		7750012A13E6738200DC545B /* ofxThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxThread.h; sourceTree = "<group>"; };
 		7750028213E6796800DC545B /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
 		7750028313E6796800DC545B /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
@@ -2642,6 +2643,7 @@
 				7750040D13E6A36000DC545B /* Models */,
 				7750040713E6A32600DC545B /* Controllers */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
+				07FC43FA14440C1800A8B7D5 /* config.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;

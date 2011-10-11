@@ -1,9 +1,8 @@
+#include "config.h"
 #include "ofMain.h"
 #include "AppController.h"
 #include "ofAppGlutWindow.h"
 #include "Logger.h"
-
-#define RUN_IN_TEST_MODE 1
 
 #ifdef RUN_IN_TEST_MODE
 #include "TestController.h"
