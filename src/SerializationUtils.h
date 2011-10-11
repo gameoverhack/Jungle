@@ -23,7 +23,7 @@ using std::vector;
 template <class vectorType>
 bool loadVector(string filePath, vector< vectorType > * vec) {
 	ofLog(OF_LOG_NOTICE, "Loading serial data: " + filePath);
-	std::ifstream ifs(filePath.c_str());
+	std::ifstream ifs(ofToDataPath(filePath).c_str());
 	if(ifs.fail()){
 		ofLog(OF_LOG_ERROR, "Could not load vector: " + filePath);
 		abort(); // Could be a bit over zealous
@@ -36,7 +36,7 @@ bool loadVector(string filePath, vector< vectorType > * vec) {
 template <class vectorType>
 bool saveVector(string filePath, vector< vectorType > * vec) {
 	ofLog(OF_LOG_NOTICE, "Saving serial data: " + filePath);
-	std::ofstream ofs(filePath.c_str());
+	std::ofstream ofs(ofToDataPath(filePath).c_str());
 	if(ofs.fail()){
 		ofLog(OF_LOG_ERROR, "Could not save vector: " + filePath);
 		abort(); // Could be a bit over zealous
@@ -49,7 +49,7 @@ bool saveVector(string filePath, vector< vectorType > * vec) {
 template <class C>
 bool loadClass(string filePath, C * someClass) {
 	ofLog(OF_LOG_NOTICE, "Loading class data: " + filePath);
-	std::ifstream ifs(filePath.c_str());
+	std::ifstream ifs(ofToDataPath(filePath).c_str());
 	if(ifs.fail()){
 		ofLog(OF_LOG_ERROR, "Could not load class: " + filePath);
 		//abort(); // Could be a bit over zealous
@@ -68,7 +68,7 @@ bool loadClass(string filePath, C * someClass) {
 template <class C>
 bool saveClass(string filePath, C * someClass) {
 	ofLog(OF_LOG_NOTICE, "Saving class data: " + filePath);
-	std::ofstream ofs(filePath.c_str());
+	std::ofstream ofs(ofToDataPath(filePath).c_str());
 	if(ofs.fail()){
 		ofLog(OF_LOG_ERROR, "Could not class: " + filePath);
 		//abort(); // Could be a bit over zealous
