@@ -74,8 +74,8 @@ public:
 
 private:
 
-    ofRectangle*            getCamROI() {return &_camROI;};
-    void                    setCamROI(ofRectangle R) {_camROI = R;};
+    //ofRectangle*            getCamROI() {return _camROI;};
+    //void                    setCamROI(ofRectangle R) {_camROI = R;};
 
     int                     _startX, _startY;
     bool                    _doROIAdjust;
@@ -83,7 +83,7 @@ private:
     float                   _yROIDisplay;
     float                   _xScaleROIDisplay;
     float                   _yScaleROIDisplay;
-    ofRectangle             _camROI;
+    ofRectangle*            _camROI;
 
     void                    threadedFunction();
 

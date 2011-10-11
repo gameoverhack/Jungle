@@ -153,6 +153,7 @@
 			<Add directory="..\..\..\addons\ofxFaceTracker\libs\Tracker" />
 			<Add directory="..\..\..\addons\ofxFaceTracker\libs" />
 			<Add directory="..\..\..\addons\ofxCv\src" />
+			<Add directory="..\..\..\addons\FastDelegate" />
 		</Compiler>
 		<Linker>
 			<Add option="..\..\..\addons\ofxOpenCv\libs\opencv\lib\win_cb\libopencv_legacy220.a" />
@@ -260,6 +261,8 @@
 			<Add after='cmd /c if not exist &quot;$(PROJECT_DIR)bin/data&quot; mkdir &quot;$(PROJECT_DIR)bin/data&quot;' />
 			<Mode after="always" />
 		</ExtraCommands>
+		<Unit filename="..\..\..\addons\FastDelegate\FastDelegate.h" />
+		<Unit filename="..\..\..\addons\FastDelegate\FastDelegateBind.h" />
 		<Unit filename="..\..\..\addons\goDirList\src\goDirList.cpp" />
 		<Unit filename="..\..\..\addons\goDirList\src\goDirList.h" />
 		<Unit filename="..\..\..\addons\goFlexCOM\goFlexCOM.cpp" />
@@ -877,6 +880,12 @@
 		<Unit filename="src\DebugView.h">
 			<Option virtualFolder="src\views\" />
 		</Unit>
+		<Unit filename="src\FunctionDataTypes.h">
+			<Option virtualFolder="src\models\" />
+		</Unit>
+		<Unit filename="src\FunctionModel.h">
+			<Option virtualFolder="src\models\" />
+		</Unit>
 		<Unit filename="src\GraphicLoader.cpp">
 			<Option virtualFolder="src\utils\" />
 		</Unit>
@@ -894,6 +903,15 @@
 		</Unit>
 		<Unit filename="src\JungleExceptions.h">
 			<Option virtualFolder="src\utils\" />
+		</Unit>
+		<Unit filename="src\KeyboardController.cpp">
+			<Option virtualFolder="src\controllers\" />
+		</Unit>
+		<Unit filename="src\KeyboardController.h">
+			<Option virtualFolder="src\controllers\" />
+		</Unit>
+		<Unit filename="src\KeyboardModel.h">
+			<Option virtualFolder="src\models\" />
 		</Unit>
 		<Unit filename="src\LoadingView.cpp">
 			<Option virtualFolder="src\views\" />

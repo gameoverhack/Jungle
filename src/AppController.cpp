@@ -117,7 +117,6 @@ void AppController::setup() {
 	_appModel->setProperty("loadingProgress", 0.1f);
     //_appModel->setProperty("showCameras", false);
     _appModel->setProperty("showProps", false);
-	_appModel->setProperty("autoTest", false);
 	_appModel->setProperty("fullScreen", false);
 	_appModel->setProperty("tryScaleMethod", 0);
 
@@ -147,7 +146,7 @@ void AppController::swapCameras() {
 //--------------------------------------------------------------
 void AppController::VictimEvent(float & level) {
 
-    if (ofGetElapsedTimeMillis() -_appModel->getLastActionTime() > 500) {
+    if (ofGetElapsedTimeMillis() -_appModel->getLastActionTime() > 2000) {
         if (_switchToSequence == NULL && !_vidController->isPreRolling()) {
             if (_appModel->checkCurrentInteractivity(kINTERACTION_BOTH) || _appModel->checkCurrentInteractivity(kINTERACTION_VICTIM)) {
                 _appModel->setLastActionTime(ofGetElapsedTimeMillis());
@@ -156,7 +155,7 @@ void AppController::VictimEvent(float & level) {
                 if (res != kLAST_SEQUENCE_TOKEN) {
                     _switchToSequence = _appModel->getCurrentScene()->getSequence(res);
                     int returnFrame = _appModel->getCurrentSequenceFrame() + 1;
-                    if (returnFrame > _appModel->getCurrentSequenceNumFrames()) returnFrame = 0;
+                    if (returnFrame > _appModel->getCurrentSequenceNumFrames()) returnFrame -= 15;
                     _vidController->loadMovie(_switchToSequence, true, returnFrame);
                 } else nextScene();
 
@@ -169,7 +168,7 @@ void AppController::VictimEvent(float & level) {
 //--------------------------------------------------------------
 void AppController::AttackEvent(float & level) {
 
-    if (ofGetElapsedTimeMillis() -_appModel->getLastActionTime() > 500) {
+    if (ofGetElapsedTimeMillis() -_appModel->getLastActionTime() > 2000) {
         if (_switchToSequence == NULL && !_vidController->isPreRolling()) {
             if (_appModel->checkCurrentInteractivity(kINTERACTION_BOTH) || _appModel->checkCurrentInteractivity(kINTERACTION_ATTACKER)) {
                 _appModel->setLastActionTime(ofGetElapsedTimeMillis());
@@ -211,15 +210,15 @@ void AppController::FaceEvent(int & level) {
 //--------------------------------------------------------------
 void AppController::update() {
 
+
     _micController->update();
     _ardController->update();
-
-	_appView->update();
 
 	// if we're loading, update datacontroller
 	if(_appModel->checkState(kAPP_LOADING)){
 
 		_dataController->update();
+        _appView->update();
 
 		if(_dataController->checkState(kDATACONTROLLER_FINISHED)){
 
@@ -247,6 +246,17 @@ void AppController::update() {
 	// running, so update scenes, etc
 	if(_appModel->checkState(kAPP_RUNNING) && (_ardController->checkState(kARDCONTROLLER_READY) || _ardController->checkState(kARDCONTROLLER_DISABLED))) {
 
+        _camControllers[0]->update();
+        _camControllers[1]->update();
+
+        _vidController->update();
+        _soundController->update();
+
+        _appModel->getFakeAttackPlayer()->update();
+        _appModel->getFakeVictimPlayer()->update();
+
+        _appView->update();
+
 		Scene			* currentScene		= _appModel->getCurrentScene();
 		Sequence		* currentSequence	= currentScene->getCurrentSequence();
 
@@ -273,41 +283,11 @@ void AppController::update() {
 		if (_switchToSequence != NULL && _vidController->checkState(kVIDCONTROLLER_NEXTVIDREADY)) {
 		     _appModel->setLastActionTime(ofGetElapsedTimeMillis());
 			_vidController->toggleVideoPlayers();
-			_vidController->update();
+			//_vidController->update();
 			_vidController->setState(kVIDCONTROLLER_READY);
 			currentScene->setCurrentSequence(_switchToSequence);
 			_switchToSequence = NULL;
 		}
-
-		// AUTO TESTING USER INTERACTION CODE
-		if (ofGetElapsedTimeMillis() - _lastAutoActionTime > 20000 && boost::any_cast<bool>(_appModel->getProperty("autoTest"))) {
-			_lastAutoActionTime = ofGetElapsedTimeMillis();
-			int opt = (int)ofRandom(0, 10);
-			switch (opt) {
-				case 0:
-					LOG_VERBOSE("AUTO ACTION: kVictimAction");
-					_appModel->setProperty("userAction", kVictimAction);
-					break;
-				case 1:
-					LOG_VERBOSE("AUTO ACTION: Fast-forward movie (13 frames from end)");
-					_appModel->getCurrentVideoPlayer()->setFrame(_appModel->getCurrentSequenceNumFrames()-13);
-					break;
-				default:
-					LOG_VERBOSE("AUTO ACTION: kAttackerAction");
-					_appModel->setProperty("userAction", kAttackerAction);
-					break;
-			}
-
-		}
-
-        _camControllers[0]->update();
-		_camControllers[1]->update();
-
-        _soundController->update();
-		_vidController->update();
-
-        _appModel->getFakeAttackPlayer()->update();
-        _appModel->getFakeVictimPlayer()->update();
 
         if (_appModel->getCurrentSequence()->getNumber() > 0 && !_appModel->getAnyFacePresent()) { //&& _lastActionTime > 10000
             // FACE DISAPPEARS
@@ -372,7 +352,6 @@ void AppController::keyPressed(int key){
 	float gamma                 = boost::any_cast<float>(_appModel->getProperty("shaderGammaCorrection"));
 	float blend                 = boost::any_cast<float>(_appModel->getProperty("shaderBlendRatio"));
 	bool showUnmask             = boost::any_cast<bool>(_appModel->getProperty("showUnmaskedTextures"));
-	bool autoTest               = boost::any_cast<bool>(_appModel->getProperty("autoTest"));
     bool showProps              = boost::any_cast<bool>(_appModel->getProperty("showProps"));
     bool showFFT                = boost::any_cast<bool>(_appModel->getProperty("showFFT"));
     bool showDebug              = boost::any_cast<bool>(_appModel->getProperty("showDebugView"));
@@ -433,9 +412,6 @@ void AppController::keyPressed(int key){
 			break;
 		case 'd':
 			_appModel->setProperty("showDebugView", !showDebug);
-			break;
-		case 't':
-			//_appModel->setProperty("autoTest", !autoTest);
 			break;
 		case 'q':
 			_micController->fakeVictimAction(fakeInput*32.0f);

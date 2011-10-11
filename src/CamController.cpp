@@ -21,9 +21,12 @@ CamController::CamController() {
     _lastFaceTimeTillLost   = 10000;
     _lastFaceTime           = ofGetElapsedTimeMillis() - _lastFaceTimeTillLost;
 
-    _camROI.x       = _camROI.y = 200.0f;
-    _camROI.width   = 640.0f;
-    _camROI.height  = 640.0f;
+    _camROI = new ofRectangle();
+    _camROI->x       = _camROI->y = 200.0f;
+    _camROI->width   = 640.0f;
+    _camROI->height  = 640.0f;
+
+    loadClass("camROI" + ofToString(_instanceID) + ".bin", _camROI);
 
     ofRegisterMouseEvents(this);
 
@@ -45,7 +48,7 @@ CamController::~CamController() {
 bool CamController::setup(int deviceID, int w, int h){
 
 
-
+    _cam.setDeviceID(deviceID);
 #ifdef USE_DUMMY
     LOG_NOTICE("Attemptimg to set instance " + ofToString(_instanceID) + " cam to DUMMY");
     _cam.setPixelType(GO_TV_RGB);
@@ -55,7 +58,7 @@ bool CamController::setup(int deviceID, int w, int h){
     ofSleepMillis(200);
 #else
     LOG_NOTICE("Attemptimg to set instance " + ofToString(_instanceID) + " cam to deviceID: " + ofToString(deviceID));
-    _cam.close();// to be sure, to be sure
+    //_cam.close();// to be sure, to be sure
     _isCamInit = false;
 #ifdef TARGET_WIN32
     _cam.setRequestedMediaSubType(VI_MEDIASUBTYPE_MJPG);
@@ -65,7 +68,7 @@ bool CamController::setup(int deviceID, int w, int h){
     _cam.initGrabber(w, h, true);
 #endif
 
-	_cam.setDeviceID(deviceID);
+
 
 #ifdef TARGET_WIN32
 	loadSettings();
@@ -84,7 +87,7 @@ bool CamController::setup(int deviceID, int w, int h){
     _colourImage.allocate(640,640);
     _greyImage.allocate(640,640);
 
-    _camImage.setROI(_camROI.x, _camROI.y, _camROI.width, _camROI.height);
+    _camImage.setROI(_camROI->x, _camROI->y, _camROI->width, _camROI->height);
 
     _tracker.setup();
     _tracker.setScale(0.33);
@@ -118,7 +121,7 @@ bool CamController::setup(string deviceID, int w, int h){
     _colourImage.allocate(640,640);
     _greyImage.allocate(640,640);
 
-    _camImage.setROI(_camROI.x, _camROI.y, _camROI.width, _camROI.height);
+    _camImage.setROI(_camROI->x, _camROI->y, _camROI->width, _camROI->height);
 
     _tracker.setup();
     _tracker.setScale(1);
@@ -349,7 +352,7 @@ void CamController::mouseMoved(ofMouseEventArgs &e) {
 
 void CamController::mouseDragged(ofMouseEventArgs &e) {
     if (_doROIAdjust && boost::any_cast<bool>(_appModel->getProperty("showCameras"))) {
-        _camImage.setROI((_camROI.x + (_startX - e.x) * 2.0), (_camROI.y + (_startY - e.y) * 2.0), 640, 640);
+        _camImage.setROI((_camROI->x + (_startX - e.x) * 2.0), (_camROI->y + (_startY - e.y) * 2.0), 640, 640);
     }
 }
 
@@ -359,12 +362,19 @@ void CamController::mousePressed(ofMouseEventArgs &e) {
         boost::any_cast<bool>(_appModel->getProperty("showCameras"))) {
         _startX = e.x;
         _startY = e.y;
-        _camROI = _camImage.getROI();
+        ofRectangle r = _camImage.getROI();
+        _camROI->x = r.x;
+        _camROI->y = r.y;
+        _camROI->width = r.width;
+        _camROI->height = r.height;
         _doROIAdjust = true;
     }
 }
 
 void CamController::mouseReleased(ofMouseEventArgs &e) {
-    _doROIAdjust = false;
-    _startX = _startY = -1;
+    if (_doROIAdjust && boost::any_cast<bool>(_appModel->getProperty("showCameras"))) {
+        _doROIAdjust = false;
+        _startX = _startY = -1;
+        saveClass("camROI" + ofToString(_instanceID) + ".bin", _camROI);
+    }
 }

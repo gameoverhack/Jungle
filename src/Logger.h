@@ -35,6 +35,8 @@ enum juLogLevel{
 
 #define LOGGER				LoggerSingleton::Instance()
 
+#define LOG_TIMER(str)      LoggerSingleton::Instance()->time_diff(str)
+
 #define LOG(level, str)		LoggerSingleton::Instance()->log(level, typeid(*this).name(), __func__, (str))
 #define LOG_ERROR(str)		LOG(JU_LOG_ERROR, (str))
 #define LOG_WARNING(str)	LOG(JU_LOG_WARNING, (str))
@@ -47,53 +49,74 @@ enum juLogLevel{
 using namespace std;
 
 class Logger {
-	
+
 public:
-	
+
     Logger() {
-		
+
         _toFile = false;
 		_logLevel = JU_LOG_WARNING;
 		_padLength	= 30; // default whitespace padding (self adjusting so we can set to 1 but could be any num)
-		
+
 		// wont ever by written cause we default to a higher level of logging ...
         log(JU_LOG_NOTICE, typeid(this).name(), __func__, "Created logger");
-    
+        _timea = _timeb = -1;
+
 	};
-	
-    ~Logger() {	
-		
+
+    ~Logger() {
+
         log(JU_LOG_NOTICE, typeid(this).name(), __func__, "Logging off...");
-        log(JU_LOG_NOTICE, typeid(this).name(), __func__, "\\___________________________________________________//");	
-        
+        log(JU_LOG_NOTICE, typeid(this).name(), __func__, "\\___________________________________________________//");
+
 		if (_toFile) closeLogFile();
 
     };
-	
+
     bool	openLogFile(string _filename);
     bool	closeLogFile();
-	
+
     void	log(juLogLevel l, string obj, string funcName, string msg);
-	
+
 	void	setLogLevel(juLogLevel l);
-	
+
+	inline void    time_diff(string name){
+	    int time;
+	    string message;
+	    // if we have sent a time a, set the time b
+	    if(_timea == -1){
+	        _timea = ofGetElapsedTimeMicros();
+	        log(JU_LOG_NOTICE, typeid(this).name(), __func__, "Timer init");
+        }
+        else{
+            _timeb = ofGetElapsedTimeMicros();
+            time = _timeb - _timea;
+            message = name + ": " + ofToString(time) + "us";
+            log(JU_LOG_NOTICE, typeid(this).name(), __func__, message);
+            _timea = ofGetElapsedTimeMicros();
+        }
+	};
+
 private:
-	
+
 	inline string	getLogLevelName(juLogLevel l);
 	inline char 	*getTimeStamp();
 	inline string	pad(string & objectName);
-	
+
 	int			_padLength;
-	
+
     ofstream	_logFile;
     string		_filename;
 	bool		_toFile;
-	
+
     char		_timestamp[255];
-    
+
 	juLogLevel	_logLevel;
 
-	
+	int _timea, _timeb;
+
+
+
 };
 
 typedef Singleton<Logger> LoggerSingleton;   // Global declaration

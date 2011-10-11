@@ -171,6 +171,14 @@ namespace boost {
             ar & s.flags;
             ar & s.pctValue;
         };
+
+        template<class Archive>
+        void serialize(Archive & ar, ofRectangle & r, const unsigned int version) {
+            ar & r.x;
+            ar & r.y;
+            ar & r.height;
+            ar & r.width;
+        };
     };
 };
 

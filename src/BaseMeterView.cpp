@@ -30,6 +30,10 @@ void BaseMeterView::update(interaction_t interactionType) {
     int   totalNumSequences     = _appModel->getCurrentScene()->getNumOfSequences();
     int   thisNumSequence       = _appModel->getCurrentSequence()->getNumber();
 
+    bool deny = (ofGetElapsedTimeMillis() - _appModel->getLastActionTime() > 2000);
+
+    isInteractive = isInteractive || deny;
+
     /********************************************************
      *      Draw the Meter to the ViewFBO                   *
      ********************************************************/
@@ -59,7 +63,7 @@ void BaseMeterView::update(interaction_t interactionType) {
                 _button_on->draw(_button_x, _button_y);
             } else if (!isInteractive && _scaledInputLevel > 0.05f) {
                 _button_off->draw(_button_x, _button_y);
-                _button_deny->draw(_button_x, _button_y);
+                if (deny) _button_deny->draw(_button_x, _button_y);
             }
 
             break;
@@ -78,7 +82,7 @@ void BaseMeterView::update(interaction_t interactionType) {
                 _top_on->draw(_top_x, _top_y);
             } else if (!isInteractive && _scaledInputLevel > 0.05f) {
                 _top_off->draw(_top_x, _top_y);
-                _top_deny->draw(_top_x, _top_y);
+                if (deny) _top_deny->draw(_top_x, _top_y);
             }
 
             break;

@@ -117,7 +117,7 @@ void VideoController::update() {
 void VideoController::forceUpdate() {
 	// used to force loading of a movie if we're not actually updating/drawing it
 	goThreadedVideo * nextMovie = _appModel->getNextVideoPlayer();
-	nextMovie->psuedoUpdate();
+	nextMovie->update();
 	nextMovie->psuedoDraw();
 }
 
@@ -150,6 +150,9 @@ void VideoController::toggleVideoPlayers(int lastFrameWhenForced) {
 //	goThreadedVideo * currentMovie = _appModel->getCurrentVideoPlayer();
 //	nextMovie->setPosition(0.0f);
 	//swap(nextMovie, currentMovie); // why not for?
+//	_appModel->setCurrentSequenceFrame(lastFrameWhenForced);
+//	_appModel->setCurrentIsFrameNew(true);
+
 	_appModel->toggleVideoPlayers(lastFrameWhenForced); // swap(_videoPlayers[0], _videoPlayers[1]); should work with (nextMovie, currentMovie) but doesn't!?!?
 //	nextMovie->psuedoUpdate();	// now it's the currentMovie...
 //	currentMovie->close();		// and this is the last movie!

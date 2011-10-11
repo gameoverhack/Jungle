@@ -71,7 +71,7 @@ void SceneView::update() {
      *          Draw each head/webcam into an FBO       	*
      ********************************************************/
 
-	if(_appModel->getCurrentIsFrameNew()){
+	if(true){
 
 		ofTexture * victimTex;
 		ofTexture * attackTex;
