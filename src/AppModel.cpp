@@ -584,7 +584,10 @@ void AppModel::getProperty(string propName, string & propVal) {
 // get any ANY property in a map (cast necessary -> use boost::any_cast<TYPE>(property))
 boost::any AppModel::getProperty(string propName) {
 
-	assert(_anyProps.count(propName) != 0); // if it ain't there abort
+    if (_anyProps.count(propName) == 0) {
+        LOG_ERROR("Asked for a prop that doesn't exist! " + propName);
+        abort();
+    }
 	return _anyProps[propName];
 
 }
