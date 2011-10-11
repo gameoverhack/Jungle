@@ -14,7 +14,9 @@ AppView::AppView(float width, float height) : BaseView(width ,height) {
     LOG_NOTICE("Setting up all (sub) views");
 	_loadingView    = new LoadingView(width, height);
 	_sceneView      = new SceneView(width, height);
+#ifdef DEBUG_VIEW_ENABLED	
 	_debugView      = new DebugView(width, height);
+#endif
 	_attackView     = new AttackView(146, 1080);
 	_victimView     = new VictimView(146, 1080);
 
@@ -30,7 +32,9 @@ AppView::~AppView() {
 
     delete _loadingView;
     delete _sceneView;
+#ifdef DEBUG_VIEW_ENABLED
     delete _debugView;
+#endif
     delete _attackView;
     delete _victimView;
 
@@ -46,9 +50,11 @@ void AppView::update() {
 		_sceneView->update();
 		_attackView->update();
 		_victimView->update();
+#ifdef DEBUG_VIEW_ENABLED
 		if(boost::any_cast<bool>(_appModel->getProperty("showDebugView"))) {
 			_debugView->update();
 		}
+#endif
 	}
 }
 
@@ -91,7 +97,7 @@ void AppView::draw() {
             _victimView->draw(0, 0, _victimView->getWidth() * (width/1920.0f), _victimView->getHeight() * (height/1080.0f));
         }
 
-
+#ifdef DEBUG_VIEW_ENABLED
 		if(boost::any_cast<bool>(_appModel->getProperty("showDebugView"))){
 #if OF_VERSION < 7
 			_debugView->draw(0, 0, width, height);
@@ -99,6 +105,7 @@ void AppView::draw() {
             _debugView->draw(0, 0, width, height);
 #endif
 		}
+#endif
 	}
 
     ofDisableAlphaBlending();
