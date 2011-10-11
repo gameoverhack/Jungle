@@ -139,7 +139,8 @@ void SceneView::update() {
 #endif
 		numTextures++;
 	}
-
+	
+	// set number of heads we're blending.
 	_shader.setUniform1i("numTextures", numTextures);
 	
 #ifndef OPTIMISED

@@ -102,7 +102,8 @@ void MicController::audioReceived(float* input, int bufferSize, int nChannels) {
         float * fftPostFilter       = _appModel->getFFTPostFilter();
         float * fftInput            = _appModel->getFFTInput();
         float * audioInput          = _appModel->getAudioInput();
-
+		
+		// TODO_OPTIMISED Can avoid this copy somehow?
         // put raw copy of audio input into model
         memcpy(audioInput, input, sizeof(float) * bufferSize);
 

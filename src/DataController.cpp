@@ -9,9 +9,6 @@
 
 #include "DataController.h"
 
-//#define USER_MATT
-#define USER_OLLIE
-
 DataController::DataController(string configFilePath) {
 
     LOG_NOTICE("Constructing DataController");
