@@ -142,10 +142,10 @@ void SceneView::update() {
 	
 	// set number of heads we're blending.
 	_shader.setUniform1i("numTextures", numTextures);
+	_shader.setUniform1i("showUnmaskedTextures", (int)boost::any_cast<bool>(_appModel->getProperty("showUnmaskedTextures")));
 	
 #ifndef OPTIMISED
 	// if not optimised, load stuff from properties, else it has been hard coded into optimised shader
-	_shader.setUniform1i("showUnmaskedTextures", (int)boost::any_cast<bool>(_appModel->getProperty("showUnmaskedTextures")));
 	_shader.setUniform1f("blendRatio", boost::any_cast<float>(_appModel->getProperty("shaderBlendRatio")));
 	_shader.setUniform1f("gammaCorrection", boost::any_cast<float>(_appModel->getProperty("shaderGammaCorrection")));
 #else

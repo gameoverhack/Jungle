@@ -8,7 +8,7 @@
  attacker2
  */
 uniform sampler2DRect textures[4];
-//uniform int	showUnmaskedTextures;
+uniform int	showUnmaskedTextures;
 uniform int numTextures;
 float gammaCorrection = 1.0; // TODO_OPTIMISED
 float blendRatio = 1.0; // TODO_OPTIMISED
@@ -44,19 +44,19 @@ void main(){
 		atk2Texel = texture2DRect(textures[3], texCoord);
 	} else atk2Texel.rgba = vec4(0.0, 0.0, 0.0, 0.0); // fake null value
 
-//	if (showUnmaskedTextures == 1) {
-//		if(vic1Texel.a > 0.0){
-//			sceneTexel.rgb = vic1Texel.rgb;
-//		}
-//
-//		if(atk1Texel.a > 0.0){
-//			sceneTexel.rgb = atk1Texel.rgb;
-//		}
-//
-//		if(atk2Texel.a > 0.0){
-//			sceneTexel.rgb = atk2Texel.rgb;
-//		}
-//	}
+	if (showUnmaskedTextures == 1) {
+		if(vic1Texel.a > 0.0){
+			sceneTexel.rgb = vic1Texel.rgb;
+		}
+
+		if(atk1Texel.a > 0.0){
+			sceneTexel.rgb = atk1Texel.rgb;
+		}
+
+		if(atk2Texel.a > 0.0){
+			sceneTexel.rgb = atk2Texel.rgb;
+		}
+	}
 
 	// set frame alpha depending on the scenes alpha
 	if(sceneTexel.a < (240.0/255.0)){ // dodge the noise
