@@ -104,7 +104,6 @@ private:
 	Sequence		* _switchToSequence;
 
 	int				_lastAutoActionTime;
-	int             _lastActionTime;
     int             _lastFrameWhenForced;
     int             _returnFrameWhenForced;
 

@@ -56,14 +56,13 @@ public:
 
 	int			getInstanceID();
 	void		setInstanceID(int instanceID);
-    void        setCameraAttributes(PosRotScale prs);
+    void        setCameraAttributes(PosRotScale * prs);
 
 	ofTexture	* getCamTextureRef();
 
     bool                    _doFaceDetection;
     bool                    _doFaceTracking;
 
-    bool                    getIsFacePresent() {return _isFacePresent;}
     ofEvent<int>            faceAction;
 
     void mouseMoved(ofMouseEventArgs &e);
@@ -71,10 +70,10 @@ public:
 	void mousePressed(ofMouseEventArgs &e);
 	void mouseReleased(ofMouseEventArgs &e);
 
+private:
+
     ofRectangle*            getCamROI() {return &_camROI;};
     void                    setCamROI(ofRectangle R) {_camROI = R;};
-
-private:
 
     int                     _startX, _startY;
     bool                    _doROIAdjust;
@@ -102,7 +101,6 @@ private:
 
     int                     _lastFaceTime;
     int                     _lastFaceTimeTillLost;
-    bool                    _isFacePresent;
 
     ofxCvHaarFinder         _finder;
     ofxFaceTracker          _tracker;
@@ -110,7 +108,6 @@ private:
     ofxCvColorImage         _camImage;
     ofxCvColorImage         _colourImage;
     ofxCvGrayscaleImage     _greyImage;
-
 
 };
 

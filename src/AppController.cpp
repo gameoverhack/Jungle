@@ -57,11 +57,32 @@ void AppController::setup() {
 	//_appModel->registerStates();
 	_appModel->setState(kAPP_INIT);
 
-	//_flashAnalyzer->registerStates();
+    // load fake faces
+    _appModel->getFakeVictimPlayer()->loadMovie("E:/gameoverload/VideoProjects/Jungle/finalALL/fake/SubstituteFace0.mov");
+    _appModel->getFakeVictimPlayer()->play();
+    _appModel->getFakeAttackPlayer()->loadMovie("E:/gameoverload/VideoProjects/Jungle/finalALL/fake/SubstituteFace1.mov");
+    _appModel->getFakeAttackPlayer()->play();
 
 	// set up datacontroller
 	_dataController = new DataController(ofToDataPath("config_properties.xml"));
-	//_dataController->registerStates();
+
+	// set fake position attributes
+    for (int i = 0; i < 2; i++) {
+        float fakeRotation           = boost::any_cast<float>(_appModel->getProperty("fakeRotation" + ofToString(i)));
+        float fakeScale              = boost::any_cast<float>(_appModel->getProperty("fakeScale" + ofToString(i)));
+        float fakePositionX          = boost::any_cast<float>(_appModel->getProperty("fakePositionX" + ofToString(i)));
+        float fakePositionY          = boost::any_cast<float>(_appModel->getProperty("fakePositionY" + ofToString(i)));
+
+        PosRotScale * prs = new PosRotScale();
+
+        prs->x           = fakePositionX;
+        prs->y           = fakePositionY;
+        prs->r           = fakeRotation;
+        prs->s           = fakeScale;
+
+        _appModel->setFakeAttributes(i, prs);
+
+    }
 
     // setup background sound controller
     _soundController = new SoundController();
@@ -76,7 +97,7 @@ void AppController::setup() {
 	//_micController->registerStates();
 
 	// setup ardController
-	_ardController = new ArdController("COM3", 2); // TODO: make this a property
+	_ardController = new ArdController("COM3", 1); // TODO: make this a property
 	ofAddListener(_ardController->attackAction, this, &AppController::AttackEvent);
 	//_ardController->registerStates();
 
@@ -143,15 +164,17 @@ void AppController::swapCameras() {
 //--------------------------------------------------------------
 void AppController::VictimEvent(float & level) {
 
-    if (ofGetElapsedTimeMillis() - _lastActionTime > 500) {
+    if (ofGetElapsedTimeMillis() -_appModel->getLastActionTime() > 500) {
         if (_switchToSequence == NULL && !_vidController->isPreRolling()) {
             if (_appModel->checkCurrentInteractivity(kINTERACTION_BOTH) || _appModel->checkCurrentInteractivity(kINTERACTION_VICTIM)) {
-                _lastActionTime = ofGetElapsedTimeMillis();
+                _appModel->setLastActionTime(ofGetElapsedTimeMillis());
                 string res = _appModel->getCurrentSequence()->getVictimResult()[_appModel->getCurrentSequenceFrame()];
                 LOG_NOTICE("VICTIM ACTION [" + ofToString(level) + "] == " + res);
                 if (res != kLAST_SEQUENCE_TOKEN) {
                     _switchToSequence = _appModel->getCurrentScene()->getSequence(res);
-                    _vidController->loadMovie(_switchToSequence, true, _appModel->getCurrentSceneFrame()+1);
+                    int returnFrame = _appModel->getCurrentSequenceFrame() + 1;
+                    if (returnFrame > _appModel->getCurrentSequenceNumFrames()) returnFrame = 0;
+                    _vidController->loadMovie(_switchToSequence, true, returnFrame);
                 } else nextScene();
 
             } //else cout << "Clocked by type " << _appModel->getCurrentInteractivity() << " = " << kINTERACTION_VICTIM << endl;
@@ -163,10 +186,10 @@ void AppController::VictimEvent(float & level) {
 //--------------------------------------------------------------
 void AppController::AttackEvent(float & level) {
 
-    if (ofGetElapsedTimeMillis() - _lastActionTime > 500) {
+    if (ofGetElapsedTimeMillis() -_appModel->getLastActionTime() > 500) {
         if (_switchToSequence == NULL && !_vidController->isPreRolling()) {
             if (_appModel->checkCurrentInteractivity(kINTERACTION_BOTH) || _appModel->checkCurrentInteractivity(kINTERACTION_ATTACKER)) {
-                _lastActionTime = ofGetElapsedTimeMillis();
+                _appModel->setLastActionTime(ofGetElapsedTimeMillis());
                 string res = _appModel->getCurrentSequence()->getAttackerResult()[_appModel->getCurrentSequenceFrame()];
                 LOG_NOTICE("ATTACK ACTION [" + ofToString(level) + "] == " + res);
                 if (res != kLAST_SEQUENCE_TOKEN) {
@@ -182,19 +205,23 @@ void AppController::AttackEvent(float & level) {
 //--------------------------------------------------------------
 void AppController::FaceEvent(int & level) {
     // level == instanceID == GONE; level == instanceID+2 == HERE;
-    if (ofGetElapsedTimeMillis() - _lastActionTime > 500) {
+    LOG_VERBOSE("FACE ACTION..." + ofToString(level));
+
+    if (_appModel->checkCurrentInteractivity(kINTERACTION_FACE) && level > 1) {
         if (_switchToSequence == NULL && !_vidController->isPreRolling()) {
-            if (_appModel->checkCurrentInteractivity(kINTERACTION_FACE) && level > 1) {
-                _lastActionTime = ofGetElapsedTimeMillis();
-                string res = _appModel->getCurrentSequence()->getFaceResult()[_appModel->getCurrentSequenceFrame()];
-                LOG_NOTICE("FACE ACTION [" + ofToString(level) + "] == " + res);
-                if (res != kLAST_SEQUENCE_TOKEN) {
-                    _switchToSequence = _appModel->getCurrentScene()->getSequence(res);
-                    _vidController->loadMovie(_switchToSequence, true);
-                } else nextScene();
-            } //else cout << "Clocked by type " << _appModel->getCurrentInteractivity() << " = " << kINTERACTION_ATTACKER << endl;
-        } //else cout << "Blocked by null" << endl;
-    } //else cout << "Blocked by time" << endl;
+            // FACE APPEARS (level > 1) && FACE_INTERACTION set in Flash for seq00a
+            _appModel->setLastActionTime(ofGetElapsedTimeMillis());
+            string res = "seq01a"; // hack -> que send to seq01a
+            LOG_NOTICE("FACE ACTION [" + ofToString(level) + "] == " + res);
+            if (res != kLAST_SEQUENCE_TOKEN) {
+                _switchToSequence = _appModel->getCurrentScene()->getSequence(res);
+                _vidController->loadMovie(_switchToSequence);
+                _appModel->getCurrentVideoPlayer()->setLoopState(OF_LOOP_NONE);
+                _vidController->_preRolling = true;
+            } else nextScene();
+        }
+    } //else cout << "Blocked by null" << endl;
+
 
 }
 
@@ -227,7 +254,7 @@ void AppController::update() {
 			_soundController->fade(1.0, 2000, FADE_LOG);
 			_vidController->loadMovie(_switchToSequence, true);
 			_appModel->setState(kAPP_RUNNING);
-			_lastAutoActionTime = ofGetElapsedTimeMillis();
+			_appModel->setLastActionTime(ofGetElapsedTimeMillis());
 
 		}
 	}
@@ -243,7 +270,7 @@ void AppController::update() {
 			_vidController->loadMovie(_switchToSequence, true);
 		}
 
-		if (_vidController->checkState(kVIDCONTROLLER_CURRENTVIDONE)) {
+		if (_switchToSequence == NULL && _vidController->checkState(kVIDCONTROLLER_CURRENTVIDONE)) {
 			// the video just finished and we toggled to next video if there is one
             LOG_VERBOSE("Trying to go to next sequence");
 
@@ -259,7 +286,7 @@ void AppController::update() {
 
 		// catch _switchToSequence when a movie is loaded completely
 		if (_switchToSequence != NULL && _vidController->checkState(kVIDCONTROLLER_NEXTVIDREADY)) {
-		     _lastActionTime = ofGetElapsedTimeMillis();
+		     _appModel->setLastActionTime(ofGetElapsedTimeMillis());
 			_vidController->toggleVideoPlayers();
 			_vidController->update();
 			_vidController->setState(kVIDCONTROLLER_READY);
@@ -299,6 +326,14 @@ void AppController::update() {
 		ofNotifyEvent(updateEvent, 1.0, this);
 #endif
 
+        _appModel->getFakeAttackPlayer()->update();
+        _appModel->getFakeVictimPlayer()->update();
+
+        if (_appModel->getCurrentSequence()->getNumber() > 0 && !_appModel->getAnyFacePresent()) { //&& _lastActionTime > 10000
+            // FACE DISAPPEARS
+            //nextScene();
+        }
+
 	}
 
 }
@@ -311,10 +346,11 @@ void AppController::nextScene() {
     currentScene->rewindScene();
     // load next scene
     _appModel->nextScene();
+    _vidController->reset();
     currentScene = _appModel->getCurrentScene();
     _switchToSequence = currentScene->getCurrentSequence();
-    _soundController->loadSound(currentScene);
-    _soundController->fade(1.0, 2000, FADE_LOG);
+    //_soundController->loadSound(currentScene);
+    //_soundController->fade(1.0, 2000, FADE_LOG);
     _vidController->loadMovie(_switchToSequence, true);
 }
 
@@ -355,6 +391,8 @@ void AppController::keyPressed(int key){
     float positionAdjustment    = 5.0f;
 
     float fakeInput             = 1024.0f; // this could be faked more realistically using time between keys etc -> will do for now
+
+    bool setCamera = false;
 
     LOG_VERBOSE("Key pressed: " + key);
 
@@ -455,6 +493,7 @@ void AppController::keyPressed(int key){
             _appModel->setProperty("cameraPropToAdjust", (string)"SCALEROTATION");
             break;
 		case 356: // left arrow
+            setCamera = true;
             if (cameraPropToAdjust == "SCALEROTATION") {
                 camRotation -= rotationAdjustment;
 
@@ -464,6 +503,7 @@ void AppController::keyPressed(int key){
             }
 			break;
 		case 358: // right arrow
+            setCamera = true;
             if (cameraPropToAdjust == "SCALEROTATION") {
                 camRotation += rotationAdjustment;
             }
@@ -472,6 +512,7 @@ void AppController::keyPressed(int key){
             }
 			break;
         case 359: // up arrow
+            setCamera = true;
             if (cameraPropToAdjust == "SCALEROTATION") {
                 camScale -= scaleAdjustment;
             }
@@ -480,6 +521,7 @@ void AppController::keyPressed(int key){
             }
 			break;
 		case 357: // down arrow
+            setCamera = true;
             if (cameraPropToAdjust == "SCALEROTATION") {
                 camScale += scaleAdjustment;
             }
@@ -488,6 +530,7 @@ void AppController::keyPressed(int key){
             }
 			break;
         case 'r':
+            setCamera = true;
             camPositionX = 0.0f;
             camPositionY = 0.0f;
             camScale = 0.5f;
@@ -518,26 +561,27 @@ void AppController::keyPressed(int key){
 	_appModel->setProperty("shaderBlendRatio", blend);
 	_appModel->setProperty("shaderGammaCorrection", gamma);
 
-    _appModel->setProperty("camRotation"+cameraToAdjust, camRotation);
-    _appModel->setProperty("camScale"+cameraToAdjust, camScale);
-    _appModel->setProperty("camPositionX"+cameraToAdjust, camPositionX);
-    _appModel->setProperty("camPositionY"+cameraToAdjust, camPositionY);
+    if (setCamera) {
+        _appModel->setProperty("camRotation"+cameraToAdjust, camRotation);
+        _appModel->setProperty("camScale"+cameraToAdjust, camScale);
+        _appModel->setProperty("camPositionX"+cameraToAdjust, camPositionX);
+        _appModel->setProperty("camPositionY"+cameraToAdjust, camPositionY);
 
-    PosRotScale prs;
+        PosRotScale * prs = new PosRotScale();
 
-    prs.x           = camPositionX;
-    prs.y           = camPositionY;
-    prs.r           = camRotation;
-    prs.s           = camScale;
+        prs->x           = camPositionX;
+        prs->y           = camPositionY;
+        prs->r           = camRotation;
+        prs->s           = camScale;
 
-    //LOG_NOTICE(cameraPropToAdjust + " on camera " + cameraToAdjust);
+        //LOG_NOTICE(cameraPropToAdjust + " on camera " + cameraToAdjust);
 
-    if (cameraToAdjust == "0") {
-        _camControllers[0]->setCameraAttributes(prs); // could do this direct on model but seems more apt to go cia the cam controllers
-    } else {
-        _camControllers[1]->setCameraAttributes(prs); // could do this direct on model but seems more apt to go cia the cam controllers
+        if (cameraToAdjust == "0") {
+            _camControllers[0]->setCameraAttributes(prs); // could do this direct on model but seems more apt to go cia the cam controllers
+        } else {
+            _camControllers[1]->setCameraAttributes(prs); // could do this direct on model but seems more apt to go cia the cam controllers
+        }
     }
-
 
 }
 

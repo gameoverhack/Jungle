@@ -23,9 +23,9 @@ void main(){
 
 	vec4 sceneTexel, vic1Texel, atk1Texel, atk2Texel;
 
-	float atk1AlphaValue	= 104.0/255.0;
-	float vic1AlphaValue	= 178.0/255.0;
-	float atk2Alphavalue	= 226.0/255.0;
+	float atk2Alphavalue	= 104.0/255.0;
+	float atk1AlphaValue	= 104.0/255.0; // deal with this problem below for double attackers
+	float vic1AlphaValue	= 226.0/255.0;
 	float alphaDelta		= 0.2;
 
 
@@ -35,6 +35,8 @@ void main(){
 	atk1Texel	= texture2DRect(textures[2], gl_TexCoord[0].xy);
 
 	if(numTextures == 4) {
+        atk2Alphavalue	= 104.0/255.0;
+        atk1AlphaValue	= 178.0/255.0;  // dealing with the alpha problem
 		atk2Texel = texture2DRect(textures[3], gl_TexCoord[0].xy);
 	} else atk2Texel.rgba = vec4(0.0, 0.0, 0.0, 0.0); // fake null value
 

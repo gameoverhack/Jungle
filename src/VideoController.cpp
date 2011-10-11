@@ -18,6 +18,7 @@ VideoController::VideoController() {
 
 	_preRolling = false;
 	_forceCurrentLoad = false;
+	_lastFrameWhenForced = 0;
 	/* setup listeners for error and loadDone
 	goThreadedVideo * nextMovie = _appModel->getNextVideoPlayer();
 	goThreadedVideo * currentMovie = _appModel->getCurrentVideoPlayer();
@@ -62,12 +63,12 @@ void VideoController::registerStates() {
 
 void VideoController::update() {
 
-	if (_forceCurrentLoad) forceUpdate();
-
 	// update the current currentMovie/videoplayer
 	goThreadedVideo * currentMovie		= _appModel->getCurrentVideoPlayer();
 	Scene			* currentScene		= _appModel->getCurrentScene();
 	Sequence		* currentSequence	= _appModel->getCurrentSequence();
+
+    if (_forceCurrentLoad || (currentSequence->getNumber() == 0 && _preRolling)) forceUpdate();
 
 	currentMovie->update();
 
@@ -103,7 +104,7 @@ void VideoController::update() {
 		}
 
 	}
-
+//|| (currentSequence->getNumber() == 0 && checkState(kVIDCONTROLLER_NEXTVIDREADY))
 	if (currentMovie->getIsMovieDone()) {
 		toggleVideoPlayers(_lastFrameWhenForced);
 		_lastFrameWhenForced = 0;
@@ -154,6 +155,20 @@ void VideoController::toggleVideoPlayers(int lastFrameWhenForced) {
 //	currentMovie->close();		// and this is the last movie!
 
 
+}
+
+void VideoController::reset() {
+    _preRolling = false;
+	_forceCurrentLoad = false;
+	_lastFrameWhenForced = 0;
+	goThreadedVideo * nextMovie = _appModel->getNextVideoPlayer();
+	goThreadedVideo * currentMovie = _appModel->getCurrentVideoPlayer();
+    ofRemoveListener(nextMovie->success, this, &VideoController::loaded);
+	ofRemoveListener(nextMovie->error, this, &VideoController::error);
+    ofRemoveListener(currentMovie->success, this, &VideoController::loaded);
+	ofRemoveListener(currentMovie->error, this, &VideoController::error);
+	nextMovie->close();
+	currentMovie->close();
 }
 
 void VideoController::loaded(string & path) {

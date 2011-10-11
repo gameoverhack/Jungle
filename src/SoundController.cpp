@@ -7,18 +7,29 @@ SoundController::SoundController() {
 
 SoundController::~SoundController() {
     LOG_NOTICE("Destroying SoundController");
+
+    if (_currentFade != NULL) {
+        delete _currentFade;
+        _currentFade = NULL;
+    }
+
+    _player.stop();
+    _player.unloadSound();
+
 }
 
 void SoundController::update() {
 
     Sequence * currentSequence = _appModel->getCurrentSequence();
 
-    if (currentSequence->getNumber() == 1 || currentSequence->getNumber() == 8 && currentSequence->getType() != "loop" &&  currentSequence->getType() != "b") {
-        if (_appModel->getCurrentSequenceFrame() > currentSequence->getNumFrames() - (25 * 2) && _currentFade == NULL) {
-            fade(1.0, 2000, FADE_LOG);
+    int fadeSecs = 2;
+
+    if ((currentSequence->getNumber() == 1 || currentSequence->getNumber() == 8) && currentSequence->getType() != "loop" &&  currentSequence->getType() != "b") {
+        if (_appModel->getCurrentSequenceFrame() > currentSequence->getNumFrames() - (25 * fadeSecs) && _currentFade == NULL) {
+            fade(1.0, fadeSecs * 1000, FADE_LOG);
         }
-        if (_appModel->getCurrentSequenceFrame() > 0 && _currentFade == NULL) {
-            fade(0.0, 2000, FADE_LOG);
+        if (_appModel->getCurrentSequenceFrame() > 0 && _appModel->getCurrentSequenceFrame() < 25*fadeSecs-1 && _currentFade == NULL) {
+            fade(0.0, fadeSecs * 1000, FADE_LOG);
         }
     }
 
@@ -30,14 +41,13 @@ void SoundController::update() {
             delete _currentFade;
             _currentFade = NULL;
         }
-
     }
 }
 
 void SoundController::loadSound(Scene * scene) {
     LOG_NOTICE("Attempting to load scene background sound...");
     if (_player.getIsPlaying()) _player.stop();
-    string path = boost::any_cast<string>(_appModel->getProperty("audioDataPath")) + "/" + scene->getName() + ".wav";
+    string path = boost::any_cast<string>(_appModel->getProperty("audioDataPath")) + "/" + "backgroundAudio.wav"; // + scene->getName() + ".wav";
     LOG_NOTICE(path);
     _player.loadSound(path);
     _player.setLoop(true);

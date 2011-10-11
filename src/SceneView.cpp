@@ -51,7 +51,6 @@ void SceneView::update() {
      ********************************************************/
 
 	goThreadedVideo * currentMovie  = _appModel->getCurrentVideoPlayer(); //getCurrentSequence()->getMovie();
-	PosRotScale     * camAttributes = _appModel->getCameraAttributes();
 	ofTexture		* sceneTexture;
 	CamTransform	* actorTransform;
 
@@ -73,13 +72,33 @@ void SceneView::update() {
      ********************************************************/
 
 	if(_appModel->getCurrentIsFrameNew()){
-		// draw characters faces to new positions
-		// TODO: This needs to be smarter
-		drawCharacter(&_vic1FBO, _appModel->getVictimCamTexRef(), &(_appModel->getCurrentSequence()->getTransformVector("vic1")->at(currentFrame)), camAttributes[0]);
-		drawCharacter(&_atk1FBO, _appModel->getAttackCamTexRef(), &(_appModel->getCurrentSequence()->getTransformVector("atk1")->at(currentFrame)), camAttributes[1]);
+
+		ofTexture * victimTex;
+		ofTexture * attackTex;
+        PosRotScale * victimPRS;
+        PosRotScale * attackPRS;
+
+		if (_appModel->getFacePresent(0)) {
+            victimTex = _appModel->getVictimCamTexRef();
+            victimPRS = _appModel->getCameraAttributes(0);
+		} else {
+		    victimTex = _appModel->getFakeVictimCamTexRef();
+		    victimPRS = _appModel->getFakeAttributes(0);
+		}
+
+        if (_appModel->getFacePresent(1)) {
+            attackTex = _appModel->getAttackCamTexRef();
+            attackPRS = _appModel->getCameraAttributes(1);
+		} else {
+		    attackTex = _appModel->getFakeAttackCamTexRef();
+		    attackPRS = _appModel->getFakeAttributes(1);
+		}
+
+		drawCharacter(&_vic1FBO, victimTex, &(_appModel->getCurrentSequence()->getTransformVector("vic1")->at(currentFrame)), victimPRS);
+		drawCharacter(&_atk1FBO, attackTex, &(_appModel->getCurrentSequence()->getTransformVector("atk1")->at(currentFrame)), attackPRS);
 
 		if (_appModel->getCurrentSequence()->getTransformCount() > 2) {
-			drawCharacter(&_atk2FBO, _appModel->getAttackCamTexRef(), &(_appModel->getCurrentSequence()->getTransformVector("atk2")->at(currentFrame)), camAttributes[1]);
+			drawCharacter(&_atk2FBO, attackTex, &(_appModel->getCurrentSequence()->getTransformVector("atk2")->at(currentFrame)), attackPRS);
 		}
 	}
 
@@ -137,12 +156,12 @@ void SceneView::update() {
 void SceneView::drawCharacter(ofxFbo * targetFBO,
 							  ofTexture * faceTexture,
 							  CamTransform *transform,
-							  PosRotScale prs) {
+							  PosRotScale * prs) {
 #else
 void SceneView::drawCharacter(ofFbo * targetFBO,
 							  ofTexture * faceTexture,
 							  CamTransform *transform,
-							  PosRotScale prs) {
+							  PosRotScale * prs) {
 #endif
 
     float width  = faceTexture->getWidth();
@@ -168,7 +187,7 @@ void SceneView::drawCharacter(ofFbo * targetFBO,
 	if (scaleMethod == 0) {
         sclX = ABS(transform->scaleX);
 	} else {
-        sclX = transform->w/640.0f;
+        sclX = transform->w/400.0f;
 	}
 
 	float sclY = sclX;
@@ -208,10 +227,10 @@ void SceneView::drawCharacter(ofFbo * targetFBO,
 	//glScalef(-1.0f, 1.0f, 1.0f);
 	//rot = -rot;
 
-    glTranslatef(width/2.0f + prs.x, height/2.0f + prs.y, 0.0f);
-    glScalef(prs.s, prs.s, 1.0f);
-    glRotatef(prs.r, 0.0f, 0.0f, 1.0f);
-    glTranslatef(-width/2.0f - prs.x, -height/2.0f - prs.y, 0.0f);
+    glTranslatef(width/2.0f + prs->x, height/2.0f + prs->y, 0.0f);
+    glScalef(prs->s, prs->s, 1.0f);
+    glRotatef(prs->r, 0.0f, 0.0f, 1.0f);
+    glTranslatef(-width/2.0f - prs->x, -height/2.0f - prs->y, 0.0f);
 
 	// draw face texture
 	faceTexture->draw(0,0);

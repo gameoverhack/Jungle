@@ -100,12 +100,12 @@ public:
     void                allocateARDCyclicBuffer(int ardCyclicBufferSize);
     void                allocateARDNoiseFloor();
     void                allocateARDCyclicSum();
-    void                allocateARDPostFilter();
+    void                setARDPostFilter(float val);
 
     float *             getARDCyclicBuffer();
     float *             getARDNoiseFloor();
     float *             getARDCyclicSum();
-    float *             getARDPostFilter();
+    float               getARDPostFilter();
 
     // audio/mic getter/setters
     void                setFFTArea(float area);
@@ -138,7 +138,16 @@ public:
 	void		        setCameraTextures(ofTexture * victimCamTex, ofTexture * attackCamTex);
 	ofTexture *         getVictimCamTexRef();
 	ofTexture *         getAttackCamTexRef();
-	PosRotScale *       getCameraAttributes();
+	ofTexture *         getFakeVictimCamTexRef();
+    ofTexture *         getFakeAttackCamTexRef();
+
+    goVideoPlayer *     getFakeVictimPlayer();
+    goVideoPlayer *     getFakeAttackPlayer();
+
+    void                setCameraAttributes(int which, PosRotScale * prs);
+    void                setFakeAttributes(int which, PosRotScale * prs);
+    PosRotScale *       getCameraAttributes(int which);
+    PosRotScale *       getFakeAttributes(int which);
 
     // video player getter/setters
     goThreadedVideo *	getCurrentVideoPlayer();
@@ -174,6 +183,13 @@ public:
 
 	void				printAllScenes();
 
+    void                setFacePresent(int face, bool isPresent) {_isFacePresent[face] = isPresent;};
+    bool                getFacePresent(int face) {return _isFacePresent[face];};
+    bool                getAnyFacePresent() {return _isFacePresent[0] || _isFacePresent[1];};
+
+    void                setLastActionTime(int time) {_lastActionTime = time;};
+    int                 getLastActionTime() {return _lastActionTime;};
+
 private:
 
 	inline string	    pad(string & objectName);
@@ -194,10 +210,12 @@ private:
     // camera vars
 	ofTexture *					_victimCamTex;
 	ofTexture *					_attackCamTex;
-	PosRotScale *               _cameraPRS;
+	PosRotScale *               _cameraPRS[2];
+	PosRotScale *               _fakePRS[2];
 
     // video vars
 	goThreadedVideo *			_videoPlayers[2];
+	goVideoPlayer *             _fakePlayers[2];
 	int							_currentSequenceFrame;
 	int                         _lastSequenceFrame;
 	int                         _currentSceneFrame; // not inlcuding loops and bs
@@ -213,7 +231,7 @@ private:
 
     float *                     _ardNoiseFloor;
     float *                     _ardCyclicSum;
-	float *                     _ardPostFilter;
+	float                       _ardPostFilter;
 
     // audio/fft vars
     float                       _fftArea;
@@ -236,6 +254,9 @@ private:
     // interactivity vars
     int                         _currentInteractivity;
     float                       _currentSequenceLevel;
+
+    bool                        _isFacePresent[2];
+    int                         _lastActionTime;
 
 };
 

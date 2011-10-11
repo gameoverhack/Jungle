@@ -127,20 +127,20 @@ void MicController::audioReceived(float* input, int bufferSize, int nChannels) {
 
         // calculate the Noise Floor (average of sum of all bands across the cyclic buffer, and
         // and simultaneously calculate the Adaptive Noise Reduced FFT, storing it on the model
-        for (int j = 0; j < _fft->getBinSize(); j++) {
+        for (int j = 10; j < _fft->getBinSize(); j++) {
             fftNoiseFloor[j] = fftCyclicSum[j]/(float)_fftCyclicBufferSize;
-            fftPostFilter[j] = fftInput[j] - fftNoiseFloor[j]*1.2f;
+            fftPostFilter[j] = fftInput[j] - fftNoiseFloor[j];
         }
 
         float area = 0;
 
         for (int i = 10; i < _fft->getBinSize(); i++) {
-            float h = fftNoiseFloor[i]; //fftPostFilter[i]; // this is wrong but i like it!!
+            float h = fftPostFilter[i]; //fftNoiseFloor[i]; // this is wrong but i used to like it!!
             float w = 2.0f;
             area += w*h;
         }
 
-        area = sqrt(area) - 0.1f; //TODO: make prop
+        area = sqrt(area) - 0.2f; //TODO: make prop
 
         _appModel->setFFTArea(area);
 
