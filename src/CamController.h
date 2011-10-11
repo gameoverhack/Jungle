@@ -58,8 +58,9 @@ public:
 	int			getInstanceID();
 	void		setInstanceID(int instanceID);
     void        setCameraAttributes(PosRotScale * prs);
+    void        setFakeAttributes(PosRotScale * prs);
 
-	ofTexture	* getCamTextureRef();
+	ofTexture* getCamTextureRef();
 
     bool                    _doFaceDetection;
     bool                    _doFaceTracking;

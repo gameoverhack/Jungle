@@ -25,8 +25,8 @@ AppController::~AppController() {
 #ifndef USE_DUMMY
 #ifdef TARGET_WIN32
     // save cam props
-	_camControllers[0]->saveSettings();
-	_camControllers[1]->saveSettings();
+	//_camControllers[0]->saveSettings();
+	//_camControllers[1]->saveSettings();
 #endif
 #endif
 	_dataController->saveProperties();
@@ -66,24 +66,6 @@ void AppController::setup() {
 
 	// set up datacontroller
 	_dataController = new DataController(ofToDataPath("config_properties.xml"));
-
-	// set fake position attributes
-    for (int i = 0; i < 2; i++) {
-        float fakeRotation           = boost::any_cast<float>(_appModel->getProperty("fakeRotation" + ofToString(i)));
-        float fakeScale              = boost::any_cast<float>(_appModel->getProperty("fakeScale" + ofToString(i)));
-        float fakePositionX          = boost::any_cast<float>(_appModel->getProperty("fakePositionX" + ofToString(i)));
-        float fakePositionY          = boost::any_cast<float>(_appModel->getProperty("fakePositionY" + ofToString(i)));
-
-        PosRotScale * prs = new PosRotScale();
-
-        prs->x           = fakePositionX;
-        prs->y           = fakePositionY;
-        prs->r           = fakeRotation;
-        prs->s           = fakeScale;
-
-        _appModel->setFakeAttributes(i, prs);
-
-    }
 
     // setup background sound controller
     _soundController = new SoundController();
@@ -251,7 +233,9 @@ void AppController::update() {
 
 			// force load using _switchToSequence var which will be caught below when the movie is fully loaded...
 			_switchToSequence = currentScene->getCurrentSequence();
-			_soundController->loadSound(currentScene);
+            _camControllers[0]->loadAttributes();
+            _camControllers[1]->loadAttributes();
+			_soundController->loadSound();
 			_soundController->fade(1.0, 2000, FADE_LOG);
 			_vidController->loadMovie(_switchToSequence, true);
 			_appModel->setState(kAPP_RUNNING);
@@ -339,11 +323,14 @@ void AppController::nextScene() {
 
     Scene* currentScene = _appModel->getCurrentScene();
     // rewind last scene
-    currentScene->rewindScene();
+    if (currentScene != NULL) currentScene->rewindScene();
     // load next scene
     _appModel->nextScene();
     _vidController->reset();
+
     currentScene = _appModel->getCurrentScene();
+    _camControllers[0]->loadAttributes();
+    _camControllers[1]->loadAttributes();
     _switchToSequence = currentScene->getCurrentSequence();
     //_soundController->loadSound(currentScene);
     //_soundController->fade(1.0, 2000, FADE_LOG);
@@ -366,6 +353,22 @@ void AppController::draw() {
 //--------------------------------------------------------------
 void AppController::keyPressed(int key){
 
+    LOG_VERBOSE("Key pressed: " + key);
+
+    PosRotScale * prsToAdjust[2];
+
+    if (_appModel->getFacePresent(0)) {
+        prsToAdjust[0] = _appModel->getCameraAttributes(0);
+    } else {
+        prsToAdjust[0] = _appModel->getFakeAttributes(0);
+    }
+
+    if (_appModel->getFacePresent(1)) {
+        prsToAdjust[1] = _appModel->getCameraAttributes(1);
+    } else {
+        prsToAdjust[1] = _appModel->getFakeAttributes(1);
+    }
+
 	float gamma                 = boost::any_cast<float>(_appModel->getProperty("shaderGammaCorrection"));
 	float blend                 = boost::any_cast<float>(_appModel->getProperty("shaderBlendRatio"));
 	bool showUnmask             = boost::any_cast<bool>(_appModel->getProperty("showUnmaskedTextures"));
@@ -375,22 +378,14 @@ void AppController::keyPressed(int key){
     bool showDebug              = boost::any_cast<bool>(_appModel->getProperty("showDebugView"));
     bool showCameras            = boost::any_cast<bool>(_appModel->getProperty("showCameras"));
     int scaleMethod             = boost::any_cast<int>(_appModel->getProperty("tryScaleMethod"));
-    string cameraToAdjust       = boost::any_cast<string>(_appModel->getProperty("cameraToAdjust"));
+    int cameraToAdjust          = boost::any_cast<int>(_appModel->getProperty("cameraToAdjust"));
     string cameraPropToAdjust   = boost::any_cast<string>(_appModel->getProperty("cameraPropToAdjust"));
-    float camRotation           = boost::any_cast<float>(_appModel->getProperty("camRotation"+cameraToAdjust));
-    float camScale              = boost::any_cast<float>(_appModel->getProperty("camScale"+cameraToAdjust));
-    float camPositionX          = boost::any_cast<float>(_appModel->getProperty("camPositionX"+cameraToAdjust));
-    float camPositionY          = boost::any_cast<float>(_appModel->getProperty("camPositionY"+cameraToAdjust));
 
     float rotationAdjustment    = 0.5f;
     float scaleAdjustment       = 0.01f;
     float positionAdjustment    = 5.0f;
 
     float fakeInput             = 1024.0f; // this could be faked more realistically using time between keys etc -> will do for now
-
-    bool setCamera = false;
-
-    LOG_VERBOSE("Key pressed: " + key);
 
 	switch (key) {
 #ifndef USE_DUMMY
@@ -404,6 +399,8 @@ void AppController::keyPressed(int key){
         case 'c':
 			_camControllers[0]->saveSettings();
 			_camControllers[1]->saveSettings();
+            _camControllers[0]->saveAttributes();
+			_camControllers[1]->saveAttributes();
 			break;
         case 'v':
 			_camControllers[0]->loadSettings();
@@ -477,10 +474,10 @@ void AppController::keyPressed(int key){
             _appModel->getCurrentVideoPlayer()->previousFrame();
 			break;
         case '1':
-            _appModel->setProperty("cameraToAdjust", (string)"0");
+            _appModel->setProperty("cameraToAdjust", 0);
             break;
         case '2':
-            _appModel->setProperty("cameraToAdjust", (string)"1");
+            _appModel->setProperty("cameraToAdjust", 1);
             break;
         case '5':
             _appModel->setProperty("cameraPropToAdjust", (string)"POSITION");
@@ -489,48 +486,43 @@ void AppController::keyPressed(int key){
             _appModel->setProperty("cameraPropToAdjust", (string)"SCALEROTATION");
             break;
 		case 356: // left arrow
-            setCamera = true;
             if (cameraPropToAdjust == "SCALEROTATION") {
-                camRotation -= rotationAdjustment;
+                prsToAdjust[cameraToAdjust]->r -= rotationAdjustment;
 
             }
             if (cameraPropToAdjust == "POSITION") {
-                camPositionX -= positionAdjustment;
+                prsToAdjust[cameraToAdjust]->x -= positionAdjustment;
             }
 			break;
 		case 358: // right arrow
-            setCamera = true;
             if (cameraPropToAdjust == "SCALEROTATION") {
-                camRotation += rotationAdjustment;
+                prsToAdjust[cameraToAdjust]->r += rotationAdjustment;
             }
             if (cameraPropToAdjust == "POSITION") {
-                camPositionX += positionAdjustment;
+                prsToAdjust[cameraToAdjust]->x += positionAdjustment;
             }
 			break;
         case 359: // up arrow
-            setCamera = true;
             if (cameraPropToAdjust == "SCALEROTATION") {
-                camScale -= scaleAdjustment;
+                prsToAdjust[cameraToAdjust]->s -= scaleAdjustment;
             }
             if (cameraPropToAdjust == "POSITION") {
-                camPositionY -= positionAdjustment;
+                prsToAdjust[cameraToAdjust]->y -= positionAdjustment;
             }
 			break;
 		case 357: // down arrow
-            setCamera = true;
             if (cameraPropToAdjust == "SCALEROTATION") {
-                camScale += scaleAdjustment;
+                prsToAdjust[cameraToAdjust]->s += scaleAdjustment;
             }
             if (cameraPropToAdjust == "POSITION") {
-                camPositionY += positionAdjustment;
+                prsToAdjust[cameraToAdjust]->y += positionAdjustment;
             }
 			break;
         case 'r':
-            setCamera = true;
-            camPositionX = 0.0f;
-            camPositionY = 0.0f;
-            camScale = 0.5f;
-            camRotation = 0.0f;
+            prsToAdjust[cameraToAdjust]->x = 0.0f;
+            prsToAdjust[cameraToAdjust]->y = 0.0f;
+            prsToAdjust[cameraToAdjust]->s = 0.5f;
+            prsToAdjust[cameraToAdjust]->r = 0.0f;
             break;
 		case 'h':
 			_appModel->setProperty("showUnmaskedTextures", !showUnmask);
@@ -550,34 +542,15 @@ void AppController::keyPressed(int key){
              _camControllers[0]->_doFaceDetection ^= true;
              _camControllers[1]->_doFaceDetection ^= true;
             break;
+        case 'j':
+             nextScene();
+            break;
 		default:
 			break;
 	}
 
 	_appModel->setProperty("shaderBlendRatio", blend);
 	_appModel->setProperty("shaderGammaCorrection", gamma);
-
-    if (setCamera) {
-        _appModel->setProperty("camRotation"+cameraToAdjust, camRotation);
-        _appModel->setProperty("camScale"+cameraToAdjust, camScale);
-        _appModel->setProperty("camPositionX"+cameraToAdjust, camPositionX);
-        _appModel->setProperty("camPositionY"+cameraToAdjust, camPositionY);
-
-        PosRotScale * prs = new PosRotScale();
-
-        prs->x           = camPositionX;
-        prs->y           = camPositionY;
-        prs->r           = camRotation;
-        prs->s           = camScale;
-
-        //LOG_NOTICE(cameraPropToAdjust + " on camera " + cameraToAdjust);
-
-        if (cameraToAdjust == "0") {
-            _camControllers[0]->setCameraAttributes(prs); // could do this direct on model but seems more apt to go cia the cam controllers
-        } else {
-            _camControllers[1]->setCameraAttributes(prs); // could do this direct on model but seems more apt to go cia the cam controllers
-        }
-    }
 
 }
 

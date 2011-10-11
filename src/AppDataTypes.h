@@ -65,12 +65,18 @@ private:
 
 public:
 
-    PosRotScale(){};
+    PosRotScale(){
+        x = 0.0f;
+        y = 0.0f;
+        s = 0.5f;
+        r = 0.0f;
+    };
 
 	float x;
 	float y;
 	float r;
 	float s;
+
 	string print(bool log) {
 	    string out = "PRS: x = " + ofToString(x) + " y = " + ofToString(y) + " r = " + ofToString(r) + " s = " + ofToString(s);
 	    if (log) cout << out << endl;

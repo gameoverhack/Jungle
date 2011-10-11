@@ -25,10 +25,10 @@ void SoundController::update() {
     int fadeSecs = 2;
 
     if ((currentSequence->getNumber() == 1 || currentSequence->getNumber() == 8) && currentSequence->getType() != "loop" &&  currentSequence->getType() != "b") {
-        if (_appModel->getCurrentSequenceFrame() > currentSequence->getNumFrames() - (25 * fadeSecs) && _currentFade == NULL) {
+        if (_appModel->getCurrentSequenceFrame() > currentSequence->getNumFrames() - (12 * fadeSecs) && _currentFade == NULL) {
             fade(1.0, fadeSecs * 1000, FADE_LOG);
         }
-        if (_appModel->getCurrentSequenceFrame() > 0 && _appModel->getCurrentSequenceFrame() < 25*fadeSecs-1 && _currentFade == NULL) {
+        if (_appModel->getCurrentSequenceFrame() > 0 && _appModel->getCurrentSequenceFrame() < 12*fadeSecs-1 && _currentFade == NULL) {
             fade(0.0, fadeSecs * 1000, FADE_LOG);
         }
     }
@@ -45,7 +45,7 @@ void SoundController::update() {
     }
 }
 
-void SoundController::loadSound(Scene * scene) {
+void SoundController::loadSound() {
     LOG_NOTICE("Attempting to load scene background sound...");
     if (_player.getIsPlaying()) _player.stop();
     string path = boost::any_cast<string>(_appModel->getProperty("audioDataPath")) + "/" + "backgroundAudio.wav"; // + scene->getName() + ".wav";

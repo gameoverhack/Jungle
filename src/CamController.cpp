@@ -37,10 +37,7 @@ CamController::CamController() {
 //--------------------------------------------------------------
 CamController::~CamController() {
 	LOG_NOTICE("Destruction");
-#ifdef TARGET_WIN32
-	saveSettings();
-#endif
-	saveAttributes();
+	//saveAttributes();
 	stopThread();
 	_cam.close();
 }
@@ -75,7 +72,7 @@ bool CamController::setup(int deviceID, int w, int h){
 #endif
 #endif
 
-    loadAttributes();
+    //loadAttributes();
 
     _doFaceDetection = true;
     _doFaceTracking = false;
@@ -109,7 +106,7 @@ bool CamController::setup(string deviceID, int w, int h){
 	_cam.setDeviceID(deviceID);
 	_cam.initGrabber(w, h, true);
 
-    loadAttributes();
+    //loadAttributes();
 
     _doFaceDetection = true;
     _doFaceTracking = false;
@@ -188,39 +185,54 @@ void CamController::saveSettings() {
 
 void CamController::loadAttributes() {
 
-    float camRotation           = boost::any_cast<float>(_appModel->getProperty("camRotation" + ofToString(_instanceID)));
-    float camScale              = boost::any_cast<float>(_appModel->getProperty("camScale" + ofToString(_instanceID)));
-    float camPositionX          = boost::any_cast<float>(_appModel->getProperty("camPositionX" + ofToString(_instanceID)));
-    float camPositionY          = boost::any_cast<float>(_appModel->getProperty("camPositionY" + ofToString(_instanceID)));
+    LOG_NOTICE("Loading Camera Attributes for instance: " + ofToString(_instanceID));
 
-    PosRotScale * prs = new PosRotScale();
+    Scene * currentScene = _appModel->getCurrentScene();
 
-    prs->x           = camPositionX;
-    prs->y           = camPositionY;
-    prs->r           = camRotation;
-    prs->s           = camScale;
+    string sceneName = currentScene->getName();
+    string scenePath = boost::any_cast<string>(_appModel->getProperty("scenesDataPath")) + "/" + sceneName + "/" + sceneName + "_";
 
-    setCameraAttributes(prs);
+    PosRotScale * prsC = new PosRotScale();
+    loadClass(scenePath + "cameraAttributes" + ofToString(_instanceID) + ".bin", prsC);
+
+    PosRotScale * prsF = new PosRotScale();
+    loadClass(scenePath + "fakeAttributes" + ofToString(_instanceID) + ".bin", prsF);
+
+    setCameraAttributes(prsC);
+    setFakeAttributes(prsF);
 
 }
 
 void CamController::saveAttributes() {
 
-    PosRotScale * prs = _appModel->getCameraAttributes(_instanceID);
+    LOG_NOTICE("Saving Camera Attributes for instance: " + ofToString(_instanceID));
 
-    _appModel->setProperty("camRotation" + ofToString(_instanceID), prs->r);
-    _appModel->setProperty("camScale" + ofToString(_instanceID), prs->s);
-    _appModel->setProperty("camPositionX" + ofToString(_instanceID), prs->x);
-    _appModel->setProperty("camPositionY" + ofToString(_instanceID), prs->y);
+    Scene * currentScene = _appModel->getCurrentScene();
 
-    // save to drive here or just let it happen on quit??
+    string sceneName = currentScene->getName();
+    string scenePath = boost::any_cast<string>(_appModel->getProperty("scenesDataPath")) + "/" + sceneName + "/" + sceneName + "_";
+
+    PosRotScale * prsC = _appModel->getCameraAttributes(_instanceID);
+    saveClass(scenePath + "cameraAttributes" + ofToString(_instanceID) + ".bin", prsC);
+
+    PosRotScale * prsF = _appModel->getFakeAttributes(_instanceID);
+    saveClass(scenePath + "fakeAttributes" + ofToString(_instanceID) + ".bin", prsF);
+
 }
 
 void CamController::setCameraAttributes(PosRotScale * prs) {
 
-    LOG_NOTICE("Saving [" + prs->print(false) + "]");
+    LOG_NOTICE("Setting Camera Attributes[" + prs->print(false) + "]");
 
     _appModel->setCameraAttributes(_instanceID, prs);
+
+}
+
+void CamController::setFakeAttributes(PosRotScale * prs) {
+
+    LOG_NOTICE("Setting Fake Attributes [" + prs->print(false) + "]");
+
+    _appModel->setFakeAttributes(_instanceID, prs);
 
 }
 

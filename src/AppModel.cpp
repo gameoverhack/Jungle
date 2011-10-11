@@ -176,13 +176,11 @@ ofTexture * AppModel::getAttackCamTexRef() {
 
 //--------------------------------------------------------------
 void AppModel::setCameraAttributes(int which, PosRotScale * prs) {
-    delete _cameraPRS[which];
     _cameraPRS[which] = prs;
 }
 
 //--------------------------------------------------------------
 void AppModel::setFakeAttributes(int which, PosRotScale * prs) {
-    delete _fakePRS[which];
     _fakePRS[which] = prs;
 }
 
