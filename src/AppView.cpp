@@ -74,7 +74,7 @@ void AppView::draw() {
 
 	if(_appModel->checkState(kAPP_LOADING)){
 		_loadingView->draw(0, height, width, -height);
-		glPopMatrix();
+		// glPopMatrix(); // un-needed? ollie 11/10/11
 	} else {
 
 		// composite all views
