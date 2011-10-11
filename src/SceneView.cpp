@@ -34,9 +34,19 @@ SceneView::SceneView(float width, float height) : BaseView(width ,height) {
     _atk1FBO.allocate(_viewWidth, _viewHeight);
     _atk2FBO.allocate(_viewWidth, _viewHeight);
 #endif
+
+#ifndef OPTIMISED
+	// if not optimised, load unoptimised shader.
 	// set up shader
 	string vertPath = boost::any_cast<string>(_appModel->getProperty("shaderHeadVertPath"));
 	string fragPath = boost::any_cast<string>(_appModel->getProperty("shaderHeadFragPath"));
+#else
+	// else load up optimised shader with hard coded values
+	// TODO_OPTIMISED
+	string vertPath = boost::any_cast<string>(_appModel->getProperty("shaderOptimisedHeadVertPath"));
+	string fragPath = boost::any_cast<string>(_appModel->getProperty("shaderOptimisedHeadFragPath"));
+#endif
+	
 #if OF_VERSION < 7
 	_shader.setup(ofToDataPath(vertPath), ofToDataPath(fragPath));
 #else
@@ -129,11 +139,18 @@ void SceneView::update() {
 #endif
 		numTextures++;
 	}
+
 	_shader.setUniform1i("numTextures", numTextures);
+	
+#ifndef OPTIMISED
+	// if not optimised, load stuff from properties, else it has been hard coded into optimised shader
 	_shader.setUniform1i("showUnmaskedTextures", (int)boost::any_cast<bool>(_appModel->getProperty("showUnmaskedTextures")));
 	_shader.setUniform1f("blendRatio", boost::any_cast<float>(_appModel->getProperty("shaderBlendRatio")));
 	_shader.setUniform1f("gammaCorrection", boost::any_cast<float>(_appModel->getProperty("shaderGammaCorrection")));
-
+#else
+	// shader values are hard coded
+#endif
+	
     glPushMatrix();
 
     // scale to screen
@@ -182,8 +199,13 @@ void SceneView::drawCharacter(ofFbo * targetFBO,
 	float rot = transform->rotation;
 
 	float sclX;
-
+	
+#ifndef OPTIMISED
+	// if not optimised, get scale method
 	int scaleMethod = boost::any_cast<int>(_appModel->getProperty("tryScaleMethod"));
+#else
+	int scaleMethod = 1; // TODO_OPTIMISED
+#endif
 	if (scaleMethod == 0) {
         sclX = ABS(transform->scaleX);
 	} else {

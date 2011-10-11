@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		0764C7B61441AF670068D456 /* TestController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0764C7B51441AF670068D456 /* TestController.cpp */; };
 		0783FE0214416EB100890A55 /* opencv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0783FE0114416EB100890A55 /* opencv.a */; };
+		07FC43F7144403CA00A8B7D5 /* leveltextureblend.frag in Sources */ = {isa = PBXBuildFile; fileRef = 07FC43F4144403CA00A8B7D5 /* leveltextureblend.frag */; };
+		07FC43F8144403CA00A8B7D5 /* leveltexturevertex.vert in Sources */ = {isa = PBXBuildFile; fileRef = 07FC43F5144403CA00A8B7D5 /* leveltexturevertex.vert */; };
+		07FC43F9144403CA00A8B7D5 /* multitexturemerge_optimised.frag in Sources */ = {isa = PBXBuildFile; fileRef = 07FC43F6144403CA00A8B7D5 /* multitexturemerge_optimised.frag */; };
 		775000E613E672D500DC545B /* libboost_regex-xgcc42-mt-1_46_1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7750E02613E672D000DC545B /* libboost_regex-xgcc42-mt-1_46_1.a */; };
 		775000E713E672D500DC545B /* libboost_serialization-xgcc42-mt-1_46_1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7750E02713E672D000DC545B /* libboost_serialization-xgcc42-mt-1_46_1.a */; };
 		7750028413E6796800DC545B /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7750028213E6796800DC545B /* CoreVideo.framework */; };
@@ -142,6 +145,9 @@
 		0764C7B41441AF670068D456 /* TestController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestController.h; sourceTree = "<group>"; };
 		0764C7B51441AF670068D456 /* TestController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestController.cpp; sourceTree = "<group>"; };
 		0783FE0114416EB100890A55 /* opencv.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = opencv.a; path = ../../../addons/ofxOpenCv/libs/opencv/lib/osx/opencv.a; sourceTree = SOURCE_ROOT; };
+		07FC43F4144403CA00A8B7D5 /* leveltextureblend.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = leveltextureblend.frag; path = bin/data/leveltextureblend.frag; sourceTree = SOURCE_ROOT; };
+		07FC43F5144403CA00A8B7D5 /* leveltexturevertex.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = leveltexturevertex.vert; path = bin/data/leveltexturevertex.vert; sourceTree = SOURCE_ROOT; };
+		07FC43F6144403CA00A8B7D5 /* multitexturemerge_optimised.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = multitexturemerge_optimised.frag; path = bin/data/multitexturemerge_optimised.frag; sourceTree = SOURCE_ROOT; };
 		7750012A13E6738200DC545B /* ofxThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxThread.h; sourceTree = "<group>"; };
 		7750028213E6796800DC545B /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
 		7750028313E6796800DC545B /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
@@ -639,6 +645,9 @@
 		7750040E13E6A36F00DC545B /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
+				07FC43F4144403CA00A8B7D5 /* leveltextureblend.frag */,
+				07FC43F5144403CA00A8B7D5 /* leveltexturevertex.vert */,
+				07FC43F6144403CA00A8B7D5 /* multitexturemerge_optimised.frag */,
 				775003A913E69F7600DC545B /* multitexturemerge.frag */,
 				775003AA13E69F7600DC545B /* vertex.vert */,
 			);
@@ -2811,6 +2820,9 @@
 				7753BC4B1438398F002F7A0D /* Wrappers.cpp in Sources */,
 				775DF425144161340001DCC3 /* SoundController.cpp in Sources */,
 				0764C7B61441AF670068D456 /* TestController.cpp in Sources */,
+				07FC43F7144403CA00A8B7D5 /* leveltextureblend.frag in Sources */,
+				07FC43F8144403CA00A8B7D5 /* leveltexturevertex.vert in Sources */,
+				07FC43F9144403CA00A8B7D5 /* multitexturemerge_optimised.frag in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
