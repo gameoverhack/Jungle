@@ -25,29 +25,29 @@
         <property name="fakeScale1" type="float">0.7</property>
         <property name="fakeToAdjust" type="string">0</property>
         <property name="flashDataPath" type="string">E:/gameoverload/VideoProjects/Jungle/finalALL/flash</property>
-        <property name="fullScreen" type="bool">true</property>
+        <property name="fullScreen" type="bool">false</property>
         <property name="graphicDataPath" type="string">graphics</property>
         <property name="loadingMessage" type="string">STATE == kANAL_READY (0) :: </property>
         <property name="loadingProgress" type="float">0.1</property>
         <property name="propBacklightCompensation_0" type="int">0</property>
         <property name="propBacklightCompensation_1" type="int">0</property>
         <property name="propBacklightCompensation_2" type="int">0</property>
-        <property name="propBrightness_0" type="int">102</property>
+        <property name="propBrightness_0" type="int">128</property>
         <property name="propBrightness_1" type="int">148</property>
         <property name="propBrightness_2" type="int">128</property>
         <property name="propColorEnable_0" type="int">11857919</property>
         <property name="propColorEnable_1" type="int">11784895</property>
         <property name="propColorEnable_2" type="int">3330928</property>
-        <property name="propContrast_0" type="int">43</property>
+        <property name="propContrast_0" type="int">32</property>
         <property name="propContrast_1" type="int">32</property>
         <property name="propContrast_2" type="int">32</property>
         <property name="propExposure_0" type="int">-5</property>
         <property name="propExposure_1" type="int">-5</property>
         <property name="propExposure_2" type="int">-5</property>
-        <property name="propFocus_0" type="int">85</property>
+        <property name="propFocus_0" type="int">102</property>
         <property name="propFocus_1" type="int">85</property>
         <property name="propFocus_2" type="int">102</property>
-        <property name="propGain_0" type="int">119</property>
+        <property name="propGain_0" type="int">41</property>
         <property name="propGain_1" type="int">64</property>
         <property name="propGain_2" type="int">22</property>
         <property name="propGamma_0" type="int">11857919</property>
@@ -65,7 +65,7 @@
         <property name="propRoll_0" type="int">11857919</property>
         <property name="propRoll_1" type="int">11784895</property>
         <property name="propRoll_2" type="int">3330928</property>
-        <property name="propSaturation_0" type="int">24</property>
+        <property name="propSaturation_0" type="int">32</property>
         <property name="propSaturation_1" type="int">32</property>
         <property name="propSaturation_2" type="int">32</property>
         <property name="propSharpness_0" type="int">72</property>
@@ -74,7 +74,7 @@
         <property name="propTilt_0" type="int">0</property>
         <property name="propTilt_1" type="int">0</property>
         <property name="propTilt_2" type="int">0</property>
-        <property name="propWhiteBalance_0" type="int">4995</property>
+        <property name="propWhiteBalance_0" type="int">5572</property>
         <property name="propWhiteBalance_1" type="int">4971</property>
         <property name="propWhiteBalance_2" type="int">5176</property>
         <property name="propZoom_0" type="int">1</property>
@@ -92,7 +92,7 @@
         <property name="showDebugView" type="bool">true</property>
         <property name="showFFT" type="bool">false</property>
         <property name="showProps" type="bool">false</property>
-        <property name="showUnmaskedTextures" type="bool">true</property>
+        <property name="showUnmaskedTextures" type="bool">false</property>
         <property name="tryScaleMethod" type="int">0</property>
         <property name="userAction" type="int">0</property>
         <property name="xmlForceFileDateTime" type="bool">true</property>
