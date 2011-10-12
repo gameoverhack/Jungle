@@ -176,7 +176,7 @@
 		<Cursor position="2011" topLine="10" />
 	</File>
 	<File name="bin\data\config_properties.xml" open="1" top="0" tabpos="4">
-		<Cursor position="0" topLine="0" />
+		<Cursor position="2590" topLine="0" />
 	</File>
 	<File name="bin\data\config_scenes.xml" open="1" top="0" tabpos="5">
 		<Cursor position="1936" topLine="0" />
@@ -190,11 +190,14 @@
 	<File name="bin\data\multitexturemerge.frag" open="1" top="0" tabpos="22">
 		<Cursor position="361" topLine="0" />
 	</File>
+	<File name="bin\data\multitexturemerge_optimised.frag" open="1" top="0" tabpos="48">
+		<Cursor position="616" topLine="6" />
+	</File>
 	<File name="bin\data\vertex.vert" open="1" top="0" tabpos="43">
 		<Cursor position="115" topLine="0" />
 	</File>
-	<File name="src\Analyzer.cpp" open="1" top="0" tabpos="9">
-		<Cursor position="8383" topLine="256" />
+	<File name="src\Analyzer.cpp" open="1" top="1" tabpos="9">
+		<Cursor position="5226" topLine="139" />
 	</File>
 	<File name="src\AppController.cpp" open="1" top="0" tabpos="1">
 		<Cursor position="14495" topLine="328" />
@@ -206,10 +209,10 @@
 		<Cursor position="3697" topLine="169" />
 	</File>
 	<File name="src\AppModel.cpp" open="1" top="0" tabpos="11">
-		<Cursor position="13496" topLine="418" />
+		<Cursor position="13674" topLine="421" />
 	</File>
 	<File name="src\AppModel.h" open="1" top="0" tabpos="16">
-		<Cursor position="4298" topLine="139" />
+		<Cursor position="202" topLine="0" />
 	</File>
 	<File name="src\AppView.cpp" open="0" top="0" tabpos="23">
 		<Cursor position="2783" topLine="58" />
@@ -251,9 +254,9 @@
 		<Cursor position="292" topLine="0" />
 	</File>
 	<File name="src\DataController.cpp" open="1" top="0" tabpos="21">
-		<Cursor position="1876" topLine="27" />
+		<Cursor position="757" topLine="5" />
 	</File>
-	<File name="src\DataController.h" open="1" top="0" tabpos="45">
+	<File name="src\DataController.h" open="1" top="0" tabpos="44">
 		<Cursor position="199" topLine="11" />
 	</File>
 	<File name="src\DebugView.cpp" open="1" top="0" tabpos="28">
@@ -299,7 +302,7 @@
 		<Cursor position="421" topLine="6" />
 	</File>
 	<File name="src\SceneView.cpp" open="1" top="0" tabpos="23">
-		<Cursor position="5510" topLine="118" />
+		<Cursor position="1644" topLine="135" />
 	</File>
 	<File name="src\SceneView.h" open="1" top="0" tabpos="24">
 		<Cursor position="576" topLine="20" />
@@ -334,10 +337,10 @@
 	<File name="src\VideoController.h" open="1" top="0" tabpos="19">
 		<Cursor position="787" topLine="15" />
 	</File>
-	<File name="src\config.h" open="1" top="0" tabpos="48">
-		<Cursor position="304" topLine="0" />
+	<File name="src\config.h" open="1" top="0" tabpos="46">
+		<Cursor position="112" topLine="0" />
 	</File>
-	<File name="src\main.cpp" open="1" top="1" tabpos="46">
-		<Cursor position="0" topLine="0" />
+	<File name="src\main.cpp" open="1" top="0" tabpos="45">
+		<Cursor position="275" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>

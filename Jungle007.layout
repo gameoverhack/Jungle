@@ -4,8 +4,8 @@
 	<File name="..\..\..\addons\goDirList\src\goDirList.cpp" open="0" top="0" tabpos="20">
 		<Cursor position="1980" topLine="63" />
 	</File>
-	<File name="..\..\..\addons\goFlexCOM\goFlexCOM.cpp" open="0" top="0" tabpos="64">
-		<Cursor position="852" topLine="33" />
+	<File name="..\..\..\addons\goFlexCOM\goFlexCOM.cpp" open="1" top="1" tabpos="51">
+		<Cursor position="1649" topLine="57" />
 	</File>
 	<File name="..\..\..\addons\goThreadedVideo\src\goThreadedVideo.cpp" open="1" top="0" tabpos="13">
 		<Cursor position="5771" topLine="138" />
@@ -190,17 +190,17 @@
 	<File name="bin\data\multitexturemerge.frag" open="1" top="0" tabpos="22">
 		<Cursor position="361" topLine="0" />
 	</File>
-	<File name="bin\data\multitexturemerge_optimised.frag" open="1" top="0" tabpos="48">
+	<File name="bin\data\multitexturemerge_optimised.frag" open="1" top="0" tabpos="47">
 		<Cursor position="616" topLine="6" />
 	</File>
 	<File name="bin\data\vertex.vert" open="1" top="0" tabpos="43">
 		<Cursor position="115" topLine="0" />
 	</File>
-	<File name="src\Analyzer.cpp" open="1" top="1" tabpos="9">
+	<File name="src\Analyzer.cpp" open="1" top="0" tabpos="9">
 		<Cursor position="5226" topLine="139" />
 	</File>
 	<File name="src\AppController.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="14495" topLine="328" />
+		<Cursor position="5371" topLine="121" />
 	</File>
 	<File name="src\AppController.h" open="1" top="0" tabpos="17">
 		<Cursor position="217" topLine="12" />
@@ -209,7 +209,7 @@
 		<Cursor position="3697" topLine="169" />
 	</File>
 	<File name="src\AppModel.cpp" open="1" top="0" tabpos="11">
-		<Cursor position="13674" topLine="421" />
+		<Cursor position="13780" topLine="385" />
 	</File>
 	<File name="src\AppModel.h" open="1" top="0" tabpos="16">
 		<Cursor position="202" topLine="0" />
@@ -232,14 +232,14 @@
 	<File name="src\AttackView.h" open="0" top="0" tabpos="19">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="src\BaseMeterView.cpp" open="0" top="0" tabpos="19">
-		<Cursor position="6081" topLine="0" />
+	<File name="src\BaseMeterView.cpp" open="1" top="0" tabpos="50">
+		<Cursor position="1186" topLine="15" />
 	</File>
 	<File name="src\BaseMeterView.h" open="0" top="0" tabpos="24">
 		<Cursor position="1516" topLine="27" />
 	</File>
-	<File name="src\BaseView.cpp" open="0" top="0" tabpos="45">
-		<Cursor position="1157" topLine="39" />
+	<File name="src\BaseView.cpp" open="1" top="0" tabpos="49">
+		<Cursor position="1407" topLine="0" />
 	</File>
 	<File name="src\BaseView.h" open="0" top="0" tabpos="26">
 		<Cursor position="799" topLine="8" />
@@ -323,22 +323,22 @@
 		<Cursor position="1464" topLine="40" />
 	</File>
 	<File name="src\SoundController.cpp" open="1" top="0" tabpos="3">
-		<Cursor position="1996" topLine="6" />
+		<Cursor position="2253" topLine="104" />
 	</File>
 	<File name="src\SoundController.h" open="1" top="0" tabpos="2">
-		<Cursor position="2218" topLine="85" />
+		<Cursor position="2742" topLine="69" />
 	</File>
 	<File name="src\VictimView.cpp" open="1" top="0" tabpos="37">
 		<Cursor position="1710" topLine="5" />
 	</File>
 	<File name="src\VideoController.cpp" open="1" top="0" tabpos="15">
-		<Cursor position="2421" topLine="72" />
+		<Cursor position="5430" topLine="138" />
 	</File>
 	<File name="src\VideoController.h" open="1" top="0" tabpos="19">
 		<Cursor position="787" topLine="15" />
 	</File>
 	<File name="src\config.h" open="1" top="0" tabpos="46">
-		<Cursor position="112" topLine="0" />
+		<Cursor position="213" topLine="0" />
 	</File>
 	<File name="src\main.cpp" open="1" top="0" tabpos="45">
 		<Cursor position="275" topLine="0" />
