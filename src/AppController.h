@@ -80,7 +80,7 @@ private:
 
     void            VictimEvent(float & level);
     void            AttackEvent(float & level);
-    void            FaceEvent(int & level);
+//    void            FaceEvent(int & level);
 
     void              nextScene();
 
@@ -107,6 +107,7 @@ private:
     int             _lastFrameWhenForced;
     int             _returnFrameWhenForced;
     int             _lastAutoAttackAction;
+    int             _lastAutoFaceAction;
 
 protected:
 

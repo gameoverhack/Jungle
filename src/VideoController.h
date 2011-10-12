@@ -35,7 +35,7 @@ public:
 	void	forceUpdate();
 
 	void	loadMovie(Sequence * seq, bool forceCurrentLoad = false, int lastFrameWhenForced = 0);
-	void	toggleVideoPlayers(int lastFrameWhenForced = 0);
+	void	toggleVideoPlayers(int lastFrameWhenForced = 0, bool noPause = false);
 
     void    reset();
 

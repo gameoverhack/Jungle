@@ -1,7 +1,7 @@
 <config>
     <properties>
-        <property name="appRenderHeight" type="float">1080</property>
-        <property name="appRenderWidth" type="float">1920</property>
+        <property name="appRenderHeight" type="float">720</property>
+        <property name="appRenderWidth" type="float">1280</property>
         <property name="audioDataPath" type="string">E:/gameoverload/VideoProjects/Jungle/finalALL/audio</property>
         <property name="autoTest" type="bool">false</property>
         <property name="cameraPropToAdjust" type="string">SCALEROTATION</property>
@@ -29,8 +29,8 @@
         <property name="tryScaleMethod" type="int">0</property>
         <property name="userAction" type="int">0</property>
         <property name="xmlForceFileDateTime" type="bool">false</property>
-        <property name="xmlForceSceneBuildOnLoad" type="bool">true</property>
+        <property name="xmlForceSceneBuildOnLoad" type="bool">false</property>
         <property name="xmlIgnoreErrors" type="bool">false</property>
-        <property name="xmlIgnoreTransformErrors" type="bool">false</property>
+        <property name="xmlIgnoreTransformErrors" type="bool">true</property>
     </properties>
 </config>

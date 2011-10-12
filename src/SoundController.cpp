@@ -1,6 +1,6 @@
 #include "SoundController.h"
 
-static int sFades[17] = {17,8,3167,236,1,50,2083,326,1,201,4917,529,1,265,5583,589,1};
+static int sFades[17] = {17,32,3167,250,1,50,2083,344,1,201,4917,552,1,132,5583,473,1};
 static int fFades[13] = {13,1,3250,234,1,68,1250,316,1,69,4667,447,1};
 static int tFades[17] = {17,6,3000,215,1,373,5917,618,1,12,5500,516,1,14,5417,510,1};
 
@@ -139,6 +139,10 @@ void SoundController::update() {
             if (currentSequenceName == nextFade->sequenceName && currentSequenceFrame >= nextFade->startFrame && !nextFade->done) {
                 LOG_VERBOSE("Starting new fade");
                 _currentFade = nextFade->fader;
+                if (_currentFade->getTo() == 1.0) {
+                    LOG_VERBOSE("Rewind");
+                    _player.setPosition(0.0);
+                }
                 _currentFade->start();
                 _fadeIndex = i;
                 nextFade->done = true;

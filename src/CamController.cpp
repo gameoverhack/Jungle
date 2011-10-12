@@ -18,8 +18,8 @@ CamController::CamController() {
 
 	//_cam.listDevices();
     _isCamInit = false;
-    _lastFaceTime = ofGetElapsedTimeMillis() - TIMEOUT_NOFACE;
-    _lastSwapTime = ofGetElapsedTimeMillis() - TIMEOUT_SWAPFACE;
+    _lastFaceTime = ofGetElapsedTimeMillis() - 60000;
+    _lastSwapTime = ofGetElapsedTimeMillis() - 60000;
 
     _camROI = new ofRectangle();
     _camROI->x       = _camROI->y = 200.0f;
@@ -248,13 +248,13 @@ void CamController::update() {
         if (!_appModel->getFacePresent(_instanceID)) {  // arrived
             int actionType = _instanceID + 2;   // 0,1 leaving, 2,3 arriving
             _appModel->setFacePresent(_instanceID, true);
-            ofNotifyEvent(faceAction, actionType, this);
+            //ofNotifyEvent(faceAction, actionType, this);
         }
     } else {                                            // gone
          if (_appModel->getFacePresent(_instanceID)) {
              int actionType = _instanceID + 0;  // 0,1 leaving, 2,3 arriving
              _appModel->setFacePresent(_instanceID, false);
-            ofNotifyEvent(faceAction, actionType, this);
+            //ofNotifyEvent(faceAction, actionType, this);
          }
     }
     if (ofGetElapsedTimeMillis() - _lastFaceTime < TIMEOUT_SWAPFACE) {

@@ -95,8 +95,8 @@ void AppController::setup() {
 	_camControllers[1]->setup(1, 1920, 1080);
 #endif
 
-    ofAddListener(_camControllers[0]->faceAction, this, &AppController::FaceEvent);
-    ofAddListener(_camControllers[1]->faceAction, this, &AppController::FaceEvent);
+//    ofAddListener(_camControllers[0]->faceAction, this, &AppController::FaceEvent);
+//    ofAddListener(_camControllers[1]->faceAction, this, &AppController::FaceEvent);
 
 	// register pointers to textures from cams on the model
 	_appModel->setCameraTextures(_camControllers[0]->getCamTextureRef(), _camControllers[1]->getCamTextureRef());
@@ -183,27 +183,27 @@ void AppController::AttackEvent(float & level) {
 }
 
 //--------------------------------------------------------------
-void AppController::FaceEvent(int & level) {
-    // level == instanceID == GONE; level == instanceID+2 == HERE;
-    LOG_VERBOSE("FACE ACTION..." + ofToString(level));
-
-    if (_appModel->checkCurrentInteractivity(kINTERACTION_FACE) && level > 1) {
-        if (_switchToSequence == NULL && !_vidController->isPreRolling()) {
-            // FACE APPEARS (level > 1) && FACE_INTERACTION set in Flash for seq00a
-            _appModel->setLastActionTime(ofGetElapsedTimeMillis());
-            string res = "seq01a"; // hack -> que send to seq01a
-            LOG_NOTICE("FACE ACTION [" + ofToString(level) + "] == " + res);
-            if (res != kLAST_SEQUENCE_TOKEN) {
-                _switchToSequence = _appModel->getCurrentScene()->getSequence(res);
-                _vidController->loadMovie(_switchToSequence);
-                _appModel->getCurrentVideoPlayer()->setLoopState(OF_LOOP_NONE);
-                _vidController->_preRolling = true;
-            } else nextScene();
-        }
-    } //else cout << "Blocked by null" << endl;
-
-
-}
+//void AppController::FaceEvent(int & level) {
+//    // level == instanceID == GONE; level == instanceID+2 == HERE;
+//    LOG_VERBOSE("FACE ACTION..." + ofToString(level));
+//
+//    if (_appModel->checkCurrentInteractivity(kINTERACTION_FACE) && level > 1) {
+//        if (_switchToSequence == NULL && !_vidController->isPreRolling()) {
+//            // FACE APPEARS (level > 1) && FACE_INTERACTION set in Flash for seq00a
+//            _appModel->setLastActionTime(ofGetElapsedTimeMillis());
+//            string res = "seq01a"; // hack -> que send to seq01a
+//            LOG_NOTICE("FACE ACTION [" + ofToString(level) + "] == " + res);
+//            if (res != kLAST_SEQUENCE_TOKEN) {
+//                _switchToSequence = _appModel->getCurrentScene()->getSequence(res);
+//                _vidController->loadMovie(_switchToSequence);
+//                _appModel->getCurrentVideoPlayer()->setLoopState(OF_LOOP_NONE);
+//                _vidController->_preRolling = true;
+//            } else nextScene();
+//        }
+//    } //else cout << "Blocked by null" << endl;
+//
+//
+//}
 
 //--------------------------------------------------------------
 void AppController::update() {
@@ -235,6 +235,8 @@ void AppController::update() {
             _soundController->setup();
 			_soundController->loadSound();
 			_vidController->loadMovie(_switchToSequence, true);
+			_appModel->setFacePresent(0,false);
+			_appModel->setFacePresent(1,false);
 			_appModel->setState(kAPP_RUNNING);
 			_appModel->setLastActionTime(ofGetElapsedTimeMillis());
 
@@ -272,6 +274,7 @@ void AppController::update() {
 				LOG_VERBOSE("Gone to next sequence");
 				_vidController->setState(kVIDCONTROLLER_READY);
 				_soundController->setVolume(1.0);
+				_appView->update();
 			} else {
                 nextScene();
 			}
@@ -280,8 +283,10 @@ void AppController::update() {
 
 		// catch _switchToSequence when a movie is loaded completely
 		if (_switchToSequence != NULL && _vidController->checkState(kVIDCONTROLLER_NEXTVIDREADY)) {
+		    LOG_NOTICE("Doing switchMovie on NEXTVIDEOREADY");
             _appModel->setLastActionTime(ofGetElapsedTimeMillis());
 			_vidController->toggleVideoPlayers();
+			_appView->update();
 			_vidController->setState(kVIDCONTROLLER_READY);
 			_soundController->setVolume(1.0);
 			currentScene->setCurrentSequence(_switchToSequence);
@@ -297,11 +302,15 @@ void AppController::update() {
         _appModel->getFakeAttackPlayer()->update();
         _appModel->getFakeVictimPlayer()->update();
 
+        // Auto action if no attacker present in loops -> uses a timeout
         if (!_appModel->getSwapFacePresent(1)) {
             if (_lastAutoAttackAction != 0 && ofGetElapsedTimeMillis() - _lastAutoAttackAction > TIMEOUT_AUTOATTACK) {
+                LOG_NOTICE("Auto attacker action triggered");
                 _lastAutoAttackAction = 0;
+#ifdef DO_AUTO_TIMEOUT
                 float level = 1.2;
                 AttackEvent(level);
+#endif
             } else if (_lastAutoAttackAction == 0 && currentSequence->getType() == "loop") {
                 _lastAutoAttackAction = ofGetElapsedTimeMillis();
             } else if (_lastAutoAttackAction != 0 && currentSequence->getType() != "loop") {
@@ -309,15 +318,34 @@ void AppController::update() {
             }
         } else _lastAutoAttackAction = 0;
 
-        if (currentSequence->getNumber() == 0 && _appModel->getAnyFacePresent() && _appModel->getCurrentSequenceFrame() >= _appModel->getCurrentSequenceNumFrames()-4) {
-            LOG_NOTICE("Start scene " + ofToString(_appModel->getCurrentSequenceFrame()) + " " + ofToString(_appModel->getCurrentSequenceNumFrames()-4));
-            int level = 2;
-            FaceEvent(level);
-        }
+        // face arrive on seq00a waits TIMEOUT_AUTOFACE before going to seq01a
+        if (currentSequence->getNumber() == 0) {
+            if (_appModel->getAnyFacePresent()) {
+                if (_lastAutoFaceAction != 0 && ofGetElapsedTimeMillis() - _lastAutoFaceAction > TIMEOUT_AUTOFACE) {
+                    LOG_NOTICE("Auto face action triggered");
+                    _switchToSequence = _appModel->getCurrentScene()->getSequence("seq01a");
+                    _vidController->loadMovie(_switchToSequence, true);
+                    //_appModel->getCurrentVideoPlayer()->setLoopState(OF_LOOP_NONE);
+                    //_vidController->_preRolling = true;
+                } else if (_lastAutoFaceAction == 0) _lastAutoFaceAction = ofGetElapsedTimeMillis();
+            } else _lastAutoFaceAction = 0;
+        } else _lastAutoFaceAction = 0;
 
-        if (currentSequence->getNumber() > 0 && !_appModel->getAnyFacePresent()) {
-            LOG_NOTICE("No faces present for more than " + ofToString(TIMEOUT_NOFACE) + " forcing next scene");
-            //nextScene();
+//        // if faces are already present when a new scene starts wait till the end of the scene and jump to seq01a
+//        if (currentSequence->getNumber() == 0 && _appModel->getAnyFacePresent() && _appModel->getCurrentSequenceFrame() >= _appModel->getCurrentSequenceNumFrames()-4) {
+//            LOG_NOTICE("Auto start scene " + ofToString(_appModel->getCurrentSequenceFrame()) + " " + ofToString(_appModel->getCurrentSequenceNumFrames()-4));
+//#ifdef DO_AUTO_TIMEOUT
+//            int level = 2;
+//            FaceEvent(level);
+//#endif
+//        }
+
+        // if no faces present after timeout and no user action for more than timeout we can push to next scene
+        if (currentSequence->getNumber() > 0 && !_appModel->getAnyFacePresent() && ofGetElapsedTimeMillis() -_appModel->getLastActionTime() > TIMEOUT_ACTION) {
+#ifdef DO_AUTO_TIMEOUT
+            LOG_NOTICE("Auto No Face present for more than " + ofToString(TIMEOUT_NOFACE) + " forcing next scene");
+            nextScene();
+#endif
         }
 	}
 
@@ -338,7 +366,9 @@ void AppController::nextScene() {
     _camControllers[0]->loadAttributes();
     _camControllers[1]->loadAttributes();
 
-    _switchToSequence = currentScene->getCurrentSequence();
+     if (_appModel->getAnyFacePresent()) {
+         _switchToSequence = _appModel->getCurrentScene()->getSequence("seq01a");
+     } else _switchToSequence = currentScene->getCurrentSequence();
 
     _soundController->setup();
     _soundController->setVolume(1.0);
@@ -365,7 +395,7 @@ void AppController::draw() {
 //--------------------------------------------------------------
 void AppController::keyPressed(int key){
 
-    LOG_VERBOSE("Key pressed: " + key);
+    LOG_VERBOSE("Key pressed: " + (char)(key));
 
     PosRotScale * prsToAdjust[2];
 
@@ -455,11 +485,9 @@ void AppController::keyPressed(int key){
 			_dataController->saveProperties();
 			break;
 		case ' ':
-		{
-		    int fakeInstanceID = 2;
-            FaceEvent(fakeInstanceID);
+            _switchToSequence = _appModel->getCurrentScene()->getSequence("seq01a");
+            _vidController->loadMovie(_switchToSequence, true);
             break;
-		}
 		case '[':
             _soundController->fade(1.0, 1000, FADE_LOG);
             break;

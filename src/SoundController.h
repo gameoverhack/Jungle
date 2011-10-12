@@ -40,6 +40,8 @@ public:
     };
     bool   isFading() {return _isFading;};
     fade   getFade() {return _fade;};
+    float  getTo() {return _to;};
+    float  getFrom() {return _from;};
 
 private:
 

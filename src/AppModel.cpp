@@ -430,20 +430,26 @@ goThreadedVideo * AppModel::getNextVideoPlayer() {
 }
 
 //--------------------------------------------------------------
-void AppModel::toggleVideoPlayers(int forceFrame) {
+void AppModel::toggleVideoPlayers(int forceFrame, bool noPause) {
 	LOG_VERBOSE("Swap Video Player pointers: " + ofToString(forceFrame));
 	//if (forceFrame != 0) {
     //_videoPlayers[1]->setFrame(forceFrame);
-	//_videoPlayers[1]->update();
-
+    //_videoPlayers[1]->setVolume(0);
+	_videoPlayers[1]->update();
+    _videoPlayers[1]->setFrame(forceFrame, noPause);
+    //_videoPlayers[1]->setVolume(256);
 	swap(_videoPlayers[0], _videoPlayers[1]);
 	_videoPlayers[1]->close();
-	_videoPlayers[0]->setFrame(forceFrame);
-//	_videoPlayers[0]->update();
+	//_videoPlayers[0]->update();
+
+
+	//_videoPlayers[0]->update();
+	_appModel->setCurrentSequenceFrame(_videoPlayers[0]->getCurrentFrame());
+	_appModel->setCurrentIsFrameNew(_videoPlayers[0]->isFrameNew());
 //    _videoPlayers[0]->update();
-	delete _videoPlayers[1];
-	_videoPlayers[1] = new goThreadedVideo();
-	_videoPlayers[1]->setPixelType(GO_TV_RGBA);
+	//delete _videoPlayers[1];
+	//_videoPlayers[1] = new goThreadedVideo();
+	//_videoPlayers[1]->setPixelType(GO_TV_RGBA);
 }
 
 //--------------------------------------------------------------

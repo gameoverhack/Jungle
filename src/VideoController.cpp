@@ -106,7 +106,7 @@ void VideoController::update() {
 	}
 //|| (currentSequence->getNumber() == 0 && checkState(kVIDCONTROLLER_NEXTVIDREADY))
 	if (currentMovie->getIsMovieDone()) {
-		toggleVideoPlayers(_lastFrameWhenForced);
+		toggleVideoPlayers(_lastFrameWhenForced, true);
 		_lastFrameWhenForced = 0;
 		_preRolling = false;
 		setState(kVIDCONTROLLER_CURRENTVIDONE);
@@ -146,12 +146,11 @@ void VideoController::loadMovie(Sequence * seq, bool forceCurrentLoad, int lastF
 
 }
 
-void VideoController::toggleVideoPlayers(int lastFrameWhenForced) {
+void VideoController::toggleVideoPlayers(int lastFrameWhenForced, bool noPause) {
 	LOG_NOTICE("Toggling Video Players " + ofToString(lastFrameWhenForced));
     _appModel->setLastActionTime(ofGetElapsedTimeMillis()); // stops other actions from being possible!
-	_appModel->toggleVideoPlayers(lastFrameWhenForced);
-	update();
-
+	_appModel->toggleVideoPlayers(lastFrameWhenForced, noPause);
+	//update();
 }
 
 void VideoController::reset() {
