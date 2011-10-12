@@ -36,6 +36,7 @@ private:
 	VictimView  * _victimView;
 
     float         _fade;
+    bool          _fadeUp;
 
 protected:
 

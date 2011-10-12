@@ -14,6 +14,7 @@ AppView::AppView(float width, float height) : BaseView(width ,height) {
     LOG_NOTICE("Setting up all (sub) views");
 
     _fade = 1.0f;
+    _fadeUp = false;
 
 	_loadingView    = new LoadingView(width, height);
 	_sceneView      = new SceneView(width, height);
@@ -47,7 +48,7 @@ void AppView::update() {
 
 	ofBackground(0, 0, 0);
 
-     _fade = 1.0f;
+     if (!_fadeUp) _fade = 1.0f;
 
 	if(_appModel->checkState(kAPP_LOADING)){
 		_loadingView->update();
@@ -61,6 +62,7 @@ void AppView::update() {
 		}
 #endif
 	}
+
 	Scene * currentScene = _appModel->getCurrentScene();
 	if (currentScene == NULL) return;
 
@@ -73,13 +75,19 @@ void AppView::update() {
 	if (currentSequence->getNumber() == 8) {
         if(frame > total - 24) { // start fade 2 secs from end
             _fade = 1.0 * (total-frame)/24.0f;
+            if (_appModel->getAnyFacePresent()) _fadeUp = true;
         }
     }
-//     else if (currentSequence->getNumber() == 1 || currentSequence->getNumber() == 0) {
-////        if (frame < 24 && _fade < 1.0f) {
-////            _fade = 1.0 * (float)frame/24.0f;
-////        }
-//    }
+
+    if (_fadeUp && _appModel->getAnyFacePresent() && currentSequence->getNumber() == 1) {
+        if (frame < 12) _fade = 1.0 * (float)frame/12.0f;
+        if (_fade >= 0.9) _fadeUp = false;
+    }
+
+    if (!_appModel->getAnyFacePresent() && (_fadeUp || _fade < 1.0)) {
+         _fadeUp = false;
+         _fade = 1.0f;
+    }
 
 }
 
