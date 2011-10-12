@@ -12,9 +12,12 @@
 AppView::AppView(float width, float height) : BaseView(width ,height) {
 
     LOG_NOTICE("Setting up all (sub) views");
+
+    _fade = 1.0f;
+
 	_loadingView    = new LoadingView(width, height);
 	_sceneView      = new SceneView(width, height);
-#ifdef DEBUG_VIEW_ENABLED	
+#ifdef DEBUG_VIEW_ENABLED
 	_debugView      = new DebugView(width, height);
 #endif
 	_attackView     = new AttackView(146, 1080);
@@ -44,6 +47,8 @@ void AppView::update() {
 
 	ofBackground(0, 0, 0);
 
+     _fade = 1.0f;
+
 	if(_appModel->checkState(kAPP_LOADING)){
 		_loadingView->update();
 	} else {
@@ -56,6 +61,26 @@ void AppView::update() {
 		}
 #endif
 	}
+	Scene * currentScene = _appModel->getCurrentScene();
+	if (currentScene == NULL) return;
+
+	Sequence * currentSequence = _appModel->getCurrentSequence();
+	if (currentSequence == NULL) return;
+
+    int frame = _appModel->getCurrentSequenceFrame();
+    int total  = _appModel->getCurrentSequenceNumFrames();
+
+	if (currentSequence->getNumber() == 8) {
+        if(frame > total - 24) { // start fade 2 secs from end
+            _fade = 1.0 * (total-frame)/24.0f;
+        }
+    }
+//     else if (currentSequence->getNumber() == 1 || currentSequence->getNumber() == 0) {
+////        if (frame < 24 && _fade < 1.0f) {
+////            _fade = 1.0 * (float)frame/24.0f;
+////        }
+//    }
+
 }
 
 void AppView::draw() {
@@ -78,6 +103,7 @@ void AppView::draw() {
 	} else {
 
 		// composite all views
+        glColor3f(_fade, _fade, _fade);
 
 		_sceneView->draw(0, 0, width, height);
 
@@ -98,6 +124,7 @@ void AppView::draw() {
         }
 
 #ifdef DEBUG_VIEW_ENABLED
+        glColor3f(1.0f, 1.0f, 1.0f);
 		if(boost::any_cast<bool>(_appModel->getProperty("showDebugView"))){
 #if OF_VERSION < 7
 			_debugView->draw(0, 0, width, height);

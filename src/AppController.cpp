@@ -353,28 +353,30 @@ void AppController::update() {
 
 void AppController::nextScene() {
 
-    LOG_VERBOSE("Current scene ended, rewind current scene to first sequence. Loading next scene.");
+    if (_vidController->checkState(kVIDCONTROLLER_READY) || _vidController->checkState(kVIDCONTROLLER_CURRENTVIDONE)) {
 
-    Scene* currentScene = _appModel->getCurrentScene();
-    if (currentScene != NULL) currentScene->rewindScene();
+        LOG_VERBOSE("Current scene ended, rewind current scene to first sequence. Loading next scene.");
 
-    _appModel->nextScene();
-    _vidController->reset();
+        Scene* currentScene = _appModel->getCurrentScene();
+        if (currentScene != NULL) currentScene->rewindScene();
 
-    currentScene = _appModel->getCurrentScene();
+        _appModel->nextScene();
+        _vidController->reset();
 
-    _camControllers[0]->loadAttributes();
-    _camControllers[1]->loadAttributes();
+        currentScene = _appModel->getCurrentScene();
 
-     if (_appModel->getAnyFacePresent()) {
-         _switchToSequence = _appModel->getCurrentScene()->getSequence("seq01a");
-     } else _switchToSequence = currentScene->getCurrentSequence();
+        _camControllers[0]->loadAttributes();
+        _camControllers[1]->loadAttributes();
 
-    _soundController->setup();
-    _soundController->setVolume(1.0);
+         if (_appModel->getAnyFacePresent()) {
+             _switchToSequence = _appModel->getCurrentScene()->getSequence("seq01a");
+         } else _switchToSequence = currentScene->getCurrentSequence();
 
-    _vidController->loadMovie(_switchToSequence, true);
+        _soundController->setup();
+        _soundController->setVolume(1.0);
 
+        _vidController->loadMovie(_switchToSequence, true);
+    }
 }
 
 //--------------------------------------------------------------
@@ -395,7 +397,7 @@ void AppController::draw() {
 //--------------------------------------------------------------
 void AppController::keyPressed(int key){
 
-    LOG_VERBOSE("Key pressed: " + (char)(key));
+    LOG_VERBOSE("Key pressed: " + ofToString(key));
 
     PosRotScale * prsToAdjust[2];
 

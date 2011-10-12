@@ -35,6 +35,8 @@ private:
 	AttackView  * _attackView;
 	VictimView  * _victimView;
 
+    float         _fade;
+
 protected:
 
 };

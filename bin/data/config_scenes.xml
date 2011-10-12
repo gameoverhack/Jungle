@@ -117,9 +117,9 @@
                 <transform filename="f_seq07b0_transform_atk1.bin" dateCreated="2011-10-12 08:55:29" dateModified="2011-10-12 08:55:29" size="1902"></transform>
             </sequence>
             <sequence name="seq08a" sequenceType="a" faked="false" filename="f_seq08a.mov" frames="338" dateCreated="2011-10-12 08:37:54" dateModified="2011-10-12 05:04:55" size="480444280">
-                <interactivity filename="f_seq08a_interactivity.bin" dateCreated="2011-10-12 08:55:58" dateModified="2011-10-12 08:55:58" size="105"></interactivity>
-                <transform filename="f_seq08a_transform_vic1.bin" dateCreated="2011-10-12 08:55:58" dateModified="2011-10-12 08:55:58" size="22075"></transform>
-                <transform filename="f_seq08a_transform_atk1.bin" dateCreated="2011-10-12 08:55:58" dateModified="2011-10-12 08:55:58" size="20379"></transform>
+                <interactivity filename="f_seq08a_interactivity.bin" dateCreated="2011-10-12 15:52:19" dateModified="2011-10-12 15:52:19" size="105"></interactivity>
+                <transform filename="f_seq08a_transform_vic1.bin" dateCreated="2011-10-12 15:52:19" dateModified="2011-10-12 15:52:19" size="22050"></transform>
+                <transform filename="f_seq08a_transform_atk1.bin" dateCreated="2011-10-12 15:52:19" dateModified="2011-10-12 15:52:19" size="20352"></transform>
             </sequence>
             <sequence name="seq08b0" sequenceType="b" faked="false" filename="f_seq08b0.mov" frames="479" dateCreated="2011-10-12 08:37:58" dateModified="2011-10-12 05:05:47" size="668555825">
                 <interactivity filename="f_seq08b0_interactivity.bin" dateCreated="2011-10-12 08:56:37" dateModified="2011-10-12 08:56:37" size="89"></interactivity>
@@ -262,16 +262,16 @@
                 <transform filename="t_seq00a_transform_atk2.bin" dateCreated="2011-10-12 09:04:30" dateModified="2011-10-12 09:04:30" size="9619"></transform>
             </sequence>
             <sequence name="seq01a" sequenceType="a" faked="false" filename="t_seq01a.mov" frames="417" dateCreated="2011-10-10 11:42:22" dateModified="2011-10-12 07:30:42" size="532880447">
-                <interactivity filename="t_seq01a_interactivity.bin" dateCreated="2011-10-12 09:05:12" dateModified="2011-10-12 09:05:12" size="82"></interactivity>
-                <transform filename="t_seq01a_transform_vic1.bin" dateCreated="2011-10-12 09:05:13" dateModified="2011-10-12 09:05:13" size="27478"></transform>
-                <transform filename="t_seq01a_transform_atk1.bin" dateCreated="2011-10-12 09:05:12" dateModified="2011-10-12 09:05:12" size="26474"></transform>
-                <transform filename="t_seq01a_transform_atk2.bin" dateCreated="2011-10-12 09:05:12" dateModified="2011-10-12 09:05:12" size="27205"></transform>
+                <interactivity filename="t_seq01a_interactivity.bin" dateCreated="2011-10-12 16:40:44" dateModified="2011-10-12 16:40:44" size="82"></interactivity>
+                <transform filename="t_seq01a_transform_vic1.bin" dateCreated="2011-10-12 16:40:44" dateModified="2011-10-12 16:40:44" size="27478"></transform>
+                <transform filename="t_seq01a_transform_atk1.bin" dateCreated="2011-10-12 16:40:44" dateModified="2011-10-12 16:40:44" size="26600"></transform>
+                <transform filename="t_seq01a_transform_atk2.bin" dateCreated="2011-10-12 16:40:44" dateModified="2011-10-12 16:40:44" size="27205"></transform>
             </sequence>
             <sequence name="seq01a_loop" sequenceType="loop" faked="false" filename="t_seq01a_loop.mov" frames="126" dateCreated="2011-10-10 11:43:06" dateModified="2011-10-12 07:30:57" size="119404122">
-                <interactivity filename="t_seq01a_loop_interactivity.bin" dateCreated="2011-10-12 09:05:26" dateModified="2011-10-12 09:05:26" size="113"></interactivity>
-                <transform filename="t_seq01a_loop_transform_vic1.bin" dateCreated="2011-10-12 09:05:26" dateModified="2011-10-12 09:05:26" size="8989"></transform>
-                <transform filename="t_seq01a_loop_transform_atk1.bin" dateCreated="2011-10-12 09:05:26" dateModified="2011-10-12 09:05:26" size="6973"></transform>
-                <transform filename="t_seq01a_loop_transform_atk2.bin" dateCreated="2011-10-12 09:05:26" dateModified="2011-10-12 09:05:26" size="8359"></transform>
+                <interactivity filename="t_seq01a_loop_interactivity.bin" dateCreated="2011-10-12 16:29:54" dateModified="2011-10-12 16:29:54" size="113"></interactivity>
+                <transform filename="t_seq01a_loop_transform_vic1.bin" dateCreated="2011-10-12 16:29:54" dateModified="2011-10-12 16:29:54" size="8989"></transform>
+                <transform filename="t_seq01a_loop_transform_atk1.bin" dateCreated="2011-10-12 16:29:54" dateModified="2011-10-12 16:29:54" size="6973"></transform>
+                <transform filename="t_seq01a_loop_transform_atk2.bin" dateCreated="2011-10-12 16:29:54" dateModified="2011-10-12 16:29:54" size="8359"></transform>
             </sequence>
             <sequence name="seq01b0" sequenceType="b" faked="false" filename="t_seq01b0.mov" frames="44" dateCreated="2011-10-10 11:43:15" dateModified="2011-10-12 07:31:02" size="52798881">
                 <interactivity filename="t_seq01b0_interactivity.bin" dateCreated="2011-10-12 09:05:31" dateModified="2011-10-12 09:05:31" size="88"></interactivity>
@@ -352,13 +352,13 @@
                 <transform filename="t_seq05b0_transform_atk2.bin" dateCreated="2011-10-12 09:07:35" dateModified="2011-10-12 09:07:35" size="2588"></transform>
             </sequence>
             <sequence name="seq06a" sequenceType="a" faked="false" filename="t_seq06a.mov" frames="453" dateCreated="2011-10-10 11:45:16" dateModified="2011-10-12 07:34:13" size="584951148">
-                <interactivity filename="t_seq06a_interactivity.bin" dateCreated="2011-10-12 09:08:20" dateModified="2011-10-12 09:08:20" size="98"></interactivity>
-                <transform filename="t_seq06a_transform_vic1.bin" dateCreated="2011-10-12 09:08:20" dateModified="2011-10-12 09:08:20" size="30312"></transform>
-                <transform filename="t_seq06a_transform_atk1.bin" dateCreated="2011-10-12 09:08:20" dateModified="2011-10-12 09:08:20" size="30686"></transform>
-                <transform filename="t_seq06a_transform_atk2.bin" dateCreated="2011-10-12 09:08:20" dateModified="2011-10-12 09:08:20" size="29545"></transform>
+                <interactivity filename="t_seq06a_interactivity.bin" dateCreated="2011-10-12 16:30:40" dateModified="2011-10-12 16:30:40" size="98"></interactivity>
+                <transform filename="t_seq06a_transform_vic1.bin" dateCreated="2011-10-12 16:30:40" dateModified="2011-10-12 16:30:40" size="30491"></transform>
+                <transform filename="t_seq06a_transform_atk1.bin" dateCreated="2011-10-12 16:30:40" dateModified="2011-10-12 16:30:40" size="30767"></transform>
+                <transform filename="t_seq06a_transform_atk2.bin" dateCreated="2011-10-12 16:30:40" dateModified="2011-10-12 16:30:40" size="29545"></transform>
             </sequence>
             <sequence name="seq06a_loop" sequenceType="loop" faked="false" filename="t_seq06a_loop.mov" frames="109" dateCreated="2011-10-10 11:46:05" dateModified="2011-10-12 07:34:26" size="168434274">
-                <interactivity filename="t_seq06a_loop_interactivity.bin" dateCreated="2011-10-12 09:08:32" dateModified="2011-10-12 09:08:32" size="113"></interactivity>
+                <interactivity filename="t_seq06a_loop_interactivity.bin" dateCreated="2011-10-12 16:30:40" dateModified="2011-10-12 16:30:40" size="113"></interactivity>
                 <transform filename="t_seq06a_loop_transform_vic1.bin" dateCreated="2011-10-12 09:08:32" dateModified="2011-10-12 09:08:32" size="8000"></transform>
                 <transform filename="t_seq06a_loop_transform_atk1.bin" dateCreated="2011-10-12 09:08:32" dateModified="2011-10-12 09:08:32" size="6801"></transform>
                 <transform filename="t_seq06a_loop_transform_atk2.bin" dateCreated="2011-10-12 09:08:32" dateModified="2011-10-12 09:08:32" size="6583"></transform>
@@ -370,28 +370,28 @@
                 <transform filename="t_seq06b0_transform_atk2.bin" dateCreated="2011-10-12 09:08:37" dateModified="2011-10-12 09:08:37" size="2502"></transform>
             </sequence>
             <sequence name="seq07a" sequenceType="a" faked="false" filename="t_seq07a.mov" frames="102" dateCreated="2011-10-10 11:46:23" dateModified="2011-10-12 07:34:43" size="153522683">
-                <interactivity filename="t_seq07a_interactivity.bin" dateCreated="2011-10-12 09:08:48" dateModified="2011-10-12 09:08:48" size="98"></interactivity>
-                <transform filename="t_seq07a_transform_vic1.bin" dateCreated="2011-10-12 09:08:48" dateModified="2011-10-12 09:08:48" size="7187"></transform>
-                <transform filename="t_seq07a_transform_atk1.bin" dateCreated="2011-10-12 09:08:48" dateModified="2011-10-12 09:08:48" size="6648"></transform>
-                <transform filename="t_seq07a_transform_atk2.bin" dateCreated="2011-10-12 09:08:48" dateModified="2011-10-12 09:08:48" size="6791"></transform>
+                <interactivity filename="t_seq07a_interactivity.bin" dateCreated="2011-10-12 15:53:56" dateModified="2011-10-12 15:53:56" size="98"></interactivity>
+                <transform filename="t_seq07a_transform_vic1.bin" dateCreated="2011-10-12 15:53:56" dateModified="2011-10-12 15:53:56" size="7187"></transform>
+                <transform filename="t_seq07a_transform_atk1.bin" dateCreated="2011-10-12 15:53:56" dateModified="2011-10-12 15:53:56" size="6648"></transform>
+                <transform filename="t_seq07a_transform_atk2.bin" dateCreated="2011-10-12 15:53:56" dateModified="2011-10-12 15:53:56" size="6791"></transform>
             </sequence>
             <sequence name="seq07a_loop" sequenceType="loop" faked="false" filename="t_seq07a_loop.mov" frames="147" dateCreated="2011-10-10 11:46:36" dateModified="2011-10-12 07:35:01" size="201032150">
-                <interactivity filename="t_seq07a_loop_interactivity.bin" dateCreated="2011-10-12 09:09:03" dateModified="2011-10-12 09:09:03" size="113"></interactivity>
-                <transform filename="t_seq07a_loop_transform_vic1.bin" dateCreated="2011-10-12 09:09:03" dateModified="2011-10-12 09:09:03" size="9745"></transform>
-                <transform filename="t_seq07a_loop_transform_atk1.bin" dateCreated="2011-10-12 09:09:03" dateModified="2011-10-12 09:09:03" size="9745"></transform>
-                <transform filename="t_seq07a_loop_transform_atk2.bin" dateCreated="2011-10-12 09:09:03" dateModified="2011-10-12 09:09:03" size="10039"></transform>
+                <interactivity filename="t_seq07a_loop_interactivity.bin" dateCreated="2011-10-12 15:54:11" dateModified="2011-10-12 15:54:11" size="113"></interactivity>
+                <transform filename="t_seq07a_loop_transform_vic1.bin" dateCreated="2011-10-12 15:54:11" dateModified="2011-10-12 15:54:11" size="9745"></transform>
+                <transform filename="t_seq07a_loop_transform_atk1.bin" dateCreated="2011-10-12 15:54:11" dateModified="2011-10-12 15:54:11" size="9745"></transform>
+                <transform filename="t_seq07a_loop_transform_atk2.bin" dateCreated="2011-10-12 15:54:11" dateModified="2011-10-12 15:54:11" size="10039"></transform>
             </sequence>
             <sequence name="seq07b0" sequenceType="b" faked="false" filename="t_seq07b0.mov" frames="35" dateCreated="2011-10-10 11:46:53" dateModified="2011-10-12 07:35:05" size="54162270">
-                <interactivity filename="t_seq07b0_interactivity.bin" dateCreated="2011-10-12 09:09:07" dateModified="2011-10-12 09:09:07" size="88"></interactivity>
-                <transform filename="t_seq07b0_transform_vic1.bin" dateCreated="2011-10-12 09:09:07" dateModified="2011-10-12 09:09:07" size="2457"></transform>
-                <transform filename="t_seq07b0_transform_atk1.bin" dateCreated="2011-10-12 09:09:07" dateModified="2011-10-12 09:09:07" size="2241"></transform>
-                <transform filename="t_seq07b0_transform_atk2.bin" dateCreated="2011-10-12 09:09:07" dateModified="2011-10-12 09:09:07" size="2439"></transform>
+                <interactivity filename="t_seq07b0_interactivity.bin" dateCreated="2011-10-12 15:54:15" dateModified="2011-10-12 15:54:15" size="88"></interactivity>
+                <transform filename="t_seq07b0_transform_vic1.bin" dateCreated="2011-10-12 15:54:16" dateModified="2011-10-12 15:54:16" size="2317"></transform>
+                <transform filename="t_seq07b0_transform_atk1.bin" dateCreated="2011-10-12 15:54:16" dateModified="2011-10-12 15:54:16" size="2241"></transform>
+                <transform filename="t_seq07b0_transform_atk2.bin" dateCreated="2011-10-12 15:54:16" dateModified="2011-10-12 15:54:16" size="2439"></transform>
             </sequence>
             <sequence name="seq08a" sequenceType="a" faked="false" filename="t_seq08a.mov" frames="379" dateCreated="2011-10-10 11:46:58" dateModified="2011-10-12 07:35:56" size="512400395">
-                <interactivity filename="t_seq08a_interactivity.bin" dateCreated="2011-10-12 09:09:46" dateModified="2011-10-12 09:09:46" size="122"></interactivity>
-                <transform filename="t_seq08a_transform_vic1.bin" dateCreated="2011-10-12 09:09:46" dateModified="2011-10-12 09:09:46" size="23893"></transform>
-                <transform filename="t_seq08a_transform_atk1.bin" dateCreated="2011-10-12 09:09:46" dateModified="2011-10-12 09:09:46" size="23592"></transform>
-                <transform filename="t_seq08a_transform_atk2.bin" dateCreated="2011-10-12 09:09:46" dateModified="2011-10-12 09:09:46" size="23969"></transform>
+                <interactivity filename="t_seq08a_interactivity.bin" dateCreated="2011-10-12 16:31:18" dateModified="2011-10-12 16:31:18" size="122"></interactivity>
+                <transform filename="t_seq08a_transform_vic1.bin" dateCreated="2011-10-12 16:31:18" dateModified="2011-10-12 16:31:18" size="24006"></transform>
+                <transform filename="t_seq08a_transform_atk1.bin" dateCreated="2011-10-12 16:31:18" dateModified="2011-10-12 16:31:18" size="23592"></transform>
+                <transform filename="t_seq08a_transform_atk2.bin" dateCreated="2011-10-12 16:31:18" dateModified="2011-10-12 16:31:18" size="23969"></transform>
             </sequence>
             <sequence name="seq08b0" sequenceType="b" faked="false" filename="t_seq08b0.mov" frames="526" dateCreated="2011-10-10 11:47:41" dateModified="2011-10-12 07:36:56" size="756783777">
                 <interactivity filename="t_seq08b0_interactivity.bin" dateCreated="2011-10-12 09:10:39" dateModified="2011-10-12 09:10:39" size="89"></interactivity>

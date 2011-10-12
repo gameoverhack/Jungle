@@ -2,7 +2,7 @@
 
 static int sFades[17] = {17,32,3167,250,1,50,2083,344,1,201,4917,552,1,132,5583,473,1};
 static int fFades[13] = {13,1,3250,234,1,68,1250,316,1,69,4667,447,1};
-static int tFades[17] = {17,6,3000,215,1,373,5917,618,1,12,5500,516,1,14,5417,510,1};
+static int tFades[17] = {17,6,3000,215,1,106,2560,296,1,12,5500,445,1,14,5417,445,1};
 
 SoundController::SoundController() {
     LOG_NOTICE("Constructing SoundController");
@@ -46,7 +46,7 @@ void SoundController::setup() {
             if (i == 1) seqName  = "seq01a";
             if (i == 5) seqName  = "seq08a";
             if (i == 9) seqName  = "seq08b0";
-            if (i == 12) seqName = "seq08b1";
+            if (i == 13) seqName = "seq08b1";
 
             LOG_VERBOSE("Adding fade to que: " + seqName + "::"+ ofToString(sFades[i]) + "::" + ofToString(sFades[i+1]) + "::" + ofToString(sFades[i+2]) + "::" + ofToString(sFades[i+3]));
 
@@ -93,7 +93,7 @@ void SoundController::setup() {
             if (i == 1) seqName  = "seq01a";
             if (i == 5) seqName  = "seq08a";
             if (i == 9) seqName  = "seq08b0";
-            if (i == 12) seqName = "seq08b1";
+            if (i == 13) seqName = "seq08b1";
 
             LOG_VERBOSE("Adding fade to que: " + seqName + "::"+ ofToString(tFades[i]) + "::" + ofToString(tFades[i+1]) + "::" + ofToString(tFades[i+2]) + "::" + ofToString(tFades[i+3]));
 
@@ -137,7 +137,7 @@ void SoundController::update() {
             jungle_fade * nextFade = _fades[i];
             //LOG_VERBOSE("Check new fade " + currentSequenceName + " ? " + nextFade->sequenceName + " " + ofToString(currentSequenceFrame) + " ? " + ofToString(nextFade->startFrame));
             if (currentSequenceName == nextFade->sequenceName && currentSequenceFrame >= nextFade->startFrame && !nextFade->done) {
-                LOG_VERBOSE("Starting new fade");
+                LOG_VERBOSE("Start Fade " + ofToString(i) + " que: " + _fades[i]->sequenceName + "::"+ ofToString(_fades[i]->startFrame) + "::" + ofToString(_fades[i]->endFrame));
                 _currentFade = nextFade->fader;
                 if (_currentFade->getTo() == 1.0) {
                     LOG_VERBOSE("Rewind");

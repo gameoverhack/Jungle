@@ -72,9 +72,11 @@ void VideoController::update() {
 
 	currentMovie->update();
 
+    if (currentMovie->getVolume() < 256) currentMovie->setVolume(256);
+
 	// set global vars for current frame and isFrameNew on the Model -> hopefully eliminates misreadings???
+	int	 totalFrames	= _appModel->getCurrentSequenceNumFrames();
 	int	 currentFrame	= currentMovie->getCurrentFrame();
-	int	 totalFrames	= currentMovie->getTotalNumFrames();
 	bool isFrameNew		= currentMovie->isFrameNew();
 
 	_appModel->setCurrentSequenceFrame(currentFrame);
@@ -104,7 +106,7 @@ void VideoController::update() {
 		}
 
 	}
-//|| (currentSequence->getNumber() == 0 && checkState(kVIDCONTROLLER_NEXTVIDREADY))
+
 	if (currentMovie->getIsMovieDone()) {
 		toggleVideoPlayers(_lastFrameWhenForced, true);
 		_lastFrameWhenForced = 0;
