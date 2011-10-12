@@ -49,33 +49,33 @@ public:
 	void setWindowed();
 	void setFullscreen();
 	void toggleFullscreen();
-	
+
 	/* Required for testing */
-	
+
 	ofEvent<float>	updateEvent;
-	
+
 	DataController * getDataController(){
 		return _dataController;
 	};
-	
+
 	CamController * getCamController(int i){
 		return _camControllers[i];
 	};
-	
+
 	VideoController * getVideoController() {
 		return _vidController;
 	};
-	
+
 	MicController * getMicController() {
 		return _micController;
 	};
-	
+
 	ArdController * getArdController(){
 		return _ardController;
 	}
 
 	/* End testing */
-	
+
 private:
 
     void            VictimEvent(float & level);
@@ -94,7 +94,7 @@ private:
 	MicController	* _micController;
 	ArdController	* _ardController;
     SoundController * _soundController;
-		
+
     ofAppGlutWindow * _windowPtr;
 	bool			  _isFullScreen;
 #ifdef TARGET_WIN32
@@ -122,11 +122,11 @@ protected:
 //		buttonEvent,
 //		micEvent
 //	} rktEventType;
-//	
+//
 //	bool	_facesPresent[2];
 //	int		_timeLastEvent[kTOTAL_TEST_EVENT_TYPES];
 //	int		_lastTimeAnyEvent;
-//	
+//
 //	void testPreflight(){
 //		_facesPresent[0] = false;
 //		_facesPresent[1] = false;
@@ -135,15 +135,15 @@ protected:
 //		}
 //		_lastTimeAnyEvent = -1;
 //	};
-//	
+//
 //	int getRandomEventType(){
 //		return (int)(ofRandom(kTOTAL_TEST_EVENT_TYPES));
 //	};
-//	
+//
 //	void updateTester(){
 //		if(ofGetElapsedTimeMillis() > 5000){
 //			fireEvent(buttonEvent);
-//		}			
+//		}
 //	};
 //	//bool TestController::fireEvent(rktEventType event){
 //	//	_timeLastEvent[event] = ofGetElapsedTimeMillis();
@@ -160,7 +160,7 @@ protected:
 //		return true;
 //	}
 //	if(event == face2HideEvent){
-//		
+//
 //		return true;
 //	}
 //	if(event == buttonEvent){
@@ -169,13 +169,13 @@ protected:
 //			return true;
 //		}
 //		if(event == micEvent){
-//			
+//
 //			return true;
 //	}
 //	return false;
-//	
-//};	
-//private:	
+//
+//};
+//private:
 //#endif
 };
 

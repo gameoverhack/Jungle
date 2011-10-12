@@ -1,58 +1,58 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="debug" />
-	<File name="..\..\..\addons\goDirList\src\goDirList.cpp" open="1" top="0" tabpos="20">
+	<File name="..\..\..\addons\goDirList\src\goDirList.cpp" open="0" top="0" tabpos="20">
 		<Cursor position="1980" topLine="63" />
 	</File>
-	<File name="..\..\..\addons\goFlexCOM\goFlexCOM.cpp" open="1" top="0" tabpos="64">
+	<File name="..\..\..\addons\goFlexCOM\goFlexCOM.cpp" open="0" top="0" tabpos="64">
 		<Cursor position="852" topLine="33" />
 	</File>
-	<File name="..\..\..\addons\goThreadedVideo\src\goThreadedVideo.cpp" open="1" top="0" tabpos="26">
-		<Cursor position="4" topLine="0" />
+	<File name="..\..\..\addons\goThreadedVideo\src\goThreadedVideo.cpp" open="1" top="0" tabpos="13">
+		<Cursor position="5771" topLine="138" />
 	</File>
-	<File name="..\..\..\addons\goThreadedVideo\src\goThreadedVideo.h" open="1" top="0" tabpos="27">
-		<Cursor position="2214" topLine="51" />
+	<File name="..\..\..\addons\goThreadedVideo\src\goThreadedVideo.h" open="1" top="0" tabpos="12">
+		<Cursor position="2301" topLine="66" />
 	</File>
-	<File name="..\..\..\addons\goVideoGrabber\src\goVideoGrabber.cpp" open="0" top="0" tabpos="25">
-		<Cursor position="33096" topLine="1133" />
+	<File name="..\..\..\addons\goVideoGrabber\src\goVideoGrabber.cpp" open="1" top="0" tabpos="36">
+		<Cursor position="34630" topLine="1179" />
 	</File>
-	<File name="..\..\..\addons\goVideoGrabber\src\goVideoGrabber.h" open="0" top="0" tabpos="15">
-		<Cursor position="2843" topLine="42" />
+	<File name="..\..\..\addons\goVideoGrabber\src\goVideoGrabber.h" open="1" top="0" tabpos="34">
+		<Cursor position="557" topLine="2" />
 	</File>
-	<File name="..\..\..\addons\goVideoPlayer\src\goQtUtils.cpp" open="1" top="0" tabpos="29">
+	<File name="..\..\..\addons\goVideoPlayer\src\goQtUtils.cpp" open="0" top="0" tabpos="29">
 		<Cursor position="1068" topLine="4" />
 	</File>
-	<File name="..\..\..\addons\goVideoPlayer\src\goQtUtils.h" open="1" top="0" tabpos="48">
+	<File name="..\..\..\addons\goVideoPlayer\src\goQtUtils.h" open="0" top="0" tabpos="48">
 		<Cursor position="709" topLine="9" />
 	</File>
-	<File name="..\..\..\addons\goVideoPlayer\src\goVideoPlayer.cpp" open="1" top="0" tabpos="28">
-		<Cursor position="3893" topLine="138" />
+	<File name="..\..\..\addons\goVideoPlayer\src\goVideoPlayer.cpp" open="1" top="0" tabpos="14">
+		<Cursor position="23159" topLine="815" />
 	</File>
 	<File name="..\..\..\addons\goVideoPlayer\src\goVideoPlayer.h" open="1" top="0" tabpos="25">
-		<Cursor position="421" topLine="11" />
+		<Cursor position="386" topLine="0" />
 	</File>
-	<File name="..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\aiColor4D.h" open="1" top="0" tabpos="58">
+	<File name="..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\aiColor4D.h" open="0" top="0" tabpos="58">
 		<Cursor position="2446" topLine="39" />
 	</File>
-	<File name="..\..\..\addons\ofxCv\src\Calibration.h" open="1" top="0" tabpos="39">
+	<File name="..\..\..\addons\ofxCv\src\Calibration.h" open="0" top="0" tabpos="39">
 		<Cursor position="2" topLine="0" />
 	</File>
-	<File name="..\..\..\addons\ofxCv\src\ContourFinder.h" open="1" top="0" tabpos="40">
+	<File name="..\..\..\addons\ofxCv\src\ContourFinder.h" open="0" top="0" tabpos="40">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="..\..\..\addons\ofxCv\src\Distance.h" open="1" top="0" tabpos="32">
+	<File name="..\..\..\addons\ofxCv\src\Distance.h" open="0" top="0" tabpos="32">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="..\..\..\addons\ofxCv\src\Helpers.h" open="1" top="0" tabpos="31">
+	<File name="..\..\..\addons\ofxCv\src\Helpers.h" open="0" top="0" tabpos="31">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="..\..\..\addons\ofxCv\src\RunningBackground.h" open="1" top="0" tabpos="41">
+	<File name="..\..\..\addons\ofxCv\src\RunningBackground.h" open="0" top="0" tabpos="41">
 		<Cursor position="1751" topLine="18" />
 	</File>
 	<File name="..\..\..\addons\ofxCv\src\Tracker.cpp" open="0" top="0" tabpos="60">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="..\..\..\addons\ofxCv\src\Tracker.h" open="1" top="0" tabpos="33">
+	<File name="..\..\..\addons\ofxCv\src\Tracker.h" open="0" top="0" tabpos="33">
 		<Cursor position="1712" topLine="18" />
 	</File>
 	<File name="..\..\..\addons\ofxCv\src\Utilities.cpp" open="0" top="0" tabpos="3">
@@ -64,10 +64,10 @@
 	<File name="..\..\..\addons\ofxCv\src\Wrappers.cpp" open="0" top="0" tabpos="22">
 		<Cursor position="1556" topLine="20" />
 	</File>
-	<File name="..\..\..\addons\ofxCv\src\Wrappers.h" open="1" top="0" tabpos="30">
+	<File name="..\..\..\addons\ofxCv\src\Wrappers.h" open="0" top="0" tabpos="30">
 		<Cursor position="5207" topLine="0" />
 	</File>
-	<File name="..\..\..\addons\ofxCv\src\ofxCv.h" open="1" top="0" tabpos="38">
+	<File name="..\..\..\addons\ofxCv\src\ofxCv.h" open="0" top="0" tabpos="38">
 		<Cursor position="0" topLine="0" />
 	</File>
 	<File name="..\..\..\addons\ofxFaceTracker\libs\Tracker\CLM.cc" open="0" top="0" tabpos="55">
@@ -112,22 +112,22 @@
 	<File name="..\..\..\addons\ofxFaceTracker\libs\Tracker\Patch.h" open="0" top="0" tabpos="52">
 		<Cursor position="2514" topLine="0" />
 	</File>
-	<File name="..\..\..\addons\ofxFaceTracker\libs\Tracker\Tracker.cc" open="1" top="0" tabpos="57">
+	<File name="..\..\..\addons\ofxFaceTracker\libs\Tracker\Tracker.cc" open="0" top="0" tabpos="57">
 		<Cursor position="4513" topLine="74" />
 	</File>
-	<File name="..\..\..\addons\ofxFaceTracker\libs\Tracker\Tracker.h" open="1" top="0" tabpos="37">
+	<File name="..\..\..\addons\ofxFaceTracker\libs\Tracker\Tracker.h" open="0" top="0" tabpos="37">
 		<Cursor position="4381" topLine="69" />
 	</File>
-	<File name="..\..\..\addons\ofxFaceTracker\src\Expression.h" open="1" top="0" tabpos="36">
+	<File name="..\..\..\addons\ofxFaceTracker\src\Expression.h" open="0" top="0" tabpos="36">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="..\..\..\addons\ofxFaceTracker\src\ExpressionClassifier.h" open="1" top="0" tabpos="35">
+	<File name="..\..\..\addons\ofxFaceTracker\src\ExpressionClassifier.h" open="0" top="0" tabpos="35">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="..\..\..\addons\ofxFaceTracker\src\ofxFaceTracker.cpp" open="1" top="0" tabpos="56">
+	<File name="..\..\..\addons\ofxFaceTracker\src\ofxFaceTracker.cpp" open="0" top="0" tabpos="56">
 		<Cursor position="1506" topLine="31" />
 	</File>
-	<File name="..\..\..\addons\ofxFaceTracker\src\ofxFaceTracker.h" open="1" top="0" tabpos="34">
+	<File name="..\..\..\addons\ofxFaceTracker\src\ofxFaceTracker.h" open="0" top="0" tabpos="34">
 		<Cursor position="1110" topLine="37" />
 	</File>
 	<File name="..\..\..\addons\ofxFft\src\ofxFftBasic.h" open="0" top="0" tabpos="8">
@@ -139,34 +139,34 @@
 	<File name="..\..\..\addons\ofxNetwork\src\ofxTCPServer.h" open="0" top="0" tabpos="20">
 		<Cursor position="2392" topLine="49" />
 	</File>
-	<File name="..\..\..\addons\ofxOpenCv\libs\opencv\include\opencv2\core\core_c.h" open="1" top="0" tabpos="54">
+	<File name="..\..\..\addons\ofxOpenCv\libs\opencv\include\opencv2\core\core_c.h" open="0" top="0" tabpos="54">
 		<Cursor position="30289" topLine="696" />
 	</File>
-	<File name="..\..\..\addons\ofxOpenCv\libs\opencv\include\opencv2\core\types_c.h" open="1" top="0" tabpos="55">
+	<File name="..\..\..\addons\ofxOpenCv\libs\opencv\include\opencv2\core\types_c.h" open="0" top="0" tabpos="55">
 		<Cursor position="33210" topLine="1129" />
 	</File>
 	<File name="..\..\..\addons\ofxOpenCv\libs\opencv\include\opencv2\flann\matrix.h" open="0" top="0" tabpos="0">
 		<Cursor position="1441" topLine="37" />
 	</File>
-	<File name="..\..\..\addons\ofxOpenCv\src\ofxCvColorImage.cpp" open="1" top="0" tabpos="47">
+	<File name="..\..\..\addons\ofxOpenCv\src\ofxCvColorImage.cpp" open="0" top="0" tabpos="47">
 		<Cursor position="2429" topLine="55" />
 	</File>
-	<File name="..\..\..\addons\ofxOpenCv\src\ofxCvColorImage.h" open="1" top="0" tabpos="50">
+	<File name="..\..\..\addons\ofxOpenCv\src\ofxCvColorImage.h" open="0" top="0" tabpos="50">
 		<Cursor position="365" topLine="1" />
 	</File>
 	<File name="..\..\..\addons\ofxOpenCv\src\ofxCvHaarFinder.cpp" open="0" top="0" tabpos="65">
 		<Cursor position="1011" topLine="17" />
 	</File>
-	<File name="..\..\..\addons\ofxOpenCv\src\ofxCvImage.cpp" open="1" top="0" tabpos="49">
+	<File name="..\..\..\addons\ofxOpenCv\src\ofxCvImage.cpp" open="0" top="0" tabpos="49">
 		<Cursor position="3195" topLine="100" />
 	</File>
-	<File name="..\..\..\addons\ofxOpenCv\src\ofxCvImage.h" open="1" top="0" tabpos="51">
+	<File name="..\..\..\addons\ofxOpenCv\src\ofxCvImage.h" open="0" top="0" tabpos="51">
 		<Cursor position="6333" topLine="143" />
 	</File>
-	<File name="..\..\..\addons\ofxOpenCv\src\ofxCvShortImage.cpp" open="1" top="0" tabpos="52">
+	<File name="..\..\..\addons\ofxOpenCv\src\ofxCvShortImage.cpp" open="0" top="0" tabpos="52">
 		<Cursor position="982" topLine="14" />
 	</File>
-	<File name="..\..\..\addons\ofxOpenCv\src\ofxOpenCv.h" open="1" top="0" tabpos="53">
+	<File name="..\..\..\addons\ofxOpenCv\src\ofxOpenCv.h" open="0" top="0" tabpos="53">
 		<Cursor position="0" topLine="0" />
 	</File>
 	<File name="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.cpp" open="0" top="0" tabpos="11">
@@ -175,89 +175,98 @@
 	<File name="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.h" open="0" top="0" tabpos="12">
 		<Cursor position="2011" topLine="10" />
 	</File>
-	<File name="bin\data\config_properties.xml" open="1" top="0" tabpos="11">
-		<Cursor position="6216" topLine="60" />
-	</File>
-	<File name="bin\data\config_scenes.xml" open="1" top="0" tabpos="3">
+	<File name="bin\data\config_properties.xml" open="1" top="0" tabpos="4">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="bin\data\leveltextureblend.frag" open="1" top="0" tabpos="63">
-		<Cursor position="193" topLine="0" />
+	<File name="bin\data\config_scenes.xml" open="1" top="0" tabpos="5">
+		<Cursor position="1936" topLine="0" />
 	</File>
-	<File name="bin\data\leveltexturevertex.vert" open="1" top="0" tabpos="62">
-		<Cursor position="379" topLine="0" />
+	<File name="bin\data\leveltextureblend.frag" open="1" top="0" tabpos="42">
+		<Cursor position="255" topLine="0" />
 	</File>
-	<File name="bin\data\multitexturemerge.frag" open="1" top="0" tabpos="59">
-		<Cursor position="1774" topLine="41" />
+	<File name="bin\data\leveltexturevertex.vert" open="1" top="0" tabpos="41">
+		<Cursor position="264" topLine="0" />
 	</File>
-	<File name="bin\data\vertex.vert" open="1" top="0" tabpos="61">
-		<Cursor position="0" topLine="0" />
+	<File name="bin\data\multitexturemerge.frag" open="1" top="0" tabpos="22">
+		<Cursor position="361" topLine="0" />
 	</File>
-	<File name="src\Analyzer.cpp" open="1" top="0" tabpos="12">
-		<Cursor position="8199" topLine="257" />
+	<File name="bin\data\vertex.vert" open="1" top="0" tabpos="43">
+		<Cursor position="115" topLine="0" />
 	</File>
-	<File name="src\AppController.cpp" open="1" top="0" tabpos="7">
-		<Cursor position="16270" topLine="406" />
+	<File name="src\Analyzer.cpp" open="1" top="0" tabpos="9">
+		<Cursor position="8383" topLine="256" />
 	</File>
-	<File name="src\AppController.h" open="1" top="0" tabpos="21">
-		<Cursor position="1572" topLine="57" />
+	<File name="src\AppController.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="14495" topLine="328" />
 	</File>
-	<File name="src\AppDataTypes.h" open="1" top="0" tabpos="13">
-		<Cursor position="4237" topLine="208" />
+	<File name="src\AppController.h" open="1" top="0" tabpos="17">
+		<Cursor position="217" topLine="12" />
 	</File>
-	<File name="src\AppModel.cpp" open="1" top="0" tabpos="4">
-		<Cursor position="12573" topLine="367" />
+	<File name="src\AppDataTypes.h" open="1" top="0" tabpos="10">
+		<Cursor position="3697" topLine="169" />
 	</File>
-	<File name="src\AppModel.h" open="1" top="0" tabpos="5">
-		<Cursor position="5924" topLine="177" />
+	<File name="src\AppModel.cpp" open="1" top="0" tabpos="11">
+		<Cursor position="13496" topLine="418" />
 	</File>
-	<File name="src\AppView.cpp" open="1" top="0" tabpos="23">
+	<File name="src\AppModel.h" open="1" top="0" tabpos="16">
+		<Cursor position="4298" topLine="139" />
+	</File>
+	<File name="src\AppView.cpp" open="0" top="0" tabpos="23">
 		<Cursor position="2783" topLine="58" />
 	</File>
 	<File name="src\AppView.h" open="0" top="0" tabpos="17">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="src\ArdController.cpp" open="1" top="0" tabpos="8">
-		<Cursor position="3877" topLine="111" />
+	<File name="src\ArdController.cpp" open="1" top="0" tabpos="26">
+		<Cursor position="1192" topLine="11" />
 	</File>
-	<File name="src\ArdController.h" open="0" top="0" tabpos="7">
-		<Cursor position="595" topLine="0" />
+	<File name="src\ArdController.h" open="1" top="0" tabpos="27">
+		<Cursor position="1046" topLine="18" />
 	</File>
-	<File name="src\AttackView.cpp" open="1" top="0" tabpos="42">
+	<File name="src\AttackView.cpp" open="1" top="0" tabpos="30">
 		<Cursor position="2150" topLine="13" />
 	</File>
 	<File name="src\AttackView.h" open="0" top="0" tabpos="19">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="src\BaseMeterView.cpp" open="1" top="0" tabpos="19">
+	<File name="src\BaseMeterView.cpp" open="0" top="0" tabpos="19">
 		<Cursor position="6081" topLine="0" />
 	</File>
-	<File name="src\BaseMeterView.h" open="1" top="0" tabpos="24">
+	<File name="src\BaseMeterView.h" open="0" top="0" tabpos="24">
 		<Cursor position="1516" topLine="27" />
 	</File>
-	<File name="src\BaseView.cpp" open="1" top="0" tabpos="45">
+	<File name="src\BaseView.cpp" open="0" top="0" tabpos="45">
 		<Cursor position="1157" topLine="39" />
 	</File>
 	<File name="src\BaseView.h" open="0" top="0" tabpos="26">
 		<Cursor position="799" topLine="8" />
 	</File>
-	<File name="src\CamController.cpp" open="1" top="0" tabpos="18">
-		<Cursor position="791" topLine="18" />
+	<File name="src\CamController.cpp" open="1" top="0" tabpos="20">
+		<Cursor position="11046" topLine="341" />
 	</File>
-	<File name="src\CamController.h" open="1" top="0" tabpos="22">
-		<Cursor position="188" topLine="0" />
+	<File name="src\CamController.h" open="1" top="0" tabpos="18">
+		<Cursor position="1718" topLine="57" />
 	</File>
-	<File name="src\Constants.h" open="1" top="0" tabpos="15">
+	<File name="src\Constants.h" open="0" top="0" tabpos="15">
 		<Cursor position="292" topLine="0" />
 	</File>
-	<File name="src\DataController.cpp" open="1" top="0" tabpos="60">
-		<Cursor position="1458" topLine="28" />
+	<File name="src\DataController.cpp" open="1" top="0" tabpos="21">
+		<Cursor position="1876" topLine="27" />
 	</File>
-	<File name="src\DebugView.cpp" open="1" top="0" tabpos="6">
-		<Cursor position="4512" topLine="88" />
+	<File name="src\DataController.h" open="1" top="0" tabpos="45">
+		<Cursor position="199" topLine="11" />
 	</File>
-	<File name="src\DebugView.h" open="1" top="0" tabpos="44">
+	<File name="src\DebugView.cpp" open="1" top="0" tabpos="28">
+		<Cursor position="8148" topLine="199" />
+	</File>
+	<File name="src\DebugView.h" open="0" top="0" tabpos="44">
 		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="src\FunctionDataTypes.h" open="1" top="0" tabpos="33">
+		<Cursor position="278" topLine="0" />
+	</File>
+	<File name="src\FunctionModel.h" open="1" top="0" tabpos="32">
+		<Cursor position="421" topLine="26" />
 	</File>
 	<File name="src\IXMLBuilder.h" open="0" top="0" tabpos="10">
 		<Cursor position="507" topLine="1" />
@@ -268,52 +277,67 @@
 	<File name="src\JungleExceptions.h" open="0" top="0" tabpos="16">
 		<Cursor position="962" topLine="15" />
 	</File>
-	<File name="src\Logger.h" open="1" top="0" tabpos="68">
-		<Cursor position="699" topLine="27" />
+	<File name="src\KeyboardModel.h" open="1" top="0" tabpos="31">
+		<Cursor position="384" topLine="10" />
 	</File>
-	<File name="src\MicController.cpp" open="1" top="0" tabpos="17">
-		<Cursor position="5462" topLine="132" />
+	<File name="src\Logger.cpp" open="1" top="0" tabpos="39">
+		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="src\MicController.h" open="1" top="0" tabpos="43">
+	<File name="src\Logger.h" open="1" top="0" tabpos="40">
+		<Cursor position="2582" topLine="68" />
+	</File>
+	<File name="src\MicController.cpp" open="1" top="0" tabpos="29">
+		<Cursor position="4894" topLine="114" />
+	</File>
+	<File name="src\MicController.h" open="0" top="0" tabpos="43">
 		<Cursor position="922" topLine="7" />
 	</File>
-	<File name="src\PropertyXMLBuilder.cpp" open="0" top="0" tabpos="25">
+	<File name="src\PropertyXMLBuilder.cpp" open="1" top="0" tabpos="7">
 		<Cursor position="925" topLine="12" />
 	</File>
-	<File name="src\PropertyXMLParser.cpp" open="1" top="0" tabpos="14">
+	<File name="src\PropertyXMLParser.cpp" open="0" top="0" tabpos="14">
 		<Cursor position="421" topLine="6" />
 	</File>
-	<File name="src\SceneView.cpp" open="1" top="0" tabpos="10">
-		<Cursor position="1175" topLine="28" />
+	<File name="src\SceneView.cpp" open="1" top="0" tabpos="23">
+		<Cursor position="5510" topLine="118" />
 	</File>
-	<File name="src\SceneView.h" open="0" top="0" tabpos="4">
-		<Cursor position="919" topLine="20" />
+	<File name="src\SceneView.h" open="1" top="0" tabpos="24">
+		<Cursor position="576" topLine="20" />
 	</File>
-	<File name="src\SceneXMLBuilder.cpp" open="1" top="0" tabpos="2">
-		<Cursor position="18452" topLine="386" />
+	<File name="src\SceneXMLBuilder.cpp" open="1" top="0" tabpos="8">
+		<Cursor position="6707" topLine="188" />
 	</File>
 	<File name="src\SceneXMLBuilder.h" open="0" top="0" tabpos="24">
 		<Cursor position="1032" topLine="21" />
 	</File>
-	<File name="src\SceneXMLParser.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="10121" topLine="211" />
+	<File name="src\SceneXMLParser.cpp" open="1" top="0" tabpos="6">
+		<Cursor position="15760" topLine="336" />
 	</File>
-	<File name="src\SoundController.cpp" open="1" top="1" tabpos="67">
-		<Cursor position="1311" topLine="30" />
+	<File name="src\SceneXMLParser.h" open="1" top="0" tabpos="38">
+		<Cursor position="1124" topLine="21" />
 	</File>
-	<File name="src\SoundController.h" open="1" top="0" tabpos="65">
-		<Cursor position="2323" topLine="10" />
+	<File name="src\SerializationUtils.h" open="1" top="0" tabpos="35">
+		<Cursor position="1464" topLine="40" />
 	</File>
-	<File name="src\VictimView.cpp" open="1" top="0" tabpos="46">
+	<File name="src\SoundController.cpp" open="1" top="0" tabpos="3">
+		<Cursor position="1996" topLine="6" />
+	</File>
+	<File name="src\SoundController.h" open="1" top="0" tabpos="2">
+		<Cursor position="2218" topLine="85" />
+	</File>
+	<File name="src\VictimView.cpp" open="1" top="0" tabpos="37">
 		<Cursor position="1710" topLine="5" />
 	</File>
-	<File name="src\VideoController.cpp" open="1" top="0" tabpos="9">
-		<Cursor position="4010" topLine="60" />
+	<File name="src\VideoController.cpp" open="1" top="0" tabpos="15">
+		<Cursor position="2421" topLine="72" />
 	</File>
-	<File name="src\VideoController.h" open="1" top="0" tabpos="16">
-		<Cursor position="626" topLine="2" />
+	<File name="src\VideoController.h" open="1" top="0" tabpos="19">
+		<Cursor position="787" topLine="15" />
 	</File>
-	<File name="src\main.cpp" open="1" top="0" tabpos="66">
+	<File name="src\config.h" open="1" top="0" tabpos="48">
+		<Cursor position="304" topLine="0" />
+	</File>
+	<File name="src\main.cpp" open="1" top="1" tabpos="46">
 		<Cursor position="0" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>

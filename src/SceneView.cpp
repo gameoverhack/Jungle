@@ -46,7 +46,7 @@ SceneView::SceneView(float width, float height) : BaseView(width ,height) {
 	string vertPath = boost::any_cast<string>(_appModel->getProperty("shaderOptimisedHeadVertPath"));
 	string fragPath = boost::any_cast<string>(_appModel->getProperty("shaderOptimisedHeadFragPath"));
 #endif
-	
+
 #if OF_VERSION < 7
 	_shader.setup(ofToDataPath(vertPath), ofToDataPath(fragPath));
 #else
@@ -139,11 +139,11 @@ void SceneView::update() {
 #endif
 		numTextures++;
 	}
-	
+
 	// set number of heads we're blending.
 	_shader.setUniform1i("numTextures", numTextures);
 	_shader.setUniform1i("showUnmaskedTextures", (int)boost::any_cast<bool>(_appModel->getProperty("showUnmaskedTextures")));
-	
+
 #ifndef OPTIMISED
 	// if not optimised, load stuff from properties, else it has been hard coded into optimised shader
 	_shader.setUniform1f("blendRatio", boost::any_cast<float>(_appModel->getProperty("shaderBlendRatio")));
@@ -151,7 +151,7 @@ void SceneView::update() {
 #else
 	// shader values are hard coded
 #endif
-	
+
     glPushMatrix();
 
     // scale to screen
@@ -200,7 +200,7 @@ void SceneView::drawCharacter(ofFbo * targetFBO,
 	float rot = transform->rotation;
 
 	float sclX;
-	
+
 #ifndef OPTIMISED
 	// if not optimised, get scale method
 	int scaleMethod = boost::any_cast<int>(_appModel->getProperty("tryScaleMethod"));

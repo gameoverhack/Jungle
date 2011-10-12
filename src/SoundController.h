@@ -18,24 +18,27 @@ class Fader : public ofThread {
 
 public:
 
-    Fader(float from, float to, float over, FaderType type)
+    Fader(float from, float to, float over, FaderType type, bool autoStart = true)
     :
     _from(from),
     _to(to),
     _over(over),
     _type(type),
-    _startTime(ofGetElapsedTimeMillis()),
     _isFading(true) {
-        _fade.time = _startTime;
-        _fade.value = _from;
-        startThread(false, false);
+        if (autoStart) start();
     };
 
     ~Fader() {
         if (isThreadRunning()) stopThread();
     };
 
-    bool    isFading() {return _isFading;};
+    void   start() {
+        _startTime = ofGetElapsedTimeMillis();
+        _fade.time = _startTime;
+        _fade.value = _from;
+        startThread(false, false);
+    };
+    bool   isFading() {return _isFading;};
     fade   getFade() {return _fade;};
 
 private:
@@ -99,6 +102,14 @@ private:
 
 };
 
+typedef struct {
+    Fader* fader;
+    string sequenceName;
+    int startFrame;
+    int endFrame;
+    bool done;
+} jungle_fade;
+
 class SoundController {
 
 public:
@@ -106,18 +117,22 @@ public:
     SoundController();
     ~SoundController();
 
+    void    setup();
     void    update();
     void    loadSound();
 
     void    fade(float toVolume, int timeMillis, FaderType fadeType);
 
-private:
-
     void    setVolume(float volume);
 
-    Fader*          _currentFade;
+private:
 
-    ofSoundPlayer   _player;
+    Fader*              _currentFade;
+
+    ofSoundPlayer       _player;
+
+    vector<jungle_fade*>  _fades;
+    int                   _fadeIndex;
 
 };
 

@@ -17,7 +17,7 @@ int main( ){
 	// can be OF_WINDOW or OF_FULLSCREEN
 	// pass in width and height too:
 	LOGGER->setLogLevel(JU_LOG_VERBOSE);
-	
+
 #ifdef RUN_IN_TEST_MODE
 	TestController * tc = new TestController(new AppController(&window));
 	ofRunApp(tc->_appController);

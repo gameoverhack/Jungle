@@ -145,8 +145,8 @@ void AppController::swapCameras() {
 //--------------------------------------------------------------
 void AppController::VictimEvent(float & level) {
 
-    if (ofGetElapsedTimeMillis() -_appModel->getLastActionTime() > 2000) {
-        if (_switchToSequence == NULL && !_vidController->isPreRolling()) {
+    if (ofGetElapsedTimeMillis() -_appModel->getLastActionTime() > TIMEOUT_ACTION) {
+        if (_switchToSequence == NULL && !_vidController->isPreRolling() && _appModel->getCurrentSequenceFrame() < _appModel->getCurrentSequenceNumFrames()-15) {
             if (_appModel->checkCurrentInteractivity(kINTERACTION_BOTH) || _appModel->checkCurrentInteractivity(kINTERACTION_VICTIM)) {
                 _appModel->setLastActionTime(ofGetElapsedTimeMillis());
                 string res = _appModel->getCurrentSequence()->getVictimResult()[_appModel->getCurrentSequenceFrame()];
@@ -167,8 +167,8 @@ void AppController::VictimEvent(float & level) {
 //--------------------------------------------------------------
 void AppController::AttackEvent(float & level) {
 
-    if (ofGetElapsedTimeMillis() -_appModel->getLastActionTime() > 2000) {
-        if (_switchToSequence == NULL && !_vidController->isPreRolling()) {
+    if (ofGetElapsedTimeMillis() -_appModel->getLastActionTime() > TIMEOUT_ACTION) {
+        if (_switchToSequence == NULL && !_vidController->isPreRolling() && _appModel->getCurrentSequenceFrame() < _appModel->getCurrentSequenceNumFrames()-15) {
             if (_appModel->checkCurrentInteractivity(kINTERACTION_BOTH) || _appModel->checkCurrentInteractivity(kINTERACTION_ATTACKER)) {
                 _appModel->setLastActionTime(ofGetElapsedTimeMillis());
                 string res = _appModel->getCurrentSequence()->getAttackerResult()[_appModel->getCurrentSequenceFrame()];
@@ -233,8 +233,8 @@ void AppController::update() {
 			_switchToSequence = currentScene->getCurrentSequence();
             _camControllers[0]->loadAttributes();
             _camControllers[1]->loadAttributes();
+            _soundController->setup();
 			_soundController->loadSound();
-			_soundController->fade(1.0, 2000, FADE_LOG);
 			_vidController->loadMovie(_switchToSequence, true);
 			_appModel->setState(kAPP_RUNNING);
 			_appModel->setLastActionTime(ofGetElapsedTimeMillis());
@@ -272,6 +272,7 @@ void AppController::update() {
 				// loaded next sequence in this scene, keep going
 				LOG_VERBOSE("Gone to next sequence");
 				_vidController->setState(kVIDCONTROLLER_READY);
+				_soundController->setVolume(1.0);
 			} else {
                 nextScene();
 			}
@@ -284,11 +285,12 @@ void AppController::update() {
 			_vidController->toggleVideoPlayers();
 			//_vidController->update();
 			_vidController->setState(kVIDCONTROLLER_READY);
+			_soundController->setVolume(1.0);
 			currentScene->setCurrentSequence(_switchToSequence);
 			_switchToSequence = NULL;
 		}
 
-		
+
 #ifdef RUN_IN_TEST_MODE
 		// throw fake update event, float is bogas.
 		ofNotifyEvent(updateEvent, 1.0, this);
@@ -320,9 +322,11 @@ void AppController::nextScene() {
     _camControllers[0]->loadAttributes();
     _camControllers[1]->loadAttributes();
     _switchToSequence = currentScene->getCurrentSequence();
+    _soundController->setup();
     //_soundController->loadSound(currentScene);
     //_soundController->fade(1.0, 2000, FADE_LOG);
     _vidController->loadMovie(_switchToSequence, true);
+    _soundController->setVolume(1.0);
 }
 
 //--------------------------------------------------------------

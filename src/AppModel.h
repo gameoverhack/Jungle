@@ -10,6 +10,7 @@
 #ifndef _H_APPMODEL
 #define	_H_APPMODEL
 
+#include "config.h"
 #include "BaseState.h"
 #include "Singleton.h"
 #include "FunctionModel.h"

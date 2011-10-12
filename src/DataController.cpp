@@ -27,7 +27,7 @@ DataController::DataController(string configFilePath) {
 	// fire and forget
 	PropertyXMLParser propertyXMLParser(_configFilePath);
 
-#if defined(USER_MATT)
+#ifdef USER_MATT
     #ifdef TARGET_OSX
     _appModel->setProperty("scenesDataPath", (string)"/Users/gameover/Desktop/StrangerDanger/video");
     _appModel->setProperty("flashDataPath", (string)"/Users/gameover/Desktop/StrangerDanger/flash");
@@ -42,10 +42,10 @@ DataController::DataController(string configFilePath) {
     //_appModel->setProperty("flashDataPath", (string)"D:/newmodel/flash");
     _appModel->setProperty("graphicDataPath", (string)"graphics");
     #endif
-#else defined(USER_OLLIE)
+#elif USER_OLLIE
     _appModel->setProperty("scenesDataPath", (string)"/Users/ollie/its_a_jungle_out_there/resources/video");
     _appModel->setProperty("flashDataPath", (string)"/Users/ollie/its_a_jungle_out_there/resources/flash");
-	_appModel->setProperty("audioDataPath", (string)"/Users/ollie/its_a_jungle_out_there/resources/audio");	
+	_appModel->setProperty("audioDataPath", (string)"/Users/ollie/its_a_jungle_out_there/resources/audio");
     _appModel->setProperty("graphicDataPath", (string)"graphics");
 #endif
 

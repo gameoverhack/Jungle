@@ -81,7 +81,7 @@ void VideoController::update() {
 	//_appModel->setCurrentFrameTotal(totalFrames); // no need for now?
 	_appModel->setCurrentIsFrameNew(isFrameNew);
 
-	if (currentFrame > totalFrames - 12 && !_preRolling) {
+	if (currentFrame > totalFrames - 12 && !_preRolling && !checkState(kVIDCONTROLLER_NEXTVIDLOADING)) {
 
         string nextResult = currentSequence->getNextResult()[currentFrame]; // technically all members in getNextResult should point to the same next sequence name...
 
@@ -123,6 +123,8 @@ void VideoController::forceUpdate() {
 
 void VideoController::loadMovie(Sequence * seq, bool forceCurrentLoad, int lastFrameWhenForced) {
 
+    _appModel->setLastActionTime(ofGetElapsedTimeMillis()); // stops other actions from being possible!
+
 	// get the full path of the movie from the sequence
 	string path = seq->getMovieFullFilePath();
 	LOG_VERBOSE("Next video start to load: " + path + (string)(forceCurrentLoad ? " FORCED: " + ofToString(lastFrameWhenForced) : " NORMAL"));
@@ -146,6 +148,7 @@ void VideoController::loadMovie(Sequence * seq, bool forceCurrentLoad, int lastF
 
 void VideoController::toggleVideoPlayers(int lastFrameWhenForced) {
 	LOG_NOTICE("Toggling Video Players " + ofToString(lastFrameWhenForced));
+	 _appModel->setLastActionTime(ofGetElapsedTimeMillis()); // stops other actions from being possible!
 //	goThreadedVideo * nextMovie = _appModel->getNextVideoPlayer();
 //	goThreadedVideo * currentMovie = _appModel->getCurrentVideoPlayer();
 //	nextMovie->setPosition(0.0f);
@@ -187,8 +190,8 @@ void VideoController::loaded(string & path) {
 void VideoController::error(int & err) {
 	LOG_ERROR("Next video error during load: " + ofToString(err));
 	setState(kVIDCONTROLLER_NEXTVIDERROR);
-	goThreadedVideo * nextMovie			= _appModel->getNextVideoPlayer();
-	nextMovie->close();
+	//goThreadedVideo * nextMovie			= _appModel->getNextVideoPlayer();
+	//nextMovie->close();
 }
 
 bool VideoController::isPreRolling() {

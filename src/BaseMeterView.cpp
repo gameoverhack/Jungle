@@ -25,14 +25,12 @@ void BaseMeterView::update(interaction_t interactionType) {
      ********************************************************/
 
     int   currentInteractivity  = _appModel->getCurrentInteractivity();
-    bool  isInteractive         = (currentInteractivity == kINTERACTION_BOTH || currentInteractivity == interactionType);
 
     int   totalNumSequences     = _appModel->getCurrentScene()->getNumOfSequences();
     int   thisNumSequence       = _appModel->getCurrentSequence()->getNumber();
 
-    bool deny = (ofGetElapsedTimeMillis() - _appModel->getLastActionTime() > 2000);
-
-    isInteractive = isInteractive || deny;
+    bool deny = (ofGetElapsedTimeMillis() - _appModel->getLastActionTime() > TIMEOUT_ACTION);
+    bool  isInteractive         = (currentInteractivity == kINTERACTION_BOTH || currentInteractivity == interactionType) && deny;
 
     /********************************************************
      *      Draw the Meter to the ViewFBO                   *

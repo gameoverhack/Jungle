@@ -5,7 +5,7 @@
         <property name="audioDataPath" type="string">E:/gameoverload/VideoProjects/Jungle/finalALL/audio</property>
         <property name="autoTest" type="bool">false</property>
         <property name="cameraPropToAdjust" type="string">POSITION</property>
-        <property name="cameraToAdjust" type="int">0</property>
+        <property name="cameraToAdjust" type="int">1</property>
         <property name="flashDataPath" type="string">E:/gameoverload/VideoProjects/Jungle/finalALL/flash</property>
         <property name="fullScreen" type="bool">false</property>
         <property name="graphicDataPath" type="string">graphics</property>
@@ -14,11 +14,13 @@
         <property name="scenesDataPath" type="string">E:/gameoverload/VideoProjects/Jungle/finalALL/video</property>
         <property name="scenesXMLFile" type="string">config_scenes.xml</property>
         <property name="shaderBlendRatio" type="float">0.3</property>
-        <property name="shaderGammaCorrection" type="float">2.3</property>
+        <property name="shaderGammaCorrection" type="float">1.2</property>
         <property name="shaderHeadFragPath" type="string">multitexturemerge.frag</property>
         <property name="shaderHeadVertPath" type="string">vertex.vert</property>
         <property name="shaderLevelFragPath" type="string">leveltextureblend.frag</property>
         <property name="shaderLevelVertPath" type="string">leveltexturevertex.vert</property>
+        <property name="shaderOptimisedHeadFragPath" type="string">multitexturemerge_optimised.frag</property>
+        <property name="shaderOptimisedHeadVertPath" type="string">vertex.vert</property>
         <property name="showCameras" type="bool">false</property>
         <property name="showDebugView" type="bool">true</property>
         <property name="showFFT" type="bool">false</property>
@@ -27,8 +29,8 @@
         <property name="tryScaleMethod" type="int">0</property>
         <property name="userAction" type="int">0</property>
         <property name="xmlForceFileDateTime" type="bool">false</property>
-        <property name="xmlForceSceneBuildOnLoad" type="bool">false</property>
+        <property name="xmlForceSceneBuildOnLoad" type="bool">true</property>
         <property name="xmlIgnoreErrors" type="bool">false</property>
-        <property name="xmlIgnoreTransformErrors" type="bool">true</property>
+        <property name="xmlIgnoreTransformErrors" type="bool">false</property>
     </properties>
 </config>

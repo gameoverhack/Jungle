@@ -22,14 +22,14 @@ vec4 blend(vec4 a, vec4 b){
 void main(){
 
 	vec4 sceneTexel, vic1Texel, atk1Texel, atk2Texel;
-	vec2 textCoord;
+	vec2 texCoord;
 
 	float atk2Alphavalue	= 104.0/255.0;
 	float atk1AlphaValue	= 104.0/255.0; // deal with this problem below for double attackers
 	float vic1AlphaValue	= 226.0/255.0;
 	float alphaDelta		= 0.2;
-	
-	
+
+
 
 
 	// Get texels from textures
