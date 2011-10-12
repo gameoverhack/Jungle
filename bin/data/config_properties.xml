@@ -4,7 +4,7 @@
         <property name="appRenderWidth" type="float">1920</property>
         <property name="audioDataPath" type="string">E:/gameoverload/VideoProjects/Jungle/finalALL/audio</property>
         <property name="autoTest" type="bool">false</property>
-        <property name="cameraPropToAdjust" type="string">POSITION</property>
+        <property name="cameraPropToAdjust" type="string">SCALEROTATION</property>
         <property name="cameraToAdjust" type="int">1</property>
         <property name="flashDataPath" type="string">E:/gameoverload/VideoProjects/Jungle/finalALL/flash</property>
         <property name="fullScreen" type="bool">false</property>

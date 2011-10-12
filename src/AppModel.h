@@ -191,6 +191,10 @@ public:
 
     void                setFacePresent(int face, bool isPresent) {_isFacePresent[face] = isPresent;};
     bool                getFacePresent(int face) {return _isFacePresent[face];};
+
+    void                setSwapFacePresent(int face, bool isPresent) {_isSwapPresent[face] = isPresent;};
+    bool                getSwapFacePresent(int face) {return _isSwapPresent[face];};
+
     bool                getAnyFacePresent() {return _isFacePresent[0] || _isFacePresent[1];};
 
     void                setLastActionTime(int time) {_lastActionTime = time;};
@@ -262,6 +266,7 @@ private:
     float                       _currentSequenceLevel;
 
     bool                        _isFacePresent[2];
+    bool                        _isSwapPresent[2];
     int                         _lastActionTime;
 
 };

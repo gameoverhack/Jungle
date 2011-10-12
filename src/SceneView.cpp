@@ -88,7 +88,7 @@ void SceneView::update() {
         PosRotScale * victimPRS;
         PosRotScale * attackPRS;
 
-		if (_appModel->getFacePresent(0)) {
+		if (_appModel->getSwapFacePresent(0)) {
             victimTex = _appModel->getVictimCamTexRef();
             victimPRS = _appModel->getCameraAttributes(0);
 		} else {
@@ -96,7 +96,7 @@ void SceneView::update() {
 		    victimPRS = _appModel->getFakeAttributes(0);
 		}
 
-        if (_appModel->getFacePresent(1)) {
+        if (_appModel->getSwapFacePresent(1)) {
             attackTex = _appModel->getAttackCamTexRef();
             attackPRS = _appModel->getCameraAttributes(1);
 		} else {

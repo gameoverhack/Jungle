@@ -106,6 +106,7 @@ private:
 	int				_lastAutoActionTime;
     int             _lastFrameWhenForced;
     int             _returnFrameWhenForced;
+    int             _lastAutoAttackAction;
 
 protected:
 

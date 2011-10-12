@@ -118,7 +118,6 @@ void AppController::setup() {
     _appModel->setProperty("showProps", false);
 	_appModel->setProperty("fullScreen", false);
 	_appModel->setProperty("tryScaleMethod", 0);
-
 /*	_appModel->setProperty("cameraToAdjust", (string)"0");
 	_appModel->setProperty("cameraPropToAdjust", (string)"SCALEROTATION");
     _appModel->setProperty("camScale0", 0.0f);
@@ -281,9 +280,8 @@ void AppController::update() {
 
 		// catch _switchToSequence when a movie is loaded completely
 		if (_switchToSequence != NULL && _vidController->checkState(kVIDCONTROLLER_NEXTVIDREADY)) {
-		     _appModel->setLastActionTime(ofGetElapsedTimeMillis());
+            _appModel->setLastActionTime(ofGetElapsedTimeMillis());
 			_vidController->toggleVideoPlayers();
-			//_vidController->update();
 			_vidController->setState(kVIDCONTROLLER_READY);
 			_soundController->setVolume(1.0);
 			currentScene->setCurrentSequence(_switchToSequence);
@@ -299,34 +297,54 @@ void AppController::update() {
         _appModel->getFakeAttackPlayer()->update();
         _appModel->getFakeVictimPlayer()->update();
 
-        if (_appModel->getCurrentSequence()->getNumber() > 0 && !_appModel->getAnyFacePresent()) { //&& _lastActionTime > 10000
-            // FACE DISAPPEARS
-            //nextScene();
+        if (!_appModel->getSwapFacePresent(1)) {
+            if (_lastAutoAttackAction != 0 && ofGetElapsedTimeMillis() - _lastAutoAttackAction > TIMEOUT_AUTOATTACK) {
+                _lastAutoAttackAction = 0;
+                float level = 1.2;
+                AttackEvent(level);
+            } else if (_lastAutoAttackAction == 0 && currentSequence->getType() == "loop") {
+                _lastAutoAttackAction = ofGetElapsedTimeMillis();
+            } else if (_lastAutoAttackAction != 0 && currentSequence->getType() != "loop") {
+                _lastAutoAttackAction = 0;
+            }
+        } else _lastAutoAttackAction = 0;
+
+        if (currentSequence->getNumber() == 0 && _appModel->getAnyFacePresent() && _appModel->getCurrentSequenceFrame() >= _appModel->getCurrentSequenceNumFrames()-4) {
+            LOG_NOTICE("Start scene " + ofToString(_appModel->getCurrentSequenceFrame()) + " " + ofToString(_appModel->getCurrentSequenceNumFrames()-4));
+            int level = 2;
+            FaceEvent(level);
         }
 
+        if (currentSequence->getNumber() > 0 && !_appModel->getAnyFacePresent()) {
+            LOG_NOTICE("No faces present for more than " + ofToString(TIMEOUT_NOFACE) + " forcing next scene");
+            //nextScene();
+        }
 	}
 
 }
 
 void AppController::nextScene() {
+
     LOG_VERBOSE("Current scene ended, rewind current scene to first sequence. Loading next scene.");
 
     Scene* currentScene = _appModel->getCurrentScene();
-    // rewind last scene
     if (currentScene != NULL) currentScene->rewindScene();
-    // load next scene
+
     _appModel->nextScene();
     _vidController->reset();
 
     currentScene = _appModel->getCurrentScene();
+
     _camControllers[0]->loadAttributes();
     _camControllers[1]->loadAttributes();
+
     _switchToSequence = currentScene->getCurrentSequence();
+
     _soundController->setup();
-    //_soundController->loadSound(currentScene);
-    //_soundController->fade(1.0, 2000, FADE_LOG);
-    _vidController->loadMovie(_switchToSequence, true);
     _soundController->setVolume(1.0);
+
+    _vidController->loadMovie(_switchToSequence, true);
+
 }
 
 //--------------------------------------------------------------
@@ -351,13 +369,13 @@ void AppController::keyPressed(int key){
 
     PosRotScale * prsToAdjust[2];
 
-    if (_appModel->getFacePresent(0)) {
+    if (_appModel->getSwapFacePresent(0)) {
         prsToAdjust[0] = _appModel->getCameraAttributes(0);
     } else {
         prsToAdjust[0] = _appModel->getFakeAttributes(0);
     }
 
-    if (_appModel->getFacePresent(1)) {
+    if (_appModel->getSwapFacePresent(1)) {
         prsToAdjust[1] = _appModel->getCameraAttributes(1);
     } else {
         prsToAdjust[1] = _appModel->getFakeAttributes(1);

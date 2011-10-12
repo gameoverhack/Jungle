@@ -102,7 +102,7 @@ private:
 	int                     _height;
 
     int                     _lastFaceTime;
-    int                     _lastFaceTimeTillLost;
+    int                     _lastSwapTime;
 
     ofxCvHaarFinder         _finder;
     ofxFaceTracker          _tracker;

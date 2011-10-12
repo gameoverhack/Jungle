@@ -18,8 +18,8 @@ CamController::CamController() {
 
 	//_cam.listDevices();
     _isCamInit = false;
-    _lastFaceTimeTillLost   = 10000;
-    _lastFaceTime           = ofGetElapsedTimeMillis() - _lastFaceTimeTillLost;
+    _lastFaceTime = ofGetElapsedTimeMillis() - TIMEOUT_NOFACE;
+    _lastSwapTime = ofGetElapsedTimeMillis() - TIMEOUT_SWAPFACE;
 
     _camROI = new ofRectangle();
     _camROI->x       = _camROI->y = 200.0f;
@@ -242,19 +242,34 @@ void CamController::setFakeAttributes(PosRotScale * prs) {
 void CamController::update() {
 
     _cam.update();
-    if (ofGetElapsedTimeMillis() - _lastFaceTime < _lastFaceTimeTillLost) {
+
+#ifndef FORCE_FACE
+    if (ofGetElapsedTimeMillis() - _lastFaceTime < TIMEOUT_NOFACE) {
         if (!_appModel->getFacePresent(_instanceID)) {  // arrived
-            int instanceID = _instanceID + 2;
+            int actionType = _instanceID + 2;   // 0,1 leaving, 2,3 arriving
             _appModel->setFacePresent(_instanceID, true);
-            ofNotifyEvent(faceAction, instanceID, this);
+            ofNotifyEvent(faceAction, actionType, this);
         }
     } else {                                            // gone
          if (_appModel->getFacePresent(_instanceID)) {
-             int instanceID = _instanceID + 0;
+             int actionType = _instanceID + 0;  // 0,1 leaving, 2,3 arriving
              _appModel->setFacePresent(_instanceID, false);
-            ofNotifyEvent(faceAction, instanceID, this);
+            ofNotifyEvent(faceAction, actionType, this);
          }
     }
+    if (ofGetElapsedTimeMillis() - _lastFaceTime < TIMEOUT_SWAPFACE) {
+        if (!_appModel->getSwapFacePresent(_instanceID)) {  // arrived
+            _appModel->setSwapFacePresent(_instanceID, true);
+        }
+    } else {                                            // gone
+         if (_appModel->getSwapFacePresent(_instanceID)) {
+             _appModel->setSwapFacePresent(_instanceID, false);
+         }
+    }
+#else
+    _appModel->setFacePresent(_instanceID, FORCE_FACE);
+    _appModel->setSwapFacePresent(_instanceID, FORCE_FACE);
+#endif
 }
 
 void CamController::threadedFunction() {
@@ -265,7 +280,7 @@ void CamController::threadedFunction() {
             if (_cam.isFrameNew() && _doFaceDetection) { //&& ofGetFrameNum()%2 == 0
                 _camImage = _cam.getPixels();
                 _greyImage = _camImage;
-                if (_instanceID == 1) cvFlip(_greyImage.getCvImage(), _greyImage.getCvImage(), 1);
+                if (_instanceID == 0) cvFlip(_greyImage.getCvImage(), _greyImage.getCvImage(), 1);
                 cvTranspose(_greyImage.getCvImage(), _greyImage.getCvImage()); // rotate ROI
 
                 if(_finder.findHaarObjects(_greyImage, 200, 200) > 0) { // has a face
@@ -277,7 +292,7 @@ void CamController::threadedFunction() {
             if (_cam.isFrameNew() && _doFaceTracking) {
                 _camImage = _cam.getPixels();
                 _colourImage = _camImage;
-                if (_instanceID == 1) cvFlip(_colourImage.getCvImage(), _colourImage.getCvImage(), 1);
+                if (_instanceID == 0) cvFlip(_colourImage.getCvImage(), _colourImage.getCvImage(), 1);
                 cvTranspose(_colourImage.getCvImage(), _colourImage.getCvImage()); // rotate ROI
 
                 if (_tracker.update(toCv(_colourImage))) { // has a face

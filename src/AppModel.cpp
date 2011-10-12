@@ -434,12 +434,13 @@ void AppModel::toggleVideoPlayers(int forceFrame) {
 	LOG_VERBOSE("Swap Video Player pointers: " + ofToString(forceFrame));
 	//if (forceFrame != 0) {
     //_videoPlayers[1]->setFrame(forceFrame);
-	_videoPlayers[1]->update();
-	_videoPlayers[1]->setFrame(forceFrame);
+	//_videoPlayers[1]->update();
+
 	swap(_videoPlayers[0], _videoPlayers[1]);
 	_videoPlayers[1]->close();
-	//_videoPlayers[0]->psuedoUpdate(); // here? or in controller?
-
+	_videoPlayers[0]->setFrame(forceFrame);
+//	_videoPlayers[0]->update();
+//    _videoPlayers[0]->update();
 	delete _videoPlayers[1];
 	_videoPlayers[1] = new goThreadedVideo();
 	_videoPlayers[1]->setPixelType(GO_TV_RGBA);
