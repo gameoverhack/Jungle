@@ -58,10 +58,17 @@ void AppController::setup() {
 	_appModel->setState(kAPP_INIT);
 
     // load fake faces
+#ifdef USER_MATT
     _appModel->getFakeVictimPlayer()->loadMovie("E:/gameoverload/VideoProjects/Jungle/finalALL/fake/SubstituteFace0.mov");
     _appModel->getFakeVictimPlayer()->play();
     _appModel->getFakeAttackPlayer()->loadMovie("E:/gameoverload/VideoProjects/Jungle/finalALL/fake/SubstituteFace1.mov");
     _appModel->getFakeAttackPlayer()->play();
+#else
+    _appModel->getFakeVictimPlayer()->loadMovie("D:/finalALL/fake/SubstituteFace0.mov");
+    _appModel->getFakeVictimPlayer()->play();
+    _appModel->getFakeAttackPlayer()->loadMovie("D:/finalALL/fake/SubstituteFace1.mov");
+    _appModel->getFakeAttackPlayer()->play();
+#endif
 
 	// set up datacontroller
 	_dataController = new DataController(ofToDataPath("config_properties.xml"));
@@ -91,8 +98,8 @@ void AppController::setup() {
 	_camControllers[0]->setup("Built-in iSight", 640, 480);
 	_camControllers[1]->setup("ManyCam Virtual Webcam (RGB)", 640, 480);	// NB: had to use QTKit to get ManyCam working
 #else
-	_camControllers[0]->setup(0, 1920, 1080);
-	_camControllers[1]->setup(1, 1920, 1080);
+	_camControllers[0]->setup(1, 1920, 1080);
+	_camControllers[1]->setup(0, 1920, 1080);
 #endif
 
 //    ofAddListener(_camControllers[0]->faceAction, this, &AppController::FaceEvent);
@@ -130,7 +137,8 @@ void AppController::setup() {
 	_appModel->setProperty("camPositionY1", 0.0f);
 
     _appModel->setProperty("showFFT", false);*/
-
+    toggleFullscreen();
+    ofHideCursor();
 	LOG_NOTICE("Initialisation complete");
 }
 
@@ -181,29 +189,6 @@ void AppController::AttackEvent(float & level) {
     } //else cout << "Blocked by time" << endl;
 
 }
-
-//--------------------------------------------------------------
-//void AppController::FaceEvent(int & level) {
-//    // level == instanceID == GONE; level == instanceID+2 == HERE;
-//    LOG_VERBOSE("FACE ACTION..." + ofToString(level));
-//
-//    if (_appModel->checkCurrentInteractivity(kINTERACTION_FACE) && level > 1) {
-//        if (_switchToSequence == NULL && !_vidController->isPreRolling()) {
-//            // FACE APPEARS (level > 1) && FACE_INTERACTION set in Flash for seq00a
-//            _appModel->setLastActionTime(ofGetElapsedTimeMillis());
-//            string res = "seq01a"; // hack -> que send to seq01a
-//            LOG_NOTICE("FACE ACTION [" + ofToString(level) + "] == " + res);
-//            if (res != kLAST_SEQUENCE_TOKEN) {
-//                _switchToSequence = _appModel->getCurrentScene()->getSequence(res);
-//                _vidController->loadMovie(_switchToSequence);
-//                _appModel->getCurrentVideoPlayer()->setLoopState(OF_LOOP_NONE);
-//                _vidController->_preRolling = true;
-//            } else nextScene();
-//        }
-//    } //else cout << "Blocked by null" << endl;
-//
-//
-//}
 
 //--------------------------------------------------------------
 void AppController::update() {
@@ -303,7 +288,7 @@ void AppController::update() {
         _appModel->getFakeVictimPlayer()->update();
 
         // Auto action if no attacker present in loops -> uses a timeout
-        if (!_appModel->getSwapFacePresent(1)) {
+        if (!_appModel->getFacePresent(1)) {
             if (_lastAutoAttackAction != 0 && ofGetElapsedTimeMillis() - _lastAutoAttackAction > TIMEOUT_AUTOATTACK) {
                 LOG_NOTICE("Auto attacker action triggered");
                 _lastAutoAttackAction = 0;
@@ -331,14 +316,6 @@ void AppController::update() {
             } else _lastAutoFaceAction = 0;
         } else _lastAutoFaceAction = 0;
 
-//        // if faces are already present when a new scene starts wait till the end of the scene and jump to seq01a
-//        if (currentSequence->getNumber() == 0 && _appModel->getAnyFacePresent() && _appModel->getCurrentSequenceFrame() >= _appModel->getCurrentSequenceNumFrames()-4) {
-//            LOG_NOTICE("Auto start scene " + ofToString(_appModel->getCurrentSequenceFrame()) + " " + ofToString(_appModel->getCurrentSequenceNumFrames()-4));
-//#ifdef DO_AUTO_TIMEOUT
-//            int level = 2;
-//            FaceEvent(level);
-//#endif
-//        }
 
         // if no faces present after timeout and no user action for more than timeout we can push to next scene
         if (currentSequence->getNumber() > 0 && !_appModel->getAnyFacePresent() && ofGetElapsedTimeMillis() -_appModel->getLastActionTime() > TIMEOUT_ACTION) {
@@ -478,10 +455,10 @@ void AppController::keyPressed(int key){
 			_appModel->setProperty("showDebugView", !showDebug);
 			break;
 		case 'q':
-			_micController->fakeVictimAction(fakeInput*32.0f);
+			_micController->fakeVictimAction(ofRandom(fakeInput*32.0f));
 			break;
 		case 'p':
-			_ardController->fakeAttackAction(fakeInput);
+			_ardController->fakeAttackAction(ofRandom(fakeInput));
 			break;
 		case 'S':
 			_dataController->saveProperties();
@@ -583,6 +560,12 @@ void AppController::keyPressed(int key){
         case 'j':
              nextScene();
             break;
+        case '7':
+            ofHideCursor();
+            break;
+        case '8':
+            ofShowCursor();
+            break;
 		default:
 			break;
 	}
@@ -631,6 +614,7 @@ void AppController::setFullscreen() {
 }
 
 void AppController::toggleFullscreen(){
+    /*
 #ifdef TARGET_WIN32
 
     if (!boost::any_cast<bool>(_appModel->getProperty("fullScreen"))) {
@@ -646,6 +630,7 @@ void AppController::toggleFullscreen(){
         int width = _windowPtr->getScreenSize().x; // TODO: set in config
 #endif
         int height = _windowPtr->getScreenSize().y; // TODO: set in config
+        LOG_NOTICE("trying: " + ofToString(width) + " X " + ofToString(height));
         int storedWindowX, storedWindowY, storedWindowH, storedWindowW;
         HWND vWnd  = FindWindow(NULL, _windowTitle);
         long windowStyle = GetWindowLong(vWnd, GWL_STYLE);
@@ -669,6 +654,9 @@ void AppController::toggleFullscreen(){
 #else
     ofToggleFullscreen();
 #endif
+*/
+
+    ofToggleFullscreen();
 
     _appModel->setProperty("fullScreen", !boost::any_cast<bool>(_appModel->getProperty("fullScreen")));
 

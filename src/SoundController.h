@@ -29,6 +29,7 @@ public:
     };
 
     ~Fader() {
+        LOG_NOTICE("Deleting fade");
         if (isThreadRunning()) stopThread();
     };
 

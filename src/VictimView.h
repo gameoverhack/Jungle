@@ -12,6 +12,10 @@ public:
 
     void update();
 
+private:
+
+    float           _scaledInputLevel;
+
 };
 
 #endif // _H_VICTIMVIEW

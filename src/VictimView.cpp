@@ -46,8 +46,72 @@ VictimView::VictimView(float width, float height) : BaseMeterView(width, height)
 
 void VictimView::update() {
 
-    _scaledInputLevel           = ((float)_appModel->getFFTArea());      // make more complex soon ;-)
+//    if (_appModel->_timeAtPeak != -1 && (ofGetElapsedTimeMillis() - _appModel->_timeAtPeak < 8000)) {
+//        _scaledInputLevel = 1.0;
+//    } else {
+//        _scaledInputLevel = ((float)_appModel->getFFTArea());
+//        _appModel->_timeAtPeak = -1;
+//    }
 
-    BaseMeterView::update(kINTERACTION_VICTIM);
+    _scaledInputLevel = ((float)_appModel->getFFTArea());
+
+    /********************************************************
+     *      Get _appModel Interactivity & Threshold         *
+     ********************************************************/
+
+    int   currentInteractivity  = _appModel->getCurrentInteractivity();
+
+    int   totalNumSequences     = _appModel->getCurrentScene()->getNumOfSequences();
+    int   thisNumSequence       = _appModel->getCurrentSequence()->getNumber();
+
+    bool  deny                  = (ofGetElapsedTimeMillis() - _appModel->getLastActionTime() > TIMEOUT_ACTION);
+    bool  isInteractive         = (currentInteractivity == kINTERACTION_BOTH || currentInteractivity == kINTERACTION_VICTIM);
+
+    /********************************************************
+     *      Draw the Meter to the ViewFBO                   *
+     ********************************************************/
+
+    drawMeterMask(_scaledInputLevel, _meterSteps, _meterPixelsForStep, &_meterMaskFBO);
+
+    _viewFBO.begin();
+
+    glPushMatrix();
+    ofEnableAlphaBlending();
+
+    glClearColor(0.0, 0.0, 0.0, 1.0); // black background no transparency
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    int sceneCurrentFrame   = _appModel->getCurrentSceneFrame();
+    int sceneTotalFrames    = _appModel->getCurrentSceneNumFrames();
+    float turtlePosY        = 500 * ((float)sceneCurrentFrame/(float)sceneTotalFrames); // 500 distance between T intersections on turtle_bar
+
+    _turtle_bar->draw(_turtle_bar_x, _turtle_bar_y);
+    _turtle->draw(_turtle_x, _turtle_y - turtlePosY);
+
+    _top_off->draw(_top_x, _top_y);
+
+    if (isInteractive && _scaledInputLevel >= 0.99f) {
+        _top_on->draw(_top_x, _top_y);
+    } else if (!isInteractive && _scaledInputLevel > 0.05f) {
+        _top_off->draw(_top_x, _top_y);
+        if (deny) _top_deny->draw(_top_x, _top_y);
+    }
+
+    if (isInteractive) {
+#if OF_VERSION < 7
+        drawMeterShader(_meter_x, _meter_y, &_meterMaskTex, _meter_on, _meter_off);
+#else
+        drawMeterShader(_meter_x, _meter_y, &_meterMaskFBO.getTextureReference(), _meter_on, _meter_off);
+#endif
+    } else {
+
+        _meter_off->draw(_meter_x, _meter_y);
+
+    }
+
+    ofDisableAlphaBlending();
+    glPopMatrix();
+
+    _viewFBO.end();
 
 }

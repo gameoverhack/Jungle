@@ -29,12 +29,17 @@ void SoundController::setup() {
 
     LOG_NOTICE("Setting up sound fades for scene: " + currentSceneName);
 
-    for (int i = 0; i < _fades.size(); i++) {
-        LOG_VERBOSE("Deleting old fade");
-        jungle_fade * j = _fades[i];
-        delete j->fader;
-        delete j;
+    if(_currentFade != NULL) {
+        delete _currentFade;
+        _currentFade = NULL;
     }
+
+//    for (int i = 0; i < _fades.size(); i++) {
+//        LOG_VERBOSE("Deleting old fade");
+//        jungle_fade * j = _fades[i];
+//        if (j->fader != NULL) delete j->fader;
+//        delete j;
+//    }
 
     _fades.clear();
 

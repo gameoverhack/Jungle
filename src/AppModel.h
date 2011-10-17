@@ -199,7 +199,7 @@ public:
 
     void                setLastActionTime(int time) {_lastActionTime = time;};
     int                 getLastActionTime() {return _lastActionTime;};
-
+    int                 _timeAtPeak, _timeAtPush;
 private:
 
 	inline string	    pad(string & objectName);

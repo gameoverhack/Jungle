@@ -14,6 +14,8 @@ public:
 
 private:
 
+    float           _scaledInputLevel;
+
 };
 
 #endif // _H_ATTACKVIEW

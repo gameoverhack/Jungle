@@ -55,8 +55,76 @@ AttackView::AttackView(float width, float height) : BaseMeterView(width, height)
 
 void AttackView::update() {
 
-    _scaledInputLevel           = (float)_appModel->getARDArea(); //(float)_appModel->getPinInput()[0]/600.0f;      // make more complex soon ;-)
+//    if (_appModel->_timeAtPush != -1 && (ofGetElapsedTimeMillis() - _appModel->_timeAtPush < 800)) {
+//        _scaledInputLevel = 1.0f;
+//    } else {
+//        _scaledInputLevel = ((float)_appModel->getARDArea());
+//        _appModel->_timeAtPush = -1;
+//    }
 
-    BaseMeterView::update(kINTERACTION_ATTACKER);
+    _scaledInputLevel = ((float)_appModel->getARDArea());
+
+    /********************************************************
+     *      Get _appModel Interactivity & Threshold         *
+     ********************************************************/
+
+    int   currentInteractivity  = _appModel->getCurrentInteractivity();
+
+    int   totalNumSequences     = _appModel->getCurrentScene()->getNumOfSequences();
+    int   thisNumSequence       = _appModel->getCurrentSequence()->getNumber();
+
+    bool  deny                  = (ofGetElapsedTimeMillis() - _appModel->getLastActionTime() > TIMEOUT_ACTION);
+    bool  isInteractive         = (currentInteractivity == kINTERACTION_BOTH || currentInteractivity == kINTERACTION_ATTACKER);
+
+    /********************************************************
+     *      Draw the Meter to the ViewFBO                   *
+     ********************************************************/
+
+    drawMeterMask(_scaledInputLevel, _meterSteps, _meterPixelsForStep, &_meterMaskFBO);
+
+    drawMeterMask(thisNumSequence - 1, _stationSteps, _stationPixelsForStep, &_stationMaskFBO);
+
+    _viewFBO.begin();
+
+    glPushMatrix();
+    ofEnableAlphaBlending();
+
+    glClearColor(0.0, 0.0, 0.0, 1.0); // black background no transparency
+    glClear(GL_COLOR_BUFFER_BIT);
+
+
+    _bird->draw(_bird_x, _bird_y);
+
+#if OF_VERSION < 7
+    drawMeterShader(_stations_x, _stations_y, &_stationMaskTex, _stations_on, _stations_off);
+#else
+    drawMeterShader(_stations_x, _stations_y, &_stationMaskFBO.getTextureReference(), _stations_on, _stations_off);
+#endif
+    _button_off->draw(_button_x, _button_y);
+
+    if (isInteractive && _scaledInputLevel > 0.05f) {
+        _button_on->draw(_button_x, _button_y);
+    } else if (!isInteractive && _scaledInputLevel > 0.05f) {
+        _button_off->draw(_button_x, _button_y);
+        if (deny) _button_deny->draw(_button_x, _button_y);
+    }
+
+
+    if (isInteractive) {
+#if OF_VERSION < 7
+        drawMeterShader(_meter_x, _meter_y, &_meterMaskTex, _meter_on, _meter_off);
+#else
+        drawMeterShader(_meter_x, _meter_y, &_meterMaskFBO.getTextureReference(), _meter_on, _meter_off);
+#endif
+    } else {
+
+        _meter_off->draw(_meter_x, _meter_y);
+
+    }
+
+    ofDisableAlphaBlending();
+    glPopMatrix();
+
+    _viewFBO.end();
 
 }

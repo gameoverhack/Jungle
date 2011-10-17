@@ -70,8 +70,16 @@ void ArdController::update() {
 			setupArduino();
 		}
 		// 2nd do the update of the arduino
-		if (ofGetElapsedTimeMillis() - _lastUpdateTime > _bufferIntervalMillis) updateArduino();
+
+	} else {
+
+	    int * pinInput = _appModel->getPinInput();
+        pinInput[0] = 0;
+        pinInput[1] = 0;
+
 	}
+
+    if (ofGetElapsedTimeMillis() - _lastUpdateTime > _bufferIntervalMillis) updateArduino(_ard.isArduinoReady());
 
 }
 
@@ -113,7 +121,7 @@ void ArdController::updateArduino(bool fake) {
     _lastUpdateTime = ofGetElapsedTimeMillis();
 
 
-    ardCyclicBuffer[_ardCyclicBufferOffset] = pinInput[1]/450.0f;
+    ardCyclicBuffer[_ardCyclicBufferOffset] = pinInput[1]/350.0f;
 
     ardCyclicSum = 0;
 
@@ -128,16 +136,21 @@ void ArdController::updateArduino(bool fake) {
 
     float area = (ardPostFilter * 1.2) - 0.2; //sqrt(ardNoiseFloor); //TODO: make prop
 
+    if (ofGetElapsedTimeMillis() - _appModel->getLastActionTime() < TIMEOUT_ACTION) area = 0.0f;
+
     _appModel->setARDArea(area);
 
     if (ardPostFilter > 0.0f) ardPostFilter -= 0.1;
     _appModel->setARDPostFilter(ardPostFilter);
 
-    _ardLastCyclicBufferOffset = _ardCyclicBufferOffset;
+    //_ardLastCyclicBufferOffset = _ardCyclicBufferOffset;
     _ardCyclicBufferOffset = (_ardCyclicBufferOffset + 1) % _ardCyclicBufferSize;
 
     if (_appModel->checkState(kAPP_RUNNING)) {
         if (area > 1.0f) {
+//            if (_appModel->_timeAtPush == -1) {
+//                _appModel->_timeAtPush = ofGetElapsedTimeMillis();
+//            }
             ofNotifyEvent(attackAction, area, this);
 //            for (int i = 0; i < _ardCyclicBufferSize; i++) {
 //                ardCyclicBuffer[i] = 0;

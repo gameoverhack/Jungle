@@ -47,9 +47,14 @@ DataController::DataController(string configFilePath) {
     _appModel->setProperty("flashDataPath", (string)"/Users/ollie/its_a_jungle_out_there/resources/flash");
 	_appModel->setProperty("audioDataPath", (string)"/Users/ollie/its_a_jungle_out_there/resources/audio");
     _appModel->setProperty("graphicDataPath", (string)"graphics");
+#elif USER_INSTALL
+    _appModel->setProperty("scenesDataPath", (string)"D:/finalALL/video");
+    _appModel->setProperty("flashDataPath", (string)"D:/finalALL/flash");
+    _appModel->setProperty("audioDataPath", (string)"D:/finalALL/audio");
+    _appModel->setProperty("graphicDataPath", (string)"graphics");
 #endif
 
-#if !defined(USER_MATT) && !defined(USER_OLLIE)
+#if !defined(USER_MATT) && !defined(USER_OLLIE) && !defined(USER_INSTALL)
     LOG_ERROR("I've made some defines for our user path - saves thrasing the config_props and I need to save them now...they're in DataController::DataController()");
     abort();
 #endif

@@ -994,8 +994,9 @@
 		<Unit filename="src\VideoController.h">
 			<Option virtualFolder="src\controllers\" />
 		</Unit>
-		<Unit filename="src\config.cpp" />
-		<Unit filename="src\config.h" />
+		<Unit filename="src\config.h">
+			<Option virtualFolder="src\config\" />
+		</Unit>
 		<Unit filename="src\main.cpp">
 			<Option virtualFolder="src" />
 		</Unit>

@@ -88,6 +88,9 @@ void SceneView::update() {
         PosRotScale * victimPRS;
         PosRotScale * attackPRS;
 
+        bool flipAttack = false;
+        bool flipVictim = false;
+
 		if (_appModel->getSwapFacePresent(0)) {
             victimTex = _appModel->getVictimCamTexRef();
             victimPRS = _appModel->getCameraAttributes(0);
@@ -99,16 +102,17 @@ void SceneView::update() {
         if (_appModel->getSwapFacePresent(1)) {
             attackTex = _appModel->getAttackCamTexRef();
             attackPRS = _appModel->getCameraAttributes(1);
+            flipAttack = true;
 		} else {
 		    attackTex = _appModel->getFakeAttackCamTexRef();
 		    attackPRS = _appModel->getFakeAttributes(1);
 		}
 
-		drawCharacter(&_vic1FBO, victimTex, &(_appModel->getCurrentSequence()->getTransformVector("vic1")->at(currentFrame)), victimPRS);
-		drawCharacter(&_atk1FBO, attackTex, &(_appModel->getCurrentSequence()->getTransformVector("atk1")->at(currentFrame)), attackPRS);
+		drawCharacter(&_vic1FBO, victimTex, &(_appModel->getCurrentSequence()->getTransformVector("vic1")->at(currentFrame)), victimPRS, flipVictim);
+		drawCharacter(&_atk1FBO, attackTex, &(_appModel->getCurrentSequence()->getTransformVector("atk1")->at(currentFrame)), attackPRS, flipAttack);
 
 		if (_appModel->getCurrentSequence()->getTransformCount() > 2) {
-			drawCharacter(&_atk2FBO, attackTex, &(_appModel->getCurrentSequence()->getTransformVector("atk2")->at(currentFrame)), attackPRS);
+			drawCharacter(&_atk2FBO, attackTex, &(_appModel->getCurrentSequence()->getTransformVector("atk2")->at(currentFrame)), attackPRS, flipAttack);
 		}
 	}
 
@@ -174,12 +178,12 @@ void SceneView::update() {
 void SceneView::drawCharacter(ofxFbo * targetFBO,
 							  ofTexture * faceTexture,
 							  CamTransform *transform,
-							  PosRotScale * prs) {
+							  PosRotScale * prs, bool flipMe) {
 #else
 void SceneView::drawCharacter(ofFbo * targetFBO,
 							  ofTexture * faceTexture,
 							  CamTransform *transform,
-							  PosRotScale * prs) {
+							  PosRotScale * prs, bool flipMe) {
 #endif
 
     float width  = faceTexture->getWidth();
@@ -251,7 +255,7 @@ void SceneView::drawCharacter(ofFbo * targetFBO,
 	//rot = -rot;
 
     glTranslatef(width/2.0f + prs->x, height/2.0f + prs->y, 0.0f);
-    glScalef(prs->s, prs->s, 1.0f);
+    glScalef(prs->s, flipMe ? -prs->s : prs->s, 1.0f);
     glRotatef(prs->r, 0.0f, 0.0f, 1.0f);
     glTranslatef(-width/2.0f - prs->x, -height/2.0f - prs->y, 0.0f);
 

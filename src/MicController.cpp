@@ -102,7 +102,7 @@ void MicController::audioReceived(float* input, int bufferSize, int nChannels) {
         float * fftPostFilter       = _appModel->getFFTPostFilter();
         float * fftInput            = _appModel->getFFTInput();
         float * audioInput          = _appModel->getAudioInput();
-		
+
 		// TODO_OPTIMISED Can avoid this copy somehow?
         // put raw copy of audio input into model
         memcpy(audioInput, input, sizeof(float) * bufferSize);
@@ -136,12 +136,14 @@ void MicController::audioReceived(float* input, int bufferSize, int nChannels) {
         float area = 0;
 
         for (int i = 10; i < _fft->getBinSize(); i++) {
-            float h = fftPostFilter[i]; //fftNoiseFloor[i]; // this is wrong but i used to like it!!
+            float h = fftNoiseFloor[i]*0.7 + fftPostFilter[i]*0.3; //fftNoiseFloor[i]; // this is wrong but i used to like it!!
             float w = 2.0f;
             area += w*h;
         }
 
         area = sqrt(area) - 0.2f; //TODO: make prop
+
+        if (ofGetElapsedTimeMillis() - _appModel->getLastActionTime() < TIMEOUT_ACTION) area = 0.0f;
 
         _appModel->setFFTArea(area);
 
@@ -150,6 +152,9 @@ void MicController::audioReceived(float* input, int bufferSize, int nChannels) {
 
         if (_appModel->checkState(kAPP_RUNNING)) {
             if (area > 1.0f) {
+//                if (_appModel->_timeAtPeak == -1) {
+//                    _appModel->_timeAtPeak = ofGetElapsedTimeMillis();
+//                }
                 ofNotifyEvent(victimAction, area, this);
 //                for (int i = 0; i < _fftCyclicBufferSize; i++) {
 //                    for (int j = 0; j < _fft->getBinSize(); j++) {

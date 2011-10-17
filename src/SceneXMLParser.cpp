@@ -134,7 +134,7 @@ void SceneXMLParser::parseXML(){
 			if (fileId != -1 && boost::any_cast<bool>(_appModel->getProperty("xmlForceFileDateTime"))) {
                 forceTagAttribute("sequence", "dateCreated", _moviesFileLister.getCreated(fileId), whichSequence);
                 forceTagAttribute("sequence", "dateModified", _moviesFileLister.getModified(fileId), whichSequence);
-                forceTagAttribute("sequence", "size", _assetsFileLister.getSize(fileId), whichSequence);
+                //forceTagAttribute("sequence", "size", _assetsFileLister.getSize(fileId), whichSequence);
 			}
 
 			if(fileId == -1 ||
@@ -172,7 +172,7 @@ void SceneXMLParser::parseXML(){
 			if (fileId != -1 && boost::any_cast<bool>(_appModel->getProperty("xmlForceFileDateTime"))) {
 			   forceTagAttribute("interactivity", "dateCreated", _assetsFileLister.getCreated(fileId), 0);
 			   forceTagAttribute("interactivity", "dateModified", _assetsFileLister.getModified(fileId), 0);
-			   forceTagAttribute("interactivity", "size", _assetsFileLister.getSize(fileId), 0);
+			   //forceTagAttribute("interactivity", "size", _assetsFileLister.getSize(fileId), 0);
 			}
 
 			if(fileId == -1 ||
@@ -270,7 +270,7 @@ void SceneXMLParser::parseXML(){
                 if (fileId != -1 && boost::any_cast<bool>(_appModel->getProperty("xmlForceFileDateTime"))) {
                    forceTagAttribute("transform", "dateCreated", _assetsFileLister.getCreated(fileId), witchTransform);
 				   forceTagAttribute("transform", "dateModified", _assetsFileLister.getModified(fileId), witchTransform);
-				   forceTagAttribute("transform", "size", _assetsFileLister.getSize(fileId), witchTransform);
+				   //forceTagAttribute("transform", "size", _assetsFileLister.getSize(fileId), witchTransform);
                 }
 
 				if(fileId == -1 ||

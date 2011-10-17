@@ -22,7 +22,7 @@ AppModel::AppModel() {
 
     _isFacePresent[0] = _isFacePresent[1] = false;
 
-
+    _timeAtPeak = _timeAtPush = -1;
 
 	// setup video players
 	for (int i = 0; i < 2; i++) {

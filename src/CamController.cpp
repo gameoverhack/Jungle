@@ -23,16 +23,16 @@ CamController::CamController() {
 
     _camROI = new ofRectangle();
     _camROI->x       = _camROI->y = 200.0f;
-    _camROI->width   = 640.0f;
-    _camROI->height  = 640.0f;
 
-    loadClass("camROI" + ofToString(_instanceID) + ".bin", _camROI);
 
     ofRegisterMouseEvents(this);
 
 	_instanceID = _instanceCount;
     _instanceCount++;				// use instance counts to keep track of which cam belongs to which viewer - may be redundant??
 
+    loadClass("camROI" + ofToString(_instanceID) + ".bin", _camROI);
+    _camROI->width   = 700.0f;
+    _camROI->height  = 700.0f;
 	LOG_NOTICE("Initialisation complete. Instance ID: " + ofToString(_instanceID));
 
 }
@@ -84,8 +84,8 @@ bool CamController::setup(int deviceID, int w, int h){
     //_finder.setNeighbors(4);
     //_finder.setScaleHaar(1.09);
     _camImage.allocate(w, h);
-    _colourImage.allocate(640,640);
-    _greyImage.allocate(640,640);
+    _colourImage.allocate(700,700);
+    _greyImage.allocate(700,700);
 
     _camImage.setROI(_camROI->x, _camROI->y, _camROI->width, _camROI->height);
 
@@ -118,8 +118,8 @@ bool CamController::setup(string deviceID, int w, int h){
     _finder.setNeighbors(4);
     _finder.setScaleHaar(1.09);
     _camImage.allocate(w, h);
-    _colourImage.allocate(640,640);
-    _greyImage.allocate(640,640);
+    _colourImage.allocate(700,700);
+    _greyImage.allocate(700,700);
 
     _camImage.setROI(_camROI->x, _camROI->y, _camROI->width, _camROI->height);
 
@@ -317,8 +317,8 @@ void CamController::drawDebug(float x, float y, float width, float height) {
 
     _xROIDisplay = x;
     _yROIDisplay = y,
-    _xScaleROIDisplay = width/640.0f;
-    _yScaleROIDisplay = height/640.0f;
+    _xScaleROIDisplay = width/700.0f;
+    _yScaleROIDisplay = height/700.0f;
 
     //if(!lock()){
         glPushMatrix();
@@ -332,7 +332,7 @@ void CamController::drawDebug(float x, float y, float width, float height) {
         if (_doFaceDetection) {
             _greyImage.draw(0,0);
             glPushMatrix();
-            glScalef(640.0f/_finder.getWidth(), 640.0f/_finder.getHeight(), 1.0f);
+            glScalef(700.0f/_finder.getWidth(), 700.0f/_finder.getHeight(), 1.0f);
             _finder.draw(0,0);
             glPopMatrix();
         }
@@ -367,13 +367,13 @@ void CamController::mouseMoved(ofMouseEventArgs &e) {
 
 void CamController::mouseDragged(ofMouseEventArgs &e) {
     if (_doROIAdjust && boost::any_cast<bool>(_appModel->getProperty("showCameras"))) {
-        _camImage.setROI((_camROI->x + (_startX - e.x) * 2.0), (_camROI->y + (_startY - e.y) * 2.0), 640, 640);
+        _camImage.setROI((_camROI->x + (_startX - e.x) * 2.0), (_camROI->y + (_startY - e.y) * 2.0), 700, 700);
     }
 }
 
 void CamController::mousePressed(ofMouseEventArgs &e) {
-    if (e.x > _xROIDisplay * _xScaleROIDisplay && e.x < (_xROIDisplay + 640.0f) * _xScaleROIDisplay &&
-        e.y > _yROIDisplay * _yScaleROIDisplay && e.y < (_yROIDisplay + 640.0f) * _yScaleROIDisplay &&
+    if (e.x > _xROIDisplay * _xScaleROIDisplay && e.x < (_xROIDisplay + 700.0f) * _xScaleROIDisplay &&
+        e.y > _yROIDisplay * _yScaleROIDisplay && e.y < (_yROIDisplay + 700.0f) * _yScaleROIDisplay &&
         boost::any_cast<bool>(_appModel->getProperty("showCameras"))) {
         _startX = e.x;
         _startY = e.y;

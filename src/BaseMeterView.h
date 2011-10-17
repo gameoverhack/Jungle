@@ -13,7 +13,7 @@ public:
     BaseMeterView(float width, float height);
     virtual ~BaseMeterView();
 
-    void    update(interaction_t interactionType);
+    void    update() = 0;
 
 protected:
 #if OF_VERSION < 7
@@ -70,8 +70,6 @@ protected:
     float           _meterPixelsForStep;
     int             _stationSteps;
     float           _stationPixelsForStep;
-
-    float           _scaledInputLevel;
 
 private:
 
