@@ -15,4 +15,4 @@
 
 #define DO_AUTO_TIMEOUT
 
-//#define FORCE_FACE true
+#define FORCE_FACE true

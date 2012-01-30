@@ -20,7 +20,6 @@ AppController::AppController(ofAppGlutWindow * windowPtr) {
 AppController::~AppController() {
 
     // need to comment out ofSoundStreamClose() in method ofExitCallback() in ofAppRunner -> some RTAUDIO bug wrecks clean exit!
-    delete _killController;
     LOG_NOTICE("Saving properties");
 #ifndef USE_DUMMY
 #ifdef TARGET_WIN32
@@ -139,10 +138,6 @@ void AppController::setup() {
     _appModel->setProperty("showFFT", false);*/
     toggleFullscreen();
     ofHideCursor();
-
-//    _killController = new killController();
-//    ofAddListener(_killController->attackAction, this, &AppController::AttackEvent);
-//    ofAddListener(_killController->victimAction, this, &AppController::VictimEvent);
 
 	LOG_NOTICE("Initialisation complete");
 }
