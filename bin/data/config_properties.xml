@@ -2,16 +2,16 @@
     <properties>
         <property name="appRenderHeight" type="float">720</property>
         <property name="appRenderWidth" type="float">1280</property>
-        <property name="audioDataPath" type="string">E:/gameoverload/VideoProjects/Jungle/finalALL/audio</property>
+        <property name="audioDataPath" type="string">D:/finalALL/audio</property>
         <property name="autoTest" type="bool">false</property>
         <property name="cameraPropToAdjust" type="string">POSITION</property>
         <property name="cameraToAdjust" type="int">0</property>
-        <property name="flashDataPath" type="string">E:/gameoverload/VideoProjects/Jungle/finalALL/flash</property>
+        <property name="flashDataPath" type="string">D:/finalALL/flash</property>
         <property name="fullScreen" type="bool">true</property>
         <property name="graphicDataPath" type="string">graphics</property>
         <property name="loadingMessage" type="string">STATE == kANAL_READY (0) :: </property>
         <property name="loadingProgress" type="float">0.1</property>
-        <property name="scenesDataPath" type="string">E:/gameoverload/VideoProjects/Jungle/finalALL/video</property>
+        <property name="scenesDataPath" type="string">D:/finalALL/video</property>
         <property name="scenesXMLFile" type="string">config_scenes.xml</property>
         <property name="shaderBlendRatio" type="float">0.2</property>
         <property name="shaderGammaCorrection" type="float">1</property>
@@ -22,8 +22,8 @@
         <property name="shaderOptimisedHeadFragPath" type="string">multitexturemerge_optimised.frag</property>
         <property name="shaderOptimisedHeadVertPath" type="string">vertex.vert</property>
         <property name="showCameras" type="bool">true</property>
-        <property name="showDebugView" type="bool">true</property>
-        <property name="showFFT" type="bool">true</property>
+        <property name="showDebugView" type="bool">false</property>
+        <property name="showFFT" type="bool">false</property>
         <property name="showProps" type="bool">false</property>
         <property name="showUnmaskedTextures" type="bool">false</property>
         <property name="tryScaleMethod" type="int">0</property>

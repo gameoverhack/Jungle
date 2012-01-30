@@ -11,6 +11,7 @@
 #define	_H_SERIALIZATIONUTILS
 
 #include <boost/serialization/serialization.hpp>
+#include <boost/archive/archive_exception.hpp>
 #include <boost/serialization/vector.hpp>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
@@ -49,20 +50,27 @@ bool saveVector(string filePath, vector< vectorType > * vec) {
 template <class C>
 bool loadClass(string filePath, C * someClass) {
 	ofLog(OF_LOG_NOTICE, "Loading class data: " + filePath);
+
 	std::ifstream ifs(ofToDataPath(filePath).c_str());
+	ofLog(OF_LOG_NOTICE, "1");
 	if(ifs.fail()){
 		ofLog(OF_LOG_ERROR, "Could not load class: " + filePath);
 		//abort(); // Could be a bit over zealous
 		return false;
 	}
+	ofLog(OF_LOG_NOTICE, "2");
 	try {
+	    ofLog(OF_LOG_NOTICE, "3");
         boost::archive::text_iarchive ia(ifs);
+        ofLog(OF_LOG_NOTICE, "4");
         ia >> (*someClass);
+        ofLog(OF_LOG_NOTICE, "5");
         return true;
-	} catch (std::exception e) {
+	} catch (boost::archive::archive_exception e) {
         ofLog(OF_LOG_ERROR, "Error unserializing class from file: " + filePath);
         return false;
 	}
+	ofLog(OF_LOG_NOTICE, "6");
 }
 
 template <class C>

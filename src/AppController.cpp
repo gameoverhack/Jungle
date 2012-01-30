@@ -20,7 +20,7 @@ AppController::AppController(ofAppGlutWindow * windowPtr) {
 AppController::~AppController() {
 
     // need to comment out ofSoundStreamClose() in method ofExitCallback() in ofAppRunner -> some RTAUDIO bug wrecks clean exit!
-
+    delete _killController;
     LOG_NOTICE("Saving properties");
 #ifndef USE_DUMMY
 #ifdef TARGET_WIN32
@@ -139,6 +139,11 @@ void AppController::setup() {
     _appModel->setProperty("showFFT", false);*/
     toggleFullscreen();
     ofHideCursor();
+
+//    _killController = new killController();
+//    ofAddListener(_killController->attackAction, this, &AppController::AttackEvent);
+//    ofAddListener(_killController->victimAction, this, &AppController::VictimEvent);
+
 	LOG_NOTICE("Initialisation complete");
 }
 
@@ -158,7 +163,7 @@ void AppController::VictimEvent(float & level) {
                 _appModel->setLastActionTime(ofGetElapsedTimeMillis());
                 string res = _appModel->getCurrentSequence()->getVictimResult()[_appModel->getCurrentSequenceFrame()];
                 LOG_NOTICE("VICTIM ACTION [" + ofToString(level) + "] == " + res);
-                if (res != kLAST_SEQUENCE_TOKEN) {
+                if (res != kLAST_SEQUENCE_TOKEN && res != "") {
                     _switchToSequence = _appModel->getCurrentScene()->getSequence(res);
                     int returnFrame = _appModel->getCurrentSequenceFrame() + 1;
                     if (returnFrame > _appModel->getCurrentSequenceNumFrames()) returnFrame -= 15;
@@ -180,7 +185,7 @@ void AppController::AttackEvent(float & level) {
                 _appModel->setLastActionTime(ofGetElapsedTimeMillis());
                 string res = _appModel->getCurrentSequence()->getAttackerResult()[_appModel->getCurrentSequenceFrame()];
                 LOG_NOTICE("ATTACK ACTION [" + ofToString(level) + "] == " + res);
-                if (res != kLAST_SEQUENCE_TOKEN) {
+                if (res != kLAST_SEQUENCE_TOKEN && res != "") {
                     _switchToSequence = _appModel->getCurrentScene()->getSequence(res);
                     _vidController->loadMovie(_switchToSequence, true);
                 } else nextScene();
@@ -293,7 +298,7 @@ void AppController::update() {
                 LOG_NOTICE("Auto attacker action triggered");
                 _lastAutoAttackAction = 0;
 #ifdef DO_AUTO_TIMEOUT
-                float level = 1.2;
+                float level = 8.0;
                 AttackEvent(level);
 #endif
             } else if (_lastAutoAttackAction == 0 && currentSequence->getType() == "loop") {
@@ -305,7 +310,7 @@ void AppController::update() {
 
         // face arrive on seq00a waits TIMEOUT_AUTOFACE before going to seq01a
         if (currentSequence->getNumber() == 0) {
-            if (_appModel->getAnyFacePresent()) {
+            if (_appModel->getAnyFacePresent() && _switchToSequence == NULL) {
                 if (_lastAutoFaceAction != 0 && ofGetElapsedTimeMillis() - _lastAutoFaceAction > TIMEOUT_AUTOFACE) {
                     LOG_NOTICE("Auto face action triggered");
                     _switchToSequence = _appModel->getCurrentScene()->getSequence("seq01a");
@@ -318,7 +323,7 @@ void AppController::update() {
 
 
         // if no faces present after timeout and no user action for more than timeout we can push to next scene
-        if (currentSequence->getNumber() > 0 && !_appModel->getAnyFacePresent() && ofGetElapsedTimeMillis() -_appModel->getLastActionTime() > TIMEOUT_ACTION) {
+        if (currentSequence->getNumber() > 1 && currentSequence->getNumber() < 8 && !_appModel->getAnyFacePresent() && ofGetElapsedTimeMillis() -_appModel->getLastActionTime() > TIMEOUT_ACTION && _switchToSequence == NULL) {
 #ifdef DO_AUTO_TIMEOUT
             LOG_NOTICE("Auto No Face present for more than " + ofToString(TIMEOUT_NOFACE) + " forcing next scene");
             nextScene();

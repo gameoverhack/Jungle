@@ -103,6 +103,7 @@ private:
 
     int                     _lastFaceTime;
     int                     _lastSwapTime;
+    int                     _lastTwitchyFaceTime;
 
     ofxCvHaarFinder         _finder;
     ofxFaceTracker          _tracker;

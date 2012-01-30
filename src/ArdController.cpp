@@ -28,11 +28,13 @@ ArdController::ArdController(string deviceName, int ardBufferLengthSecs) {
     _appModel->setARDPostFilter(0);
     _appModel->allocatePinInput(2);
 
+    //LOG_VERBOSE("SLEEPING FOR 3 seconds (ard)");
+    //ofSleepMillis(3000);
+
     if(!_ard.connect(deviceName, 57600)) {
 
         LOG_ERROR("Cannot start Arduino on: " + deviceName);
-
-        //abort();
+        abort();
 
         setState(kARDCONTROLLER_DISABLED);
 
@@ -42,6 +44,8 @@ ArdController::ArdController(string deviceName, int ardBufferLengthSecs) {
 
         setState(kARDCONTROLLER_INIT);
     }
+    //LOG_VERBOSE("SLEEPING FOR 3 seconds (ard)");
+    //ofSleepMillis(3000);
 
 }
 
@@ -63,23 +67,24 @@ void ArdController::registerStates() {
 
 void ArdController::update() {
 
-    if (_ard.isArduinoReady()) {
+    if (_ard.isArduinoReady() || checkState(kARDCONTROLLER_INIT)) {
 
 		// 1st: setup the arduino if haven't already:
 		if (checkState(kARDCONTROLLER_INIT)) {
 			setupArduino();
 		}
 		// 2nd do the update of the arduino
-
-	} else {
-
-	    int * pinInput = _appModel->getPinInput();
-        pinInput[0] = 0;
-        pinInput[1] = 0;
-
+        if (ofGetElapsedTimeMillis() - _lastUpdateTime > _bufferIntervalMillis) updateArduino();
 	}
+//	else {
+//
+//	    int * pinInput = _appModel->getPinInput();
+//        pinInput[0] = 0;
+//        pinInput[1] = 0;
+//
+//	}
 
-    if (ofGetElapsedTimeMillis() - _lastUpdateTime > _bufferIntervalMillis) updateArduino(_ard.isArduinoReady());
+//    if (ofGetElapsedTimeMillis() - _lastUpdateTime > _bufferIntervalMillis) updateArduino(_ard.isArduinoReady());
 
 }
 
@@ -121,7 +126,7 @@ void ArdController::updateArduino(bool fake) {
     _lastUpdateTime = ofGetElapsedTimeMillis();
 
 
-    ardCyclicBuffer[_ardCyclicBufferOffset] = pinInput[1]/350.0f;
+    ardCyclicBuffer[_ardCyclicBufferOffset] = (1024 - pinInput[1])/150.0f;
 
     ardCyclicSum = 0;
 

@@ -18,12 +18,12 @@ CamController::CamController() {
 
 	//_cam.listDevices();
     _isCamInit = false;
-    _lastFaceTime = ofGetElapsedTimeMillis() - 60000;
-    _lastSwapTime = ofGetElapsedTimeMillis() - 60000;
+    _lastFaceTime = _lastSwapTime = _lastTwitchyFaceTime = ofGetElapsedTimeMillis() - 60000;
 
     _camROI = new ofRectangle();
     _camROI->x       = _camROI->y = 200.0f;
-
+    _camROI->width   = 740.0f;
+    _camROI->height  = 740.0f;
 
     ofRegisterMouseEvents(this);
 
@@ -31,8 +31,7 @@ CamController::CamController() {
     _instanceCount++;				// use instance counts to keep track of which cam belongs to which viewer - may be redundant??
 
     loadClass("camROI" + ofToString(_instanceID) + ".bin", _camROI);
-    _camROI->width   = 700.0f;
-    _camROI->height  = 700.0f;
+
 	LOG_NOTICE("Initialisation complete. Instance ID: " + ofToString(_instanceID));
 
 }
@@ -84,8 +83,8 @@ bool CamController::setup(int deviceID, int w, int h){
     //_finder.setNeighbors(4);
     //_finder.setScaleHaar(1.09);
     _camImage.allocate(w, h);
-    _colourImage.allocate(700,700);
-    _greyImage.allocate(700,700);
+    _colourImage.allocate(740,740);
+    _greyImage.allocate(740,740);
 
     _camImage.setROI(_camROI->x, _camROI->y, _camROI->width, _camROI->height);
 
@@ -118,8 +117,8 @@ bool CamController::setup(string deviceID, int w, int h){
     _finder.setNeighbors(4);
     _finder.setScaleHaar(1.09);
     _camImage.allocate(w, h);
-    _colourImage.allocate(700,700);
-    _greyImage.allocate(700,700);
+    _colourImage.allocate(740,740);
+    _greyImage.allocate(740,740);
 
     _camImage.setROI(_camROI->x, _camROI->y, _camROI->width, _camROI->height);
 
@@ -149,9 +148,16 @@ void CamController::loadSettings() {
 
         Settings * cS = new Settings();
         Settings * fS = new Settings();
+        bool loaded = false;
 
-        loadClass(ofToDataPath("cameraSettings" + ofToString(_instanceID) + ".bin"), cS);
-        loadClass(ofToDataPath("filterSettings" + ofToString(_instanceID) + ".bin"), fS);
+        loaded = loadClass(ofToDataPath("cameraSettings" + ofToString(_instanceID) + ".bin"), cS);
+        if(!loaded){
+            LOG_VERBOSE("Could not load camera settings for " + ofToString(_instanceID));
+        }
+        loaded = loadClass(ofToDataPath("filterSettings" + ofToString(_instanceID) + ".bin"), fS);
+        if(!loaded){
+            LOG_VERBOSE("Could not load camera settings for " + ofToString(_instanceID));
+        }
 
         if (cS->settings.size() > 0) _cam.setCameraSettings(cS->settings);
         if (fS->settings.size() > 0) _cam.setFilterSettings(fS->settings);
@@ -192,17 +198,26 @@ void CamController::loadAttributes() {
 
     Scene * currentScene = _appModel->getCurrentScene();
 
+    bool loaded = false;
+
     string sceneName = currentScene->getName();
     string scenePath = boost::any_cast<string>(_appModel->getProperty("scenesDataPath")) + "/" + sceneName + "/" + sceneName + "_";
 
     PosRotScale * prsC = new PosRotScale();
-    loadClass(scenePath + "cameraAttributes" + ofToString(_instanceID) + ".bin", prsC);
+    loaded = loadClass(scenePath + "cameraAttributes" + ofToString(_instanceID) + ".bin", prsC);
+    if(!loaded){
+        LOG_VERBOSE("Could not load camera settings for " + ofToString(_instanceID));
+    }
 
     PosRotScale * prsF = new PosRotScale();
-    loadClass(scenePath + "fakeAttributes" + ofToString(_instanceID) + ".bin", prsF);
-
+    loaded = loadClass(scenePath + "fakeAttributes" + ofToString(_instanceID) + ".bin", prsF);
+    if(!loaded){
+        LOG_VERBOSE("Could not load camera settings for " + ofToString(_instanceID));
+    }
+    LOG_VERBOSE("ATTEMPT TO SET CAM+FAKE ATTRIBUTES FOR " + ofToString(_instanceID));
     setCameraAttributes(prsC);
     setFakeAttributes(prsF);
+    LOG_VERBOSE("SET CAM+FAKE ATTRIBUTES FOR " + ofToString(_instanceID));
 
 }
 
@@ -283,8 +298,9 @@ void CamController::threadedFunction() {
                 if (_instanceID == 0) cvFlip(_greyImage.getCvImage(), _greyImage.getCvImage(), 1);
                 cvTranspose(_greyImage.getCvImage(), _greyImage.getCvImage()); // rotate ROI
 
-                if(_finder.findHaarObjects(_greyImage, 200, 200) > 0) { // has a face
-                    _lastFaceTime = ofGetElapsedTimeMillis();
+                if(_finder.findHaarObjects(_greyImage, 600, 600) > 0) { // has a face
+                    _lastTwitchyFaceTime = ofGetElapsedTimeMillis();
+                    //_lastFaceTime = ofGetElapsedTimeMillis();
                 }
 
             }
@@ -296,8 +312,13 @@ void CamController::threadedFunction() {
                 cvTranspose(_colourImage.getCvImage(), _colourImage.getCvImage()); // rotate ROI
 
                 if (_tracker.update(toCv(_colourImage))) { // has a face
-                    _lastFaceTime = ofGetElapsedTimeMillis();
+                    _lastTwitchyFaceTime = ofGetElapsedTimeMillis();
+                    //_lastFaceTime = ofGetElapsedTimeMillis();
                 }
+            }
+
+            if (ofGetElapsedTimeMillis() - _lastTwitchyFaceTime < TIMEOUT_TWITCHYFACE) {
+                _lastFaceTime = ofGetElapsedTimeMillis();
             }
 
         }
@@ -317,8 +338,8 @@ void CamController::drawDebug(float x, float y, float width, float height) {
 
     _xROIDisplay = x;
     _yROIDisplay = y,
-    _xScaleROIDisplay = width/700.0f;
-    _yScaleROIDisplay = height/700.0f;
+    _xScaleROIDisplay = width/740.0f;
+    _yScaleROIDisplay = height/740.0f;
 
     //if(!lock()){
         glPushMatrix();
@@ -332,7 +353,7 @@ void CamController::drawDebug(float x, float y, float width, float height) {
         if (_doFaceDetection) {
             _greyImage.draw(0,0);
             glPushMatrix();
-            glScalef(700.0f/_finder.getWidth(), 700.0f/_finder.getHeight(), 1.0f);
+            glScalef(740.0f/_finder.getWidth(), 740.0f/_finder.getHeight(), 1.0f);
             _finder.draw(0,0);
             glPopMatrix();
         }
@@ -367,13 +388,13 @@ void CamController::mouseMoved(ofMouseEventArgs &e) {
 
 void CamController::mouseDragged(ofMouseEventArgs &e) {
     if (_doROIAdjust && boost::any_cast<bool>(_appModel->getProperty("showCameras"))) {
-        _camImage.setROI((_camROI->x + (_startX - e.x) * 2.0), (_camROI->y + (_startY - e.y) * 2.0), 700, 700);
+        _camImage.setROI((_camROI->x + (_startX - e.x) * 2.0), (_camROI->y + (_startY - e.y) * 2.0), 740, 740);
     }
 }
 
 void CamController::mousePressed(ofMouseEventArgs &e) {
-    if (e.x > _xROIDisplay * _xScaleROIDisplay && e.x < (_xROIDisplay + 700.0f) * _xScaleROIDisplay &&
-        e.y > _yROIDisplay * _yScaleROIDisplay && e.y < (_yROIDisplay + 700.0f) * _yScaleROIDisplay &&
+    if (e.x > _xROIDisplay * _xScaleROIDisplay && e.x < (_xROIDisplay + 740.0f) * _xScaleROIDisplay &&
+        e.y > _yROIDisplay * _yScaleROIDisplay && e.y < (_yROIDisplay + 740.0f) * _yScaleROIDisplay &&
         boost::any_cast<bool>(_appModel->getProperty("showCameras"))) {
         _startX = e.x;
         _startY = e.y;

@@ -22,6 +22,7 @@
 #include "MicController.h"
 #include "ArdController.h"
 #include "SoundController.h"
+#include "killController.h"
 #include "Analyzer.h"
 
 #include "ofAppGlutWindow.h"
@@ -93,6 +94,7 @@ private:
 	MicController	* _micController;
 	ArdController	* _ardController;
     SoundController * _soundController;
+    killController * _killController;
 
     ofAppGlutWindow * _windowPtr;
 	bool			  _isFullScreen;
