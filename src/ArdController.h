@@ -32,8 +32,6 @@ public:
 
     void            update();
 
-    ofEvent<float>  attackAction;
-
     void            fakeAttackAction(float input);
 
 private:

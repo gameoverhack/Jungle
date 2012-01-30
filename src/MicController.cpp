@@ -155,7 +155,7 @@ void MicController::audioReceived(float* input, int bufferSize, int nChannels) {
 //                if (_appModel->_timeAtPeak == -1) {
 //                    _appModel->_timeAtPeak = ofGetElapsedTimeMillis();
 //                }
-                ofNotifyEvent(victimAction, area, this);
+                //ofNotifyEvent(victimAction, area, this);
 //                for (int i = 0; i < _fftCyclicBufferSize; i++) {
 //                    for (int j = 0; j < _fft->getBinSize(); j++) {
 //                        fftCyclicBuffer[i].fftBand[j] = fftCyclicSum[j] = fftNoiseFloor[j] = fftPostFilter[j] = 0;

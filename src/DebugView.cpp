@@ -23,7 +23,11 @@ void DebugView::update() {
 	Sequence		* currentSequence	= _appModel->getCurrentSequence();
 	Scene			* currentScene		= _appModel->getCurrentScene();
     int             * pinInput          = _appModel->getPinInput();
-    float             fftArea           = _appModel->getFFTArea();
+    float attackLevel                   = _appModel->getARDAttackLevel();
+    float min                           = boost::any_cast<float>(_appModel->getProperty("ardAttackMin"));
+    float max                           = boost::any_cast<float>(_appModel->getProperty("ardAttackMax"));
+    float delta                         = _appModel->getARDAttackDelta();
+    float fftArea                       = _appModel->getFFTArea();
 
     bool showProps                      = boost::any_cast<bool>(_appModel->getProperty("showProps"));
     bool showFFT                        = boost::any_cast<bool>(_appModel->getProperty("showFFT"));
@@ -35,8 +39,9 @@ void DebugView::update() {
      ********************************************************/
 
     msg += "mic RAW area: " + ofToString(fftArea) + "\n";
-    msg += "ard RAW pin0: " + ofToString(pinInput[0]) + "\n";
+    msg += "ard RAW pin0: " + ofToString(pinInput[0]) + " min: " + ofToString(min) + " max: " + ofToString(max) + "\n";
     msg += "ard RAW pin1: " + ofToString(pinInput[1]) + "\n";
+    msg += "ard ATK levl: " + ofToString(attackLevel) + " delta: " + ofToString(delta) + "\n";
 
 	// get frame rate
 	msg += "ABC: " + ofToString(ofGetFrameRate()) + "\n";
@@ -193,30 +198,6 @@ void DebugView::update() {
 			plotDraw(fftCyclicBuffer[i].fftBand, bufferSize, plotHeight, binSize);
 
 		}
-
-        glPopMatrix();
-        glPopMatrix();
-
-        /********************************************************
-         *             Draw ARD ArdController Data              *
-         ********************************************************/
-
-        float * ardCyclicBuffer     = _appModel->getARDCyclicBuffer();
-        float ardPostFilter         = _appModel->getARDPostFilter();
-        int ardCycicBufferSize      = _appModel->getARDCyclicBufferSize();
-
-        glPushMatrix();
-
-        ofNoFill();
-		ofSetColor(255, 255, 255, 255);
-
-		glTranslatef(ofGetWidth()/4.0f + 500.0f, 300.0f + plotHeight, 0.0f);
-		plotDraw(ardCyclicBuffer, ardCycicBufferSize, plotHeight, ardCycicBufferSize, 10.0f, 2.0f);
-
-        string msg = "ARD Post: " + ofToString(ardPostFilter);
-        ofDrawBitmapString(msg, 0, 0);
-
-		glPopMatrix();
 
     }
 

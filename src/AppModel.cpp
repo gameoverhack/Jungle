@@ -49,7 +49,7 @@ AppModel::~AppModel() {
 	    delete _videoPlayers[i];
 	}
 	delete [] _cameraPRS;
-	delete [] _ardCyclicBuffer;
+	delete [] _ardRawPins;
 	delete [] _fftCyclicBuffer;
 	delete [] _fftCyclicSum;
 	delete [] _fftInput;
@@ -355,65 +355,24 @@ int * AppModel::getPinInput() {
     return _ardRawPins;
 }
 
-void AppModel::setARDArea(float area) {
-    _ardArea = area;
+//--------------------------------------------------------------
+void AppModel::setARDAttackLevel(float level) {
+    _ardAttackLevel = level;
 }
 
 //--------------------------------------------------------------
-float AppModel::getARDArea() {
-    return _ardArea;
+float AppModel::getARDAttackLevel() {
+    return _ardAttackLevel;
 }
 
 //--------------------------------------------------------------
-void AppModel::setARDCyclicBufferSize(int size) {
-    _ardCyclicBufferSize = size;
+void AppModel::setARDAttackDelta(float delta) {
+    _ardAttackDelta = delta;
 }
 
 //--------------------------------------------------------------
-int AppModel::getARDCyclicBufferSize(){
-    return _ardCyclicBufferSize;
-}
-
-//--------------------------------------------------------------
-void AppModel::allocateARDCyclicBuffer(int ardCyclicBufferSize) {
-    _ardCyclicBuffer = new float[ardCyclicBufferSize];
-    memset(_ardCyclicBuffer, 0, sizeof(float) * ardCyclicBufferSize);
-}
-
-//--------------------------------------------------------------
-void AppModel::allocateARDNoiseFloor() {
-    _ardNoiseFloor = new float;
-}
-
-//--------------------------------------------------------------
-void AppModel::allocateARDCyclicSum() {
-    _ardCyclicSum = new float;
-}
-
-//--------------------------------------------------------------
-
-float * AppModel::getARDCyclicBuffer() {
-    return _ardCyclicBuffer;
-}
-
-//--------------------------------------------------------------
-float * AppModel::getARDNoiseFloor() {
-    return _ardNoiseFloor;
-}
-
-//--------------------------------------------------------------
-float * AppModel::getARDCyclicSum() {
-    return _ardCyclicSum;
-}
-
-//--------------------------------------------------------------
-void AppModel::setARDPostFilter(float val) {
-    _ardPostFilter = val;
-}
-
-//--------------------------------------------------------------
-float AppModel::getARDPostFilter() {
-    return _ardPostFilter;
+float AppModel::getARDAttackDelta() {
+    return _ardAttackDelta;
 }
 
 /********************************************************
@@ -529,6 +488,25 @@ int AppModel::getCurrentInteractivity() {
 	// now, but maybe better explicit in the videocontroller???
 
 	return _currentInteractivity;
+}
+
+/********************************************************
+ *      Interactivity Event Notifications              	*
+ ********************************************************/
+
+//--------------------------------------------------------------
+void AppModel::sendAttackEvent(float level){
+    ofNotifyEvent(attackAction, level, this);
+}
+
+//--------------------------------------------------------------
+void AppModel::sendVictimEvent(float level){
+    ofNotifyEvent(victimAction, level, this);
+}
+
+//--------------------------------------------------------------
+void AppModel::sendPresenceEvent(int type){
+    ofNotifyEvent(presenceAction, type, this);
 }
 
 /********************************************************

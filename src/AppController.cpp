@@ -81,12 +81,12 @@ void AppController::setup() {
     //ofSetLogLevel(OF_LOG_NOTICE);
 	// setup micController
 	_micController = new MicController("Microphone (Realtek High Definition Audio", 2); // other is Microphone (2- HD Pro Webcam C910) // TODO: make these a property
-	ofAddListener(_micController->victimAction, this, &AppController::VictimEvent);
+	ofAddListener(_appModel->victimAction, this, &AppController::VictimEvent);
 	//_micController->registerStates();
 
 	// setup ardController
 	_ardController = new ArdController("COM3", 1); // TODO: make this a property
-	ofAddListener(_ardController->attackAction, this, &AppController::AttackEvent);
+	ofAddListener(_appModel->attackAction, this, &AppController::AttackEvent);
 	//_ardController->registerStates();
 
 	// setup cameras
@@ -124,6 +124,8 @@ void AppController::setup() {
     _appModel->setProperty("showProps", false);
 	_appModel->setProperty("fullScreen", false);
 	_appModel->setProperty("tryScaleMethod", 0);
+	_appModel->setProperty("ardAttackMin", 300.0f);
+	_appModel->setProperty("ardAttackMax", 700.0f);
 /*	_appModel->setProperty("cameraToAdjust", (string)"0");
 	_appModel->setProperty("cameraPropToAdjust", (string)"SCALEROTATION");
     _appModel->setProperty("camScale0", 0.0f);

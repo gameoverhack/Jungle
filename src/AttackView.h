@@ -14,7 +14,7 @@ public:
 
 private:
 
-    float           _scaledInputLevel;
+    void    attackEvent(float & level);
 
 };
 

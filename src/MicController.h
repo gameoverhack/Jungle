@@ -33,8 +33,6 @@ public:
 
     void            update();
 
-    ofEvent<float>  victimAction;
-
     void            fakeVictimAction(float input);
 
 private:

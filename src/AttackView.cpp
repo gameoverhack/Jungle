@@ -4,6 +4,9 @@ AttackView::AttackView(float width, float height) : BaseMeterView(width, height)
 
     LOG_NOTICE("Setting up AttackView");
 
+    ofAddListener(_appModel->attackAction, this, &AttackView::attackEvent);
+    _isFlashing = false; // fake bool for testing
+
     /********************************************************
      *      Set unique x y co ordinates for assets          *
      ********************************************************/
@@ -53,16 +56,13 @@ AttackView::AttackView(float width, float height) : BaseMeterView(width, height)
 #endif
 }
 
+void AttackView::attackEvent(float & level){
+    _isFlashing = true; // fake bool for testing
+}
+
 void AttackView::update() {
 
-//    if (_appModel->_timeAtPush != -1 && (ofGetElapsedTimeMillis() - _appModel->_timeAtPush < 800)) {
-//        _scaledInputLevel = 1.0f;
-//    } else {
-//        _scaledInputLevel = ((float)_appModel->getARDArea());
-//        _appModel->_timeAtPush = -1;
-//    }
-
-    _scaledInputLevel = ((float)_appModel->getARDArea());
+    _scaledInputLevel = ((float)_appModel->getARDAttackLevel());
 
     /********************************************************
      *      Get _appModel Interactivity & Threshold         *
@@ -73,8 +73,9 @@ void AttackView::update() {
     int   totalNumSequences     = _appModel->getCurrentScene()->getNumOfSequences();
     int   thisNumSequence       = _appModel->getCurrentSequence()->getNumber();
 
-    bool  deny                  = (ofGetElapsedTimeMillis() - _appModel->getLastActionTime() > TIMEOUT_ACTION);
-    bool  isInteractive         = (currentInteractivity == kINTERACTION_BOTH || currentInteractivity == kINTERACTION_ATTACKER);
+    bool  isInteractive         = currentInteractivity == kINTERACTION_BOTH || currentInteractivity == kINTERACTION_ATTACKER;
+
+    if (_isFlashing && _scaledInputLevel < 0.05f) _isFlashing = false; // replace this with other test
 
     /********************************************************
      *      Draw the Meter to the ViewFBO                   *
@@ -100,27 +101,27 @@ void AttackView::update() {
 #else
     drawMeterShader(_stations_x, _stations_y, &_stationMaskFBO.getTextureReference(), _stations_on, _stations_off);
 #endif
-    _button_off->draw(_button_x, _button_y);
 
     if (isInteractive && _scaledInputLevel > 0.05f) {
         _button_on->draw(_button_x, _button_y);
-    } else if (!isInteractive && _scaledInputLevel > 0.05f) {
+    } else if (isInteractive) {
         _button_off->draw(_button_x, _button_y);
-        if (deny) _button_deny->draw(_button_x, _button_y);
     }
 
+    if (!isInteractive) {
+        _button_off->draw(_button_x, _button_y);
+        if (_appModel->getARDAttackDelta() > 0) _button_deny->draw(_button_x, _button_y);
+        if (_isFlashing){
+            //if (_appModel->getARDAttackDelta() == 0) _button_deny->draw(_button_x, _button_y);
+            // do some flashy stuff
+        }
+    }
 
-    if (isInteractive) {
 #if OF_VERSION < 7
         drawMeterShader(_meter_x, _meter_y, &_meterMaskTex, _meter_on, _meter_off);
 #else
         drawMeterShader(_meter_x, _meter_y, &_meterMaskFBO.getTextureReference(), _meter_on, _meter_off);
 #endif
-    } else {
-
-        _meter_off->draw(_meter_x, _meter_y);
-
-    }
 
     ofDisableAlphaBlending();
     glPopMatrix();

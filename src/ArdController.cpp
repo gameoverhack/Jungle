@@ -15,21 +15,7 @@ ArdController::ArdController(string deviceName, int ardBufferLengthSecs) {
 
     registerStates();
 
-      // setup timeouts to simulate a similiar update lifecycle to the audio input
-    _bufferIntervalMillis = 1000/60.0f;
-
-    _ardCyclicBufferSize = ardBufferLengthSecs * _bufferIntervalMillis;
-    _ardCyclicBufferOffset = _ardLastCyclicBufferOffset = 0;
-
-    _appModel->setARDCyclicBufferSize(_ardCyclicBufferSize);
-    _appModel->allocateARDCyclicBuffer(_ardCyclicBufferSize);
-    _appModel->allocateARDNoiseFloor();
-    _appModel->allocateARDCyclicSum();
-    _appModel->setARDPostFilter(0);
     _appModel->allocatePinInput(2);
-
-    //LOG_VERBOSE("SLEEPING FOR 3 seconds (ard)");
-    //ofSleepMillis(3000);
 
     if(!_ard.connect(deviceName, 57600)) {
 
@@ -44,8 +30,6 @@ ArdController::ArdController(string deviceName, int ardBufferLengthSecs) {
 
         setState(kARDCONTROLLER_INIT);
     }
-    //LOG_VERBOSE("SLEEPING FOR 3 seconds (ard)");
-    //ofSleepMillis(3000);
 
 }
 
@@ -72,19 +56,11 @@ void ArdController::update() {
 		// 1st: setup the arduino if haven't already:
 		if (checkState(kARDCONTROLLER_INIT)) {
 			setupArduino();
+			ofSleepMillis(500);
 		}
 		// 2nd do the update of the arduino
-        if (ofGetElapsedTimeMillis() - _lastUpdateTime > _bufferIntervalMillis) updateArduino();
+        updateArduino();
 	}
-//	else {
-//
-//	    int * pinInput = _appModel->getPinInput();
-//        pinInput[0] = 0;
-//        pinInput[1] = 0;
-//
-//	}
-
-//    if (ofGetElapsedTimeMillis() - _lastUpdateTime > _bufferIntervalMillis) updateArduino(_ard.isArduinoReady());
 
 }
 
@@ -107,11 +83,6 @@ void ArdController::updateArduino(bool fake) {
 
     //LOG_VERBOSE("Update Ard");
 
-    float * ardCyclicBuffer  = _appModel->getARDCyclicBuffer();
-    float  ardNoiseFloor;//       = _appModel->getARDNoiseFloor();
-    float  ardCyclicSum;//        = _appModel->getARDCyclicSum();
-    float  ardPostFilter       = _appModel->getARDPostFilter();
-
     int * pinInput              = _appModel->getPinInput();
 
     if (!fake) {
@@ -123,49 +94,29 @@ void ArdController::updateArduino(bool fake) {
 
     }
 
-    _lastUpdateTime = ofGetElapsedTimeMillis();
+    float level = 0.0f;
 
+    float min = boost::any_cast<float>(_appModel->getProperty("ardAttackMin"));
+    float max = boost::any_cast<float>(_appModel->getProperty("ardAttackMax"));
 
-    ardCyclicBuffer[_ardCyclicBufferOffset] = (1024 - pinInput[1])/150.0f;
+    float rawInput = CLAMP(pinInput[0], min, max);
+    level = (( (max - rawInput) / (max - min) ) - 0.1) * 1.4;
 
-    ardCyclicSum = 0;
+    float lastLevel = _appModel->getARDAttackLevel();
+    float delta = floor(level - lastLevel);
+    _appModel->setARDAttackDelta(delta);
 
-    for (int i = 1; i < _ardCyclicBufferSize; i++) {
-        //ardCyclicSum = ardCyclicSum + ardCyclicBuffer[i];
-        ardPostFilter = MAX (ardPostFilter, (ardCyclicBuffer[i-1] - ardCyclicBuffer[i]));
-        //ardPostFilter = MAX(ardPostFilter, ardCyclicBuffer[i]);
+    if (delta < 0) {
+        float decrement = 0.04f;
+        _appModel->setARDAttackLevel(lastLevel - decrement);
+    } else {
+        if (_appModel->getCurrentInteractivity() == kINTERACTION_BOTH || _appModel->getCurrentInteractivity() == kINTERACTION_ATTACKER)_appModel->setARDAttackLevel(level);
     }
 
-    //ardNoiseFloor = ardCyclicSum/(float)_ardCyclicBufferSize;
-    //ardPostFilter = ardCyclicBuffer[_ardLastCyclicBufferOffset] - ardCyclicBuffer[_ardCyclicBufferOffset];//pinInput[0]/650.0f - ardNoiseFloor;
-
-    float area = (ardPostFilter * 1.2) - 0.2; //sqrt(ardNoiseFloor); //TODO: make prop
-
-    if (ofGetElapsedTimeMillis() - _appModel->getLastActionTime() < TIMEOUT_ACTION) area = 0.0f;
-
-    _appModel->setARDArea(area);
-
-    if (ardPostFilter > 0.0f) ardPostFilter -= 0.1;
-    _appModel->setARDPostFilter(ardPostFilter);
-
-    //_ardLastCyclicBufferOffset = _ardCyclicBufferOffset;
-    _ardCyclicBufferOffset = (_ardCyclicBufferOffset + 1) % _ardCyclicBufferSize;
-
-    if (_appModel->checkState(kAPP_RUNNING)) {
-        if (area > 1.0f) {
-//            if (_appModel->_timeAtPush == -1) {
-//                _appModel->_timeAtPush = ofGetElapsedTimeMillis();
-//            }
-            ofNotifyEvent(attackAction, area, this);
-//            for (int i = 0; i < _ardCyclicBufferSize; i++) {
-//                ardCyclicBuffer[i] = 0;
-//                ardCyclicSum = 0;
-//            }
-//            //_appModel->setARDArea(0.0f);
-        }
+    if (level > 1.0f && _appModel->checkState(kAPP_RUNNING) && (_appModel->getCurrentInteractivity() == kINTERACTION_BOTH || _appModel->getCurrentInteractivity() == kINTERACTION_ATTACKER)) {
+        LOG_VERBOSE("Send attack event: " + ofToString(level));
+        _appModel->sendAttackEvent(level);
     }
-
-    //LOG_VERBOSE("[" + ofToString(ardRawPins[0]) + "::" + ofToString(ardRawPins[1]) + "]");
 
 }
 

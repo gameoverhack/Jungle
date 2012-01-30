@@ -65,7 +65,7 @@ public:
     bool                    _doFaceDetection;
     bool                    _doFaceTracking;
 
-    ofEvent<int>            faceAction;
+//    ofEvent<int>            faceAction;
 
     void mouseMoved(ofMouseEventArgs &e);
 	void mouseDragged(ofMouseEventArgs &e);

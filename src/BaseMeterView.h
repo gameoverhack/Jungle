@@ -16,6 +16,10 @@ public:
     void    update() = 0;
 
 protected:
+
+    float   _scaledInputLevel;
+    bool    _isFlashing;
+
 #if OF_VERSION < 7
     void drawMeterMask(float input, int meterSteps, float meterPixelsForStep, ofxFbo * maskFBO);
     void drawMeterMask(int input, int meterSteps, float meterPixelsForStep, ofxFbo * maskFBO);
@@ -70,8 +74,6 @@ protected:
     float           _meterPixelsForStep;
     int             _stationSteps;
     float           _stationPixelsForStep;
-
-private:
 
 };
 

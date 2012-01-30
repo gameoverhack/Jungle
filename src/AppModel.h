@@ -89,25 +89,25 @@ public:
     void                setCurrentInteractivity(int frame); // perhaps should be private???
     int                 getCurrentInteractivity();
 
+    // interactivity events
+    void                sendAttackEvent(float level);
+    ofEvent<float>      attackAction;
+
+    void                sendVictimEvent(float level);
+    ofEvent<float>      victimAction;
+
+    void                sendPresenceEvent(int type);
+    ofEvent<int>        presenceAction;
+
     // arduino getter/setters
     void                allocatePinInput(int numPins);
     int *               getPinInput();
 
-    void                setARDArea(float area);
-    float               getARDArea();
+    void                setARDAttackLevel(float level);
+    float               getARDAttackLevel();
 
-    void                setARDCyclicBufferSize(int size);
-    int                 getARDCyclicBufferSize();
-
-    void                allocateARDCyclicBuffer(int ardCyclicBufferSize);
-    void                allocateARDNoiseFloor();
-    void                allocateARDCyclicSum();
-    void                setARDPostFilter(float val);
-
-    float *             getARDCyclicBuffer();
-    float *             getARDNoiseFloor();
-    float *             getARDCyclicSum();
-    float               getARDPostFilter();
+    void                setARDAttackDelta(float delta);
+    float               getARDAttackDelta();
 
     // audio/mic getter/setters
     void                setFFTArea(float area);
@@ -200,6 +200,7 @@ public:
     void                setLastActionTime(int time) {_lastActionTime = time;};
     int                 getLastActionTime() {return _lastActionTime;};
     int                 _timeAtPeak, _timeAtPush;
+
 private:
 
 	inline string	    pad(string & objectName);
@@ -232,16 +233,9 @@ private:
 	bool						_isFrameNew;
 
     // arduino vars
-    float                       _ardArea;
-
+    float                       _ardAttackLevel;
+    float                       _ardAttackDelta;
     int *                       _ardRawPins;
-
-    float *                     _ardCyclicBuffer;
-    int                         _ardCyclicBufferSize;
-
-    float *                     _ardNoiseFloor;
-    float *                     _ardCyclicSum;
-	float                       _ardPostFilter;
 
     // audio/fft vars
     float                       _fftArea;
