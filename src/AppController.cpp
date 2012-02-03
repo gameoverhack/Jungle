@@ -58,6 +58,8 @@ void AppController::setup() {
 
     // load fake faces
 #ifdef USER_MATT
+    // TODO:  this doesnt seem to be used anywhere any more...? It gets loaded -> play() -> update() but the pixels are never drawn anywhere.
+    //          only references to fakevictimplayer is in app controller (here and in update)()) for the above described calls.
     _appModel->getFakeVictimPlayer()->loadMovie("E:/gameoverload/VideoProjects/Jungle/finalALL/fake/SubstituteFace0.mov");
     _appModel->getFakeVictimPlayer()->play();
     _appModel->getFakeAttackPlayer()->loadMovie("E:/gameoverload/VideoProjects/Jungle/finalALL/fake/SubstituteFace1.mov");
@@ -97,8 +99,14 @@ void AppController::setup() {
 	_camControllers[0]->setup("Built-in iSight", 640, 480);
 	_camControllers[1]->setup("ManyCam Virtual Webcam (RGB)", 640, 480);	// NB: had to use QTKit to get ManyCam working
 #else
-	_camControllers[0]->setup(1, 1920, 1080);
-	_camControllers[1]->setup(0, 1920, 1080);
+	if(!_camControllers[0]->setup(1, 1920, 1080)){
+		LOG_ERROR("Could not setup camController[0]");
+		abort();
+	}
+	if(!_camControllers[1]->setup(0, 1920, 1080)){
+		LOG_ERROR("Could not setup camController[1]");
+		abort();
+	}
 #endif
 
 //    ofAddListener(_camControllers[0]->faceAction, this, &AppController::FaceEvent);
