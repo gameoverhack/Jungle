@@ -62,10 +62,12 @@ bool CamController::setup(int deviceID, int w, int h){
     _isCamInit = _cam.loadMovie(fakePathBase +"/"+ instanceMovieNames[_instanceID]);
     if(_isCamInit){
         _cam.play();
+        //_cam.setUseTexture(true);
         ofSleepMillis(200);
     }
     else{
         LOG_ERROR("Could not load movie: " + fakePathBase+"/"+instanceMovieNames[_instanceID]);
+        abort();
     }
 #else
     _cam.setDeviceID(deviceID);
@@ -78,13 +80,10 @@ bool CamController::setup(int deviceID, int w, int h){
     #else
     _isCamInit = true; // bad mac doesn't return a bool on setup!! change this
     _cam.initGrabber(w, h, true);
-#endif
-
-
-
-#ifdef TARGET_WIN32
+	#endif
+	#ifdef TARGET_WIN32
 	loadSettings();
-#endif
+	#endif
 #endif
 
     //loadAttributes();
