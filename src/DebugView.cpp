@@ -44,7 +44,17 @@ void DebugView::update() {
     msg += "ard ATK levl: " + ofToString(attackLevel) + " delta: " + ofToString(delta) + "\n";
 
 	// get frame rate
-	msg += "ABC: " + ofToString(ofGetFrameRate()) + "\n";
+	msg += "FPS: " + ofToString(ofGetFrameRate()) + "\n";
+
+	msg += "\n";
+	msg += "Important keys: \n";
+	msg += "Unmask heads: 'h'\nShow camera feeds: 'b'\nToggle FaceTracking/FaceDetection: 'w'\n";
+	msg += "Select head to reposition: '0' and '1'\Select adjust Position: '5'\n";
+	msg += "Select adjust ScaleRotation: '6'\nModify Position/ScaleRotation: Left,Right,Up,Down\n";
+	msg += "Save head adjustments: 'c'\n";
+	msg += "Swap cameras: 'n'\nAlter camera video settings: '3' and '4'\n";
+	msg += "Pause scene: 'm'\nNext scene: 'j'\nGo back to start of scene: ' '\n";
+	msg += "Fake victim action: 'q'\nFake attack action: 'p'\n";
 
     /********************************************************
      *              Print info for Transforms               *
