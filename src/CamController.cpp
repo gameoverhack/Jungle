@@ -16,21 +16,26 @@ CamController::CamController() {
 
     registerStates();
 
+
+	_instanceID = _instanceCount;
+    _instanceCount++;				// use instance counts to keep track of which cam belongs to which viewer - may be redundant??
+
 	//_cam.listDevices();
     _isCamInit = false;
     _lastFaceTime = _lastSwapTime = _lastTwitchyFaceTime = ofGetElapsedTimeMillis() - 60000;
 
     _camROI = new ofRectangle();
-    _camROI->x       = _camROI->y = 200.0f;
-    _camROI->width   = 740.0f;
-    _camROI->height  = 740.0f;
+
+	// TODO: Possible bug here, doesn't check if loadClass was successful.
+    if(loadClass("camROI" + ofToString(_instanceID) + ".bin", _camROI) == false){
+    	LOG_WARNING("Could not load camera ROI for cam instance " + ofToString(_instanceID) + ", using sensible defaults.");
+    	// Loading saved data failed, so we'll just make a best guess
+		_camROI->x       = _camROI->y = 200.0f;
+		_camROI->width   = 740.0f;
+		_camROI->height  = 740.0f;
+    }
 
     ofRegisterMouseEvents(this);
-
-	_instanceID = _instanceCount;
-    _instanceCount++;				// use instance counts to keep track of which cam belongs to which viewer - may be redundant??
-
-    loadClass("camROI" + ofToString(_instanceID) + ".bin", _camROI);
 
 	LOG_NOTICE("Initialisation complete. Instance ID: " + ofToString(_instanceID));
 
@@ -214,7 +219,7 @@ void CamController::loadAttributes() {
     PosRotScale * prsC = new PosRotScale();
     loaded = loadClass(scenePath + "cameraAttributes" + ofToString(_instanceID) + ".bin", prsC);
     if(!loaded){
-        LOG_VERBOSE("Could not load camera settings for " + ofToString(_instanceID));
+        LOG_VERBOSE("Could not load camera settings for " + ofToString(_instanceID) + "(" + scenePath + "cameraAttributes" + ofToString(_instanceID) + ".bin" + ")");
     }
 
     PosRotScale * prsF = new PosRotScale();
