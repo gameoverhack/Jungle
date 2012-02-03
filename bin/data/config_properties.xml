@@ -4,16 +4,18 @@
         <property name="appRenderWidth" type="float">1280</property>
         <property name="ardAttackMax" type="float">700</property>
         <property name="ardAttackMin" type="float">300</property>
-        <property name="audioDataPath" type="string">D:/finalALL/audio</property>
+        <property name="ardIgnoreSetupFailure" type="bool">true</property>
+        <property name="audioDataPath" type="string">F:/JungleAssets/audio</property>
         <property name="autoTest" type="bool">false</property>
         <property name="cameraPropToAdjust" type="string">POSITION</property>
         <property name="cameraToAdjust" type="int">0</property>
-        <property name="flashDataPath" type="string">D:/finalALL/flash</property>
+        <property name="flashDataPath" type="string">F:/JungleAssets/flash</property>
+        <property name="fakeDataPath" type="string">F:/JungleAssets/fake</property>
         <property name="fullScreen" type="bool">true</property>
         <property name="graphicDataPath" type="string">graphics</property>
         <property name="loadingMessage" type="string">STATE == kANAL_READY (0) :: </property>
         <property name="loadingProgress" type="float">0.1</property>
-        <property name="scenesDataPath" type="string">D:/finalALL/video</property>
+        <property name="scenesDataPath" type="string">F:/JungleAssets/video</property>
         <property name="scenesXMLFile" type="string">config_scenes.xml</property>
         <property name="shaderBlendRatio" type="float">0.2</property>
         <property name="shaderGammaCorrection" type="float">1</property>
