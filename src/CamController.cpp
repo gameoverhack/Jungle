@@ -16,21 +16,26 @@ CamController::CamController() {
 
     registerStates();
 
+
+	_instanceID = _instanceCount;
+    _instanceCount++;				// use instance counts to keep track of which cam belongs to which viewer - may be redundant??
+
 	//_cam.listDevices();
     _isCamInit = false;
     _lastFaceTime = _lastSwapTime = _lastTwitchyFaceTime = ofGetElapsedTimeMillis() - 60000;
 
     _camROI = new ofRectangle();
-    _camROI->x       = _camROI->y = 200.0f;
-    _camROI->width   = 740.0f;
-    _camROI->height  = 740.0f;
+
+	// TODO: Possible bug here, doesn't check if loadClass was successful.
+    if(loadClass("camROI" + ofToString(_instanceID) + ".bin", _camROI) == false){
+    	LOG_WARNING("Could not load camera ROI for cam instance " + ofToString(_instanceID) + ", using sensible defaults.");
+    	// Loading saved data failed, so we'll just make a best guess
+		_camROI->x       = _camROI->y = 200.0f;
+		_camROI->width   = 740.0f;
+		_camROI->height  = 740.0f;
+    }
 
     ofRegisterMouseEvents(this);
-
-	_instanceID = _instanceCount;
-    _instanceCount++;				// use instance counts to keep track of which cam belongs to which viewer - may be redundant??
-
-    loadClass("camROI" + ofToString(_instanceID) + ".bin", _camROI);
 
 	LOG_NOTICE("Initialisation complete. Instance ID: " + ofToString(_instanceID));
 
@@ -45,33 +50,40 @@ CamController::~CamController() {
 }
 
 bool CamController::setup(int deviceID, int w, int h){
-
-
-    _cam.setDeviceID(deviceID);
-#ifdef USE_DUMMY
-    LOG_NOTICE("Attemptimg to set instance " + ofToString(_instanceID) + " cam to DUMMY");
-    _cam.setPixelType(GO_TV_RGB);
-    if (_instanceID == 0) _cam.loadMovie("E:/gameoverload/VideoProjects/Jungle/newtease/dummy/attackerCamBIG.mov");
-    if (_instanceID == 1) _cam.loadMovie("E:/gameoverload/VideoProjects/Jungle/newtease/dummy/victimCamBIG.mov");
-    _cam.play();
-    ofSleepMillis(200);
-#else
-    LOG_NOTICE("Attemptimg to set instance " + ofToString(_instanceID) + " cam to deviceID: " + ofToString(deviceID));
-    //_cam.close();// to be sure, to be sure
     _isCamInit = false;
-#ifdef TARGET_WIN32
+    string instanceMovieNames[2] = {"FakeCamFeedAttacker.mov", "FakeCamFeedVictim.mov"};
+
+#ifdef USE_DUMMY
+    string fakePathBase = boost::any_cast<string>(_appModel->getProperty("fakeDataPath"));
+    LOG_NOTICE("Attempting to set instance " + ofToString(_instanceID) + " cam to DUMMY: " + fakePathBase+"/"+instanceMovieNames[_instanceID]);
+    _cam.setPixelType(GO_TV_RGB);
+
+    // try to load up fake camera feed
+    _isCamInit = _cam.loadMovie(fakePathBase +"/"+ instanceMovieNames[_instanceID]);
+    if(_isCamInit){
+        _cam.play();
+        //_cam.setUseTexture(true);
+        ofSleepMillis(200);
+    }
+    else{
+        LOG_ERROR("Could not load movie: " + fakePathBase+"/"+instanceMovieNames[_instanceID]);
+        abort();
+    }
+#else
+    _cam.setDeviceID(deviceID);
+    LOG_NOTICE("Attempting to set instance " + ofToString(_instanceID) + " cam to deviceID: " + ofToString(deviceID));
+    //_cam.close();// to be sure, to be sure
+
+    #ifdef TARGET_WIN32
     _cam.setRequestedMediaSubType(VI_MEDIASUBTYPE_MJPG);
 	_isCamInit = _cam.initGrabber(w, h, true);
-#else
+    #else
     _isCamInit = true; // bad mac doesn't return a bool on setup!! change this
     _cam.initGrabber(w, h, true);
-#endif
-
-
-
-#ifdef TARGET_WIN32
+	#endif
+	#ifdef TARGET_WIN32
 	loadSettings();
-#endif
+	#endif
 #endif
 
     //loadAttributes();
@@ -206,7 +218,7 @@ void CamController::loadAttributes() {
     PosRotScale * prsC = new PosRotScale();
     loaded = loadClass(scenePath + "cameraAttributes" + ofToString(_instanceID) + ".bin", prsC);
     if(!loaded){
-        LOG_VERBOSE("Could not load camera settings for " + ofToString(_instanceID));
+        LOG_VERBOSE("Could not load camera settings for " + ofToString(_instanceID) + "(" + scenePath + "cameraAttributes" + ofToString(_instanceID) + ".bin" + ")");
     }
 
     PosRotScale * prsF = new PosRotScale();

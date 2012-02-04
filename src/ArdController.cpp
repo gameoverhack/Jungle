@@ -17,20 +17,21 @@ ArdController::ArdController(string deviceName, int ardBufferLengthSecs) {
 
     _appModel->allocatePinInput(2);
 
+    #ifndef DONT_USE_ARDUINO
     if(!_ard.connect(deviceName, 57600)) {
-
-        LOG_ERROR("Cannot start Arduino on: " + deviceName);
-        abort();
-
+        // could not connect to arduino
         setState(kARDCONTROLLER_DISABLED);
-
-    } else {
-
+        LOG_ERROR("Cannot start Arduino on: " + deviceName);
+        // fail to run if we can't get a hook into the arduino (EG: in production)
+		abort();
+	} else {
         LOG_NOTICE("Successfully connected Arduino on: " + deviceName);
-
-        setState(kARDCONTROLLER_INIT);
+		setState(kARDCONTROLLER_INIT);
     }
-
+    #else
+    setState(kARDCONTROLLER_DISABLED);
+    LOG_ERROR("Continuing without arduino set to DISABLED");
+    #endif
 }
 
 ArdController::~ArdController() {

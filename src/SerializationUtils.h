@@ -49,28 +49,28 @@ bool saveVector(string filePath, vector< vectorType > * vec) {
 
 template <class C>
 bool loadClass(string filePath, C * someClass) {
-	ofLog(OF_LOG_NOTICE, "Loading class data: " + filePath);
+	ofLog(OF_LOG_NOTICE, "loadClass: Loading class data: " + filePath);
 
 	std::ifstream ifs(ofToDataPath(filePath).c_str());
-	ofLog(OF_LOG_NOTICE, "1");
+	ofLog(OF_LOG_NOTICE, "loadClass: Created ifstream");
 	if(ifs.fail()){
-		ofLog(OF_LOG_ERROR, "Could not load class: " + filePath);
+		ofLog(OF_LOG_ERROR, "loadClass: Could not load class: " + filePath);
 		//abort(); // Could be a bit over zealous
 		return false;
 	}
-	ofLog(OF_LOG_NOTICE, "2");
+	ofLog(OF_LOG_NOTICE, "loadClass: ifstream creation was successful");
 	try {
-	    ofLog(OF_LOG_NOTICE, "3");
+	    ofLog(OF_LOG_NOTICE, "loadClass: Going to try creating text_iarchive from ifs ");
         boost::archive::text_iarchive ia(ifs);
-        ofLog(OF_LOG_NOTICE, "4");
+        ofLog(OF_LOG_NOTICE, "loadClass: Successful creation of text_iarchive");
         ia >> (*someClass);
-        ofLog(OF_LOG_NOTICE, "5");
+        ofLog(OF_LOG_NOTICE, "loadClass: Read text_iarchive into object, returning true");
         return true;
 	} catch (boost::archive::archive_exception e) {
-        ofLog(OF_LOG_ERROR, "Error unserializing class from file: " + filePath);
+        ofLog(OF_LOG_ERROR, "loadClass: Error unserializing class from file: " + filePath);
         return false;
 	}
-	ofLog(OF_LOG_NOTICE, "6");
+	ofLog(OF_LOG_NOTICE, "loadClass: Should not get here, should return from try{}");
 }
 
 template <class C>

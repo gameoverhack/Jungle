@@ -9,3 +9,4 @@
 *.o
 *.exe
 config_scenes_*.xml
+bin/data/log.txt
