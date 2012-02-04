@@ -15,6 +15,7 @@
 #include "Singleton.h"
 #include "FunctionModel.h"
 #include "AppDataTypes.h"
+#include "Timer.h"
 
 #include <boost/any.hpp>
 
@@ -85,6 +86,29 @@ public:
 
     //void                setCurrentSequenceLevel(); // just doing this internally for now with _currentSceneLevel
     float               getCurrentSequenceLevel();     // possibly need different levels for attack and victim, might need to pass type?
+
+    // timer methods
+    bool addTimer(string timerName, Timer * timer);
+    bool removeTimer(string timerName);
+
+    bool startTimer(string timerName);
+    bool restartTimer(string timerName);
+    bool stopTimer(string timerName);
+
+    bool hasTimedOut(string timerName);
+
+    Timer* getTimer(string timerName);
+
+    template <class EventType,typename ArgumentsType, class ListenerClass>
+    static void addTimerListener(string timerName, EventType & event, ListenerClass  * listener, void (ListenerClass::*listenerMethod)(const void*, ArgumentsType&)){
+        Timer * timer = getTimer(timerName);
+        if(timer != NULL){
+            ofAddListener(event, listener, listenerMethod);
+            return true;
+        }else{
+            return false;
+        }
+    };
 
     // interactivity getter/setters
     bool				checkCurrentInteractivity(interaction_t interactionType);
@@ -167,7 +191,6 @@ public:
     int                 getCurrentSceneFrame();
     int                 getCurrentSceneNumFrames();
 
-
 	void				setCurrentIsFrameNew(bool isFrameNew);
 	bool				getCurrentIsFrameNew();
 
@@ -202,8 +225,8 @@ public:
 
     bool                getAnyFacePresent() {return _isFacePresent[0] || _isFacePresent[1];};
 
-    void                setLastActionTime(int time) {_lastActionTime = time;};
-    int                 getLastActionTime() {return _lastActionTime;};
+//    void                setLastActionTime(int time) {_lastActionTime = time;};
+//    int                 getLastActionTime() {return _lastActionTime;};
     int                 _timeAtPeak, _timeAtPush;
 
 private:
@@ -218,6 +241,9 @@ private:
 	bool			    is_bool(const boost::any & operand);
 
 	map<string, boost::any>		_anyProps;
+
+    // timers
+    map<string, Timer*>         _timers;
 
     // scene and sequence vars
 	map<string, Scene *>		_scenes;
@@ -267,7 +293,7 @@ private:
 
     bool                        _isFacePresent[2];
     bool                        _isSwapPresent[2];
-    int                         _lastActionTime;
+//    int                         _lastActionTime;
 
 };
 

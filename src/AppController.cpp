@@ -132,6 +132,9 @@ void AppController::setup() {
     _appModel->setProperty("showProps", false);
 	_appModel->setProperty("fullScreen", false);
 	_appModel->setProperty("tryScaleMethod", 0);
+	_appModel->setProperty("anyActionTimer", 500);
+	_appModel->setProperty("victimActionTimer", 5000);
+	_appModel->setProperty("attackActionTimer", 5000);
 /*	_appModel->setProperty("ardAttackMin", 300.0f);
 	_appModel->setProperty("ardAttackMax", 800.0f);
 	_appModel->setProperty("cameraToAdjust", (string)"0");
@@ -149,6 +152,19 @@ void AppController::setup() {
     toggleFullscreen();
     ofHideCursor();
 
+    // create timer for any interaction
+    Timer * anyActionTimer = new Timer(boost::any_cast<int>(_appModel->getProperty("anyActionTimer")));
+    _appModel->addTimer("anyActionTimer", anyActionTimer);
+    _appModel->startTimer("anyActionTimer");
+
+    Timer * victimActionTimer = new Timer(boost::any_cast<int>(_appModel->getProperty("victimActionTimer")));
+    _appModel->addTimer("victimActionTimer", victimActionTimer);
+    _appModel->startTimer("victimActionTimer");
+
+    Timer * attackActionTimer = new Timer(boost::any_cast<int>(_appModel->getProperty("attackActionTimer")));
+    _appModel->addTimer("attackActionTimer", attackActionTimer);
+    _appModel->startTimer("attackActionTimer");
+
 	LOG_NOTICE("Initialisation complete");
 }
 
@@ -162,10 +178,10 @@ void AppController::swapCameras() {
 //--------------------------------------------------------------
 void AppController::VictimEvent(float & level) {
 
-    if (ofGetElapsedTimeMillis() -_appModel->getLastActionTime() > TIMEOUT_ACTION) {
+    if (_appModel->hasTimedOut("anyActionTimer")) {
         if (_switchToSequence == NULL && !_vidController->isPreRolling() && _appModel->getCurrentSequenceFrame() < _appModel->getCurrentSequenceNumFrames()-15) {
             if (_appModel->checkCurrentInteractivity(kINTERACTION_BOTH) || _appModel->checkCurrentInteractivity(kINTERACTION_VICTIM)) {
-                _appModel->setLastActionTime(ofGetElapsedTimeMillis());
+                _appModel->restartTimer("anyActionTimer");
                 string res = _appModel->getCurrentSequence()->getVictimResult()[_appModel->getCurrentSequenceFrame()];
                 LOG_NOTICE("VICTIM ACTION [" + ofToString(level) + "] == " + res);
                 if (res != kLAST_SEQUENCE_TOKEN && res != "") {
@@ -184,10 +200,10 @@ void AppController::VictimEvent(float & level) {
 //--------------------------------------------------------------
 void AppController::AttackEvent(float & level) {
 
-    if (ofGetElapsedTimeMillis() -_appModel->getLastActionTime() > TIMEOUT_ACTION) {
+    if (_appModel->hasTimedOut("anyActionTimer")) {
         if (_switchToSequence == NULL && !_vidController->isPreRolling() && _appModel->getCurrentSequenceFrame() < _appModel->getCurrentSequenceNumFrames()-15) {
             if (_appModel->checkCurrentInteractivity(kINTERACTION_BOTH) || _appModel->checkCurrentInteractivity(kINTERACTION_ATTACKER)) {
-                _appModel->setLastActionTime(ofGetElapsedTimeMillis());
+                _appModel->restartTimer("anyActionTimer");
                 string res = _appModel->getCurrentSequence()->getAttackerResult()[_appModel->getCurrentSequenceFrame()];
                 LOG_NOTICE("ATTACK ACTION [" + ofToString(level) + "] == " + res);
                 if (res != kLAST_SEQUENCE_TOKEN && res != "") {
@@ -233,7 +249,7 @@ void AppController::update() {
 			_appModel->setFacePresent(0,false);
 			_appModel->setFacePresent(1,false);
 			_appModel->setState(kAPP_RUNNING);
-			_appModel->setLastActionTime(ofGetElapsedTimeMillis());
+			_appModel->restartTimer("anyActionTimer");
 
 		}
 	}
@@ -279,7 +295,7 @@ void AppController::update() {
 		// catch _switchToSequence when a movie is loaded completely
 		if (_switchToSequence != NULL && _vidController->checkState(kVIDCONTROLLER_NEXTVIDREADY)) {
 		    LOG_NOTICE("Doing switchMovie on NEXTVIDEOREADY");
-            _appModel->setLastActionTime(ofGetElapsedTimeMillis());
+            _appModel->restartTimer("anyActionTimer");
 			_vidController->toggleVideoPlayers();
 			_appView->update();
 			_vidController->setState(kVIDCONTROLLER_READY);
@@ -328,7 +344,7 @@ void AppController::update() {
 
 
         // if no faces present after timeout and no user action for more than timeout we can push to next scene
-        if (currentSequence->getNumber() > 1 && currentSequence->getNumber() < 8 && !_appModel->getAnyFacePresent() && ofGetElapsedTimeMillis() -_appModel->getLastActionTime() > TIMEOUT_ACTION && _switchToSequence == NULL) {
+        if (currentSequence->getNumber() > 1 && currentSequence->getNumber() < 8 && !_appModel->getAnyFacePresent() && ofGetElapsedTimeMillis() -_appModel->hasTimedOut("anyActionTimer") && _switchToSequence == NULL) {
 #ifdef DO_AUTO_TIMEOUT
             LOG_NOTICE("Auto No Face present for more than " + ofToString(TIMEOUT_NOFACE) + " forcing next scene");
             nextScene();

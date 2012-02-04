@@ -151,12 +151,22 @@ void MicController::audioReceived(float* input, int bufferSize, int nChannels) {
             float decrement = 0.01f;
             _appModel->setFFTVictimLevel(lastLevel - decrement);
         } else {
-            if (_appModel->getCurrentInteractivity() == kINTERACTION_BOTH || _appModel->getCurrentInteractivity() == kINTERACTION_VICTIM)_appModel->setFFTVictimLevel(level);
+            if (_appModel->getCurrentInteractivity() == kINTERACTION_BOTH ||
+                _appModel->getCurrentInteractivity() == kINTERACTION_VICTIM) {
+                _appModel->setFFTVictimLevel(level);
+            }
         }
 
-        if (level > 1.0f && _appModel->checkState(kAPP_RUNNING) && (_appModel->getCurrentInteractivity() == kINTERACTION_BOTH || _appModel->getCurrentInteractivity() == kINTERACTION_VICTIM)) {
-            LOG_VERBOSE("Send victim event: " + ofToString(level));
-            _appModel->sendVictimEvent(level);
+        if (level > 1.0f &&
+            _appModel->checkState(kAPP_RUNNING) &&
+            (_appModel->getCurrentInteractivity() == kINTERACTION_BOTH ||
+             _appModel->getCurrentInteractivity() == kINTERACTION_VICTIM)) {
+
+            _appModel->restartTimer("victimActionTimer");
+            if (_appModel->hasTimedOut("anyActionTimer")) {
+                LOG_VERBOSE("Send victim event: " + ofToString(level));
+                _appModel->sendVictimEvent(level);
+            }
         }
 
     }

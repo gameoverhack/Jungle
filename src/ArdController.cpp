@@ -111,12 +111,23 @@ void ArdController::updateArduino(bool fake) {
         float decrement = 0.04f;
         _appModel->setARDAttackLevel(lastLevel - decrement);
     } else {
-        if (_appModel->getCurrentInteractivity() == kINTERACTION_BOTH || _appModel->getCurrentInteractivity() == kINTERACTION_ATTACKER)_appModel->setARDAttackLevel(level);
+        if (_appModel->getCurrentInteractivity() == kINTERACTION_BOTH ||
+            _appModel->getCurrentInteractivity() == kINTERACTION_ATTACKER) {
+            _appModel->setARDAttackLevel(level);
+        }
     }
 
-    if (level > 1.0f && _appModel->checkState(kAPP_RUNNING) && (_appModel->getCurrentInteractivity() == kINTERACTION_BOTH || _appModel->getCurrentInteractivity() == kINTERACTION_ATTACKER)) {
-        LOG_VERBOSE("Send attack event: " + ofToString(level));
-        _appModel->sendAttackEvent(level);
+    if (level > 1.0f &&
+        _appModel->checkState(kAPP_RUNNING) &&
+        (_appModel->getCurrentInteractivity() == kINTERACTION_BOTH ||
+         _appModel->getCurrentInteractivity() == kINTERACTION_ATTACKER)) {
+
+        _appModel->restartTimer("attackActionTimer");
+        if (_appModel->hasTimedOut("anyActionTimer")) {
+            LOG_VERBOSE("Send attack event: " + ofToString(level));
+            _appModel->sendAttackEvent(level);
+        }
+
     }
 
 }

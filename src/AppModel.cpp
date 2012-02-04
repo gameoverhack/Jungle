@@ -465,6 +465,103 @@ bool AppModel::getCurrentIsFrameNew() {
 }
 
 /********************************************************
+ *      Timer methods                                  	*
+ ********************************************************/
+
+//--------------------------------------------------------------
+bool AppModel::addTimer(string timerName, Timer * timer) {
+    map<string, Timer*>::iterator it = _timers.find(timerName);
+    if (it != _timers.end()) {
+        LOG_ERROR("Can't create timer - must have unique name and we already have a timer called " + timerName);
+        return false;
+    } else {
+        LOG_VERBOSE("Adding timer: " + timerName);
+        timer->setName(timerName); // make our map and timer name the same
+        _timers.insert(pair<string, Timer*>(timerName, timer));
+        return true;
+    }
+}
+
+//--------------------------------------------------------------
+bool AppModel::removeTimer(string timerName) {
+    map<string, Timer*>::iterator it = _timers.find(timerName);
+    if (it != _timers.end()) {
+        LOG_VERBOSE("Removing timer: " + timerName);
+        _timers.erase(it);
+        return true;
+    } else {
+        LOG_ERROR("Can't delete timer - it doesn't exist: " + timerName);
+        return false;
+    }
+}
+
+//--------------------------------------------------------------
+bool AppModel::startTimer(string timerName) {
+    map<string, Timer*>::iterator it = _timers.find(timerName);
+    if (it != _timers.end()) {
+        LOG_VERBOSE("Starting timer: " + timerName);
+        Timer * timer = it->second;
+        timer->start();
+        return true;
+    } else {
+        LOG_ERROR("Can't start timer - it doesn't exist: " + timerName);
+        return false;
+    }
+}
+
+//--------------------------------------------------------------
+bool AppModel::restartTimer(string timerName) {
+    map<string, Timer*>::iterator it = _timers.find(timerName);
+    if (it != _timers.end()) {
+        LOG_VERBOSE("Restarting timer: " + timerName);
+        Timer * timer = it->second;
+        timer->restart();
+        return true;
+    } else {
+        LOG_ERROR("Can't restart timer - it doesn't exist: " + timerName);
+        return false;
+    }
+}
+
+//--------------------------------------------------------------
+bool AppModel::stopTimer(string timerName) {
+    map<string, Timer*>::iterator it = _timers.find(timerName);
+    if (it != _timers.end()) {
+        LOG_VERBOSE("Stopping timer: " + timerName);
+        Timer * timer = it->second;
+        timer->stop();
+        return true;
+    } else {
+        LOG_ERROR("Can't stop timer - it doesn't exist: " + timerName);
+        return false;
+    }
+}
+
+//--------------------------------------------------------------
+bool AppModel::hasTimedOut(string timerName) {
+    map<string, Timer*>::iterator it = _timers.find(timerName);
+    if (it != _timers.end()) {
+        Timer * timer = it->second;
+        return timer->hasTimedOut();
+    } else {
+        LOG_ERROR("Can't getTimer() - returning a NULL - it doesn't exist: " + timerName);
+        assert(false);
+    }
+}
+
+//--------------------------------------------------------------
+Timer* AppModel::getTimer(string timerName) {
+    map<string, Timer*>::iterator it = _timers.find(timerName);
+    if (it != _timers.end()) {
+        Timer * timer = it->second;
+        return timer;
+    } else {
+        LOG_ERROR("Can't getTimer() - returning a NULL - it doesn't exist: " + timerName);
+        return NULL;
+    }
+}
+
+/********************************************************
  *      Getters and setters for Interactivity       	*
  ********************************************************/
 //--------------------------------------------------------------
@@ -505,17 +602,17 @@ int AppModel::getCurrentInteractivity() {
  ********************************************************/
 
 //--------------------------------------------------------------
-void AppModel::sendAttackEvent(float level){
+void AppModel::sendAttackEvent(float level) {
     ofNotifyEvent(attackAction, level, this);
 }
 
 //--------------------------------------------------------------
-void AppModel::sendVictimEvent(float level){
+void AppModel::sendVictimEvent(float level) {
     ofNotifyEvent(victimAction, level, this);
 }
 
 //--------------------------------------------------------------
-void AppModel::sendPresenceEvent(int type){
+void AppModel::sendPresenceEvent(int type) {
     ofNotifyEvent(presenceAction, type, this);
 }
 

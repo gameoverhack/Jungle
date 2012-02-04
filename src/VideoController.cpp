@@ -125,7 +125,7 @@ void VideoController::forceUpdate() {
 
 void VideoController::loadMovie(Sequence * seq, bool forceCurrentLoad, int lastFrameWhenForced) {
 
-    _appModel->setLastActionTime(ofGetElapsedTimeMillis()); // stops other actions from being possible!
+    _appModel->restartTimer("anyActionTimer");
 
 	// get the full path of the movie from the sequence
 	string path = seq->getMovieFullFilePath();
@@ -150,7 +150,7 @@ void VideoController::loadMovie(Sequence * seq, bool forceCurrentLoad, int lastF
 
 void VideoController::toggleVideoPlayers(int lastFrameWhenForced, bool noPause) {
 	LOG_NOTICE("Toggling Video Players " + ofToString(lastFrameWhenForced));
-    _appModel->setLastActionTime(ofGetElapsedTimeMillis()); // stops other actions from being possible!
+    _appModel->restartTimer("anyActionTimer");
 	_appModel->toggleVideoPlayers(lastFrameWhenForced, noPause);
 	//update();
 }
