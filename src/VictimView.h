@@ -3,14 +3,18 @@
 
 #include "BaseMeterView.h"
 
-class VictimView : public BaseMeterView
-{
+class VictimView : public BaseMeterView {
+
 public:
 
     VictimView(float width, float height);
     //~VictimView();
 
     void update();
+
+private:
+
+    void    victimEvent(float & level);
 
 };
 

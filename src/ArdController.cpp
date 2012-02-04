@@ -104,7 +104,7 @@ void ArdController::updateArduino(bool fake) {
     level = (( (max - rawInput) / (max - min) ) - 0.1) * 1.4;
 
     float lastLevel = _appModel->getARDAttackLevel();
-    float delta = floor(level - lastLevel);
+    float delta = level - lastLevel;
     _appModel->setARDAttackDelta(delta);
 
     if (delta < 0) {

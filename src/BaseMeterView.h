@@ -18,7 +18,7 @@ public:
 protected:
 
     float   _scaledInputLevel;
-    bool    _isFlashing;
+    bool    _bHasFiredEvent;
 
 #if OF_VERSION < 7
     void drawMeterMask(float input, int meterSteps, float meterPixelsForStep, ofxFbo * maskFBO);

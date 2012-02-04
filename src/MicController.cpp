@@ -133,37 +133,32 @@ void MicController::audioReceived(float* input, int bufferSize, int nChannels) {
             fftPostFilter[j] = fftInput[j] - fftNoiseFloor[j];
         }
 
-        float area = 0;
+        float level = 0;
 
         for (int i = 10; i < _fft->getBinSize(); i++) {
-            float h = fftNoiseFloor[i]*0.7 + fftPostFilter[i]*0.3; //fftNoiseFloor[i]; // this is wrong but i used to like it!!
+            float h = fftNoiseFloor[i]*0.7 + fftPostFilter[i]*0.3;
             float w = 2.0f;
-            area += w*h;
+            level += w*h;
         }
 
-        area = sqrt(area) - 0.2f; //TODO: make prop
+        level = (sqrt(level) - 0.2f) * 1.4; //TODO: make prop
 
-        if (ofGetElapsedTimeMillis() - _appModel->getLastActionTime() < TIMEOUT_ACTION) area = 0.0f;
+        float lastLevel = _appModel->getFFTVictimLevel();
+        float delta = level - lastLevel;
+        _appModel->setFFTVictimDelta(delta);
 
-        _appModel->setFFTArea(area);
-
-        // increase the cyclic buffer offset
-        _fftCyclicBufferOffset = (_fftCyclicBufferOffset + 1) % _fftCyclicBufferSize;
-
-        if (_appModel->checkState(kAPP_RUNNING)) {
-            if (area > 1.0f) {
-//                if (_appModel->_timeAtPeak == -1) {
-//                    _appModel->_timeAtPeak = ofGetElapsedTimeMillis();
-//                }
-                //ofNotifyEvent(victimAction, area, this);
-//                for (int i = 0; i < _fftCyclicBufferSize; i++) {
-//                    for (int j = 0; j < _fft->getBinSize(); j++) {
-//                        fftCyclicBuffer[i].fftBand[j] = fftCyclicSum[j] = fftNoiseFloor[j] = fftPostFilter[j] = 0;
-//                    }
-//                    //_appModel->setFFTArea(0.0f);
-//                }
-            }
+        if (delta < 0) {
+            float decrement = 0.01f;
+            _appModel->setFFTVictimLevel(lastLevel - decrement);
+        } else {
+            if (_appModel->getCurrentInteractivity() == kINTERACTION_BOTH || _appModel->getCurrentInteractivity() == kINTERACTION_VICTIM)_appModel->setFFTVictimLevel(level);
         }
+
+        if (level > 1.0f && _appModel->checkState(kAPP_RUNNING) && (_appModel->getCurrentInteractivity() == kINTERACTION_BOTH || _appModel->getCurrentInteractivity() == kINTERACTION_VICTIM)) {
+            LOG_VERBOSE("Send victim event: " + ofToString(level));
+            _appModel->sendVictimEvent(level);
+        }
+
     }
 
 }

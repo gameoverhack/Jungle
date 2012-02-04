@@ -5,7 +5,7 @@ AttackView::AttackView(float width, float height) : BaseMeterView(width, height)
     LOG_NOTICE("Setting up AttackView");
 
     ofAddListener(_appModel->attackAction, this, &AttackView::attackEvent);
-    _isFlashing = false; // fake bool for testing
+    _bHasFiredEvent = false; // fake bool for testing
 
     /********************************************************
      *      Set unique x y co ordinates for assets          *
@@ -58,7 +58,7 @@ AttackView::AttackView(float width, float height) : BaseMeterView(width, height)
 }
 
 void AttackView::attackEvent(float & level){
-    _isFlashing = true; // fake bool for testing
+    _bHasFiredEvent = true; // fake bool for testing
 }
 
 void AttackView::update() {
@@ -76,7 +76,7 @@ void AttackView::update() {
 
     bool  isInteractive         = currentInteractivity == kINTERACTION_BOTH || currentInteractivity == kINTERACTION_ATTACKER;
 
-    if (_isFlashing && _scaledInputLevel < 0.05f) _isFlashing = false; // replace this with other test
+    if (_bHasFiredEvent && _scaledInputLevel < 0.1f) _bHasFiredEvent = false; // replace this with other test
 
     /********************************************************
      *      Draw the Meter to the ViewFBO                   *
@@ -94,7 +94,6 @@ void AttackView::update() {
     glClearColor(0.0, 0.0, 0.0, 1.0); // black background no transparency
     glClear(GL_COLOR_BUFFER_BIT);
 
-
     _bird->draw(_bird_x, _bird_y);
 
 #if OF_VERSION < 7
@@ -103,7 +102,7 @@ void AttackView::update() {
     drawMeterShader(_stations_x, _stations_y, &_stationMaskFBO.getTextureReference(), _stations_on, _stations_off);
 #endif
 
-    if (isInteractive && _scaledInputLevel > 0.05f) {
+    if (isInteractive && _scaledInputLevel > 0.1f) {
         _button_on->draw(_button_x, _button_y);
     } else if (isInteractive) {
         _button_off->draw(_button_x, _button_y);
@@ -111,10 +110,12 @@ void AttackView::update() {
 
     if (!isInteractive) {
         _button_off->draw(_button_x, _button_y);
-        if (_appModel->getARDAttackDelta() > 0) _button_deny->draw(_button_x, _button_y);
-        if (_isFlashing){
-            //if (_appModel->getARDAttackDelta() == 0) _button_deny->draw(_button_x, _button_y);
-            // do some flashy stuff
+        if (_appModel->getARDAttackDelta() > 0.3f) {
+            _button_deny->draw(_button_x, _button_y);
+        } else {
+            if (_bHasFiredEvent){
+                _button_on->draw(_button_x, _button_y);
+            }
         }
     }
 

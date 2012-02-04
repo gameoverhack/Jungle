@@ -112,8 +112,11 @@ public:
     float               getARDAttackDelta();
 
     // audio/mic getter/setters
-    void                setFFTArea(float area);
-    float               getFFTArea();
+    void                setFFTVictimDelta(float level);
+    float               getFFTVictimDelta();
+
+    void                setFFTVictimLevel(float level);
+    float               getFFTVictimLevel();
 
     void                setFFTBinSize(int size);
     int                 getFFTBinSize();
@@ -240,7 +243,8 @@ private:
     int *                       _ardRawPins;
 
     // audio/fft vars
-    float                       _fftArea;
+    float                       _fftLevel;
+    float                       _fftDelta;
 
     fftBands *                  _fftCyclicBuffer;
 

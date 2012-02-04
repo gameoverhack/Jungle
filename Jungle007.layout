@@ -178,7 +178,7 @@
 	<File name="bin\data\config_properties.xml" open="0" top="0" tabpos="20">
 		<Cursor position="523" topLine="0" />
 	</File>
-	<File name="bin\data\config_scenes.xml" open="0" top="0" tabpos="28">
+	<File name="bin\data\config_scenes.xml" open="1" top="0" tabpos="22">
 		<Cursor position="1936" topLine="0" />
 	</File>
 	<File name="bin\data\leveltextureblend.frag" open="0" top="0" tabpos="42">
@@ -227,7 +227,7 @@
 		<Cursor position="595" topLine="12" />
 	</File>
 	<File name="src\AttackView.cpp" open="1" top="0" tabpos="3">
-		<Cursor position="1516" topLine="13" />
+		<Cursor position="1529" topLine="13" />
 	</File>
 	<File name="src\AttackView.h" open="1" top="0" tabpos="16">
 		<Cursor position="275" topLine="0" />
@@ -343,7 +343,7 @@
 	<File name="src\StringHelpers.h" open="0" top="0" tabpos="25">
 		<Cursor position="465" topLine="0" />
 	</File>
-	<File name="src\VictimView.cpp" open="1" top="1" tabpos="20">
+	<File name="src\VictimView.cpp" open="1" top="0" tabpos="20">
 		<Cursor position="1381" topLine="13" />
 	</File>
 	<File name="src\VictimView.h" open="1" top="0" tabpos="18">
@@ -355,8 +355,8 @@
 	<File name="src\VideoController.h" open="0" top="0" tabpos="14">
 		<Cursor position="1023" topLine="9" />
 	</File>
-	<File name="src\config.h" open="0" top="0" tabpos="11">
-		<Cursor position="416" topLine="0" />
+	<File name="src\config.h" open="1" top="1" tabpos="21">
+		<Cursor position="194" topLine="0" />
 	</File>
 	<File name="src\main.cpp" open="0" top="0" tabpos="8">
 		<Cursor position="553" topLine="0" />

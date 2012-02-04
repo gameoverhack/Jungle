@@ -3,9 +3,9 @@
 //#define OPTIMISED
 
 // Pathing
-#define USER_OLLIE 1
+//#define USER_OLLIE 1
 //#define USER_MATT 1
-//#define USER_INSTALL 1
+#define USER_INSTALL 1
 #define TIMEOUT_ACTION 500
 #define TIMEOUT_AUTOATTACK 5000
 #define TIMEOUT_AUTOFACE 3000
@@ -18,5 +18,5 @@
 #define FORCE_FACE true
 
 // #define DO_NOT_USE_ARDUINO?
-#define USE_DUMMY 1// Use dummy videos for cameras
-#define DONT_USE_ARDUINO 1
+//#define USE_DUMMY 1// Use dummy videos for cameras
+//#define DONT_USE_ARDUINO 1

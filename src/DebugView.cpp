@@ -26,8 +26,9 @@ void DebugView::update() {
     float attackLevel                   = _appModel->getARDAttackLevel();
     float min                           = boost::any_cast<float>(_appModel->getProperty("ardAttackMin"));
     float max                           = boost::any_cast<float>(_appModel->getProperty("ardAttackMax"));
-    float delta                         = _appModel->getARDAttackDelta();
-    float fftArea                       = _appModel->getFFTArea();
+    float attackDelta                   = _appModel->getARDAttackDelta();
+    float victimLevel                   = _appModel->getFFTVictimLevel();
+    float victimDelta                   = _appModel->getFFTVictimDelta();
 
     bool showProps                      = boost::any_cast<bool>(_appModel->getProperty("showProps"));
     bool showFFT                        = boost::any_cast<bool>(_appModel->getProperty("showFFT"));
@@ -38,10 +39,10 @@ void DebugView::update() {
      *        Print info for Mic and Ard Controllers        *
      ********************************************************/
 
-    msg += "mic RAW area: " + ofToString(fftArea) + "\n";
+    msg += "mic RAW levl: " + ofToString(victimLevel) + " delta: " + ofToString(victimDelta) + "\n";
     msg += "ard RAW pin0: " + ofToString(pinInput[0]) + " min: " + ofToString(min) + " max: " + ofToString(max) + "\n";
     msg += "ard RAW pin1: " + ofToString(pinInput[1]) + "\n";
-    msg += "ard ATK levl: " + ofToString(attackLevel) + " delta: " + ofToString(delta) + "\n";
+    msg += "ard ATK levl: " + ofToString(attackLevel) + " delta: " + ofToString(attackDelta) + "\n";
 
 	// get frame rate
 	msg += "FPS: " + ofToString(ofGetFrameRate()) + "\n";

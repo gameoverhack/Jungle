@@ -4,6 +4,9 @@ VictimView::VictimView(float width, float height) : BaseMeterView(width, height)
 
 	LOG_NOTICE("Setting up VictimView");
 
+    ofAddListener(_appModel->victimAction, this, &VictimView::victimEvent);
+    _bHasFiredEvent = false; // fake bool for testing
+
     /********************************************************
      *      Set unique x y co ordinates for assets          *
      ********************************************************/
@@ -45,16 +48,13 @@ VictimView::VictimView(float width, float height) : BaseMeterView(width, height)
 #endif
 }
 
+void VictimView::victimEvent(float & level){
+    _bHasFiredEvent = true; // fake bool for testing
+}
+
 void VictimView::update() {
 
-//    if (_appModel->_timeAtPeak != -1 && (ofGetElapsedTimeMillis() - _appModel->_timeAtPeak < 8000)) {
-//        _scaledInputLevel = 1.0;
-//    } else {
-//        _scaledInputLevel = ((float)_appModel->getFFTArea());
-//        _appModel->_timeAtPeak = -1;
-//    }
-
-    _scaledInputLevel = ((float)_appModel->getFFTArea());
+    _scaledInputLevel = ((float)_appModel->getFFTVictimLevel());
 
     /********************************************************
      *      Get _appModel Interactivity & Threshold         *
@@ -65,8 +65,9 @@ void VictimView::update() {
     int   totalNumSequences     = _appModel->getCurrentScene()->getNumOfSequences();
     int   thisNumSequence       = _appModel->getCurrentSequence()->getNumber();
 
-    bool  deny                  = (ofGetElapsedTimeMillis() - _appModel->getLastActionTime() > TIMEOUT_ACTION);
     bool  isInteractive         = (currentInteractivity == kINTERACTION_BOTH || currentInteractivity == kINTERACTION_VICTIM);
+
+    if (_bHasFiredEvent && _scaledInputLevel < 0.05f) _bHasFiredEvent = false; // replace this with other test
 
     /********************************************************
      *      Draw the Meter to the ViewFBO                   *
@@ -91,24 +92,30 @@ void VictimView::update() {
 
     _top_off->draw(_top_x, _top_y);
 
-    if (isInteractive && _scaledInputLevel >= 0.99f) {
+    if (isInteractive && _scaledInputLevel > 0.99f) {
         _top_on->draw(_top_x, _top_y);
-    } else if (!isInteractive && _scaledInputLevel > 0.05f) {
+    } else if (isInteractive) {
         _top_off->draw(_top_x, _top_y);
-        if (deny) _top_deny->draw(_top_x, _top_y);
     }
 
-    if (isInteractive) {
+    if (!isInteractive) {
+        if (_appModel->getFFTVictimDelta() > 0.3f) {
+            _top_off->draw(_top_x, _top_y);
+            _top_deny->draw(_top_x, _top_y);
+        } else {
+            if (_bHasFiredEvent) {
+                _top_on->draw(_top_x, _top_y);
+            } else {
+                _top_off->draw(_button_x, _button_y);
+            }
+        }
+    }
+
 #if OF_VERSION < 7
-        drawMeterShader(_meter_x, _meter_y, &_meterMaskTex, _meter_on, _meter_off);
+    drawMeterShader(_meter_x, _meter_y, &_meterMaskTex, _meter_on, _meter_off);
 #else
-        drawMeterShader(_meter_x, _meter_y, &_meterMaskFBO.getTextureReference(), _meter_on, _meter_off);
+    drawMeterShader(_meter_x, _meter_y, &_meterMaskFBO.getTextureReference(), _meter_on, _meter_off);
 #endif
-    } else {
-
-        _meter_off->draw(_meter_x, _meter_y);
-
-    }
 
     ofDisableAlphaBlending();
     glPopMatrix();

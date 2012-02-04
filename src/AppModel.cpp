@@ -233,13 +233,23 @@ ofTexture * AppModel::getGraphicTex(int type) {
  ********************************************************/
 
 //--------------------------------------------------------------
-void AppModel::setFFTArea(float area) {
-    _fftArea = area;
+void AppModel::setFFTVictimDelta(float delta) {
+    _fftDelta = delta;
 }
 
 //--------------------------------------------------------------
-float AppModel::getFFTArea() {
-    return _fftArea;
+float AppModel::getFFTVictimDelta() {
+    return _fftDelta;
+}
+
+//--------------------------------------------------------------
+void AppModel::setFFTVictimLevel(float level) {
+    _fftLevel = level;
+}
+
+//--------------------------------------------------------------
+float AppModel::getFFTVictimLevel() {
+    return _fftLevel;
 }
 
 //--------------------------------------------------------------

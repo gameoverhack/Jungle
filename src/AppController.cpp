@@ -132,9 +132,9 @@ void AppController::setup() {
     _appModel->setProperty("showProps", false);
 	_appModel->setProperty("fullScreen", false);
 	_appModel->setProperty("tryScaleMethod", 0);
-	_appModel->setProperty("ardAttackMin", 300.0f);
-	_appModel->setProperty("ardAttackMax", 700.0f);
-/*	_appModel->setProperty("cameraToAdjust", (string)"0");
+/*	_appModel->setProperty("ardAttackMin", 300.0f);
+	_appModel->setProperty("ardAttackMax", 800.0f);
+	_appModel->setProperty("cameraToAdjust", (string)"0");
 	_appModel->setProperty("cameraPropToAdjust", (string)"SCALEROTATION");
     _appModel->setProperty("camScale0", 0.0f);
 	_appModel->setProperty("camScale1", 0.0f);
