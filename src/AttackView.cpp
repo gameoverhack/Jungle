@@ -34,6 +34,7 @@ AttackView::AttackView(float width, float height) : BaseMeterView(width, height)
     _button_on      = _appModel->getGraphicTex(kGFX_BUTTON_ON);
     _button_off     = _appModel->getGraphicTex(kGFX_BUTTON_OFF);
     _button_deny    = _appModel->getGraphicTex(kGFX_BUTTON_DENY);
+    _button_flash   = _appModel->getGraphicTex(kGFX_BUTTON_FLASH);
     _meter_on       = _appModel->getGraphicTex(kGFX_ARROWS_ON);
     _meter_off      = _appModel->getGraphicTex(kGFX_ARROWS_OFF);
 

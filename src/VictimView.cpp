@@ -30,6 +30,7 @@ VictimView::VictimView(float width, float height) : BaseMeterView(width, height)
     _top_deny       = _appModel->getGraphicTex(kGFX_TOP_DENY);
     _meter_on       = _appModel->getGraphicTex(kGFX_METER_ON);
     _meter_off      = _appModel->getGraphicTex(kGFX_METER_OFF);
+    _face_flash     = _appModel->getGraphicTex(kGFX_FACE_FLASH);
 
     /********************************************************
      *      setup meter FBO and Shader                      *

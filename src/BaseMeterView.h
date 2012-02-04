@@ -54,6 +54,8 @@ protected:
     ofTexture *     _turtle_bar;
     ofTexture *     _turtle;
     ofTexture *     _bird;
+    ofTexture *     _button_flash;
+    ofTexture *     _face_flash;
 
     float           _top_x;
     float           _top_y;

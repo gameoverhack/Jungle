@@ -52,6 +52,8 @@ enum {
     kGFX_BIRD,
     kGFX_TURTLE,
     kGFX_TURTLE_BAR,
+    kGFX_BUTTON_FLASH,
+    kGFX_FACE_FLASH,
     kGFX_TOTAL
 };
 

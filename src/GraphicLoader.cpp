@@ -35,6 +35,8 @@ GraphicLoader::GraphicLoader(string assetPath) {
         if (name.find("bird")           != string::npos) ok = _appModel->loadGraphicAsset(path, kGFX_BIRD);
         if (name.find("turtle")         != string::npos) ok = _appModel->loadGraphicAsset(path, kGFX_TURTLE);
         if (name.find("bar")            != string::npos) ok = _appModel->loadGraphicAsset(path, kGFX_TURTLE_BAR);
+        if (name.find("button_flash")   != string::npos) ok = _appModel->loadGraphicAsset(path, kGFX_BUTTON_FLASH);
+        if (name.find("face_flash")     != string::npos) ok = _appModel->loadGraphicAsset(path, kGFX_FACE_FLASH);
 
         msg = (string)(ok ? "ok" : "fail");
         LOG_VERBOSE(msg);
