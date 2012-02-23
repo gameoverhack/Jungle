@@ -982,6 +982,12 @@
 		<Unit filename="src\StringHelpers.h">
 			<Option virtualFolder="src\utils\" />
 		</Unit>
+		<Unit filename="src\Timer.cpp">
+			<Option virtualFolder="src\utils\" />
+		</Unit>
+		<Unit filename="src\Timer.h">
+			<Option virtualFolder="src\utils\" />
+		</Unit>
 		<Unit filename="src\VictimView.cpp">
 			<Option virtualFolder="src\views\" />
 		</Unit>
