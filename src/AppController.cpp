@@ -233,7 +233,7 @@ void AppController::update() {
 
 			// DC finished...let's load the first movie
 			Scene			* currentScene;
-			goThreadedVideo * movie;
+			ofxThreadedVideo * movie;
 
 			// get current scene
 			_appModel->setCurrentScene("t");
@@ -294,14 +294,20 @@ void AppController::update() {
 
 		// catch _switchToSequence when a movie is loaded completely
 		if (_switchToSequence != NULL && _vidController->checkState(kVIDCONTROLLER_NEXTVIDREADY)) {
-		    LOG_NOTICE("Doing switchMovie on NEXTVIDEOREADY");
-            _appModel->restartTimer("anyActionTimer");
-			_vidController->toggleVideoPlayers();
-			_appView->update();
-			_vidController->setState(kVIDCONTROLLER_READY);
-			_soundController->setVolume(1.0);
-			currentScene->setCurrentSequence(_switchToSequence);
-			_switchToSequence = NULL;
+		    ofxThreadedVideo * nextMovie = _appModel->getNextVideoPlayer();
+		    if(nextMovie != NULL) {
+                nextMovie->update();
+                if(nextMovie->getCurrentFrame() > 0){
+                    LOG_NOTICE("Doing switchMovie on NEXTVIDEOREADY");
+                    _appModel->restartTimer("anyActionTimer");
+                    _vidController->toggleVideoPlayers();
+                    _appView->update();
+                    _vidController->setState(kVIDCONTROLLER_READY);
+                    _soundController->setVolume(1.0);
+                    currentScene->setCurrentSequence(_switchToSequence);
+                    _switchToSequence = NULL;
+                }
+		    }
 		}
 
 
@@ -503,7 +509,7 @@ void AppController::keyPressed(int key){
             _soundController->fade(0.0, 2000, FADE_EXP);
             break;
         case 'm':
-            _appModel->getCurrentVideoPlayer()->togglePaused();
+            _appModel->getCurrentVideoPlayer()->setPaused(!_appModel->getCurrentVideoPlayer()->isPaused());
             break;
         case '/':
             _appModel->getCurrentVideoPlayer()->setFrame(_appModel->getCurrentSequenceNumFrames()-13);

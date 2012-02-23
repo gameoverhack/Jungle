@@ -26,10 +26,10 @@ AppModel::AppModel() {
 
 	// setup video players
 	for (int i = 0; i < 2; i++) {
-	    _fakePlayers[i] = new goVideoPlayer();
-	    _fakePlayers[i]->setPixelType(GO_TV_RGB);
-		_videoPlayers[i] = new goThreadedVideo();
-        _videoPlayers[i]->setPixelType(GO_TV_RGBA);
+	    _fakePlayers[i] = new ofxThreadedVideo();
+	    //_fakePlayers[i]->setPixelType(GO_TV_RGB);
+		_videoPlayers[i] = new ofxThreadedVideo();
+        //_videoPlayers[i]->setPixelType(GO_TV_RGBA);
 	}
 
 }
@@ -205,12 +205,12 @@ ofTexture * AppModel::getFakeAttackCamTexRef() {
 }
 
 //--------------------------------------------------------------
-goVideoPlayer * AppModel::getFakeVictimPlayer() {
+ofxThreadedVideo * AppModel::getFakeVictimPlayer() {
 	return _fakePlayers[0];
 }
 
 //--------------------------------------------------------------
-goVideoPlayer * AppModel::getFakeAttackPlayer() {
+ofxThreadedVideo * AppModel::getFakeAttackPlayer() {
 	return _fakePlayers[1];
 }
 
@@ -389,38 +389,31 @@ float AppModel::getARDAttackDelta() {
  *      Getters and setters for VideoController       	*
  ********************************************************/
 //--------------------------------------------------------------
-goThreadedVideo * AppModel::getCurrentVideoPlayer() {
+ofxThreadedVideo * AppModel::getCurrentVideoPlayer() {
 	return _videoPlayers[0]; // always make 0 the current...
 }
 
 //--------------------------------------------------------------
-goThreadedVideo * AppModel::getNextVideoPlayer() {
+ofxThreadedVideo * AppModel::getNextVideoPlayer() {
 	return _videoPlayers[1]; // ... and 1 the next or cached video player
 }
 
 //--------------------------------------------------------------
 void AppModel::toggleVideoPlayers(int forceFrame, bool noPause) {
-	LOG_VERBOSE("Swap Video Player pointers: " + ofToString(forceFrame));
-	//if (forceFrame != 0) {
-    //_videoPlayers[1]->setFrame(forceFrame);
-
+	LOG_VERBOSE("Swap Video Player pointers started with frame: " + ofToString(forceFrame));
+    if (forceFrame > 0) _videoPlayers[1]->setFrame(forceFrame);
 	_videoPlayers[1]->update();
-	//_videoPlayers[1]->setVolume(-256);
-    _videoPlayers[1]->setFrame(forceFrame, noPause);
-    //_videoPlayers[1]->setVolume(256);
+
+    LOG_VERBOSE("Actual frame before swap" + ofToString(_videoPlayers[1]->getCurrentFrame()));
 	swap(_videoPlayers[0], _videoPlayers[1]);
 	_videoPlayers[1]->close();
-    //_videoPlayers[0]->setVolume(256);
-	//_videoPlayers[0]->update();
 
-
-	//_videoPlayers[0]->update();
+    LOG_VERBOSE("Actual frame after swap" + ofToString(_videoPlayers[0]->getCurrentFrame()));
 	_appModel->setCurrentSequenceFrame(_videoPlayers[0]->getCurrentFrame());
 	_appModel->setCurrentIsFrameNew(_videoPlayers[0]->isFrameNew());
-//    _videoPlayers[0]->update();
+
 	delete _videoPlayers[1];
-	_videoPlayers[1] = new goThreadedVideo();
-	_videoPlayers[1]->setPixelType(GO_TV_RGBA);
+	_videoPlayers[1] = new ofxThreadedVideo();
 }
 
 //--------------------------------------------------------------

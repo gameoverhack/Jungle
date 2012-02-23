@@ -172,8 +172,8 @@ public:
 	ofTexture *         getFakeVictimCamTexRef();
     ofTexture *         getFakeAttackCamTexRef();
 
-    goVideoPlayer *     getFakeVictimPlayer();
-    goVideoPlayer *     getFakeAttackPlayer();
+    ofxThreadedVideo *  getFakeVictimPlayer();
+    ofxThreadedVideo *  getFakeAttackPlayer();
 
     void                setCameraAttributes(int which, PosRotScale * prs);
     void                setFakeAttributes(int which, PosRotScale * prs);
@@ -181,8 +181,9 @@ public:
     PosRotScale *       getFakeAttributes(int which);
 
     // video player getter/setters
-    goThreadedVideo *	getCurrentVideoPlayer();
-	goThreadedVideo *	getNextVideoPlayer();
+    ofxThreadedVideo *	getCurrentVideoPlayer();
+	ofxThreadedVideo *	getNextVideoPlayer();
+
 	void				toggleVideoPlayers(int forceFrame = 0, bool noPause = false);
 
 	void				setCurrentSequenceFrame(int frame);
@@ -256,8 +257,8 @@ private:
 	PosRotScale *               _fakePRS[2];
 
     // video vars
-	goThreadedVideo *			_videoPlayers[2];
-	goVideoPlayer *             _fakePlayers[2];
+	ofxThreadedVideo *			_videoPlayers[2];
+	ofxThreadedVideo *          _fakePlayers[2];
 	int							_currentSequenceFrame;
 	int                         _lastSequenceFrame;
 	int                         _currentSceneFrame; // not inlcuding loops and bs

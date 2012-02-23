@@ -117,7 +117,7 @@ void SceneXMLBuilder::checkMovieAssets() {
 	vector<string> assetFilenameParts;
 	_movieFrameLengths.clear();
 
-	goVideoPlayer movie;
+	ofxThreadedVideo movie;
 
 	SequenceDescriptor *seqDescriptor = new SequenceDescriptor();
 	vector<CamTransform> transform;
@@ -186,7 +186,7 @@ void SceneXMLBuilder::buildAppModel(){
 	Scene *scene = NULL;
 	Sequence *sequence = NULL;
 	vector<CamTransform> *transform = NULL;
-	goVideoPlayer *movie;
+	ofxThreadedVideo *movie;
     int totalFrames = 0;
 	string movieFilename;
 	for(int movieFileId = 0; movieFileId < _moviesFileLister.size(); movieFileId++){

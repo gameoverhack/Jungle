@@ -208,10 +208,10 @@
 	<File name="src\AppDataTypes.h" open="0" top="0" tabpos="10">
 		<Cursor position="3697" topLine="169" />
 	</File>
-	<File name="src\Timer.cpp" open="1" top="1" tabpos="2">
-		<Cursor position="4373" topLine="178" />
+	<File name="src\Timer.cpp" open="1" top="1" tabpos="1">
+		<Cursor position="4420" topLine="178" />
 	</File>
-	<File name="src\Timer.h" open="1" top="0" tabpos="3">
+	<File name="src\Timer.h" open="1" top="0" tabpos="2">
 		<Cursor position="1648" topLine="60" />
 	</File>
 </CodeBlocks_layout_file>

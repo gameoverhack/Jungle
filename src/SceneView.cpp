@@ -60,7 +60,7 @@ void SceneView::update() {
      *          Get references needed to do drawing      	*
      ********************************************************/
 
-	goThreadedVideo * currentMovie  = _appModel->getCurrentVideoPlayer(); //getCurrentSequence()->getMovie();
+	ofxThreadedVideo* currentMovie  = _appModel->getCurrentVideoPlayer(); //getCurrentSequence()->getMovie();
 	ofTexture		* sceneTexture;
 	CamTransform	* actorTransform;
 

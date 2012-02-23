@@ -20,12 +20,12 @@
 using std::map;
 using std::pair;
 
-#include "goThreadedVideo.h"
+#include "ofxThreadedVideo.h"
 #include "goVideoGrabber.h"
 #include "Logger.h"
 #include "Constants.h"
 
-//class VideoPlayer : public goThreadedVideo {
+//class VideoPlayer : public ofxThreadedVideo {
 //
 //public:
 //
@@ -252,6 +252,10 @@ public:
 
 	void setMovieFullFilePath(string path) {
 		_movieFullFilePath = path;
+//		if(_video != NULL) delete _video;
+//		_video = new ofxThreadedVideo();
+//        _video->loadMovie(_movieFullFilePath);
+//		_video->setPaused(true);
 	}
 
 	string getMovieFullFilePath() {
@@ -357,6 +361,12 @@ public:
         return _thresholdLevel; // setting this in setNumber for now
     }
 
+    // used for SceneXMLBuilder when it has to save out a model.
+	vector<string> _transformsFilenames;
+	string _interactivityFilename;
+
+	map<string, vector<CamTransform> *> _transforms;
+
 private:
 
 	string					_name;
@@ -375,13 +385,8 @@ private:
     float                   _thresholdLevel;
 	interaction_t*          _interactionTable;
 
-public:
+	ofxThreadedVideo *      _video;
 
-	// used for SceneXMLBuilder when it has to save out a model.
-	vector<string> _transformsFilenames;
-	string _interactivityFilename;
-
-	map<string, vector<CamTransform> *> _transforms;
 };
 
 

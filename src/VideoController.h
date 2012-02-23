@@ -46,8 +46,7 @@ private:
 
 	bool	_forceCurrentLoad;
 
-	void	loaded(string & path);
-	void	error(int & err);
+	void	videoEvent(ofxThreadedVideoEvent & event);
 
 	int     _lastFrameWhenForced;
 	string  _lastSequenceWhenForced;

@@ -20,8 +20,8 @@ VideoController::VideoController() {
 	_forceCurrentLoad = false;
 	_lastFrameWhenForced = 0;
 	/* setup listeners for error and loadDone
-	goThreadedVideo * nextMovie = _appModel->getNextVideoPlayer();
-	goThreadedVideo * currentMovie = _appModel->getCurrentVideoPlayer();
+	ofxThreadedVideo * nextMovie = _appModel->getNextVideoPlayer();
+	ofxThreadedVideo * currentMovie = _appModel->getCurrentVideoPlayer();
 
 	ofAddListener(nextMovie->loadDone, this, &VideoController::loaded);
 	ofAddListener(nextMovie->error, this, &VideoController::error);
@@ -35,8 +35,8 @@ VideoController::~VideoController() {
 	LOG_VERBOSE("Destroying VideoController and removing listeners");
 
 	/* remove listeners for error and loadDone
-	goThreadedVideo * nextMovie = _appModel->getNextVideoPlayer();
-	goThreadedVideo * currentMovie = _appModel->getCurrentVideoPlayer();
+	ofxThreadedVideo * nextMovie = _appModel->getNextVideoPlayer();
+	ofxThreadedVideo * currentMovie = _appModel->getCurrentVideoPlayer();
 
 	ofRemoveListener(nextMovie->loadDone, this, &VideoController::loaded);
 	ofRemoveListener(nextMovie->error, this, &VideoController::error);
@@ -64,7 +64,7 @@ void VideoController::registerStates() {
 void VideoController::update() {
 
 	// update the current currentMovie/videoplayer
-	goThreadedVideo * currentMovie		= _appModel->getCurrentVideoPlayer();
+	ofxThreadedVideo * currentMovie		= _appModel->getCurrentVideoPlayer();
 	Scene			* currentScene		= _appModel->getCurrentScene();
 	Sequence		* currentSequence	= _appModel->getCurrentSequence();
 
@@ -107,18 +107,15 @@ void VideoController::update() {
 
 	}
 
-	if (currentMovie->getIsMovieDone()) {
-		toggleVideoPlayers(_lastFrameWhenForced, true);
-		_lastFrameWhenForced = 0;
-		_preRolling = false;
-		setState(kVIDCONTROLLER_CURRENTVIDONE);
+	if (currentMovie->getIsMovieDone() && _preRolling) {
+	    _appModel->getNextVideoPlayer()->update();
 	}
 
 }
 
 void VideoController::forceUpdate() {
 	// used to force loading of a movie if we're not actually updating/drawing it
-	goThreadedVideo * nextMovie = _appModel->getNextVideoPlayer();
+	ofxThreadedVideo * nextMovie = _appModel->getNextVideoPlayer();
 	nextMovie->update();
 	nextMovie->draw();
 }
@@ -131,18 +128,16 @@ void VideoController::loadMovie(Sequence * seq, bool forceCurrentLoad, int lastF
 	string path = seq->getMovieFullFilePath();
 	LOG_VERBOSE("Next video start to load: " + path + (string)(forceCurrentLoad ? " FORCED: " + ofToString(lastFrameWhenForced) : " NORMAL"));
 
+	ofxThreadedVideo * nextMovie			= _appModel->getNextVideoPlayer();
+	nextMovie->loadMovie(path);
+
 	_forceCurrentLoad       = forceCurrentLoad;
     if (lastFrameWhenForced != 0) {
         _lastFrameWhenForced    = lastFrameWhenForced;
         _lastSequenceWhenForced = _appModel->getCurrentSequence()->getName();
     }
 
-	goThreadedVideo * nextMovie			= _appModel->getNextVideoPlayer();
-
-	nextMovie->loadMovie(path);
-
-	ofAddListener(nextMovie->success, this, &VideoController::loaded);
-	ofAddListener(nextMovie->error, this, &VideoController::error);
+	ofAddListener(nextMovie->threadedVideoEvent, this, &VideoController::videoEvent);
 
 	setState(kVIDCONTROLLER_NEXTVIDLOADING);
 
@@ -159,33 +154,44 @@ void VideoController::reset() {
     _preRolling = false;
 	_forceCurrentLoad = false;
 	_lastFrameWhenForced = 0;
-	goThreadedVideo * nextMovie = _appModel->getNextVideoPlayer();
-	goThreadedVideo * currentMovie = _appModel->getCurrentVideoPlayer();
-    ofRemoveListener(nextMovie->success, this, &VideoController::loaded);
-	ofRemoveListener(nextMovie->error, this, &VideoController::error);
-    ofRemoveListener(currentMovie->success, this, &VideoController::loaded);
-	ofRemoveListener(currentMovie->error, this, &VideoController::error);
+	ofxThreadedVideo * nextMovie = _appModel->getNextVideoPlayer();
+	ofxThreadedVideo * currentMovie = _appModel->getCurrentVideoPlayer();
+    ofRemoveListener(nextMovie->threadedVideoEvent, this, &VideoController::videoEvent);
+    ofRemoveListener(currentMovie->threadedVideoEvent, this, &VideoController::videoEvent);
 	nextMovie->close();
 	currentMovie->close();
 	update();
 }
 
-void VideoController::loaded(string & path) {
-	LOG_NOTICE("Next video successfully loaded: " + path);
-	goThreadedVideo * nextMovie = _appModel->getNextVideoPlayer();
-	ofRemoveListener(nextMovie->success, this, &VideoController::loaded);
-	ofRemoveListener(nextMovie->error, this, &VideoController::error);
-	_preRolling = false;
-	_forceCurrentLoad = false;
-	setState(kVIDCONTROLLER_NEXTVIDREADY);
+void VideoController::videoEvent(ofxThreadedVideoEvent & event) {
+    string path = event.path;
+    switch(event.eventType){
+        case VIDEO_EVENT_LOAD_OK:
+        {
+            LOG_NOTICE("Next video successfully loaded: " + path);
+            ofxThreadedVideo * nextMovie = _appModel->getNextVideoPlayer();
+            ofRemoveListener(nextMovie->threadedVideoEvent, this, &VideoController::videoEvent);
+            if(_preRolling){
+                toggleVideoPlayers(_lastFrameWhenForced);
+                _lastFrameWhenForced = 0;
+                setState(kVIDCONTROLLER_CURRENTVIDONE);
+            }else{
+                setState(kVIDCONTROLLER_NEXTVIDREADY);
+            }
+            _preRolling = false;
+            _forceCurrentLoad = false;
+            break;
+        }
+        default:
+        {
+            LOG_ERROR("Next video error during load: " + event.eventTypeAsString);
+            setState(kVIDCONTROLLER_NEXTVIDERROR);
+            break;
+        }
+    }
+
 }
 
-void VideoController::error(int & err) {
-	LOG_ERROR("Next video error during load: " + ofToString(err));
-	setState(kVIDCONTROLLER_NEXTVIDERROR);
-	//goThreadedVideo * nextMovie			= _appModel->getNextVideoPlayer();
-	//nextMovie->close();
-}
 
 bool VideoController::isPreRolling() {
 	return _preRolling;
