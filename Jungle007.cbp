@@ -895,6 +895,12 @@
 		<Unit filename="src\GraphicLoader.h">
 			<Option virtualFolder="src\utils\" />
 		</Unit>
+		<Unit filename="src\HighLowTimer.cpp">
+			<Option virtualFolder="src\utils\" />
+		</Unit>
+		<Unit filename="src\HighLowTimer.h">
+			<Option virtualFolder="src\utils\" />
+		</Unit>
 		<Unit filename="src\IXMLBuilder.h">
 			<Option virtualFolder="src\utils\xml\" />
 		</Unit>
