@@ -6,8 +6,10 @@
 #include "ofxShader.h"
 #endif
 
-class BaseMeterView : public BaseView
-{
+#include "HighLowTimer.h"
+
+class BaseMeterView : public BaseView {
+
 public:
 
     BaseMeterView(float width, float height);
@@ -19,6 +21,7 @@ protected:
 
     float   _scaledInputLevel;
     bool    _bHasFiredEvent;
+    HighLowTimer * _hiLow;
 
 #if OF_VERSION < 7
     void drawMeterMask(float input, int meterSteps, float meterPixelsForStep, ofxFbo * maskFBO);

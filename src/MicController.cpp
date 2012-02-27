@@ -153,6 +153,7 @@ void MicController::audioReceived(float* input, int bufferSize, int nChannels) {
         } else {
             if (_appModel->getCurrentInteractivity() == kINTERACTION_BOTH ||
                 _appModel->getCurrentInteractivity() == kINTERACTION_VICTIM) {
+                if (delta > 0.1) _appModel->restartTimer("victimActionTimer");
                 _appModel->setFFTVictimLevel(level);
             }
         }
@@ -162,7 +163,6 @@ void MicController::audioReceived(float* input, int bufferSize, int nChannels) {
             (_appModel->getCurrentInteractivity() == kINTERACTION_BOTH ||
              _appModel->getCurrentInteractivity() == kINTERACTION_VICTIM)) {
 
-            _appModel->restartTimer("victimActionTimer");
             if (_appModel->hasTimedOut("anyActionTimer")) {
                 LOG_VERBOSE("Send victim event: " + ofToString(level));
                 _appModel->sendVictimEvent(level);

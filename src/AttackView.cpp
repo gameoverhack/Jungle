@@ -5,6 +5,8 @@ AttackView::AttackView(float width, float height) : BaseMeterView(width, height)
     LOG_NOTICE("Setting up AttackView");
 
     ofAddListener(_appModel->attackAction, this, &AttackView::attackEvent);
+    _hiLow = new HighLowTimer();
+    _hiLow->setup(500, 1.0f, 500, 0.0f, HIGHLOWTIMER_MODE_REPEAT);
     _bHasFiredEvent = false; // fake bool for testing
 
     /********************************************************
@@ -119,6 +121,20 @@ void AttackView::update() {
         }
     }
 
+    if(_appModel->getTimer("attackActionTimer")->hasTimedOut() && isInteractive){
+        if(!_hiLow->isTimerRunning()){
+            _hiLow->start();
+        }
+        if(_hiLow->isTimerRunning()){
+            if(_hiLow->isHigh()){
+                _button_flash->draw(_button_x, _button_y-4);
+            }
+        }
+    }else{
+        if(_hiLow->isTimerRunning()){
+            _hiLow->stop();
+        }
+    }
 #if OF_VERSION < 7
         drawMeterShader(_meter_x, _meter_y, &_meterMaskTex, _meter_on, _meter_off);
 #else

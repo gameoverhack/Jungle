@@ -5,6 +5,8 @@ VictimView::VictimView(float width, float height) : BaseMeterView(width, height)
 	LOG_NOTICE("Setting up VictimView");
 
     ofAddListener(_appModel->victimAction, this, &VictimView::victimEvent);
+    _hiLow = new HighLowTimer();
+    _hiLow->setup(500, 1.0f, 500, 0.0f, HIGHLOWTIMER_MODE_REPEAT);
     _bHasFiredEvent = false; // fake bool for testing
 
     /********************************************************
@@ -108,6 +110,21 @@ void VictimView::update() {
             } else {
                 _top_off->draw(_button_x, _button_y);
             }
+        }
+    }
+
+    if(_appModel->getTimer("victimActionTimer")->hasTimedOut() && isInteractive){
+        if(!_hiLow->isTimerRunning()){
+            _hiLow->start();
+        }
+        if(_hiLow->isTimerRunning()){
+            if(_hiLow->isHigh()){
+                _face_flash->draw(_top_x, _top_y);
+            }
+        }
+    }else{
+        if(_hiLow->isTimerRunning()){
+            _hiLow->stop();
         }
     }
 

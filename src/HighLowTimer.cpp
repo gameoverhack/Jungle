@@ -33,6 +33,8 @@ void HighLowTimer::setup(int highLengthInMilliseconds, float highValue,
 	_timerResolution = timerResolution;
 	_name = timerName;
 
+    _high = _low = false;
+
 	// setup the timers but don't start them here.
 	_highTimer.setTimeout(_highLength, TIMER_MODE_ONCE, _name + " High Timer");
 	ofAddListener(_highTimer.timerEvent, this, &HighLowTimer::highTimerEventCallback);
@@ -65,16 +67,16 @@ bool HighLowTimer::stop(){
 bool HighLowTimer::restart(){
 	// start acts as restart
 	bool didStart = start(true); // suppress events
-	
+
 	if(didStart){
 		HighLowTimerEvent event = HighLowTimerEvent(_name, this, HIGHLOWTIMER_EVENT_START);
 		ofNotifyEvent(highLowTimerEvent, event, this);
 	}
-	
+
 	return didStart;
 }
 
-/* Private timer methods */ 
+/* Private timer methods */
 bool HighLowTimer::start(bool suppressEvents){
 	// sanity check our values
 //	if(_highLength <= 0){
@@ -98,19 +100,21 @@ bool HighLowTimer::start(bool suppressEvents){
 //	if(_mode == HIGHLOWTIMER_MODE_UNKNOWN){
 //		cout << "MODE IS UNKNOWN";
 //	}
-//	
+//
 	if(_highLength <= 0 || _lowLength <= 0 || _timerResolution <= 0 ||
 	   (_cycleLimit <= 0 && _mode != HIGHLOWTIMER_MODE_REPEAT) ||
 	   _mode == HIGHLOWTIMER_MODE_UNKNOWN){
 		return false;
 	}
 
-	
+
 	// stop lowTimer if if is running
 	_lowTimer.stop(); // TODO: suppress events here
-	
+
 	// start with highTimer
 	if(_highTimer.start()){
+	    _high = true;
+	    _low = false;
 		HighLowTimerEvent event = HighLowTimerEvent(_highTimer.getName(), _highValue, this, HIGHLOWTIMER_EVENT_HIGH_START);
 		ofNotifyEvent(highLowTimerEvent, event, this);
 		// dispatch high low timer started
@@ -128,31 +132,35 @@ bool HighLowTimer::start(bool suppressEvents){
 bool HighLowTimer::stop(bool suppressEvents){
 	// stop our sub-timers
 	bool success = _lowTimer.stop() && _highTimer.stop();
-	
+    _high = false;
+    _low = false;
 	if(success && !suppressEvents){
 		// dispatch our stop event
 		HighLowTimerEvent event = HighLowTimerEvent(_name, this, HIGHLOWTIMER_EVENT_STOP);
 		ofNotifyEvent(highLowTimerEvent, event, this);
 	}
-	
+
 	return success;
 }
 
 void HighLowTimer::highTimerEventCallback(const void *sender, TimerEvent &event){
-	cout << "HighLowTimer highTimer callback: " << event._name << " " << Timer::getTimerEventTypeAsString(event._type) << endl;
+	//cout << "HighLowTimer highTimer callback: " << event._name << " " << Timer::getTimerEventTypeAsString(event._type) << endl;
 	switch(event._type){
 		case TIMER_EVENT_COMPLETE:{
 			// ALWAYS want to star the low timer after the high timer has finished
 			// TODO: Need some way to package the value up with this
+			_high = false;
+            _low = true;
+
 			HighLowTimerEvent event = HighLowTimerEvent(_highTimer.getName(), this, HIGHLOWTIMER_EVENT_HIGH_COMPLETE);
 			ofNotifyEvent(highLowTimerEvent, event, this);
-			
+
 			if(_lowTimer.start()){
 				// send our LOW_START event
 				HighLowTimerEvent event = HighLowTimerEvent(_lowTimer.getName(), _lowValue, this, HIGHLOWTIMER_EVENT_LOW_START);
 				ofNotifyEvent(highLowTimerEvent, event, this);
 			}
-			
+
 			break;
 		}
 		default:
@@ -162,12 +170,16 @@ void HighLowTimer::highTimerEventCallback(const void *sender, TimerEvent &event)
 }
 
 void HighLowTimer::lowTimerEventCallback(const void *sender, TimerEvent &event){
-	cout << "HighLowTimer lowTimer callback: " << event._name << " " << Timer::getTimerEventTypeAsString(event._type) << endl;
+	//cout << "HighLowTimer lowTimer callback: " << event._name << " " << Timer::getTimerEventTypeAsString(event._type) << endl;
 	switch(event._type){
 		case TIMER_EVENT_COMPLETE:{
+
+		    _high = true;
+            _low = false;
+
 			HighLowTimerEvent event = HighLowTimerEvent(_lowTimer.getName(), this, HIGHLOWTIMER_EVENT_LOW_COMPLETE);
-			ofNotifyEvent(highLowTimerEvent, event, this);	
-			
+			ofNotifyEvent(highLowTimerEvent, event, this);
+
 			// have done a cycle
 			_cycleCount++;
 			if(_cycleCount < _cycleLimit || _mode == HIGHLOWTIMER_MODE_REPEAT){
@@ -175,7 +187,7 @@ void HighLowTimer::lowTimerEventCallback(const void *sender, TimerEvent &event){
 				if(_highTimer.start()){
 					// notify high timer started
 					HighLowTimerEvent event = HighLowTimerEvent(_highTimer.getName(), _highValue, this, HIGHLOWTIMER_EVENT_HIGH_START);
-					ofNotifyEvent(highLowTimerEvent, event, this);					
+					ofNotifyEvent(highLowTimerEvent, event, this);
 				}
 			}else{
 				// no more cycles, so send the complete event
@@ -193,6 +205,14 @@ void HighLowTimer::lowTimerEventCallback(const void *sender, TimerEvent &event){
 
 bool HighLowTimer::isTimerRunning(){
 	return (_highTimer.isTimerRunning() || _lowTimer.isTimerRunning());
+}
+
+bool HighLowTimer::isHigh(){
+    return _high;
+}
+
+bool HighLowTimer::isLow(){
+    return _low;
 }
 
 string HighLowTimer::getName(){

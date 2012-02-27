@@ -493,8 +493,7 @@ bool AppModel::startTimer(string timerName) {
     map<string, Timer*>::iterator it = _timers.find(timerName);
     if (it != _timers.end()) {
         LOG_VERBOSE("Starting timer: " + timerName);
-        Timer * timer = it->second;
-        timer->start();
+        it->second->start();
         return true;
     } else {
         LOG_ERROR("Can't start timer - it doesn't exist: " + timerName);
@@ -507,8 +506,7 @@ bool AppModel::restartTimer(string timerName) {
     map<string, Timer*>::iterator it = _timers.find(timerName);
     if (it != _timers.end()) {
         LOG_VERBOSE("Restarting timer: " + timerName);
-        Timer * timer = it->second;
-        timer->restart();
+        it->second->restart();
         return true;
     } else {
         LOG_ERROR("Can't restart timer - it doesn't exist: " + timerName);
@@ -521,8 +519,7 @@ bool AppModel::stopTimer(string timerName) {
     map<string, Timer*>::iterator it = _timers.find(timerName);
     if (it != _timers.end()) {
         LOG_VERBOSE("Stopping timer: " + timerName);
-        Timer * timer = it->second;
-        timer->stop();
+        it->second->stop();
         return true;
     } else {
         LOG_ERROR("Can't stop timer - it doesn't exist: " + timerName);
@@ -534,8 +531,7 @@ bool AppModel::stopTimer(string timerName) {
 bool AppModel::hasTimedOut(string timerName) {
     map<string, Timer*>::iterator it = _timers.find(timerName);
     if (it != _timers.end()) {
-        Timer * timer = it->second;
-        return timer->hasTimedOut();
+        return it->second->hasTimedOut();
     } else {
         LOG_ERROR("Can't getTimer() - returning a NULL - it doesn't exist: " + timerName);
         assert(false);
@@ -546,8 +542,7 @@ bool AppModel::hasTimedOut(string timerName) {
 Timer* AppModel::getTimer(string timerName) {
     map<string, Timer*>::iterator it = _timers.find(timerName);
     if (it != _timers.end()) {
-        Timer * timer = it->second;
-        return timer;
+        return it->second;;
     } else {
         LOG_ERROR("Can't getTimer() - returning a NULL - it doesn't exist: " + timerName);
         return NULL;

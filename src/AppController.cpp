@@ -118,13 +118,6 @@ void AppController::setup() {
 	// set default for user action, temporary way to handle this stuff!
 	_appModel->setProperty("userAction", kNoUserAction);
 
-	// setup main app view
-	_appView = new AppView(boost::any_cast<float>(_appModel->getProperty("appRenderWidth")),
-						   boost::any_cast<float>(_appModel->getProperty("appRenderHeight")));
-
-
-	_appModel->setState(kAPP_LOADING);
-
 	// set app default properties - COMMENT TO STOP SETTING BACK TO DEFAULTS
 	_appModel->setProperty("loadingMessage", string("AppController loading"));
 	_appModel->setProperty("loadingProgress", 0.1f);
@@ -133,8 +126,8 @@ void AppController::setup() {
 	_appModel->setProperty("fullScreen", false);
 	_appModel->setProperty("tryScaleMethod", 0);
 	_appModel->setProperty("anyActionTimer", 500);
-	_appModel->setProperty("victimActionTimer", 5000);
-	_appModel->setProperty("attackActionTimer", 5000);
+	_appModel->setProperty("victimActionTimer", 3000);
+	_appModel->setProperty("attackActionTimer", 3000);
 /*	_appModel->setProperty("ardAttackMin", 300.0f);
 	_appModel->setProperty("ardAttackMax", 800.0f);
 	_appModel->setProperty("cameraToAdjust", (string)"0");
@@ -149,8 +142,6 @@ void AppController::setup() {
 	_appModel->setProperty("camPositionY1", 0.0f);
 
     _appModel->setProperty("showFFT", false);*/
-    toggleFullscreen();
-    ofHideCursor();
 
     // create timer for any interaction
     Timer * anyActionTimer = new Timer(boost::any_cast<int>(_appModel->getProperty("anyActionTimer")));
@@ -164,6 +155,16 @@ void AppController::setup() {
     Timer * attackActionTimer = new Timer(boost::any_cast<int>(_appModel->getProperty("attackActionTimer")));
     _appModel->addTimer("attackActionTimer", attackActionTimer);
     _appModel->startTimer("attackActionTimer");
+
+    	// setup main app view
+	_appView = new AppView(boost::any_cast<float>(_appModel->getProperty("appRenderWidth")),
+						   boost::any_cast<float>(_appModel->getProperty("appRenderHeight")));
+
+
+	_appModel->setState(kAPP_LOADING);
+
+    toggleFullscreen();
+    ofHideCursor();
 
 	LOG_NOTICE("Initialisation complete");
 }
@@ -283,6 +284,8 @@ void AppController::update() {
 			if(currentScene->nextSequence()) {
 				// loaded next sequence in this scene, keep going
 				LOG_VERBOSE("Gone to next sequence");
+				_appModel->restartTimer("victimActionTimer");
+				_appModel->restartTimer("attackActionTimer");
 				_vidController->setState(kVIDCONTROLLER_READY);
 				_soundController->setVolume(1.0);
 				_appView->update();
@@ -296,6 +299,8 @@ void AppController::update() {
 		if (_switchToSequence != NULL && _vidController->checkState(kVIDCONTROLLER_NEXTVIDREADY)) {
             LOG_NOTICE("Doing switchMovie on NEXTVIDEOREADY");
             _appModel->restartTimer("anyActionTimer");
+            _appModel->restartTimer("victimActionTimer");
+            _appModel->restartTimer("attackActionTimer");
             _vidController->toggleVideoPlayers();
             _appView->update();
             _vidController->setState(kVIDCONTROLLER_READY);

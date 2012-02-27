@@ -113,6 +113,7 @@ void ArdController::updateArduino(bool fake) {
     } else {
         if (_appModel->getCurrentInteractivity() == kINTERACTION_BOTH ||
             _appModel->getCurrentInteractivity() == kINTERACTION_ATTACKER) {
+            if (delta > 0.1) _appModel->restartTimer("attackActionTimer");
             _appModel->setARDAttackLevel(level);
         }
     }
@@ -122,7 +123,6 @@ void ArdController::updateArduino(bool fake) {
         (_appModel->getCurrentInteractivity() == kINTERACTION_BOTH ||
          _appModel->getCurrentInteractivity() == kINTERACTION_ATTACKER)) {
 
-        _appModel->restartTimer("attackActionTimer");
         if (_appModel->hasTimedOut("anyActionTimer")) {
             LOG_VERBOSE("Send attack event: " + ofToString(level));
             _appModel->sendAttackEvent(level);

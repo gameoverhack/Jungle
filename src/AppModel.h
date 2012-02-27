@@ -99,17 +99,6 @@ public:
 
     Timer* getTimer(string timerName);
 
-    template <class EventType,typename ArgumentsType, class ListenerClass>
-    static void addTimerListener(string timerName, EventType & event, ListenerClass  * listener, void (ListenerClass::*listenerMethod)(const void*, ArgumentsType&)){
-        Timer * timer = getTimer(timerName);
-        if(timer != NULL){
-            ofAddListener(event, listener, listenerMethod);
-            return true;
-        }else{
-            return false;
-        }
-    };
-
     // interactivity getter/setters
     bool				checkCurrentInteractivity(interaction_t interactionType);
     void                setCurrentInteractivity(int frame); // perhaps should be private???

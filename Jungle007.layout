@@ -196,8 +196,8 @@
 	<File name="src\Analyzer.cpp" open="0" top="0" tabpos="22">
 		<Cursor position="5161" topLine="141" />
 	</File>
-	<File name="src\AppController.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="11089" topLine="230" />
+	<File name="src\AppController.cpp" open="1" top="1" tabpos="3">
+		<Cursor position="12322" topLine="261" />
 	</File>
 	<File name="src\AppController.h" open="0" top="0" tabpos="15">
 		<Cursor position="1627" topLine="54" />
@@ -205,8 +205,8 @@
 	<File name="src\AppDataTypes.h" open="0" top="0" tabpos="11">
 		<Cursor position="7792" topLine="362" />
 	</File>
-	<File name="src\AppModel.cpp" open="1" top="0" tabpos="2">
-		<Cursor position="4581" topLine="134" />
+	<File name="src\AppModel.cpp" open="1" top="0" tabpos="4">
+		<Cursor position="13149" topLine="383" />
 	</File>
 	<File name="src\AppModel.h" open="0" top="0" tabpos="9">
 		<Cursor position="1534" topLine="182" />
@@ -232,7 +232,7 @@
 	<File name="src\SceneXMLBuilder.cpp" open="0" top="0" tabpos="15">
 		<Cursor position="3983" topLine="44" />
 	</File>
-	<File name="src\SceneXMLParser.cpp" open="1" top="0" tabpos="3">
+	<File name="src\SceneXMLParser.cpp" open="1" top="0" tabpos="5">
 		<Cursor position="5880" topLine="134" />
 	</File>
 	<File name="src\Timer.cpp" open="0" top="0" tabpos="1">
@@ -244,10 +244,10 @@
 	<File name="src\VictimView.cpp" open="0" top="0" tabpos="7">
 		<Cursor position="27" topLine="0" />
 	</File>
-	<File name="src\VideoController.cpp" open="1" top="1" tabpos="4">
-		<Cursor position="3776" topLine="84" />
+	<File name="src\VideoController.cpp" open="1" top="0" tabpos="6">
+		<Cursor position="6843" topLine="149" />
 	</File>
-	<File name="src\VideoController.h" open="0" top="0" tabpos="8">
-		<Cursor position="983" topLine="10" />
+	<File name="src\VideoController.h" open="1" top="0" tabpos="7">
+		<Cursor position="765" topLine="6" />
 	</File>
 </CodeBlocks_layout_file>
