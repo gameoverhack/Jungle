@@ -64,12 +64,13 @@ void VideoController::registerStates() {
 void VideoController::update() {
 
 	// update the current currentMovie/videoplayer
-	ofxThreadedVideo * currentMovie		= _appModel->getCurrentVideoPlayer();
+
 	Scene			* currentScene		= _appModel->getCurrentScene();
 	Sequence		* currentSequence	= _appModel->getCurrentSequence();
+	ofxThreadedVideo * currentMovie		= _appModel->getCurrentVideoPlayer();
+    ofxThreadedVideo * nextMovie        = _appModel->getNextVideoPlayer();
 
-    if (_forceCurrentLoad || (currentSequence->getNumber() == 0 && _preRolling)) forceUpdate();
-
+    if (_forceCurrentLoad || _preRolling) nextMovie->update();
 	currentMovie->update();
 
     if (currentMovie->getVolume() < 256) currentMovie->setVolume(256);
@@ -108,16 +109,22 @@ void VideoController::update() {
 	}
 
 	if (currentMovie->getIsMovieDone() && _preRolling) {
-	    _appModel->getNextVideoPlayer()->update();
+	    nextMovie->update();
+	    if(nextMovie->isLoaded() && nextMovie->getCurrentFrame() > _lastFrameWhenForced){
+	        toggleVideoPlayers();
+            _lastFrameWhenForced = 0;
+            _preRolling = false;
+            setState(kVIDCONTROLLER_CURRENTVIDONE);
+	    }
 	}
 
-}
+    if(checkState(kVIDCONTROLLER_NEXTVIDLOADING)){
+        if(nextMovie->isLoaded() && nextMovie->getCurrentFrame() > 0 && !currentMovie->getIsMovieDone()){
+            _forceCurrentLoad = false;
+            setState(kVIDCONTROLLER_NEXTVIDREADY);
+        }
+    }
 
-void VideoController::forceUpdate() {
-	// used to force loading of a movie if we're not actually updating/drawing it
-	ofxThreadedVideo * nextMovie = _appModel->getNextVideoPlayer();
-	nextMovie->update();
-	nextMovie->draw();
 }
 
 void VideoController::loadMovie(Sequence * seq, bool forceCurrentLoad, int lastFrameWhenForced) {
@@ -130,6 +137,7 @@ void VideoController::loadMovie(Sequence * seq, bool forceCurrentLoad, int lastF
 
 	ofxThreadedVideo * nextMovie			= _appModel->getNextVideoPlayer();
 	nextMovie->loadMovie(path);
+    if(_lastFrameWhenForced != 0) nextMovie->setFrame(_lastFrameWhenForced);
 
 	_forceCurrentLoad       = forceCurrentLoad;
     if (lastFrameWhenForced != 0) {
@@ -171,15 +179,6 @@ void VideoController::videoEvent(ofxThreadedVideoEvent & event) {
             LOG_NOTICE("Next video successfully loaded: " + path);
             ofxThreadedVideo * nextMovie = _appModel->getNextVideoPlayer();
             ofRemoveListener(nextMovie->threadedVideoEvent, this, &VideoController::videoEvent);
-            if(_preRolling){
-                toggleVideoPlayers(_lastFrameWhenForced);
-                _lastFrameWhenForced = 0;
-                setState(kVIDCONTROLLER_CURRENTVIDONE);
-            }else{
-                setState(kVIDCONTROLLER_NEXTVIDREADY);
-            }
-            _preRolling = false;
-            _forceCurrentLoad = false;
             break;
         }
         default:

@@ -294,20 +294,14 @@ void AppController::update() {
 
 		// catch _switchToSequence when a movie is loaded completely
 		if (_switchToSequence != NULL && _vidController->checkState(kVIDCONTROLLER_NEXTVIDREADY)) {
-		    ofxThreadedVideo * nextMovie = _appModel->getNextVideoPlayer();
-		    if(nextMovie != NULL) {
-                nextMovie->update();
-                if(nextMovie->getCurrentFrame() > 0){
-                    LOG_NOTICE("Doing switchMovie on NEXTVIDEOREADY");
-                    _appModel->restartTimer("anyActionTimer");
-                    _vidController->toggleVideoPlayers();
-                    _appView->update();
-                    _vidController->setState(kVIDCONTROLLER_READY);
-                    _soundController->setVolume(1.0);
-                    currentScene->setCurrentSequence(_switchToSequence);
-                    _switchToSequence = NULL;
-                }
-		    }
+            LOG_NOTICE("Doing switchMovie on NEXTVIDEOREADY");
+            _appModel->restartTimer("anyActionTimer");
+            _vidController->toggleVideoPlayers();
+            _appView->update();
+            _vidController->setState(kVIDCONTROLLER_READY);
+            _soundController->setVolume(1.0);
+            currentScene->setCurrentSequence(_switchToSequence);
+            _switchToSequence = NULL;
 		}
 
 

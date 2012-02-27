@@ -6,7 +6,7 @@
 		<Option makefile="makefile" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
-		<Option virtualFolders="addons\;src\;addons\ofx3DModelLoader\src\3DS\;addons\ofx3DModelLoader\src\;addons\ofxAssimpModelLoader\libs\assimp\include\Compiler\;addons\ofxAssimpModelLoader\libs\assimp\include\;addons\ofxAssimpModelLoader\src\;addons\ofxDirList\src\;addons\ofxNetwork\src\;addons\ofxOpenCv\libs\opencv\include\opencv2\core\;addons\ofxOpenCv\libs\opencv\include\opencv2\flann\;addons\ofxOpenCv\libs\opencv\include\opencv2\highgui\;addons\ofxOpenCv\libs\opencv\include\opencv2\imgproc\;addons\ofxOpenCv\libs\opencv\include\opencv\;addons\ofxOpenCv\src\;addons\ofxOsc\libs\oscpack\include\ip\;addons\ofxOsc\libs\oscpack\include\osc\;addons\ofxOsc\src\;addons\ofxThread\src\;addons\ofxThreadedImageLoader\src\;addons\ofxVectorGraphics\libs\;addons\ofxVectorGraphics\src\;addons\ofxVectorMath\src\;addons\ofxXmlSettings\libs\;addons\ofxXmlSettings\src\;src\config\;src\shaders\;src\controllers\;src\models\;src\views\;src\utils\;src\utils\xml\;" />
+		<Option virtualFolders="addons\;src\;addons\ofx3DModelLoader\src\3DS\;addons\ofx3DModelLoader\src\;addons\ofxDirList\src\;addons\ofxNetwork\src\;addons\ofxOpenCv\libs\opencv\include\opencv2\core\;addons\ofxOpenCv\libs\opencv\include\opencv2\flann\;addons\ofxOpenCv\libs\opencv\include\opencv2\highgui\;addons\ofxOpenCv\libs\opencv\include\opencv2\imgproc\;addons\ofxOpenCv\libs\opencv\include\opencv\;addons\ofxOpenCv\src\;addons\ofxOsc\libs\oscpack\include\ip\;addons\ofxOsc\libs\oscpack\include\osc\;addons\ofxOsc\src\;addons\ofxThread\src\;addons\ofxThreadedImageLoader\src\;addons\ofxVectorGraphics\libs\;addons\ofxVectorGraphics\src\;addons\ofxVectorMath\src\;addons\ofxXmlSettings\libs\;addons\ofxXmlSettings\src\;src\config\;src\shaders\;src\controllers\;src\models\;src\views\;src\utils\;src\utils\xml\;" />
 		<Build>
 			<Target title="release">
 				<Option output="bin\$(PROJECT_NAME)" prefix_auto="1" extension_auto="1" />
@@ -154,6 +154,7 @@
 			<Add directory="..\..\..\addons\ofxFaceTracker\libs" />
 			<Add directory="..\..\..\addons\ofxCv\src" />
 			<Add directory="..\..\..\addons\FastDelegate" />
+			<Add directory="..\..\..\addons\ofxThreadedVideo\src" />
 		</Compiler>
 		<Linker>
 			<Add option="..\..\..\addons\ofxOpenCv\libs\opencv\lib\win_cb\libopencv_legacy220.a" />
@@ -172,7 +173,6 @@
 			<Add option="..\..\..\addons\ofxOpenCv\libs\opencv\lib\win_cb\libopencv_gpu220.a" />
 			<Add option="..\..\..\addons\ofxOpenCv\libs\opencv\lib\win_cb\libzlib.a" />
 			<Add option="..\..\..\addons\ofxOsc\libs\oscpack\lib\win_cb\oscpack.a" />
-			<Add option="..\..\..\addons\ofxAssimpModelLoader\libs\assimp\lib\win_cb\libassimp.dll" />
 			<Add library="..\..\..\libs\FreeImage\lib\win_cb\FreeImage.lib" />
 			<Add library="..\..\..\libs\rtAudio\lib\win_cb\librtaudio.a" />
 			<Add library="..\..\..\libs\quicktime\lib\win_cb\qtmlClient.lib" />
@@ -196,9 +196,7 @@
 			<Add library="dsound" />
 			<Add library="winmm" />
 			<Add library="dxguid" />
-			<Add library="strmbase" />
 			<Add library="strmiids" />
-			<Add library="z" />
 			<Add library="uuid" />
 			<Add library="ole32" />
 			<Add library="oleaut32" />
@@ -206,7 +204,6 @@
 			<Add library="wsock32" />
 			<Add library="ws2_32" />
 			<Add library="Iphlpapi" />
-			<Add library="..\..\..\addons\ofxFft\libs\fftw\lib\win32\libfftw3f-3.dll" />
 			<Add library="..\..\..\addons\ofxBoost\lib\win\libboost_serialization-mgw44-mt-1_47.a" />
 			<Add library="..\..\..\addons\ofxBoost\lib\win\libboost_serialization-mgw44-mt-d-1_47.a" />
 			<Add library="..\..\..\addons\ofxBoost\lib\win\libboost_chrono-mgw44-mt-1_47.a" />
@@ -255,6 +252,11 @@
 			<Add library="..\..\..\addons\ofxBoost\lib\win\libboost_wave-mgw44-mt-d-1_47.a" />
 			<Add library="..\..\..\addons\ofxBoost\lib\win\libboost_wserialization-mgw44-mt-1_47.a" />
 			<Add library="..\..\..\addons\ofxBoost\lib\win\libboost_wserialization-mgw44-mt-d-1_47.a" />
+			<Add library="..\..\..\..\..\..\..\Program Files (x86)\CodeBlocks\MingGW-64\lib\libSTRMBASE.a" />
+			<Add library="..\..\..\..\..\..\..\Program Files (x86)\CodeBlocks\MingGW-64\lib\libz.a" />
+			<Add library="z" />
+			<Add library="strmbase" />
+			<Add library="..\..\..\addons\ofxFft\libs\fftw\lib\win32\libfftw3f-3.dll" />
 		</Linker>
 		<ExtraCommands>
 			<Add after='xcopy /e /i /y &quot;$(PROJECT_DIR)..\..\..\export\win_cb\*.dll&quot;  &quot;$(PROJECT_DIR)bin&quot;' />
@@ -267,16 +269,10 @@
 		<Unit filename="..\..\..\addons\goDirList\src\goDirList.h" />
 		<Unit filename="..\..\..\addons\goFlexCOM\goFlexCOM.cpp" />
 		<Unit filename="..\..\..\addons\goFlexCOM\goFlexCOM.h" />
-		<Unit filename="..\..\..\addons\goThreadedVideo\src\goThreadedVideo.cpp" />
-		<Unit filename="..\..\..\addons\goThreadedVideo\src\goThreadedVideo.h" />
 		<Unit filename="..\..\..\addons\goUtils\src\goUtils.cpp" />
 		<Unit filename="..\..\..\addons\goUtils\src\goUtils.h" />
 		<Unit filename="..\..\..\addons\goVideoGrabber\src\goVideoGrabber.cpp" />
 		<Unit filename="..\..\..\addons\goVideoGrabber\src\goVideoGrabber.h" />
-		<Unit filename="..\..\..\addons\goVideoPlayer\src\goQtUtils.cpp" />
-		<Unit filename="..\..\..\addons\goVideoPlayer\src\goQtUtils.h" />
-		<Unit filename="..\..\..\addons\goVideoPlayer\src\goVideoPlayer.cpp" />
-		<Unit filename="..\..\..\addons\goVideoPlayer\src\goVideoPlayer.h" />
 		<Unit filename="..\..\..\addons\ofx3DModelLoader\src\3DS\Vector3DS.h">
 			<Option virtualFolder="addons\ofx3DModelLoader\src\3DS" />
 		</Unit>
@@ -300,108 +296,6 @@
 		</Unit>
 		<Unit filename="..\..\..\addons\ofx3DModelLoader\src\ofx3dModelLoader.cpp">
 			<Option virtualFolder="addons\ofx3DModelLoader\src" />
-		</Unit>
-		<Unit filename="..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\Compiler\poppack1.h">
-			<Option virtualFolder="addons\ofxAssimpModelLoader\libs\assimp\include\Compiler" />
-		</Unit>
-		<Unit filename="..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\Compiler\pushpack1.h">
-			<Option virtualFolder="addons\ofxAssimpModelLoader\libs\assimp\include\Compiler" />
-		</Unit>
-		<Unit filename="..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\DefaultLogger.h">
-			<Option virtualFolder="addons\ofxAssimpModelLoader\libs\assimp\include" />
-		</Unit>
-		<Unit filename="..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\IOStream.h">
-			<Option virtualFolder="addons\ofxAssimpModelLoader\libs\assimp\include" />
-		</Unit>
-		<Unit filename="..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\IOSystem.h">
-			<Option virtualFolder="addons\ofxAssimpModelLoader\libs\assimp\include" />
-		</Unit>
-		<Unit filename="..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\LogStream.h">
-			<Option virtualFolder="addons\ofxAssimpModelLoader\libs\assimp\include" />
-		</Unit>
-		<Unit filename="..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\Logger.h">
-			<Option virtualFolder="addons\ofxAssimpModelLoader\libs\assimp\include" />
-		</Unit>
-		<Unit filename="..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\NullLogger.h">
-			<Option virtualFolder="addons\ofxAssimpModelLoader\libs\assimp\include" />
-		</Unit>
-		<Unit filename="..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\ProgressHandler.h">
-			<Option virtualFolder="addons\ofxAssimpModelLoader\libs\assimp\include" />
-		</Unit>
-		<Unit filename="..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\aiAnim.h">
-			<Option virtualFolder="addons\ofxAssimpModelLoader\libs\assimp\include" />
-		</Unit>
-		<Unit filename="..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\aiAssert.h">
-			<Option virtualFolder="addons\ofxAssimpModelLoader\libs\assimp\include" />
-		</Unit>
-		<Unit filename="..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\aiCamera.h">
-			<Option virtualFolder="addons\ofxAssimpModelLoader\libs\assimp\include" />
-		</Unit>
-		<Unit filename="..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\aiColor4D.h">
-			<Option virtualFolder="addons\ofxAssimpModelLoader\libs\assimp\include" />
-		</Unit>
-		<Unit filename="..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\aiConfig.h">
-			<Option virtualFolder="addons\ofxAssimpModelLoader\libs\assimp\include" />
-		</Unit>
-		<Unit filename="..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\aiDefines.h">
-			<Option virtualFolder="addons\ofxAssimpModelLoader\libs\assimp\include" />
-		</Unit>
-		<Unit filename="..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\aiFileIO.h">
-			<Option virtualFolder="addons\ofxAssimpModelLoader\libs\assimp\include" />
-		</Unit>
-		<Unit filename="..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\aiLight.h">
-			<Option virtualFolder="addons\ofxAssimpModelLoader\libs\assimp\include" />
-		</Unit>
-		<Unit filename="..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\aiMaterial.h">
-			<Option virtualFolder="addons\ofxAssimpModelLoader\libs\assimp\include" />
-		</Unit>
-		<Unit filename="..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\aiMatrix3x3.h">
-			<Option virtualFolder="addons\ofxAssimpModelLoader\libs\assimp\include" />
-		</Unit>
-		<Unit filename="..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\aiMatrix4x4.h">
-			<Option virtualFolder="addons\ofxAssimpModelLoader\libs\assimp\include" />
-		</Unit>
-		<Unit filename="..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\aiMesh.h">
-			<Option virtualFolder="addons\ofxAssimpModelLoader\libs\assimp\include" />
-		</Unit>
-		<Unit filename="..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\aiPostProcess.h">
-			<Option virtualFolder="addons\ofxAssimpModelLoader\libs\assimp\include" />
-		</Unit>
-		<Unit filename="..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\aiQuaternion.h">
-			<Option virtualFolder="addons\ofxAssimpModelLoader\libs\assimp\include" />
-		</Unit>
-		<Unit filename="..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\aiScene.h">
-			<Option virtualFolder="addons\ofxAssimpModelLoader\libs\assimp\include" />
-		</Unit>
-		<Unit filename="..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\aiTexture.h">
-			<Option virtualFolder="addons\ofxAssimpModelLoader\libs\assimp\include" />
-		</Unit>
-		<Unit filename="..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\aiTypes.h">
-			<Option virtualFolder="addons\ofxAssimpModelLoader\libs\assimp\include" />
-		</Unit>
-		<Unit filename="..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\aiVector2D.h">
-			<Option virtualFolder="addons\ofxAssimpModelLoader\libs\assimp\include" />
-		</Unit>
-		<Unit filename="..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\aiVector3D.h">
-			<Option virtualFolder="addons\ofxAssimpModelLoader\libs\assimp\include" />
-		</Unit>
-		<Unit filename="..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\aiVersion.h">
-			<Option virtualFolder="addons\ofxAssimpModelLoader\libs\assimp\include" />
-		</Unit>
-		<Unit filename="..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\assimp.h">
-			<Option virtualFolder="addons\ofxAssimpModelLoader\libs\assimp\include" />
-		</Unit>
-		<Unit filename="..\..\..\addons\ofxAssimpModelLoader\src\ofx3DBaseLoader.h">
-			<Option virtualFolder="addons\ofxAssimpModelLoader\src" />
-		</Unit>
-		<Unit filename="..\..\..\addons\ofxAssimpModelLoader\src\ofxAssimpMeshHelper.h">
-			<Option virtualFolder="addons\ofxAssimpModelLoader\src" />
-		</Unit>
-		<Unit filename="..\..\..\addons\ofxAssimpModelLoader\src\ofxAssimpModelLoader.cpp">
-			<Option virtualFolder="addons\ofxAssimpModelLoader\src" />
-		</Unit>
-		<Unit filename="..\..\..\addons\ofxAssimpModelLoader\src\ofxAssimpModelLoader.h">
-			<Option virtualFolder="addons\ofxAssimpModelLoader\src" />
 		</Unit>
 		<Unit filename="..\..\..\addons\ofxCv\src\Calibration.cpp" />
 		<Unit filename="..\..\..\addons\ofxCv\src\Calibration.h" />
@@ -727,6 +621,8 @@
 		<Unit filename="..\..\..\addons\ofxThreadedImageLoader\src\ofxThreadedImageLoader.h">
 			<Option virtualFolder="addons\ofxThreadedImageLoader\src" />
 		</Unit>
+		<Unit filename="..\..\..\addons\ofxThreadedVideo\src\ofxThreadedVideo.cpp" />
+		<Unit filename="..\..\..\addons\ofxThreadedVideo\src\ofxThreadedVideo.h" />
 		<Unit filename="..\..\..\addons\ofxVectorGraphics\libs\CreEPS.cpp">
 			<Option virtualFolder="addons\ofxVectorGraphics\libs" />
 		</Unit>
