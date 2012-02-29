@@ -108,8 +108,6 @@ private:
     int             _lastAutoAttackAction;
     int             _lastAutoFaceAction;
 
-protected:
-
 };
 
 #endif

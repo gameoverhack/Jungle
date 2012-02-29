@@ -96,13 +96,13 @@ void ArdController::updateArduino(bool fake) {
 
         pinInput[0] = _ard.getAnalog(0);
         pinInput[1] = _ard.getAnalog(1);
-        pinInput[2] = _ard.getAnalog(2);
-        pinInput[3] = _ard.getAnalog(3);
+        //pinInput[2] = _ard.getAnalog(2);
+        //pinInput[3] = _ard.getAnalog(3);
 
     }
 
-    _leftProximityHistory[_ardCyclicBufferOffset] = pinInput[2];
-    _rightProximityHistory[_ardCyclicBufferOffset] = pinInput[3];
+    _leftProximityHistory[_ardCyclicBufferOffset] = _ard.getAnalog(2);
+    _rightProximityHistory[_ardCyclicBufferOffset] = _ard.getAnalog(3);
 
     float leftProximityAverage = 0;
     float rightProximityAverage = 0;
@@ -119,7 +119,19 @@ void ArdController::updateArduino(bool fake) {
 
     rightProximityAverage = rightProximityAverage/_rightProximityHistory.size();
 
-    cout << leftProximityAverage << " " << rightProximityAverage << endl;
+    pinInput[2] = leftProximityAverage;
+    pinInput[3] = rightProximityAverage;
+
+    if(leftProximityAverage > 100) {
+        _appModel->restartTimer("anyFaceTimer");
+        _appModel->restartTimer("victimFaceTimer");
+    }
+    if(rightProximityAverage > 100) {
+        _appModel->restartTimer("anyFaceTimer");
+        _appModel->restartTimer("attackFaceTimer");
+    }
+
+    //cout << leftProximityAverage << " " << rightProximityAverage << endl;
 
     _ardCyclicBufferOffset++;
     if(_ardCyclicBufferOffset > 10) _ardCyclicBufferOffset = 0;

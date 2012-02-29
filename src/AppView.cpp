@@ -75,16 +75,16 @@ void AppView::update() {
 	if (currentSequence->getNumber() == 8) {
         if(frame > total - 24) { // start fade 2 secs from end
             _fade = 1.0 * (total-frame)/24.0f;
-            if (_appModel->getAnyFacePresent()) _fadeUp = true;
+            if (!_appModel->hasTimedOut("anyFaceTimer")) _fadeUp = true;
         }
     }
 
-    if (_fadeUp && _appModel->getAnyFacePresent() && currentSequence->getNumber() == 1) {
+    if (_fadeUp && !_appModel->hasTimedOut("anyFaceTimer") && currentSequence->getNumber() == 1) {
         if (frame < 12) _fade = 1.0 * (float)frame/12.0f;
         if (_fade >= 0.9) _fadeUp = false;
     }
 
-    if (!_appModel->getAnyFacePresent() && (_fadeUp || _fade < 1.0)) {
+    if (!!_appModel->hasTimedOut("anyFaceTimer") && (_fadeUp || _fade < 1.0)) {
          _fadeUp = false;
          _fade = 1.0f;
     }

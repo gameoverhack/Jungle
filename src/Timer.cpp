@@ -29,7 +29,7 @@ Timer::Timer(int timeoutInMilliseconds,
              string name,
              int resolutionInMilliseconds){
 	setVerbose(false);
-	setTimeout(timeoutInMilliseconds,mode, name, resolutionInMilliseconds);
+	setTimeout(timeoutInMilliseconds, mode, name, resolutionInMilliseconds);
 }
 
 
@@ -48,6 +48,7 @@ void Timer::setTimeout(int timeoutInMilliseconds,
 	_timerResolution = resolutionInMilliseconds;
 	_timerMode = mode;
     _name = name;
+    _hasTimedOut = false;
 }
 
 /*
@@ -99,8 +100,7 @@ bool Timer::start(bool suppressEvents){
 	if(_verbose) cout << "Starting timer '" << _name << "' at time: " << ofToString(_startTime) << endl;
 
 	// stop current thread if it running
-	if(isThreadRunning()) stopThread(); // TODO: use stop() here since we want the stop event?
-	startThread(false, false); // start in non blocking non verbose
+	if(!isThreadRunning()) startThread(false, false); // start in non blocking non verbose
 
 	if(!suppressEvents){
 		// dispatch START event
@@ -209,7 +209,7 @@ bool Timer::hasTimedOut(){
 
 bool Timer::isTimerRunning(){
 	// timer is running if the thread is running and we have not timed out
-	return (isThreadRunning() && (hasTimedOut() == false));
+	return (isThreadRunning());
 }
 
 

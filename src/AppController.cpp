@@ -124,10 +124,14 @@ void AppController::setup() {
     //_appModel->setProperty("showCameras", false);
     _appModel->setProperty("showProps", false);
 	_appModel->setProperty("fullScreen", false);
-	_appModel->setProperty("tryScaleMethod", 0);
-	_appModel->setProperty("anyActionTimer", 500);
-	_appModel->setProperty("victimActionTimer", 3000);
-	_appModel->setProperty("attackActionTimer", 3000);
+//	_appModel->setProperty("tryScaleMethod", 0);
+//	_appModel->setProperty("anyActionTimer", 500);
+//	_appModel->setProperty("victimActionTimer", 3000);
+//	_appModel->setProperty("attackActionTimer", 3000);
+    _appModel->setProperty("anyFaceTimer", 100000);
+	_appModel->setProperty("victimFaceTimer", 5000);
+	_appModel->setProperty("attackFaceTimer", 5000);
+	_appModel->setProperty("autoAttackTimer", 5000);
 /*	_appModel->setProperty("ardAttackMin", 300.0f);
 	_appModel->setProperty("ardAttackMax", 800.0f);
 	_appModel->setProperty("cameraToAdjust", (string)"0");
@@ -155,6 +159,20 @@ void AppController::setup() {
     Timer * attackActionTimer = new Timer(boost::any_cast<int>(_appModel->getProperty("attackActionTimer")));
     _appModel->addTimer("attackActionTimer", attackActionTimer);
     _appModel->startTimer("attackActionTimer");
+
+    Timer * anyFaceTimer = new Timer(boost::any_cast<int>(_appModel->getProperty("anyFaceTimer")));
+    _appModel->addTimer("anyFaceTimer", anyFaceTimer);
+
+    Timer * victimFaceTimer = new Timer(boost::any_cast<int>(_appModel->getProperty("victimFaceTimer")));
+    _appModel->addTimer("victimFaceTimer", victimFaceTimer);
+
+    Timer * attackFaceTimer = new Timer(boost::any_cast<int>(_appModel->getProperty("attackFaceTimer")));
+    _appModel->addTimer("attackFaceTimer", attackFaceTimer);
+
+
+    Timer * autoAttackTimer = new Timer(boost::any_cast<int>(_appModel->getProperty("autoAttackTimer")));
+    _appModel->addTimer("autoAttackTimer", autoAttackTimer);
+    //_appModel->startTimer("autoAttackTimer");
 
     	// setup main app view
 	_appView = new AppView(boost::any_cast<float>(_appModel->getProperty("appRenderWidth")),
@@ -247,11 +265,12 @@ void AppController::update() {
             _soundController->setup();
 			_soundController->loadSound();
 			_vidController->loadMovie(_switchToSequence, true);
-			_appModel->setFacePresent(0,false);
-			_appModel->setFacePresent(1,false);
 			_appModel->setState(kAPP_RUNNING);
 			_appModel->restartTimer("anyActionTimer");
-
+			_appModel->startTimer("anyFaceTimer");
+            _appModel->startTimer("victimFaceTimer");
+            _appModel->startTimer("attackFaceTimer");
+            _appModel->startTimer("autoAttackTimer");
 		}
 	}
 
@@ -284,8 +303,10 @@ void AppController::update() {
 			if(currentScene->nextSequence()) {
 				// loaded next sequence in this scene, keep going
 				LOG_VERBOSE("Gone to next sequence");
+				_appModel->restartTimer("anyActionTimer");
 				_appModel->restartTimer("victimActionTimer");
 				_appModel->restartTimer("attackActionTimer");
+				_appModel->restartTimer("autoAttackTimer");
 				_vidController->setState(kVIDCONTROLLER_READY);
 				_soundController->setVolume(1.0);
 				_appView->update();
@@ -301,6 +322,7 @@ void AppController::update() {
             _appModel->restartTimer("anyActionTimer");
             _appModel->restartTimer("victimActionTimer");
             _appModel->restartTimer("attackActionTimer");
+            _appModel->restartTimer("autoAttackTimer");
             _vidController->toggleVideoPlayers();
             _appView->update();
             _vidController->setState(kVIDCONTROLLER_READY);
@@ -318,43 +340,31 @@ void AppController::update() {
         _appModel->getFakeAttackPlayer()->update();
         _appModel->getFakeVictimPlayer()->update();
 
-        // Auto action if no attacker present in loops -> uses a timeout
-        if (!_appModel->getFacePresent(1)) {
-            if (_lastAutoAttackAction != 0 && ofGetElapsedTimeMillis() - _lastAutoAttackAction > TIMEOUT_AUTOATTACK) {
-                LOG_NOTICE("Auto attacker action triggered");
-                _lastAutoAttackAction = 0;
-#ifdef DO_AUTO_TIMEOUT
-                float level = 8.0;
-                AttackEvent(level);
-#endif
-            } else if (_lastAutoAttackAction == 0 && currentSequence->getType() == "loop") {
-                _lastAutoAttackAction = ofGetElapsedTimeMillis();
-            } else if (_lastAutoAttackAction != 0 && currentSequence->getType() != "loop") {
-                _lastAutoAttackAction = 0;
+        if(_appModel->hasTimedOut("attackFaceTimer")){
+            if(_appModel->hasTimedOut("autoAttackTimer") && (_appModel->getCurrentInteractivity() == kINTERACTION_ATTACKER || _appModel->getCurrentInteractivity() == kINTERACTION_BOTH)) {
+                    LOG_NOTICE("Auto attacker action triggered");
+                    _appModel->restartTimer("autoAttackTimer");
+                    float level = 8.0;
+                    AttackEvent(level);
             }
-        } else _lastAutoAttackAction = 0;
 
-        // face arrive on seq00a waits TIMEOUT_AUTOFACE before going to seq01a
-        if (currentSequence->getNumber() == 0) {
-            if (_appModel->getAnyFacePresent() && _switchToSequence == NULL) {
-                if (_lastAutoFaceAction != 0 && ofGetElapsedTimeMillis() - _lastAutoFaceAction > TIMEOUT_AUTOFACE) {
-                    LOG_NOTICE("Auto face action triggered");
-                    _switchToSequence = _appModel->getCurrentScene()->getSequence("seq01a");
-                    _vidController->loadMovie(_switchToSequence, true);
-                    //_appModel->getCurrentVideoPlayer()->setLoopState(OF_LOOP_NONE);
-                    //_vidController->_preRolling = true;
-                } else if (_lastAutoFaceAction == 0) _lastAutoFaceAction = ofGetElapsedTimeMillis();
-            } else _lastAutoFaceAction = 0;
-        } else _lastAutoFaceAction = 0;
+        }else{
+            _appModel->restartTimer("autoAttackTimer");
+        }
 
+    if (currentSequence->getNumber() == 0 && (_appModel->getPinInput()[2] > 100 || _appModel->getPinInput()[3] > 100)  && _appModel->hasTimedOut("anyActionTimer") && _switchToSequence == NULL){
+        LOG_NOTICE("Found a face! Lets goooooooo....");
+        _switchToSequence = _appModel->getCurrentScene()->getSequence("seq01a");
+        _vidController->loadMovie(_switchToSequence, true);
+    }
 
-        // if no faces present after timeout and no user action for more than timeout we can push to next scene
-        if (currentSequence->getNumber() > 1 && currentSequence->getNumber() < 8 && !_appModel->getAnyFacePresent() && ofGetElapsedTimeMillis() -_appModel->hasTimedOut("anyActionTimer") && _switchToSequence == NULL) {
 #ifdef DO_AUTO_TIMEOUT
+        // if no faces present after timeout and no user action for more than timeout we can push to next scene
+        if (currentSequence->getNumber() > 1 && currentSequence->getNumber() < 8 && _appModel->hasTimedOut("anyFaceTimer") && _appModel->hasTimedOut("anyActionTimer") && _switchToSequence == NULL) {
             LOG_NOTICE("Auto No Face present for more than " + ofToString(TIMEOUT_NOFACE) + " forcing next scene");
             nextScene();
-#endif
         }
+#endif
 	}
 
 }
@@ -376,7 +386,7 @@ void AppController::nextScene() {
         _camControllers[0]->loadAttributes();
         _camControllers[1]->loadAttributes();
 
-         if (_appModel->getAnyFacePresent()) {
+         if (!_appModel->hasTimedOut("anyFaceTimer")) {
              _switchToSequence = _appModel->getCurrentScene()->getSequence("seq01a");
          } else _switchToSequence = currentScene->getCurrentSequence();
 
@@ -395,8 +405,8 @@ void AppController::draw() {
 
 #ifdef DEBUG_VIEW_ENABLED
     if (boost::any_cast<bool>(_appModel->getProperty("showCameras"))) {
-	    _camControllers[0]->drawDebug(ofGetWidth() - 640.0f/4.0f, 20.0f, 640.0f/4.0f, 640.0f/4.0f);
-        _camControllers[1]->drawDebug(ofGetWidth() - 640.0f/4.0f + 640.0f, 0.0f, 640.0f/4.0f, 640.0f/4.0f);
+	    _camControllers[0]->drawDebug(0, 0, 1920.0f/4.0f, 1080.0f/4.0f);
+        _camControllers[1]->drawDebug(1920.0f/4.0f, 0.0f, 1920.0f/4.0f, 1080.0f/4.0f);
     }
 #endif
 
@@ -409,13 +419,13 @@ void AppController::keyPressed(int key){
 
     PosRotScale * prsToAdjust[2];
 
-    if (_appModel->getSwapFacePresent(0)) {
+    if (_appModel->hasTimedOut("victimFaceTimer")) {
         prsToAdjust[0] = _appModel->getCameraAttributes(0);
     } else {
         prsToAdjust[0] = _appModel->getFakeAttributes(0);
     }
 
-    if (_appModel->getSwapFacePresent(1)) {
+    if (_appModel->hasTimedOut("attackFaceTimer")) {
         prsToAdjust[1] = _appModel->getCameraAttributes(1);
     } else {
         prsToAdjust[1] = _appModel->getFakeAttributes(1);
@@ -495,6 +505,9 @@ void AppController::keyPressed(int key){
 			_dataController->saveProperties();
 			break;
 		case ' ':
+//            _appModel->restartTimer("victimFaceTimer");
+//            _appModel->restartTimer("anyFaceTimer");
+//            _appModel->restartTimer("attackFaceTimer");
             _switchToSequence = _appModel->getCurrentScene()->getSequence("seq01a");
             _vidController->loadMovie(_switchToSequence, true);
             break;
@@ -583,10 +596,7 @@ void AppController::keyPressed(int key){
              _appModel->setProperty("showProps", !showProps);
             break;
         case 'w':
-             _camControllers[0]->_doFaceTracking ^= true;
-             _camControllers[1]->_doFaceTracking ^= true;
-             _camControllers[0]->_doFaceDetection ^= true;
-             _camControllers[1]->_doFaceDetection ^= true;
+
             break;
         case 'j':
              nextScene();

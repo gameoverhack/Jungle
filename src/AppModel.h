@@ -96,6 +96,7 @@ public:
     bool stopTimer(string timerName);
 
     bool hasTimedOut(string timerName);
+    bool isTimerRunning(string timerName);
 
     Timer* getTimer(string timerName);
 
@@ -206,14 +207,6 @@ public:
 	map<string, string> getAllPropsNameTypeAsMap();
 
 	void				printAllScenes();
-
-    void                setFacePresent(int face, bool isPresent) {_isFacePresent[face] = isPresent;};
-    bool                getFacePresent(int face) {return _isFacePresent[face];};
-
-    void                setSwapFacePresent(int face, bool isPresent) {_isSwapPresent[face] = isPresent;};
-    bool                getSwapFacePresent(int face) {return _isSwapPresent[face];};
-
-    bool                getAnyFacePresent() {return _isFacePresent[0] || _isFacePresent[1];};
 
 //    void                setLastActionTime(int time) {_lastActionTime = time;};
 //    int                 getLastActionTime() {return _lastActionTime;};

@@ -404,11 +404,9 @@ void AppModel::toggleVideoPlayers(int forceFrame, bool noPause) {
     if (forceFrame > 0) _videoPlayers[1]->setFrame(forceFrame);
 	_videoPlayers[1]->update();
 
-    LOG_VERBOSE("Actual frame before swap" + ofToString(_videoPlayers[1]->getCurrentFrame()));
 	swap(_videoPlayers[0], _videoPlayers[1]);
 	_videoPlayers[1]->close();
 
-    LOG_VERBOSE("Actual frame after swap" + ofToString(_videoPlayers[0]->getCurrentFrame()));
 	_appModel->setCurrentSequenceFrame(_videoPlayers[0]->getCurrentFrame());
 	_appModel->setCurrentIsFrameNew(_videoPlayers[0]->isFrameNew());
 
@@ -506,7 +504,7 @@ bool AppModel::startTimer(string timerName) {
 bool AppModel::restartTimer(string timerName) {
     map<string, Timer*>::iterator it = _timers.find(timerName);
     if (it != _timers.end()) {
-        LOG_VERBOSE("Restarting timer: " + timerName);
+        //LOG_VERBOSE("Restarting timer: " + timerName);
         it->second->restart();
         return true;
     } else {
@@ -540,10 +538,21 @@ bool AppModel::hasTimedOut(string timerName) {
 }
 
 //--------------------------------------------------------------
+bool AppModel::isTimerRunning(string timerName) {
+    map<string, Timer*>::iterator it = _timers.find(timerName);
+    if (it != _timers.end()) {
+        return it->second->isTimerRunning();
+    } else {
+        LOG_ERROR("Can't find timer - returning a false - it doesn't exist: " + timerName);
+        return false;
+    }
+}
+
+//--------------------------------------------------------------
 Timer* AppModel::getTimer(string timerName) {
     map<string, Timer*>::iterator it = _timers.find(timerName);
     if (it != _timers.end()) {
-        return it->second;;
+        return it->second;
     } else {
         LOG_ERROR("Can't getTimer() - returning a NULL - it doesn't exist: " + timerName);
         return NULL;

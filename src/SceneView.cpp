@@ -91,7 +91,7 @@ void SceneView::update() {
         bool flipAttack = false;
         bool flipVictim = false;
 
-		if (_appModel->getSwapFacePresent(0)) {
+		if (!_appModel->hasTimedOut("victimFaceTimer")) {
             victimTex = _appModel->getVictimCamTexRef();
             victimPRS = _appModel->getCameraAttributes(0);
 		} else {
@@ -99,7 +99,7 @@ void SceneView::update() {
 		    victimPRS = _appModel->getFakeAttributes(0);
 		}
 
-        if (_appModel->getSwapFacePresent(1)) {
+        if (!_appModel->hasTimedOut("attackFaceTimer")) {
             attackTex = _appModel->getAttackCamTexRef();
             attackPRS = _appModel->getCameraAttributes(1);
             flipAttack = true;

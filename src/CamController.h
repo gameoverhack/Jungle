@@ -16,8 +16,6 @@
 #include "AppModel.h"
 #include "Logger.h"
 #include "SerializationUtils.h"
-#include "ofxOpenCv.h"
-//#include "ofxCvHaarFinder.h"
 
 #ifdef TARGET_OSX
 #include "ofxQTKitVideoGrabber.h"	// better quality allows recording but OSX only....
@@ -26,13 +24,9 @@
 #include <map>
 #endif
 
-#include "ofxFaceTracker.h"
-
-using namespace FACETRACKER;
-
 static int _instanceCount = 0;
 
-class CamController : public BaseState, public ofThread {
+class CamController : public BaseState {
 
 public:
 
@@ -62,30 +56,12 @@ public:
 
 	ofTexture* getCamTextureRef();
 
-    bool                    _doFaceDetection;
-    bool                    _doFaceTracking;
-
-//    ofEvent<int>            faceAction;
-
     void mouseMoved(ofMouseEventArgs &e);
 	void mouseDragged(ofMouseEventArgs &e);
 	void mousePressed(ofMouseEventArgs &e);
 	void mouseReleased(ofMouseEventArgs &e);
 
 private:
-
-    //ofRectangle*            getCamROI() {return _camROI;};
-    //void                    setCamROI(ofRectangle R) {_camROI = R;};
-
-    int                     _startX, _startY;
-    bool                    _doROIAdjust;
-    float                   _xROIDisplay;
-    float                   _yROIDisplay;
-    float                   _xScaleROIDisplay;
-    float                   _yScaleROIDisplay;
-    ofRectangle*            _camROI;
-
-    void                    threadedFunction();
 
 #ifdef TARGET_OSX
 	ofxQTKitVideoGrabber	_cam;			// this is not X-platform but of/goVideoPlayer does not play well with ManyCam
@@ -100,17 +76,6 @@ private:
 
 	int                     _width;
 	int                     _height;
-
-    int                     _lastFaceTime;
-    int                     _lastSwapTime;
-    int                     _lastTwitchyFaceTime;
-
-    ofxCvHaarFinder         _finder;
-    ofxFaceTracker          _tracker;
-
-    ofxCvColorImage         _camImage;
-    ofxCvColorImage         _colourImage;
-    ofxCvGrayscaleImage     _greyImage;
 
     bool                    _isCamInit;
 
