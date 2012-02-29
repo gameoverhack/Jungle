@@ -66,9 +66,9 @@ float BaseView::getHeight() {
 }
 
 void BaseView::draw() {
-	glPushMatrix();
+	//glPushMatrix();
 	_viewFBO.draw(0, 0);
-	glPopMatrix();
+	//glPopMatrix();
 }
 
 void BaseView::draw(float x, float y) {

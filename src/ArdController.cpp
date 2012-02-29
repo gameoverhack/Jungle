@@ -15,7 +15,11 @@ ArdController::ArdController(string deviceName, int ardBufferLengthSecs) {
 
     registerStates();
 
-    _appModel->allocatePinInput(2);
+    _appModel->allocatePinInput(4);
+
+    _ardCyclicBufferOffset = 0;
+    _leftProximityHistory.resize(10);
+    _rightProximityHistory.resize(10);
 
     #ifndef DONT_USE_ARDUINO
     if(!_ard.connect(deviceName, 57600)) {
@@ -71,10 +75,10 @@ void ArdController::setupArduino() {
 
     _ard.sendAnalogPinReporting(0, ARD_ANALOG);	// AB: report data
 	_ard.sendAnalogPinReporting(1, ARD_ANALOG);	// AB: report data
+    _ard.sendAnalogPinReporting(2, ARD_ANALOG);	// AB: report data
+    _ard.sendAnalogPinReporting(3, ARD_ANALOG);	// AB: report data
 
     ofSleepMillis(1000); // oh dear a magic number...does this stop the magic crashes??
-
-    _lastUpdateTime = ofGetElapsedTimeMillis();
 
 	setState(kARDCONTROLLER_READY);
 
@@ -92,8 +96,33 @@ void ArdController::updateArduino(bool fake) {
 
         pinInput[0] = _ard.getAnalog(0);
         pinInput[1] = _ard.getAnalog(1);
+        pinInput[2] = _ard.getAnalog(2);
+        pinInput[3] = _ard.getAnalog(3);
 
     }
+
+    _leftProximityHistory[_ardCyclicBufferOffset] = pinInput[2];
+    _rightProximityHistory[_ardCyclicBufferOffset] = pinInput[3];
+
+    float leftProximityAverage = 0;
+    float rightProximityAverage = 0;
+
+    for(int i = 0; i < _leftProximityHistory.size(); i++){
+        leftProximityAverage += _leftProximityHistory[i];
+    }
+
+    leftProximityAverage = leftProximityAverage/_leftProximityHistory.size();
+
+    for(int i = 0; i < _rightProximityHistory.size(); i++){
+        rightProximityAverage += _rightProximityHistory[i];
+    }
+
+    rightProximityAverage = rightProximityAverage/_rightProximityHistory.size();
+
+    cout << leftProximityAverage << " " << rightProximityAverage << endl;
+
+    _ardCyclicBufferOffset++;
+    if(_ardCyclicBufferOffset > 10) _ardCyclicBufferOffset = 0;
 
     float level = 0.0f;
 

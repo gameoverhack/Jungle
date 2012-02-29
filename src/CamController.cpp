@@ -16,7 +16,6 @@ CamController::CamController() {
 
     registerStates();
 
-
 	_instanceID = _instanceCount;
     _instanceCount++;				// use instance counts to keep track of which cam belongs to which viewer - may be redundant??
 

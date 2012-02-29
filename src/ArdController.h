@@ -43,12 +43,10 @@ private:
 
     ofArduino   _ard;
 
-    int         _bufferIntervalMillis;
-    int         _lastUpdateTime;
-
-    int         _ardCyclicBufferSize;
     int         _ardCyclicBufferOffset;
-    int         _ardLastCyclicBufferOffset;
+
+    vector<int> _leftProximityHistory;
+    vector<int> _rightProximityHistory;
 
 };
 

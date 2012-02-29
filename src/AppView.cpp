@@ -134,8 +134,8 @@ void AppView::draw() {
 #ifdef DEBUG_VIEW_ENABLED
         glColor3f(1.0f, 1.0f, 1.0f);
 		if(boost::any_cast<bool>(_appModel->getProperty("showDebugView"))){
-			_debugView->draw(0, 0, width, height);
-		}
+			_debugView->draw();
+        }
 #endif
 	}
 
