@@ -13,7 +13,7 @@
         <property name="cameraToAdjust" type="int">0</property>
         <property name="fakeDataPath" type="string">F:/JungleAssets/fake</property>
         <property name="flashDataPath" type="string">D:/finalALL/flash</property>
-        <property name="fullScreen" type="bool">false</property>
+        <property name="fullScreen" type="bool">true</property>
         <property name="graphicDataPath" type="string">graphics</property>
         <property name="loadingMessage" type="string">STATE == kANAL_READY (0) :: </property>
         <property name="loadingProgress" type="float">0.1</property>

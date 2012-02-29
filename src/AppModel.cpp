@@ -27,9 +27,9 @@ AppModel::AppModel() {
 	// setup video players
 	for (int i = 0; i < 2; i++) {
 	    _fakePlayers[i] = new ofxThreadedVideo();
-	    //_fakePlayers[i]->setPixelType(GO_TV_RGB);
+	    _fakePlayers[i]->setPixelFormat(OF_PIXELS_RGB);
 		_videoPlayers[i] = new ofxThreadedVideo();
-        //_videoPlayers[i]->setPixelType(GO_TV_RGBA);
+        _videoPlayers[i]->setPixelFormat(OF_PIXELS_RGBA);
 	}
 
 }
@@ -414,6 +414,7 @@ void AppModel::toggleVideoPlayers(int forceFrame, bool noPause) {
 
 	delete _videoPlayers[1];
 	_videoPlayers[1] = new ofxThreadedVideo();
+	_videoPlayers[1]->setPixelFormat(OF_PIXELS_RGBA);
 }
 
 //--------------------------------------------------------------

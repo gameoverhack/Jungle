@@ -121,13 +121,19 @@ void AttackView::update() {
         }
     }
 
+#if OF_VERSION < 7
+        drawMeterShader(_meter_x, _meter_y, &_meterMaskTex, _meter_on, _meter_off);
+#else
+        drawMeterShader(_meter_x, _meter_y, &_meterMaskFBO.getTextureReference(), _meter_on, _meter_off);
+#endif
+
     if(_appModel->getTimer("attackActionTimer")->hasTimedOut() && isInteractive){
         if(!_hiLow->isTimerRunning()){
             _hiLow->start();
         }
         if(_hiLow->isTimerRunning()){
             if(_hiLow->isHigh()){
-                _button_flash->draw(_button_x, _button_y-4);
+                _button_flash->draw(_button_x, _button_y-10);
             }
         }
     }else{
@@ -135,11 +141,6 @@ void AttackView::update() {
             _hiLow->stop();
         }
     }
-#if OF_VERSION < 7
-        drawMeterShader(_meter_x, _meter_y, &_meterMaskTex, _meter_on, _meter_off);
-#else
-        drawMeterShader(_meter_x, _meter_y, &_meterMaskFBO.getTextureReference(), _meter_on, _meter_off);
-#endif
 
     ofDisableAlphaBlending();
     glPopMatrix();

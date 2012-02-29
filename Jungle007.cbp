@@ -252,8 +252,6 @@
 			<Add library="..\..\..\addons\ofxBoost\lib\win\libboost_wave-mgw44-mt-d-1_47.a" />
 			<Add library="..\..\..\addons\ofxBoost\lib\win\libboost_wserialization-mgw44-mt-1_47.a" />
 			<Add library="..\..\..\addons\ofxBoost\lib\win\libboost_wserialization-mgw44-mt-d-1_47.a" />
-			<Add library="..\..\..\..\..\..\..\Program Files (x86)\CodeBlocks\MingGW-64\lib\libSTRMBASE.a" />
-			<Add library="..\..\..\..\..\..\..\Program Files (x86)\CodeBlocks\MingGW-64\lib\libz.a" />
 			<Add library="z" />
 			<Add library="strmbase" />
 			<Add library="..\..\..\addons\ofxFft\libs\fftw\lib\win32\libfftw3f-3.dll" />
