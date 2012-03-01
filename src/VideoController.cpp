@@ -84,9 +84,11 @@ void VideoController::update() {
 	//_appModel->setCurrentFrameTotal(totalFrames); // no need for now?
 	_appModel->setCurrentIsFrameNew(isFrameNew);
 
+    string nextResult = "";
+
 	if (currentFrame > totalFrames - 12 && !_preRolling && !checkState(kVIDCONTROLLER_NEXTVIDLOADING)) {
 
-        string nextResult = currentSequence->getNextResult()[currentFrame]; // technically all members in getNextResult should point to the same next sequence name...
+        nextResult = currentSequence->getNextResult()[currentFrame]; // technically all members in getNextResult should point to the same next sequence name...
 
 		// set loopstate
 		if (nextResult == currentSequence->getName()) { //(currentSequence->getType() == "loop") {
@@ -123,6 +125,10 @@ void VideoController::update() {
             _forceCurrentLoad = false;
             setState(kVIDCONTROLLER_NEXTVIDREADY);
         }
+    }
+
+    if (currentMovie->getIsMovieDone() && nextResult == "__FINAL_SEQUENCE__"){
+        setState(kVIDCONTROLLER_CURRENTVIDONE);
     }
 
 }
@@ -168,7 +174,7 @@ void VideoController::reset() {
     ofRemoveListener(currentMovie->threadedVideoEvent, this, &VideoController::videoEvent);
 	nextMovie->close();
 	currentMovie->close();
-	update();
+	//update();
 }
 
 void VideoController::videoEvent(ofxThreadedVideoEvent & event) {
