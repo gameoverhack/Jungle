@@ -106,7 +106,7 @@ bool AppModel::setCurrentScene(string sceneName){
 
 		LOG_NOTICE("Set current scene to " + sceneName);
 
-        _currentSceneFrame = _lastSequenceFrame = 0;
+        //_currentSceneFrame = _lastSequenceFrame = 0;
         //_currentScene->setSequenceThresholds();
 
 		return true;
@@ -420,8 +420,9 @@ void AppModel::setCurrentSequenceFrame(int frame) {
 	//_frame = CLAMP(frame, 0, getCurrentFrameTotal()-1); //frame clamped to one less than total number;
 	_currentSequenceFrame = CLAMP(frame, 0, _currentScene->getCurrentSequence()->getTransformVector("atk1")->size()-1); // to be sure, to be sure!
 	if (_currentScene->getCurrentSequence()->getType() == "a" && _currentScene->getCurrentSequence()->getNumber() > 0) {
-	    if (_currentSequenceFrame > 0) _currentSceneFrame = _currentSceneFrame + _currentSequenceFrame - _lastSequenceFrame;
-	    _lastSequenceFrame = _currentSequenceFrame;
+	    if(ofSplitString(_videoPlayers[0]->getName(), "_")[1] == _currentScene->getCurrentSequence()->getName() + ".mov"){
+	        _currentSceneFrame = _currentScene->getCurrentSequence()->getPreviousFrames() + _currentSequenceFrame;
+	    }
 	}
 	setCurrentInteractivity(_currentSequenceFrame); // see notes below in Interactivity getter/setters section as to why this is here
 }
