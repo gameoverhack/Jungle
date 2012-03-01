@@ -154,7 +154,7 @@ void ArdController::updateArduino(bool fake) {
     } else {
         if (_appModel->getCurrentInteractivity() == kINTERACTION_BOTH ||
             _appModel->getCurrentInteractivity() == kINTERACTION_ATTACKER) {
-            if (delta > 0.1) _appModel->restartTimer("attackActionTimer");
+            if (delta > 0.05) _appModel->restartTimer("attackActionTimer");
             _appModel->setARDAttackLevel(level);
         }
     }
