@@ -83,6 +83,7 @@ void SceneXMLParser::parseXML(){
 		checkTagAttributesExist("scene", attributesToCheck, whichScene);
 
 		scene = new Scene();
+		int totalFrames = 0;
 		scene->setName(_xml.getAttribute("scene", "name", "", whichScene));
 		scene->setTotalFrames(_xml.getAttribute("scene", "totalFrames", -1, whichScene)); // no loop or b seq's
 
@@ -147,6 +148,9 @@ void SceneXMLParser::parseXML(){
 
 			sequence->setMovieFullFilePath(_moviesFileLister.getPath(fileId));
             sequence->setNumFrames(_xml.getAttribute("sequence", "frames", -1, whichSequence));
+
+            sequence->setPreviousFrames(totalFrames);
+            if(sequence->getNumber() > 0 && sequence->getType() == "a") totalFrames += sequence->getNumFrames();
 
 			// push in
 			_xml.pushTag("sequence", whichSequence);
