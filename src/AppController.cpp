@@ -386,9 +386,9 @@ void AppController::nextScene() {
         _camControllers[0]->loadAttributes();
         _camControllers[1]->loadAttributes();
 
-         if (!_appModel->hasTimedOut("anyFaceTimer")) {
+         if (_appModel->getPinInput()[2] > 100 || _appModel->getPinInput()[3] > 100) {
              _switchToSequence = _appModel->getCurrentScene()->getSequence("seq01a");
-         } else _switchToSequence = currentScene->getCurrentSequence();
+         } else _switchToSequence = _appModel->getCurrentScene()->getSequence("seq00a");
 
         _soundController->setup();
         _soundController->setVolume(1.0);
@@ -508,7 +508,7 @@ void AppController::keyPressed(int key){
 //            _appModel->restartTimer("victimFaceTimer");
 //            _appModel->restartTimer("anyFaceTimer");
 //            _appModel->restartTimer("attackFaceTimer");
-            _switchToSequence = _appModel->getCurrentScene()->getSequence("seq01a");
+            _switchToSequence = _appModel->getCurrentScene()->getSequence("seq08a");
             _vidController->loadMovie(_switchToSequence, true);
             break;
 		case '[':
