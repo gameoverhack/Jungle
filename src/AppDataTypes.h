@@ -265,6 +265,9 @@ public:
     void setNumFrames(int frames) {_frames = frames;};
     int  getNumFrames() {return _frames;};
 
+    void setPreviousFrames(int previousframes) {_previousFrames = previousframes;};
+    int  getPreviousFrames() {return _previousFrames;};
+
 	void setIsMovieFaked(bool b) {
 		_isMovieFaked = b;
 	}
@@ -313,22 +316,6 @@ public:
 		return tranString;
 	}
 
-//	void setInteractivity(string s) {
-//		_interactivity = s;
-//	}
-//
-//	string getInteractivity() {
-//		return _interactivity;
-//	}
-
-//	bool getLoop() {
-//		return _loop;
-//	}
-//
-//	void setLoop(bool loop){
-//		_loop = loop;
-//	}
-
 	string getType() {
 		return _type;
 	}
@@ -374,6 +361,7 @@ private:
 	//bool                    _loop; // TODO: DEPRECIATED, use _type
 	int						_number;
 	int                     _frames;
+	int                     _previousFrames;
 	string*					_nextResult; // technically doesn't need to be an array
 	string*                 _faceResult;
 	string* 				_attackerResult;
