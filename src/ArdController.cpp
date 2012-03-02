@@ -40,6 +40,9 @@ ArdController::ArdController(string deviceName, int ardBufferLengthSecs) {
 
 ArdController::~ArdController() {
     LOG_NOTICE("Disconnecting Arduino");
+    setState(kARDCONTROLLER_DISABLED);
+    _leftProximityHistory.clear();
+    _rightProximityHistory.clear();
     _ard.disconnect();
 }
 

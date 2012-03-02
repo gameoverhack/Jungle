@@ -48,7 +48,7 @@ AppModel::~AppModel() {
 	    delete _fakePlayers[i];
 	    delete _videoPlayers[i];
 	}
-	delete [] _cameraPRS;
+	//delete [] _cameraPRS;
 	delete [] _ardRawPins;
 	delete [] _fftCyclicBuffer;
 	delete [] _fftCyclicSum;

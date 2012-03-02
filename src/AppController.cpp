@@ -19,15 +19,13 @@ AppController::AppController(ofAppGlutWindow * windowPtr) {
 //--------------------------------------------------------------
 AppController::~AppController() {
 
+}
+
+void AppController::exit(){
     // need to comment out ofSoundStreamClose() in method ofExitCallback() in ofAppRunner -> some RTAUDIO bug wrecks clean exit!
     LOG_NOTICE("Saving properties");
-#ifndef USE_DUMMY
-#ifdef TARGET_WIN32
-    // save cam props
-	//_camControllers[0]->saveSettings();
-	//_camControllers[1]->saveSettings();
-#endif
-#endif
+    _appModel->setState(kAPP_EXITING);
+
 	_dataController->saveProperties();
 
     delete _appView;
@@ -36,8 +34,10 @@ AppController::~AppController() {
 	delete _camControllers[1];
 	delete _vidController;
 	delete _dataController;
-	delete _ardController;
 	delete _micController;
+	delete _appModel;
+	delete _ardController;
+	cout << "here" << endl;
 }
 
 //--------------------------------------------------------------
@@ -122,16 +122,16 @@ void AppController::setup() {
 	_appModel->setProperty("loadingMessage", string("AppController loading"));
 	_appModel->setProperty("loadingProgress", 0.1f);
     //_appModel->setProperty("showCameras", false);
-    _appModel->setProperty("showProps", false);
+//    _appModel->setProperty("showProps", false);
 	_appModel->setProperty("fullScreen", false);
 //	_appModel->setProperty("tryScaleMethod", 0);
 //	_appModel->setProperty("anyActionTimer", 500);
 //	_appModel->setProperty("victimActionTimer", 3000);
 //	_appModel->setProperty("attackActionTimer", 3000);
-    _appModel->setProperty("anyFaceTimer", 100000);
-	_appModel->setProperty("victimFaceTimer", 5000);
-	_appModel->setProperty("attackFaceTimer", 5000);
-	_appModel->setProperty("autoAttackTimer", 5000);
+//    _appModel->setProperty("anyFaceTimer", 10000);
+//	_appModel->setProperty("victimFaceTimer", 5000);
+//	_appModel->setProperty("attackFaceTimer", 5000);
+//	_appModel->setProperty("autoAttackTimer", 5000);
 /*	_appModel->setProperty("ardAttackMin", 300.0f);
 	_appModel->setProperty("ardAttackMax", 800.0f);
 	_appModel->setProperty("cameraToAdjust", (string)"0");
