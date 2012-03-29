@@ -11,22 +11,22 @@
 
 //--------------------------------------------------------------
 KeyboardController::KeyboardController() {
-	
+
 	LOG_NOTICE("Constructing KeyboardController");
-	
-	ofAddListener(ofEvents.keyPressed, this, &KeyboardController::keyPressed);
-    ofAddListener(ofEvents.keyReleased, this, &KeyboardController::keyReleased);
-	
+
+	ofAddListener(ofEvents().keyPressed, this, &KeyboardController::keyPressed);
+    ofAddListener(ofEvents().keyReleased, this, &KeyboardController::keyReleased);
+
 }
 
 //--------------------------------------------------------------
 KeyboardController::~KeyboardController() {
-	
+
 	LOG_NOTICE("Destructing KeyboardController");
-	
-	ofRemoveListener(ofEvents.keyPressed, this, &KeyboardController::keyPressed);
-    ofRemoveListener(ofEvents.keyReleased, this, &KeyboardController::keyReleased);
-	
+
+	ofRemoveListener(ofEvents().keyPressed, this, &KeyboardController::keyPressed);
+    ofRemoveListener(ofEvents().keyReleased, this, &KeyboardController::keyReleased);
+
 }
 
 //--------------------------------------------------------------

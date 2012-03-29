@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
-	<ActiveTarget name="release" />
+	<ActiveTarget name="debug" />
 	<File name="..\..\..\addons\goDirList\src\goDirList.cpp" open="0" top="0" tabpos="20">
 		<Cursor position="3970" topLine="167" />
 	</File>
@@ -8,10 +8,10 @@
 		<Cursor position="1649" topLine="57" />
 	</File>
 	<File name="..\..\..\addons\goVideoGrabber\src\goVideoGrabber.cpp" open="1" top="0" tabpos="26">
-		<Cursor position="33118" topLine="1139" />
+		<Cursor position="33144" topLine="1141" />
 	</File>
 	<File name="..\..\..\addons\goVideoGrabber\src\goVideoGrabber.h" open="0" top="0" tabpos="34">
-		<Cursor position="557" topLine="2" />
+		<Cursor position="2423" topLine="70" />
 	</File>
 	<File name="..\..\..\addons\ofxCv\src\Calibration.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="318" topLine="0" />
@@ -167,13 +167,19 @@
 		<Cursor position="0" topLine="10" />
 	</File>
 	<File name="..\..\..\addons\ofxOsc\src\ofxOscMessage.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="2014" topLine="50" />
+		<Cursor position="2014" topLine="36" />
 	</File>
 	<File name="..\..\..\addons\ofxOsc\src\ofxOscMessage.h" open="1" top="0" tabpos="2">
-		<Cursor position="1546" topLine="0" />
+		<Cursor position="1546" topLine="3" />
 	</File>
 	<File name="..\..\..\addons\ofxOsc\src\ofxOscReceiver.cpp" open="1" top="0" tabpos="10">
 		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="..\..\..\addons\ofxThreadedImageLoader\src\ofxThreadedImageLoader.cpp" open="1" top="0" tabpos="36">
+		<Cursor position="286" topLine="6" />
+	</File>
+	<File name="..\..\..\addons\ofxThreadedImageLoader\src\ofxThreadedImageLoader.h" open="1" top="0" tabpos="37">
+		<Cursor position="32" topLine="0" />
 	</File>
 	<File name="..\..\..\addons\ofxThreadedVideo\src\ofxThreadedVideo.cpp" open="1" top="0" tabpos="15">
 		<Cursor position="9834" topLine="312" />
@@ -193,16 +199,16 @@
 	<File name="bin\data\config_scenes.xml" open="0" top="0" tabpos="22">
 		<Cursor position="1936" topLine="0" />
 	</File>
-	<File name="bin\data\leveltextureblend.frag" open="1" top="0" tabpos="42">
+	<File name="bin\data\leveltextureblend.frag" open="0" top="0" tabpos="42">
 		<Cursor position="255" topLine="0" />
 	</File>
 	<File name="bin\data\leveltexturevertex.vert" open="0" top="0" tabpos="41">
 		<Cursor position="264" topLine="0" />
 	</File>
-	<File name="bin\data\multitexturemerge.frag" open="1" top="0" tabpos="36">
+	<File name="bin\data\multitexturemerge.frag" open="0" top="0" tabpos="36">
 		<Cursor position="1457" topLine="38" />
 	</File>
-	<File name="bin\data\multitexturemerge_optimised.frag" open="1" top="0" tabpos="38">
+	<File name="bin\data\multitexturemerge_optimised.frag" open="0" top="0" tabpos="38">
 		<Cursor position="822" topLine="63" />
 	</File>
 	<File name="bin\data\vertex.vert" open="0" top="0" tabpos="43">
@@ -211,8 +217,8 @@
 	<File name="src\Analyzer.cpp" open="0" top="0" tabpos="22">
 		<Cursor position="5161" topLine="141" />
 	</File>
-	<File name="src\AppController.cpp" open="1" top="1" tabpos="20">
-		<Cursor position="3219" topLine="75" />
+	<File name="src\AppController.cpp" open="1" top="0" tabpos="20">
+		<Cursor position="7393" topLine="165" />
 	</File>
 	<File name="src\AppController.h" open="1" top="0" tabpos="32">
 		<Cursor position="858" topLine="62" />
@@ -220,8 +226,8 @@
 	<File name="src\AppDataTypes.h" open="1" top="0" tabpos="33">
 		<Cursor position="6742" topLine="350" />
 	</File>
-	<File name="src\AppModel.cpp" open="1" top="0" tabpos="13">
-		<Cursor position="782" topLine="34" />
+	<File name="src\AppModel.cpp" open="1" top="1" tabpos="13">
+		<Cursor position="530" topLine="15" />
 	</File>
 	<File name="src\AppModel.h" open="1" top="0" tabpos="7">
 		<Cursor position="2087" topLine="82" />
@@ -244,16 +250,16 @@
 	<File name="src\AttackView.h" open="0" top="0" tabpos="13">
 		<Cursor position="234" topLine="0" />
 	</File>
-	<File name="src\BaseMeterView.cpp" open="1" top="0" tabpos="40">
+	<File name="src\BaseMeterView.cpp" open="0" top="0" tabpos="40">
 		<Cursor position="592" topLine="79" />
 	</File>
 	<File name="src\BaseMeterView.h" open="0" top="0" tabpos="19">
 		<Cursor position="129" topLine="54" />
 	</File>
-	<File name="src\BaseState.cpp" open="1" top="0" tabpos="44">
+	<File name="src\BaseState.cpp" open="0" top="0" tabpos="44">
 		<Cursor position="268" topLine="6" />
 	</File>
-	<File name="src\BaseState.h" open="1" top="0" tabpos="43">
+	<File name="src\BaseState.h" open="0" top="0" tabpos="43">
 		<Cursor position="0" topLine="0" />
 	</File>
 	<File name="src\BaseView.cpp" open="1" top="0" tabpos="19">
@@ -286,6 +292,9 @@
 	<File name="src\HighLowTimer.h" open="0" top="0" tabpos="20">
 		<Cursor position="3889" topLine="135" />
 	</File>
+	<File name="src\KeyboardController.cpp" open="1" top="0" tabpos="38">
+		<Cursor position="333" topLine="2" />
+	</File>
 	<File name="src\KeyboardModel.h" open="1" top="0" tabpos="6">
 		<Cursor position="0" topLine="0" />
 	</File>
@@ -293,19 +302,22 @@
 		<Cursor position="0" topLine="0" />
 	</File>
 	<File name="src\MicController.cpp" open="1" top="0" tabpos="9">
-		<Cursor position="2311" topLine="45" />
+		<Cursor position="2376" topLine="8" />
 	</File>
-	<File name="src\PropertyXMLParser.h" open="1" top="0" tabpos="37">
+	<File name="src\MicController.h" open="0" top="0" tabpos="0">
+		<Cursor position="1031" topLine="25" />
+	</File>
+	<File name="src\PropertyXMLParser.h" open="0" top="0" tabpos="37">
 		<Cursor position="0" topLine="0" />
 	</File>
 	<File name="src\SceneView.cpp" open="1" top="0" tabpos="24">
 		<Cursor position="6164" topLine="139" />
 	</File>
-	<File name="src\SceneView.h" open="1" top="0" tabpos="39">
+	<File name="src\SceneView.h" open="0" top="0" tabpos="39">
 		<Cursor position="1225" topLine="36" />
 	</File>
 	<File name="src\SceneXMLBuilder.cpp" open="1" top="0" tabpos="35">
-		<Cursor position="8038" topLine="219" />
+		<Cursor position="8146" topLine="219" />
 	</File>
 	<File name="src\SceneXMLParser.cpp" open="1" top="0" tabpos="34">
 		<Cursor position="6114" topLine="134" />
@@ -316,7 +328,7 @@
 	<File name="src\Timer.h" open="1" top="0" tabpos="30">
 		<Cursor position="3028" topLine="96" />
 	</File>
-	<File name="src\VictimView.cpp" open="1" top="0" tabpos="41">
+	<File name="src\VictimView.cpp" open="0" top="0" tabpos="41">
 		<Cursor position="5099" topLine="111" />
 	</File>
 	<File name="src\VictimView.h" open="0" top="0" tabpos="14">

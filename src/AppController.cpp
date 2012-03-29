@@ -53,7 +53,6 @@ void AppController::setup() {
 	_isFullScreen		= false; // change this when we start in fullscreen mode
 	_switchToSequence	= NULL;
 
-	//_appModel->registerStates();
 	_appModel->setState(kAPP_INIT);
 
     // load fake faces
@@ -79,17 +78,15 @@ void AppController::setup() {
 
 	// setup videoController
 	_vidController = new VideoController();
-	//_vidController->registerStates();
-    //ofSetLogLevel(OF_LOG_NOTICE);
+
 	// setup micController
+	// NOTE ACTUALLY JUST USING DEFAULT DEVICE SO WE CAN SET THIS THROUGH THE OPERATING SYSTEM!
 	_micController = new MicController("Microphone (Realtek High Definition Audio", 2); // other is Microphone (2- HD Pro Webcam C910) // TODO: make these a property
 	ofAddListener(_appModel->victimAction, this, &AppController::VictimEvent);
-	//_micController->registerStates();
 
 	// setup ardController
 	_ardController = new ArdController("COM3", 1); // TODO: make this a property
 	ofAddListener(_appModel->attackAction, this, &AppController::AttackEvent);
-	//_ardController->registerStates();
 
 	// setup cameras
 	_camControllers[0] = new CamController();
@@ -177,7 +174,6 @@ void AppController::setup() {
     	// setup main app view
 	_appView = new AppView(boost::any_cast<float>(_appModel->getProperty("appRenderWidth")),
 						   boost::any_cast<float>(_appModel->getProperty("appRenderHeight")));
-
 
 	_appModel->setState(kAPP_LOADING);
 

@@ -135,7 +135,6 @@
 			<Add directory="..\..\..\addons\ofxAssimpModelLoader\libs\assimp\lib\win_cb" />
 			<Add directory="..\..\..\addons\ofxAssimpModelLoader\libs\assimp\lib\android\armeabi" />
 			<Add directory="..\..\..\addons\ofxAssimpModelLoader\libs\assimp\lib\android\armeabi-v7a" />
-			<Add directory="..\..\..\addons\ofxThreadedImageLoader\src" />
 			<Add directory="..\..\..\addons\goDirList\src" />
 			<Add directory="..\..\..\addons\goFlexCOM" />
 			<Add directory="..\..\..\addons\goThreadedVideo\src" />

@@ -43,24 +43,24 @@ MicController::MicController(string deviceName, int fftBufferLengthSecs, int aud
 
 #ifdef TARGET_WIN32
     // instantiate the soundstream
-    LOG_NOTICE("Setting up soundstream");
-#if OF_VERSION > 7
-    vector<ofStreamDevice> deviceVec = ofSoundStreamListDevices();
-
-    int inputDeviceID = -1;
-    for(int i = 0; i < deviceVec.size(); i++) {
-        ofStreamDevice info = deviceVec[i];
-        LOG_VERBOSE("Device name == " + info.name);
-        if (info.name == deviceName) {
-            inputDeviceID = i;
-            break;
-        }
-    }
-	ofSoundStreamSetup(0, channels, this, sampleRate, _audioBufferSize, 2, inputDeviceID);
-#else
-    soundStream.setDeviceID(deviceName);
-    ofSoundStreamSetup(0, channels, this, sampleRate, _audioBufferSize, 2);
-#endif
+    LOG_NOTICE("Setting up soundstream" + ofToString(OF_VERSION));
+//#if OF_VERSION > 6
+//    vector<ofStreamDevice> deviceVec = ofSoundStreamListDevices();
+//
+//    int inputDeviceID = -1;
+//    for(int i = 0; i < deviceVec.size(); i++) {
+//        ofStreamDevice info = deviceVec[i];
+//        LOG_VERBOSE("Device name == " + info.name);
+//        if (info.name == deviceName) {
+//            inputDeviceID = i;
+//            break;
+//        }
+//    }
+//	ofSoundStreamSetup(0, channels, this, sampleRate, _audioBufferSize, 2, inputDeviceID);
+//#else
+    //soundStream.setDeviceID(deviceName);
+    ofSoundStreamSetup(0, channels, this, sampleRate, _audioBufferSize, 2); // default device should be ok?
+//#endif
 #else
 	LOG_WARNING("I made good changes to ofSoundStream -> impliment them by copying the file or making your own version");
 	ofSoundStreamSetup(0, channels, this, sampleRate, _audioBufferSize, 2);
