@@ -31,6 +31,7 @@ public:
 	void	        registerStates();
 
     void            update();
+    void            stop();
 
     void            fakeAttackAction(float input);
 

@@ -35,8 +35,8 @@ void AppController::exit(){
 	delete _vidController;
 	delete _dataController;
 	delete _micController;
-	delete _appModel;
 	delete _ardController;
+	delete _appModel;
 	cout << "here" << endl;
 }
 
@@ -602,6 +602,9 @@ void AppController::keyPressed(int key){
             break;
         case '8':
             ofShowCursor();
+            break;
+        case 'L':
+            _ardController->stop();
             break;
 		default:
 			break;

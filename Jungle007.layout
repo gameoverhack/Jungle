@@ -182,7 +182,7 @@
 		<Cursor position="32" topLine="0" />
 	</File>
 	<File name="..\..\..\addons\ofxThreadedVideo\src\ofxThreadedVideo.cpp" open="1" top="0" tabpos="15">
-		<Cursor position="9834" topLine="312" />
+		<Cursor position="3374" topLine="99" />
 	</File>
 	<File name="..\..\..\addons\ofxThreadedVideo\src\ofxThreadedVideo.h" open="1" top="0" tabpos="14">
 		<Cursor position="3027" topLine="127" />
@@ -205,8 +205,8 @@
 	<File name="bin\data\leveltexturevertex.vert" open="0" top="0" tabpos="41">
 		<Cursor position="264" topLine="0" />
 	</File>
-	<File name="bin\data\multitexturemerge.frag" open="0" top="0" tabpos="36">
-		<Cursor position="1457" topLine="38" />
+	<File name="bin\data\multitexturemerge.frag" open="1" top="0" tabpos="39">
+		<Cursor position="939" topLine="15" />
 	</File>
 	<File name="bin\data\multitexturemerge_optimised.frag" open="0" top="0" tabpos="38">
 		<Cursor position="822" topLine="63" />
@@ -218,16 +218,16 @@
 		<Cursor position="5161" topLine="141" />
 	</File>
 	<File name="src\AppController.cpp" open="1" top="0" tabpos="20">
-		<Cursor position="7393" topLine="165" />
+		<Cursor position="24371" topLine="597" />
 	</File>
 	<File name="src\AppController.h" open="1" top="0" tabpos="32">
-		<Cursor position="858" topLine="62" />
+		<Cursor position="1590" topLine="90" />
 	</File>
 	<File name="src\AppDataTypes.h" open="1" top="0" tabpos="33">
 		<Cursor position="6742" topLine="350" />
 	</File>
-	<File name="src\AppModel.cpp" open="1" top="1" tabpos="13">
-		<Cursor position="530" topLine="15" />
+	<File name="src\AppModel.cpp" open="1" top="0" tabpos="13">
+		<Cursor position="1249" topLine="37" />
 	</File>
 	<File name="src\AppModel.h" open="1" top="0" tabpos="7">
 		<Cursor position="2087" topLine="82" />
@@ -238,11 +238,11 @@
 	<File name="src\AppView.h" open="1" top="0" tabpos="31">
 		<Cursor position="437" topLine="0" />
 	</File>
-	<File name="src\ArdController.cpp" open="1" top="0" tabpos="16">
-		<Cursor position="1255" topLine="27" />
+	<File name="src\ArdController.cpp" open="1" top="1" tabpos="16">
+		<Cursor position="827" topLine="17" />
 	</File>
 	<File name="src\ArdController.h" open="1" top="0" tabpos="21">
-		<Cursor position="597" topLine="25" />
+		<Cursor position="626" topLine="23" />
 	</File>
 	<File name="src\AttackView.cpp" open="1" top="0" tabpos="17">
 		<Cursor position="3244" topLine="62" />
@@ -263,7 +263,7 @@
 		<Cursor position="0" topLine="0" />
 	</File>
 	<File name="src\BaseView.cpp" open="1" top="0" tabpos="19">
-		<Cursor position="1806" topLine="48" />
+		<Cursor position="979" topLine="41" />
 	</File>
 	<File name="src\BaseView.h" open="1" top="0" tabpos="18">
 		<Cursor position="442" topLine="16" />
@@ -311,7 +311,7 @@
 		<Cursor position="0" topLine="0" />
 	</File>
 	<File name="src\SceneView.cpp" open="1" top="0" tabpos="24">
-		<Cursor position="6164" topLine="139" />
+		<Cursor position="1100" topLine="8" />
 	</File>
 	<File name="src\SceneView.h" open="0" top="0" tabpos="39">
 		<Cursor position="1225" topLine="36" />

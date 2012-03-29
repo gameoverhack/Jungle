@@ -8,10 +8,41 @@
  */
 
 #include "ArdController.h"
+#include <signal.h>
+
+//void handleSignal(int err){
+//    cout << "Caught Signal Error: " << err << endl;
+//    //abort();
+//}
+
+LONG WINAPI UnhandledExceptionCallback(PEXCEPTION_POINTERS pExceptPtrs) {
+    if (IsDebuggerPresent()) {
+        // Allow normal crash handling, which means the debugger will take over.
+        cout << "WE HAD AN UNHANDLED EXCEPTION (DEBUG) - AND WE JUST DON'T CARE!" << endl;
+        return EXCEPTION_CONTINUE_SEARCH;
+    } else {
+        cout << "WE HAD AN UNHANDLED EXCEPTION (RUNTIME) - AND WE JUST DON'T CARE!" << endl;
+        cout << "Well we care but after 8 hours of looking at why ofSerial/ofArduino crash on exit, I don't care. Bye!" << endl;
+        // Say we've handled it, so that the standard crash dialog is inhibited.
+        return EXCEPTION_EXECUTE_HANDLER;
+    }
+}
 
 ArdController::ArdController(string deviceName, int ardBufferLengthSecs) {
 
     LOG_NOTICE("Constructing ArdController");
+
+    // I simply cannot get ofSerial/ofArduino to exit cleanly...so...
+
+    // ...nasty way to catch exceptions when running in release...(signals method)
+    //if(signal(SIGSEGV, handleSignal) == SIG_ERR) LOG_ERROR("Cannot handle SIGSEGV");
+
+    // ...another nasty way to do the same on Windows:
+    // 1) don't open a general purpose error message box,
+    // 2) and handle the sigsegv using more windows API
+    // see: http://stackoverflow.com/questions/3416413/can-one-prevent-microsoft-error-reporting-for-a-single-app
+    SetErrorMode(SEM_NOGPFAULTERRORBOX); // stops the error window
+    SetUnhandledExceptionFilter(UnhandledExceptionCallback); // catches the unhandled exception
 
     registerStates();
 
@@ -40,6 +71,11 @@ ArdController::ArdController(string deviceName, int ardBufferLengthSecs) {
 
 ArdController::~ArdController() {
     LOG_NOTICE("Disconnecting Arduino");
+    if(!checkState(kARDCONTROLLER_DISABLED)) stop();
+}
+
+void ArdController::stop() {
+    LOG_NOTICE("Stopping Arduino");
     setState(kARDCONTROLLER_DISABLED);
     _leftProximityHistory.clear();
     _rightProximityHistory.clear();
@@ -90,6 +126,7 @@ void ArdController::setupArduino() {
 void ArdController::updateArduino(bool fake) {
 
     //LOG_VERBOSE("Update Ard");
+    if (checkState(kARDCONTROLLER_DISABLED)) return;
 
     int * pinInput              = _appModel->getPinInput();
 
