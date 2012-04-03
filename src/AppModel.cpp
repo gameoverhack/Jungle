@@ -134,6 +134,7 @@ bool AppModel::nextScene(){
 			nextname = (iter == _scenes.end() ? _scenes.begin()->first : iter->first);
 			setCurrentScene(nextname);
 			LOG_VERBOSE("Nextscene: " + nextname);
+			ofSleepMillis(500);
 			return true;
 		}
 	}
@@ -404,18 +405,26 @@ ofxThreadedVideo * AppModel::getNextVideoPlayer() {
 void AppModel::toggleVideoPlayers(int forceFrame, bool noPause) {
 	LOG_VERBOSE("Swap Video Player pointers started with frame: " + ofToString(forceFrame));
     if (forceFrame > 0) _videoPlayers[1]->setFrame(forceFrame);
+    cout << "here0" << endl;
 	_videoPlayers[1]->update();
-
+    cout << "here1" << endl;
 	swap(_videoPlayers[0], _videoPlayers[1]);
+	cout << "here2" << endl;
 	_videoPlayers[1]->close();
-
+    cout << "here3" << endl;
 	_appModel->setCurrentSequenceFrame(_videoPlayers[0]->getCurrentFrame());
+	cout << "here4" << endl;
 	_appModel->setCurrentIsFrameNew(_videoPlayers[0]->isFrameNew());
-
-	delete _videoPlayers[1];
-	_videoPlayers[1] = new ofxThreadedVideo();
+    cout << "here5" << endl;
+    _videoPlayers[1]->stop();
+	//delete _videoPlayers[1];
+	cout << "here6" << endl;
+	_videoPlayers[1]->close();
+	//_videoPlayers[1] = new ofxThreadedVideo();
+	//cout << "here7" << endl;
 	//_videoPlayers[1]->setPixelFormat(OF_PIXELS_RGBA);
-	_videoPlayers[1]->setPixelFormat(OF_PIXELS_ABGR);
+	//_videoPlayers[1]->setPixelFormat(OF_PIXELS_ABGR);
+	//cout << "here8" << endl;
 }
 
 //--------------------------------------------------------------

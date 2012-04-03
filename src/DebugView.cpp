@@ -42,6 +42,8 @@ void DebugView::update() {
     msg += "mic RAW levl: " + ofToString(victimLevel) + " delta: " + ofToString(victimDelta) + "\n";
     msg += "ard RAW pin0: " + ofToString(pinInput[0]) + " min: " + ofToString(min) + " max: " + ofToString(max) + "\n";
     msg += "ard RAW pin1: " + ofToString(pinInput[1]) + "\n";
+    msg += "ard RAW pin2: " + ofToString(pinInput[2]) + "\n";
+    msg += "ard RAW pin3: " + ofToString(pinInput[3]) + "\n";
     msg += "ard ATK levl: " + ofToString(attackLevel) + " delta: " + ofToString(attackDelta) + "\n";
 
 	// get frame rate

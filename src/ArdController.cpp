@@ -41,8 +41,8 @@ ArdController::ArdController(string deviceName, int ardBufferLengthSecs) {
     // 1) don't open a general purpose error message box,
     // 2) and handle the sigsegv using more windows API
     // see: http://stackoverflow.com/questions/3416413/can-one-prevent-microsoft-error-reporting-for-a-single-app
-    SetErrorMode(SEM_NOGPFAULTERRORBOX); // stops the error window
-    SetUnhandledExceptionFilter(UnhandledExceptionCallback); // catches the unhandled exception
+    //SetErrorMode(SEM_NOGPFAULTERRORBOX); // stops the error window
+    //SetUnhandledExceptionFilter(UnhandledExceptionCallback); // catches the unhandled exception
 
     registerStates();
 
@@ -194,7 +194,7 @@ void ArdController::updateArduino(bool fake) {
     } else {
         if (_appModel->getCurrentInteractivity() == kINTERACTION_BOTH ||
             _appModel->getCurrentInteractivity() == kINTERACTION_ATTACKER) {
-            if (delta > 0.05) _appModel->restartTimer("attackActionTimer");
+            if (delta > 0.05 && level > 0.2) _appModel->restartTimer("attackActionTimer");
             _appModel->setARDAttackLevel(level);
         }
     }

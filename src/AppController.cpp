@@ -336,7 +336,8 @@ void AppController::update() {
         _appModel->getFakeAttackPlayer()->update();
         _appModel->getFakeVictimPlayer()->update();
 
-        if(_appModel->hasTimedOut("attackFaceTimer")){
+        if(_appModel->hasTimedOut("attackFaceTimer") && _appModel->hasTimedOut("anyActionTimer") && _switchToSequence == NULL && _vidController->checkState(kVIDCONTROLLER_READY)){
+            //cout << _appModel->hasTimedOut("autoAttackTimer") << " " << (bool)(_appModel->getCurrentInteractivity() == kINTERACTION_ATTACKER) << " " << (bool)(_appModel->getCurrentInteractivity() == kINTERACTION_BOTH) << endl;
             if(_appModel->hasTimedOut("autoAttackTimer") && (_appModel->getCurrentInteractivity() == kINTERACTION_ATTACKER || _appModel->getCurrentInteractivity() == kINTERACTION_BOTH)) {
                     LOG_NOTICE("Auto attacker action triggered");
                     _appModel->restartTimer("autoAttackTimer");
@@ -344,15 +345,15 @@ void AppController::update() {
                     AttackEvent(level);
             }
 
-        }else{
+        } else if (!_appModel->hasTimedOut("attackFaceTimer")) {
             _appModel->restartTimer("autoAttackTimer");
         }
 
-    if (currentSequence->getNumber() == 0 && (_appModel->getPinInput()[2] > 100 || _appModel->getPinInput()[3] > 100)  && _appModel->hasTimedOut("anyActionTimer") && _switchToSequence == NULL){
-        LOG_NOTICE("Found a face! Lets goooooooo....");
-        _switchToSequence = _appModel->getCurrentScene()->getSequence("seq01a");
-        _vidController->loadMovie(_switchToSequence, true);
-    }
+        if (currentSequence->getNumber() == 0 && (_appModel->getPinInput()[2] > 100 || _appModel->getPinInput()[3] > 100)  && _appModel->hasTimedOut("anyActionTimer") && _switchToSequence == NULL){
+            LOG_NOTICE("Found a face! Lets goooooooo....");
+            _switchToSequence = _appModel->getCurrentScene()->getSequence("seq01a");
+            _vidController->loadMovie(_switchToSequence, true);
+        }
 
 #ifdef DO_AUTO_TIMEOUT
         // if no faces present after timeout and no user action for more than timeout we can push to next scene

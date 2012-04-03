@@ -109,27 +109,43 @@ void VideoController::update() {
 		}
 
 	}
+    if(checkState(kVIDCONTROLLER_NEXTVIDREADY)){
+        if (currentMovie->getIsMovieDone()) {
+            if (_preRolling) {
+                cout << "maybe" << endl;
+                nextMovie->update();
+                if(nextMovie->isLoaded() && nextMovie->getCurrentFrame() > _lastFrameWhenForced){
+                    toggleVideoPlayers();
+                    _lastFrameWhenForced = 0;
+                    _preRolling = false;
+                    setState(kVIDCONTROLLER_CURRENTVIDONE);
+                }
+            }
+        }
+    }
 
-	if (currentMovie->getIsMovieDone() && _preRolling) {
-	    nextMovie->update();
-	    if(nextMovie->isLoaded() && nextMovie->getCurrentFrame() > _lastFrameWhenForced){
-	        toggleVideoPlayers();
-            _lastFrameWhenForced = 0;
-            _preRolling = false;
-            setState(kVIDCONTROLLER_CURRENTVIDONE);
-	    }
-	}
+    if(checkState(kVIDCONTROLLER_READY)){
+        if (currentMovie->getIsMovieDone()) {
+            if (nextResult == "__FINAL_SEQUENCE__") {
+                cout << "maybewhtfs" << endl;
+                setState(kVIDCONTROLLER_CURRENTVIDONE);
+            }
+        }
+    }
 
     if(checkState(kVIDCONTROLLER_NEXTVIDLOADING)){
-        if(nextMovie->isLoaded() && nextMovie->getCurrentFrame() > 0 && !currentMovie->getIsMovieDone()){
+        cout << "maybenot" << endl;
+        if(currentMovie == NULL || nextMovie == NULL) {
+            cout << "something is null; bailing" << endl;
+            return;
+        }
+        if(nextMovie->isLoaded() && nextMovie->getCurrentFrame() > 0){
             _forceCurrentLoad = false;
             setState(kVIDCONTROLLER_NEXTVIDREADY);
         }
     }
 
-    if (currentMovie->getIsMovieDone() && nextResult == "__FINAL_SEQUENCE__"){
-        setState(kVIDCONTROLLER_CURRENTVIDONE);
-    }
+
 
 }
 

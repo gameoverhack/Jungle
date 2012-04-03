@@ -182,7 +182,7 @@
 		<Cursor position="32" topLine="0" />
 	</File>
 	<File name="..\..\..\addons\ofxThreadedVideo\src\ofxThreadedVideo.cpp" open="1" top="0" tabpos="15">
-		<Cursor position="3689" topLine="99" />
+		<Cursor position="10361" topLine="285" />
 	</File>
 	<File name="..\..\..\addons\ofxThreadedVideo\src\ofxThreadedVideo.h" open="1" top="0" tabpos="14">
 		<Cursor position="3027" topLine="127" />
@@ -217,17 +217,17 @@
 	<File name="src\Analyzer.cpp" open="0" top="0" tabpos="22">
 		<Cursor position="5161" topLine="141" />
 	</File>
-	<File name="src\AppController.cpp" open="1" top="1" tabpos="20">
-		<Cursor position="9366" topLine="196" />
+	<File name="src\AppController.cpp" open="1" top="0" tabpos="20">
+		<Cursor position="14225" topLine="305" />
 	</File>
 	<File name="src\AppController.h" open="1" top="0" tabpos="32">
-		<Cursor position="1666" topLine="63" />
+		<Cursor position="1641" topLine="63" />
 	</File>
 	<File name="src\AppDataTypes.h" open="1" top="0" tabpos="33">
 		<Cursor position="6742" topLine="350" />
 	</File>
 	<File name="src\AppModel.cpp" open="1" top="0" tabpos="13">
-		<Cursor position="17447" topLine="497" />
+		<Cursor position="13526" topLine="386" />
 	</File>
 	<File name="src\AppModel.h" open="1" top="0" tabpos="7">
 		<Cursor position="2087" topLine="82" />
@@ -286,7 +286,7 @@
 	<File name="src\FunctionModel.h" open="1" top="0" tabpos="5">
 		<Cursor position="246" topLine="0" />
 	</File>
-	<File name="src\HighLowTimer.cpp" open="1" top="0" tabpos="42">
+	<File name="src\HighLowTimer.cpp" open="1" top="0" tabpos="44">
 		<Cursor position="5129" topLine="70" />
 	</File>
 	<File name="src\HighLowTimer.h" open="0" top="0" tabpos="20">
@@ -322,26 +322,26 @@
 	<File name="src\SceneXMLParser.cpp" open="1" top="0" tabpos="34">
 		<Cursor position="6114" topLine="134" />
 	</File>
-	<File name="src\SoundController.cpp" open="1" top="0" tabpos="40">
-		<Cursor position="5407" topLine="120" />
+	<File name="src\SoundController.cpp" open="1" top="0" tabpos="42">
+		<Cursor position="6119" topLine="120" />
 	</File>
-	<File name="src\SoundController.h" open="1" top="0" tabpos="41">
-		<Cursor position="1149" topLine="69" />
+	<File name="src\SoundController.h" open="1" top="0" tabpos="43">
+		<Cursor position="740" topLine="18" />
 	</File>
 	<File name="src\Timer.cpp" open="1" top="0" tabpos="27">
-		<Cursor position="2830" topLine="113" />
+		<Cursor position="2370" topLine="91" />
 	</File>
 	<File name="src\Timer.h" open="1" top="0" tabpos="30">
 		<Cursor position="3698" topLine="120" />
 	</File>
-	<File name="src\VictimView.cpp" open="1" top="0" tabpos="43">
+	<File name="src\VictimView.cpp" open="1" top="0" tabpos="45">
 		<Cursor position="4685" topLine="92" />
 	</File>
 	<File name="src\VictimView.h" open="0" top="0" tabpos="14">
 		<Cursor position="234" topLine="0" />
 	</File>
-	<File name="src\VideoController.cpp" open="1" top="0" tabpos="29">
-		<Cursor position="4627" topLine="91" />
+	<File name="src\VideoController.cpp" open="1" top="1" tabpos="29">
+		<Cursor position="2507" topLine="58" />
 	</File>
 	<File name="src\VideoController.h" open="0" top="0" tabpos="5">
 		<Cursor position="765" topLine="6" />

@@ -70,7 +70,7 @@ enum TimerMode{
 };
 
 class TimerEvent;
-class Timer : public ofThread {
+class Timer {
 
 public:
 
@@ -118,7 +118,7 @@ public:
           string timerName = "UnnamedTimer",
 		  int resolutionInMilliseconds = 51);
 
-	~Timer(){};
+	~Timer();
 
 	void setTimeout(int timeoutInMilliseconds,
                     TimerMode mode = TIMER_MODE_ONCE,
@@ -142,8 +142,10 @@ public:
 
 private:
 
+    bool    _isRunning;
+
 	void	checkTimeout();
-	void	threadedFunction();
+	void    update(ofEventArgs& e);
 
 	bool	start(bool suppressEvents);
 	bool	stop(bool suppressEvents);

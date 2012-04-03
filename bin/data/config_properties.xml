@@ -31,7 +31,7 @@
         <property name="shaderOptimisedHeadFragPath" type="string">multitexturemerge_optimised.frag</property>
         <property name="shaderOptimisedHeadVertPath" type="string">vertex.vert</property>
         <property name="showCameras" type="bool">false</property>
-        <property name="showDebugView" type="bool">false</property>
+        <property name="showDebugView" type="bool">true</property>
         <property name="showFFT" type="bool">true</property>
         <property name="showProps" type="bool">false</property>
         <property name="showUnmaskedTextures" type="bool">false</property>

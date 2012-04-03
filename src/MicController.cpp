@@ -153,7 +153,7 @@ void MicController::audioReceived(float* input, int bufferSize, int nChannels) {
         } else {
             if (_appModel->getCurrentInteractivity() == kINTERACTION_BOTH ||
                 _appModel->getCurrentInteractivity() == kINTERACTION_VICTIM) {
-                if (delta > 0.1) _appModel->restartTimer("victimActionTimer");
+                if (delta > 0.2) _appModel->restartTimer("victimActionTimer");
                 _appModel->setFFTVictimLevel(level);
             }
         }

@@ -19,6 +19,11 @@
 Timer::Timer(){
 	setVerbose(false);
 	setTimeout(0); //setup with bad data
+	_isRunning = false;
+}
+
+Timer::~Timer(){
+    ofRemoveListener(ofEvents().update, this, &Timer::update);
 }
 
 /*
@@ -49,6 +54,8 @@ void Timer::setTimeout(int timeoutInMilliseconds,
 	_timerMode = mode;
     _name = name;
     _hasTimedOut = false;
+    _isRunning = false;
+    ofAddListener(ofEvents().update, this, &Timer::update);
 }
 
 /*
@@ -97,16 +104,16 @@ bool Timer::start(bool suppressEvents){
 		return false;
 	}
 
-	if(_verbose) cout << "Starting timer '" << _name << "' at time: " << ofToString(_startTime) << endl;
-
-	// stop current thread if it running
-	if(!isThreadRunning()) startThread(false, false); // start in non blocking non verbose
+	//if(_verbose) cout << "Starting timer '" << _name << "' at time: " << ofToString(_startTime) << endl;
+    //
 
 	if(!suppressEvents){
 		// dispatch START event
 		TimerEvent event = TimerEvent(_name, this, TIMER_EVENT_START);
 		ofNotifyEvent(timerEvent, event, this);
 	}
+
+     _isRunning = true;
 
 	return true; // success
 }
@@ -115,20 +122,13 @@ bool Timer::start(bool suppressEvents){
  * Stop timing
  */
 bool Timer::stop(bool suppressEvents){
-	// stop our thread
-	bool wasTimerRunning = isTimerRunning(); // store this because stopping the thread will alter the value
-	// stop the thread
-	if(isThreadRunning()){
-		stopThread();
-	}
-    if(wasTimerRunning){
-		// we stopped prematurely
-		if(!suppressEvents){
-			//dispatch STOPPED
-			TimerEvent event = TimerEvent(_name, this, TIMER_EVENT_STOP);
-			ofNotifyEvent(timerEvent, event, this);
-		}
+    // we stopped prematurely
+    if(!suppressEvents){
+        //dispatch STOPPED
+        TimerEvent event = TimerEvent(_name, this, TIMER_EVENT_STOP);
+        ofNotifyEvent(timerEvent, event, this);
     }
+    _isRunning = false;
 	return true;
 }
 
@@ -136,7 +136,8 @@ bool Timer::stop(bool suppressEvents){
 /*
  * Check if we have timed out, restart as required
  */
-void Timer::checkTimeout(){
+void Timer::update(ofEventArgs& e){
+    if(!_isRunning) return;
 	int timeSinceStart = ofGetElapsedTimeMillis() - _startTime;
 	if(timeSinceStart >= _timeout){
 		// Timeout is finished
@@ -151,12 +152,12 @@ void Timer::checkTimeout(){
         switch (_timerMode) {
             case TIMER_MODE_REPEAT:
                 // repeating, so start again
-                if(_verbose) cout << _name << " is set to restart..." << endl;
+                cout << _name << " is set to restart..." << endl;
                 restart();
                 break;
             case TIMER_MODE_ONCE:
                 // Not repeating, so stop the thread
-                if(_verbose) cout << _name << " stopping." << endl;
+                cout << _name << " stopping." << endl;
                 stop(true); // supress stop event
                 break;
             default:
@@ -165,24 +166,12 @@ void Timer::checkTimeout(){
 	}
 }
 
-
-void Timer::threadedFunction() {
-	while(isThreadRunning()){
-		if(lock()){
-			checkTimeout();
-			ofSleepMillis(_timerResolution);
-			unlock();
-		}
-	}
-
-};
-
 /*
  * Boring getters/setters
  */
 
 void Timer::setVerbose(bool v){
-    Poco::ScopedLock<ofMutex> lock();
+    //Poco::ScopedLock<ofMutex> lock();
 	_verbose = v;
 }
 
@@ -209,7 +198,7 @@ bool Timer::hasTimedOut(){
 
 bool Timer::isTimerRunning(){
 	// timer is running if the thread is running and we have not timed out
-	return (isThreadRunning());
+	return _isRunning;
 }
 
 
