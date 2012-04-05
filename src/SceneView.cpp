@@ -64,6 +64,8 @@ void SceneView::update() {
 	ofTexture		* sceneTexture;
 	CamTransform	* actorTransform;
 
+    if(!currentMovie->isLoaded()) return;
+
 	// get the video texture
 	sceneTexture = &(currentMovie->getTextureReference());
 

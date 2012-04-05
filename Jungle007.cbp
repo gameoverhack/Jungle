@@ -776,6 +776,12 @@
 		<Unit filename="src\DebugView.h">
 			<Option virtualFolder="src\views\" />
 		</Unit>
+		<Unit filename="src\Fader.cpp">
+			<Option virtualFolder="src\utils\" />
+		</Unit>
+		<Unit filename="src\Fader.h">
+			<Option virtualFolder="src\utils\" />
+		</Unit>
 		<Unit filename="src\FunctionDataTypes.h">
 			<Option virtualFolder="src\models\" />
 		</Unit>
