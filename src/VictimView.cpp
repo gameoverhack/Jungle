@@ -94,22 +94,22 @@ void VictimView::update() {
 
     _top_off->draw(_top_x, _top_y);
 
-    if (isInteractive && _scaledInputLevel > 0.99f) {
+    if (isInteractive && _scaledInputLevel > 1.1f) {
         _top_on->draw(_top_x, _top_y);
     } else if (isInteractive) {
         _top_off->draw(_top_x, _top_y);
+    }
+
+    if (_bHasFiredEvent) {
+        _top_on->draw(_top_x, _top_y);
+    } else {
+        _top_off->draw(_button_x, _button_y);
     }
 
     if (!isInteractive) {
         if (_appModel->getFFTVictimDelta() > 0.3f) {
             _top_off->draw(_top_x, _top_y);
             _top_deny->draw(_top_x, _top_y);
-        } else {
-            if (_bHasFiredEvent) {
-                _top_on->draw(_top_x, _top_y);
-            } else {
-                _top_off->draw(_button_x, _button_y);
-            }
         }
     }
 
@@ -119,11 +119,11 @@ void VictimView::update() {
     drawMeterShader(_meter_x, _meter_y, &_meterMaskFBO.getTextureReference(), _meter_on, _meter_off);
 #endif
 
-    if(_appModel->getTimer("victimActionTimer")->hasTimedOut() && isInteractive){
+    if(_appModel->getTimer("victimActionTimer")->hasTimedOut() && isInteractive && _scaledInputLevel < 1.0f){
         if(!_hiLow->isTimerRunning()){
             _hiLow->start();
         }
-        if(_hiLow->isTimerRunning()){
+        if(_hiLow->isTimerRunning() && _scaledInputLevel < 1.0f){
             if(_hiLow->isHigh()){
                 _face_flash->draw(_top_x, _top_y);
             }

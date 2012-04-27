@@ -154,21 +154,21 @@ void MicController::audioReceived(float* input, int bufferSize, int nChannels) {
             if (_appModel->getCurrentInteractivity() == kINTERACTION_BOTH ||
                 _appModel->getCurrentInteractivity() == kINTERACTION_VICTIM) {
                 if (delta > 0.2) _appModel->restartTimer("victimActionTimer");
+                if (level > 0.2) _appModel->restartTimer("victimActionTimer");
                 _appModel->setFFTVictimLevel(level);
             }
         }
 
-        if (level > 1.0f &&
+        if (_appModel->getFFTVictimLevel() > 1.0f &&
             _appModel->checkState(kAPP_RUNNING) &&
             (_appModel->getCurrentInteractivity() == kINTERACTION_BOTH ||
              _appModel->getCurrentInteractivity() == kINTERACTION_VICTIM)) {
 
             if (_appModel->hasTimedOut("anyActionTimer")) {
-                LOG_VERBOSE("Send victim event: " + ofToString(level));
-                _appModel->sendVictimEvent(level);
+                LOG_VERBOSE("Send victim event: " + ofToString(_appModel->getFFTVictimLevel()));
+                _appModel->sendVictimEvent(_appModel->getFFTVictimLevel());
             }
         }
-
     }
 
 }
