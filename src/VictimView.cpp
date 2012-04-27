@@ -103,7 +103,7 @@ void VictimView::update() {
     if (_bHasFiredEvent) {
         _top_on->draw(_top_x, _top_y);
     } else {
-        _top_off->draw(_button_x, _button_y);
+        _top_off->draw(_top_x, _top_y);
     }
 
     if (!isInteractive) {
