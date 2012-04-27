@@ -14,7 +14,7 @@ AttackView::AttackView(float width, float height) : BaseMeterView(width, height)
      ********************************************************/
 
     _bird_x                 = 0.0f;
-    _bird_y                 = 0.0f;
+    _bird_y                 = 10.0f;
     _stations_x             = 0.0f;
     _stations_y             = 134.0f;
     _button_x               = 0.0f;
