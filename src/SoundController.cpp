@@ -56,6 +56,8 @@ void SoundController::setup() {
             LOG_VERBOSE("Adding fade to que: " + seqName + "::"+ ofToString(sFades[i]) + "::" + ofToString(sFades[i+1]) + "::" + ofToString(sFades[i+2]) + "::" + ofToString(sFades[i+3]));
 
             jungle_fade * j1 = new jungle_fade();
+            j1->startValue = 1.0;
+            j1->endValue = 0.0;
             j1->sequenceName = seqName;
             j1->startFrame = tFades[i];
             j1->endFrame = j1->startFrame + tFades[i+1];
@@ -66,6 +68,8 @@ void SoundController::setup() {
 
             jungle_fade * j2 = new jungle_fade();
             j2->sequenceName = seqName;
+            j2->startValue = 0.0;
+            j2->endValue = 1.0;
             j2->startFrame = tFades[i+2];
             j2->endFrame = j2->startFrame + tFades[i+3];
             j2->duration = tFades[i+3];
@@ -91,6 +95,8 @@ void SoundController::setup() {
             LOG_VERBOSE("Adding fade to que: " + seqName + "::"+ ofToString(fFades[i]) + "::" + ofToString(fFades[i+1]) + "::" + ofToString(fFades[i+2]) + "::" + ofToString(fFades[i+3]));
 
             jungle_fade * j1 = new jungle_fade();
+            j1->startValue = 1.0;
+            j1->endValue = 0.0;
             j1->sequenceName = seqName;
             j1->startFrame = tFades[i];
             j1->endFrame = j1->startFrame + tFades[i+1];
@@ -101,6 +107,8 @@ void SoundController::setup() {
 
             jungle_fade * j2 = new jungle_fade();
             j2->sequenceName = seqName;
+            j2->startValue = 0.0;
+            j2->endValue = 1.0;
             j2->startFrame = tFades[i+2];
             j2->endFrame = j2->startFrame + tFades[i+3];
             j2->duration = tFades[i+3];
@@ -126,6 +134,8 @@ void SoundController::setup() {
 
             jungle_fade * j1 = new jungle_fade();
             j1->sequenceName = seqName;
+            j1->startValue = 1.0;
+            j1->endValue = 0.0;
             j1->startFrame = tFades[i];
             j1->endFrame = j1->startFrame + tFades[i+1];
             j1->duration = tFades[i+1];
@@ -135,6 +145,8 @@ void SoundController::setup() {
 
             jungle_fade * j2 = new jungle_fade();
             j2->sequenceName = seqName;
+            j2->startValue = 0.0;
+            j2->endValue = 1.0;
             j2->startFrame = tFades[i+2];
             j2->endFrame = j2->startFrame + tFades[i+3];
             j2->duration = tFades[i+3];
@@ -180,7 +192,7 @@ void SoundController::update() {
             //LOG_VERBOSE("Check new fade " + currentSequenceName + " ? " + nextFade->sequenceName + " " + ofToString(currentSequenceFrame) + " ? " + ofToString(nextFade->startFrame));
             if (currentSequenceName == nextFade->sequenceName && currentSequenceFrame >= nextFade->startFrame && !nextFade->done) {
                 LOG_VERBOSE("Start Fade " + ofToString(i) + " que: " + _fades[i]->sequenceName + "::"+ ofToString(_fades[i]->startFrame) + "::" + ofToString(_fades[i]->endFrame));
-                _currentFade = new Fader(1.0, 0.0, nextFade->duration, nextFade->type, false);
+                _currentFade = new Fader(nextFade->startValue, nextFade->endValue, nextFade->duration, nextFade->type, false);
                 if (_currentFade->getTo() == 1.0) {
                     LOG_VERBOSE("Rewind");
                     _player.setPosition(0.0);

@@ -7,6 +7,8 @@
 typedef struct {
     //Fader* fader;
     string sequenceName;
+    float startValue;
+    float endValue;
     int startFrame;
     int endFrame;
     int duration;

@@ -13,10 +13,10 @@
         <property name="autoAttackTimer" type="int">5000</property>
         <property name="autoTest" type="bool">false</property>
         <property name="cameraPropToAdjust" type="string">POSITION</property>
-        <property name="cameraToAdjust" type="int">0</property>
+        <property name="cameraToAdjust" type="int">1</property>
         <property name="fakeDataPath" type="string">F:/JungleAssets/fake</property>
         <property name="flashDataPath" type="string">D:/finalALL/flash</property>
-        <property name="fullScreen" type="bool">true</property>
+        <property name="fullScreen" type="bool">false</property>
         <property name="graphicDataPath" type="string">graphics</property>
         <property name="loadingMessage" type="string">STATE == kANAL_READY (0) :: </property>
         <property name="loadingProgress" type="float">0.1</property>
@@ -31,7 +31,7 @@
         <property name="shaderOptimisedHeadFragPath" type="string">multitexturemerge_optimised.frag</property>
         <property name="shaderOptimisedHeadVertPath" type="string">vertex.vert</property>
         <property name="showCameras" type="bool">false</property>
-        <property name="showDebugView" type="bool">true</property>
+        <property name="showDebugView" type="bool">false</property>
         <property name="showFFT" type="bool">false</property>
         <property name="showProps" type="bool">false</property>
         <property name="showUnmaskedTextures" type="bool">false</property>

@@ -355,7 +355,7 @@
 	<File name="src\VideoController.h" open="0" top="0" tabpos="5">
 		<Cursor position="765" topLine="6" />
 	</File>
-	<File name="src\config.h" open="1" top="0" tabpos="48">
+	<File name="src\config.h" open="1" top="0" tabpos="47">
 		<Cursor position="0" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>
