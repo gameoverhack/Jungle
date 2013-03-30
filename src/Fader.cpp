@@ -9,7 +9,6 @@ void Fader::start(){
     _startTime = ofGetElapsedTimeMillis();
     _fade.time = _startTime;
     _fade.value = _from;
-    ofAddListener(ofEvents().update, this, &Fader::update);
 }
 
 bool Fader::isFading(){
@@ -29,11 +28,10 @@ float Fader::getFrom(){
 }
 
 void Fader::stop(){
-    ofRemoveListener(ofEvents().update, this, &Fader::update);
     _isFading = false;
 }
 
-void Fader::update(ofEventArgs& e){
+void Fader::update(){
 
     _now = ofGetElapsedTimeMillis() - _startTime;
 

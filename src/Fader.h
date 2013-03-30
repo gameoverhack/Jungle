@@ -33,6 +33,8 @@ public:
 
    ~Fader();
 
+    void    update();
+
     void    start();
     void    stop();
     bool    isFading();
@@ -53,8 +55,6 @@ private:
 
     int     _type;
     bool    _isFading;
-
-    void update(ofEventArgs& e);
 
 };
 

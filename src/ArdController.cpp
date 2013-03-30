@@ -8,7 +8,7 @@
  */
 
 #include "ArdController.h"
-#include <signal.h>
+//#include <signal.h>
 
 //void handleSignal(int err){
 //    cout << "Caught Signal Error: " << err << endl;
@@ -41,8 +41,8 @@ ArdController::ArdController(string deviceName, int ardBufferLengthSecs) {
     // 1) don't open a general purpose error message box,
     // 2) and handle the sigsegv using more windows API
     // see: http://stackoverflow.com/questions/3416413/can-one-prevent-microsoft-error-reporting-for-a-single-app
-    SetErrorMode(SEM_NOGPFAULTERRORBOX); // stops the error window
-    SetUnhandledExceptionFilter(UnhandledExceptionCallback); // catches the unhandled exception
+    //SetErrorMode(SEM_NOGPFAULTERRORBOX); // stops the error window
+    //SetUnhandledExceptionFilter(UnhandledExceptionCallback); // catches the unhandled exception
 
     registerStates();
 

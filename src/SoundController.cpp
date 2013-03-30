@@ -173,6 +173,7 @@ void SoundController::update() {
 
     if (_currentFade != NULL) {
         //execute current fade
+        _currentFade->update();
         LOG_VERBOSE("Executing fade: " + ofToString(_currentFade->getFade().value));
         setVolume(_currentFade->getFade().value);
 
