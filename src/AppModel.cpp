@@ -34,6 +34,8 @@ AppModel::AppModel() {
         _videoPlayers[i]->setPixelFormat(OF_PIXELS_ABGR);
 	}
 
+    _currentVideoPlayerIndex = VIDEO_FLIP;
+
 }
 
 AppModel::~AppModel() {
@@ -393,33 +395,34 @@ float AppModel::getARDAttackDelta() {
  ********************************************************/
 //--------------------------------------------------------------
 ofxThreadedVideo * AppModel::getCurrentVideoPlayer() {
-	return _videoPlayers[0]; // always make 0 the current...
+	return _videoPlayers[_currentVideoPlayerIndex]; // always make 0 the current...
 }
 
 //--------------------------------------------------------------
 ofxThreadedVideo * AppModel::getNextVideoPlayer() {
-	return _videoPlayers[1]; // ... and 1 the next or cached video player
+	return _videoPlayers[getNextLoadID()]; // ... and 1 the next or cached video player
 }
 
 //--------------------------------------------------------------
 void AppModel::toggleVideoPlayers(int forceFrame, bool noPause) {
 	LOG_VERBOSE("Swap Video Player pointers started with frame: " + ofToString(forceFrame));
-    if (forceFrame > 0) _videoPlayers[1]->setFrame(forceFrame);
+    if (forceFrame > 0) _videoPlayers[getNextLoadID()]->setFrame(forceFrame);
     cout << "here0" << endl;
-	_videoPlayers[1]->update();
+	_videoPlayers[getNextLoadID()]->update();
     cout << "here1" << endl;
-	swap(_videoPlayers[0], _videoPlayers[1]);
+    _currentVideoPlayerIndex = getNextLoadID();
+	//swap(_videoPlayers[0], _videoPlayers[1]);
 	cout << "here2" << endl;
-	_videoPlayers[1]->close();
+	//_videoPlayers[getNextLoadID()]->close();
     cout << "here3" << endl;
-	_appModel->setCurrentSequenceFrame(_videoPlayers[0]->getCurrentFrame());
+	_appModel->setCurrentSequenceFrame(_videoPlayers[_currentVideoPlayerIndex]->getCurrentFrame());
 	cout << "here4" << endl;
-	_appModel->setCurrentIsFrameNew(_videoPlayers[0]->isFrameNew());
+	_appModel->setCurrentIsFrameNew(_videoPlayers[_currentVideoPlayerIndex]->isFrameNew());
     cout << "here5" << endl;
-    _videoPlayers[1]->stop();
+    _videoPlayers[getNextLoadID()]->stop();
 	//delete _videoPlayers[1];
 	cout << "here6" << endl;
-	_videoPlayers[1]->close();
+	_videoPlayers[getNextLoadID()]->close();
 	//_videoPlayers[1] = new ofxThreadedVideo();
 	//cout << "here7" << endl;
 	//_videoPlayers[1]->setPixelFormat(OF_PIXELS_RGBA);
@@ -428,11 +431,25 @@ void AppModel::toggleVideoPlayers(int forceFrame, bool noPause) {
 }
 
 //--------------------------------------------------------------
+int AppModel::getNextLoadID(){
+    // get the free slot in our videos array
+    switch (_currentVideoPlayerIndex) {
+        case VIDEO_NONE:
+        case VIDEO_FLOP:
+            return VIDEO_FLIP;
+            break;
+        case VIDEO_FLIP:
+            return VIDEO_FLOP;
+            break;
+    }
+}
+
+//--------------------------------------------------------------
 void AppModel::setCurrentSequenceFrame(int frame) {
 	//_frame = CLAMP(frame, 0, getCurrentFrameTotal()-1); //frame clamped to one less than total number;
 	_currentSequenceFrame = CLAMP(frame, 0, _currentScene->getCurrentSequence()->getTransformVector("atk1")->size()-1); // to be sure, to be sure!
 	if (_currentScene->getCurrentSequence()->getType() == "a" && _currentScene->getCurrentSequence()->getNumber() > 0) {
-	    if(ofSplitString(_videoPlayers[0]->getName(), "_")[1] == _currentScene->getCurrentSequence()->getName() + ".mov"){
+	    if(ofSplitString(_videoPlayers[_currentVideoPlayerIndex]->getName(), "_")[1] == _currentScene->getCurrentSequence()->getName() + ".mov"){
 	        _currentSceneFrame = _currentScene->getCurrentSequence()->getPreviousFrames() + _currentSequenceFrame;
 	    }
 	}

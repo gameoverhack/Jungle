@@ -67,7 +67,7 @@ private:
 	ofxQTKitVideoGrabber	_cam;			// this is not X-platform but of/goVideoPlayer does not play well with ManyCam
 #else
 #ifdef USE_DUMMY
-    goVideoPlayer           _cam;
+    ofVideoPlayer           _cam;
 #else
     goVideoGrabber	        _cam;
 #endif

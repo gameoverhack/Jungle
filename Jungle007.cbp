@@ -154,6 +154,8 @@
 			<Add directory="..\..\..\addons\ofxCv\src" />
 			<Add directory="..\..\..\addons\FastDelegate" />
 			<Add directory="..\..\..\addons\ofxThreadedVideo\src" />
+			<Add directory="..\..\..\addons\ofxCv\libs\ofxCv\include" />
+			<Add directory="..\..\ofxCv\libs\ofxCv\src" />
 		</Compiler>
 		<Linker>
 			<Add option="..\..\..\addons\ofxOpenCv\libs\opencv\lib\win_cb\libopencv_legacy220.a" />
@@ -294,22 +296,24 @@
 		<Unit filename="..\..\..\addons\ofx3DModelLoader\src\ofx3dModelLoader.cpp">
 			<Option virtualFolder="addons\ofx3DModelLoader\src" />
 		</Unit>
-		<Unit filename="..\..\..\addons\ofxCv\src\Calibration.cpp" />
-		<Unit filename="..\..\..\addons\ofxCv\src\Calibration.h" />
-		<Unit filename="..\..\..\addons\ofxCv\src\ContourFinder.cpp" />
-		<Unit filename="..\..\..\addons\ofxCv\src\ContourFinder.h" />
-		<Unit filename="..\..\..\addons\ofxCv\src\Distance.cpp" />
-		<Unit filename="..\..\..\addons\ofxCv\src\Distance.h" />
-		<Unit filename="..\..\..\addons\ofxCv\src\Helpers.cpp" />
-		<Unit filename="..\..\..\addons\ofxCv\src\Helpers.h" />
-		<Unit filename="..\..\..\addons\ofxCv\src\RunningBackground.cpp" />
-		<Unit filename="..\..\..\addons\ofxCv\src\RunningBackground.h" />
-		<Unit filename="..\..\..\addons\ofxCv\src\Tracker.cpp" />
-		<Unit filename="..\..\..\addons\ofxCv\src\Tracker.h" />
-		<Unit filename="..\..\..\addons\ofxCv\src\Utilities.cpp" />
-		<Unit filename="..\..\..\addons\ofxCv\src\Utilities.h" />
-		<Unit filename="..\..\..\addons\ofxCv\src\Wrappers.cpp" />
-		<Unit filename="..\..\..\addons\ofxCv\src\Wrappers.h" />
+		<Unit filename="..\..\..\addons\ofxCv\libs\ofxCv\include\ofxCv\Calibration.h" />
+		<Unit filename="..\..\..\addons\ofxCv\libs\ofxCv\include\ofxCv\ContourFinder.h" />
+		<Unit filename="..\..\..\addons\ofxCv\libs\ofxCv\include\ofxCv\Distance.h" />
+		<Unit filename="..\..\..\addons\ofxCv\libs\ofxCv\include\ofxCv\Flow.h" />
+		<Unit filename="..\..\..\addons\ofxCv\libs\ofxCv\include\ofxCv\Helpers.h" />
+		<Unit filename="..\..\..\addons\ofxCv\libs\ofxCv\include\ofxCv\RunningBackground.h" />
+		<Unit filename="..\..\..\addons\ofxCv\libs\ofxCv\include\ofxCv\Tracker.h" />
+		<Unit filename="..\..\..\addons\ofxCv\libs\ofxCv\include\ofxCv\Utilities.h" />
+		<Unit filename="..\..\..\addons\ofxCv\libs\ofxCv\include\ofxCv\Wrappers.h" />
+		<Unit filename="..\..\..\addons\ofxCv\libs\ofxCv\src\Calibration.cpp" />
+		<Unit filename="..\..\..\addons\ofxCv\libs\ofxCv\src\ContourFinder.cpp" />
+		<Unit filename="..\..\..\addons\ofxCv\libs\ofxCv\src\Distance.cpp" />
+		<Unit filename="..\..\..\addons\ofxCv\libs\ofxCv\src\Flow.cpp" />
+		<Unit filename="..\..\..\addons\ofxCv\libs\ofxCv\src\Helpers.cpp" />
+		<Unit filename="..\..\..\addons\ofxCv\libs\ofxCv\src\RunningBackground.cpp" />
+		<Unit filename="..\..\..\addons\ofxCv\libs\ofxCv\src\Tracker.cpp" />
+		<Unit filename="..\..\..\addons\ofxCv\libs\ofxCv\src\Utilities.cpp" />
+		<Unit filename="..\..\..\addons\ofxCv\libs\ofxCv\src\Wrappers.cpp" />
 		<Unit filename="..\..\..\addons\ofxCv\src\ofxCv.h" />
 		<Unit filename="..\..\..\addons\ofxDirList\src\ofxDirList.h">
 			<Option virtualFolder="addons\ofxDirList\src" />

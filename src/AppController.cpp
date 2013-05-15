@@ -37,11 +37,17 @@ void AppController::exit(){
 	delete _micController;
 	delete _ardController;
 	delete _appModel;
-	cout << "here" << endl;
+
 }
 
 //--------------------------------------------------------------
 void AppController::setup() {
+
+    // set up datacontroller
+	_dataController = new DataController(ofToDataPath("config_properties.xml"));
+
+    if(boost::any_cast<bool>(_appModel->getProperty("logToFile"))) LOGGER->openLogFile(ofToDataPath("log.txt"));
+	LOGGER->setLogLevel(JU_LOG_VERBOSE);
 
 	LOG_NOTICE("Initialising");
     ofSetLogLevel(OF_LOG_VERBOSE);
@@ -70,9 +76,6 @@ void AppController::setup() {
     _appModel->getFakeAttackPlayer()->play();
 #endif
 
-	// set up datacontroller
-	_dataController = new DataController(ofToDataPath("config_properties.xml"));
-
     // setup background sound controller
     _soundController = new SoundController();
 
@@ -85,7 +88,8 @@ void AppController::setup() {
 	ofAddListener(_appModel->victimAction, this, &AppController::VictimEvent);
 
 	// setup ardController
-	_ardController = new ArdController("COM3", 1); // TODO: make this a property
+	//_appModel->setProperty("arduinoPort", string("COM6"));
+	_ardController = new ArdController(boost::any_cast<string>(_appModel->getProperty("arduinoPort")), 1); // TODO: make this a property
 	ofAddListener(_appModel->attackAction, this, &AppController::AttackEvent);
 
 	// setup cameras
@@ -118,6 +122,7 @@ void AppController::setup() {
 	// set app default properties - COMMENT TO STOP SETTING BACK TO DEFAULTS
 	_appModel->setProperty("loadingMessage", string("AppController loading"));
 	_appModel->setProperty("loadingProgress", 0.1f);
+
     //_appModel->setProperty("showCameras", false);
 //    _appModel->setProperty("showProps", false);
 	_appModel->setProperty("fullScreen", false);
@@ -304,7 +309,7 @@ void AppController::update() {
 				_appModel->restartTimer("attackActionTimer");
 				_appModel->restartTimer("autoAttackTimer");
 				_vidController->setState(kVIDCONTROLLER_READY);
-				_soundController->setVolume(1.0);
+				_soundController->reset();
 				_appView->update();
 			} else {
                 nextScene();
@@ -322,8 +327,8 @@ void AppController::update() {
             _vidController->toggleVideoPlayers();
             _appView->update();
             _vidController->setState(kVIDCONTROLLER_READY);
-            _soundController->setVolume(1.0);
             currentScene->setCurrentSequence(_switchToSequence);
+            _soundController->reset();
             _switchToSequence = NULL;
 		}
 
@@ -387,8 +392,8 @@ void AppController::nextScene() {
              _switchToSequence = _appModel->getCurrentScene()->getSequence("seq01a");
          } else _switchToSequence = _appModel->getCurrentScene()->getSequence("seq00a");
 
-        _soundController->setup();
-        _soundController->setVolume(1.0);
+        //_soundController->setup();
+        _soundController->reset();
 
         _vidController->loadMovie(_switchToSequence, true);
     }
@@ -509,13 +514,13 @@ void AppController::keyPressed(int key){
             _vidController->loadMovie(_switchToSequence, true);
             break;
 		case '[':
-            _soundController->fade(1.0, 1000, FADE_LOG);
+            //_soundController->fade(1.0, 1000, FADE_LOG);
             break;
         case ']':
-            _soundController->fade(0.0, 2000, FADE_LOG);
+            //_soundController->fade(0.0, 2000, FADE_LOG);
             break;
         case '\\':
-            _soundController->fade(0.0, 2000, FADE_EXP);
+            //_soundController->fade(0.0, 2000, FADE_EXP);
             break;
         case 'm':
             _appModel->getCurrentVideoPlayer()->setPaused(!_appModel->getCurrentVideoPlayer()->isPaused());

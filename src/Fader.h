@@ -21,23 +21,25 @@ public:
 
     Fader(){};
 
-    Fader(float from, float to, float over, FaderType type, bool autoStart = true)
+    Fader(float from, float to, float over, FaderType type, bool autoStart = false)
     :
     _from(from),
     _to(to),
     _over(over),
     _type(type),
-    _isFading(true){
-        if (autoStart) start();
+    _autoStart(autoStart){
+        reset();
     };
 
    ~Fader();
 
     void    update();
+    void    reset();
 
     void    start();
     void    stop();
     bool    isFading();
+    bool    isFinished();
     fade    getFade();
     float   getTo();
     float   getFrom();
@@ -55,6 +57,7 @@ private:
 
     int     _type;
     bool    _isFading;
+    bool    _autoStart;
 
 };
 

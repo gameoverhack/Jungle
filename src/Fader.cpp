@@ -9,10 +9,21 @@ void Fader::start(){
     _startTime = ofGetElapsedTimeMillis();
     _fade.time = _startTime;
     _fade.value = _from;
+    _isFading = true;
+}
+
+void Fader::reset(){
+    _fade.value = _from;
+    _isFading = false;
+    if (_autoStart) start();
 }
 
 bool Fader::isFading(){
     return _isFading;
+}
+
+bool Fader::isFinished(){
+    return (_fade.value == _to);
 }
 
 fade Fader::getFade() {

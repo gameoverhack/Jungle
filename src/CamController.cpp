@@ -32,6 +32,7 @@ CamController::CamController() {
 CamController::~CamController() {
 	LOG_NOTICE("Destruction");
 	//saveAttributes();
+	_cam.update();
 	_cam.close();
 }
 
@@ -42,7 +43,7 @@ bool CamController::setup(int deviceID, int w, int h){
 #ifdef USE_DUMMY
     string fakePathBase = boost::any_cast<string>(_appModel->getProperty("fakeDataPath"));
     LOG_NOTICE("Attempting to set instance " + ofToString(_instanceID) + " cam to DUMMY: " + fakePathBase+"/"+instanceMovieNames[_instanceID]);
-    _cam.setPixelType(GO_TV_RGB);
+    //_cam.setPixelType(GO_TV_RGB);
 
     // try to load up fake camera feed
     _isCamInit = _cam.loadMovie(fakePathBase +"/"+ instanceMovieNames[_instanceID]);

@@ -19,7 +19,7 @@ void DebugView::update() {
     /********************************************************
      *  Set pointers for current Scene, Sequence Movie etc  *
      ********************************************************/
-
+//LOG_VERBOSE("debug0");
 	Sequence		* currentSequence	= _appModel->getCurrentSequence();
 	Scene			* currentScene		= _appModel->getCurrentScene();
     int             * pinInput          = _appModel->getPinInput();
@@ -34,7 +34,7 @@ void DebugView::update() {
     bool showFFT                        = boost::any_cast<bool>(_appModel->getProperty("showFFT"));
 
     string msg = "DEBUG\n";
-
+//LOG_VERBOSE("debug1");
     /********************************************************
      *        Print info for Mic and Ard Controllers        *
      ********************************************************/
@@ -58,7 +58,7 @@ void DebugView::update() {
 	msg += "Swap cameras: 'n'\nAlter camera video settings: '3' and '4'\n";
 	msg += "Pause scene: 'm'\nNext scene: 'j'\nGo back to start of scene: ' '\n";
 	msg += "Fake victim action: 'q'\nFake attack action: 'p'\n";
-
+//LOG_VERBOSE("debug2");
     /********************************************************
      *              Print info for Transforms               *
      ********************************************************/
@@ -68,8 +68,8 @@ void DebugView::update() {
 	int sequenceTotalFrames		= _appModel->getCurrentSequenceNumFrames(); //currentMovie->getTotalNumFrames();
 	int sceneCurrentFrame       = _appModel->getCurrentSceneFrame();
 	int sceneTotalFrames        = _appModel->getCurrentSceneNumFrames();
-
-	//currentFrame = CLAMP(currentFrame, 0, totalFrames-1); // why are you so cruel?
+//LOG_VERBOSE("debug3");
+	sequenceCurrentFrame = CLAMP(sequenceCurrentFrame, 0, sequenceTotalFrames-1); // why are you so cruel?
     if (showProps) {
 
         msg += "vic1 Transform: " + currentSequence->getTransformAsString("vic1", sequenceCurrentFrame) + "\n";
@@ -81,7 +81,7 @@ void DebugView::update() {
         // get all the properties on the AppModel
         msg += _appModel->getAllPropsAsList();
     }
-
+//LOG_VERBOSE("debug4");
     /********************************************************
      *                      Draw ViewFBO                    *
      ********************************************************/
@@ -157,7 +157,7 @@ void DebugView::update() {
 
 	ofSetColor(255, 255, 255, 255);
 	ofDrawBitmapString(msg, 6, totalProgressionHeight+progressionHeight+30+12);
-
+//LOG_VERBOSE("debug5");
     if (showFFT) {
 
         /********************************************************
@@ -216,6 +216,7 @@ void DebugView::update() {
 
 	glPopMatrix();
 	_viewFBO.end();
+//LOG_VERBOSE("debug6");
 }
 
 void DebugView::plotDraw(float* array, int width, int height, int binSize, float scaleW, float scaleH) {

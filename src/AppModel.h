@@ -214,6 +214,13 @@ public:
 
 private:
 
+    static const int VIDEO_NONE = -1;
+    static const int VIDEO_FLIP = 0;
+    static const int VIDEO_FLOP = 1;
+    int _currentVideoPlayerIndex;
+
+    int getNextLoadID();
+
 	inline string	    pad(string & objectName);
 	int				    _padLength;
 

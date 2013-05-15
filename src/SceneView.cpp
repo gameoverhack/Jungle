@@ -59,21 +59,22 @@ void SceneView::update() {
     /********************************************************
      *          Get references needed to do drawing      	*
      ********************************************************/
-
+//LOG_VERBOSE("scene0");
 	ofxThreadedVideo* currentMovie  = _appModel->getCurrentVideoPlayer(); //getCurrentSequence()->getMovie();
 	ofTexture		* sceneTexture;
 	CamTransform	* actorTransform;
-
+//LOG_VERBOSE("scene1");
     if(!currentMovie->isLoaded()) return;
-
+//LOG_VERBOSE("scene2");
 	// get the video texture
 	sceneTexture = &(currentMovie->getTextureReference());
-
+//LOG_VERBOSE("scene3");
 	currentVideoWidth  = sceneTexture->getWidth();
 	currentVideoHeight = sceneTexture->getHeight();
 
 	currentFrame = _appModel->getCurrentSequenceFrame(); //currentMovie->getCurrentFrame();
-
+	int totalFrames = _appModel->getCurrentSequenceNumFrames();
+//LOG_VERBOSE("scene4");
 	glClearColor(0.0, 0.0, 0.0, 0.0); // transparent clear colour
 	glClear(GL_COLOR_BUFFER_BIT);
 
@@ -92,7 +93,7 @@ void SceneView::update() {
 
         bool flipAttack = false;
         bool flipVictim = false;
-
+//LOG_VERBOSE("scene5");
 		if (!_appModel->hasTimedOut("victimFaceTimer")) {
             victimTex = _appModel->getVictimCamTexRef();
             victimPRS = _appModel->getCameraAttributes(0);
@@ -100,7 +101,7 @@ void SceneView::update() {
 		    victimTex = _appModel->getFakeVictimCamTexRef();
 		    victimPRS = _appModel->getFakeAttributes(0);
 		}
-
+//LOG_VERBOSE("scene6");
         if (!_appModel->hasTimedOut("attackFaceTimer")) {
             attackTex = _appModel->getAttackCamTexRef();
             attackPRS = _appModel->getCameraAttributes(1);
@@ -109,15 +110,26 @@ void SceneView::update() {
 		    attackTex = _appModel->getFakeAttackCamTexRef();
 		    attackPRS = _appModel->getFakeAttributes(1);
 		}
+//LOG_VERBOSE("scene7");
 
+//cout    << (isnan(currentFrame)) << " " << endl << flush;
+//LOG_VERBOSE("scene7a");
+//cout    << (_appModel->getCurrentSequence() == NULL) << endl << flush;
+//cout    << _appModel->getCurrentSequence()->getName() << endl << flush;
+//cout    << (_appModel->getCurrentSequence()->getName() == "") << endl << flush;
+//cout    << (_appModel->getCurrentSequence() == NULL) << endl << flush;
+//LOG_VERBOSE("scene7aa");
+//cout    << _appModel->getCurrentSequence()->getTransformVector("vic1")->size() << endl << flush;
+//cout    << _appModel->getCurrentSequence()->getTransformVector("atk1")->size() << endl << flush;
+        currentFrame = CLAMP(currentFrame, 0, totalFrames-1);
 		drawCharacter(&_vic1FBO, victimTex, &(_appModel->getCurrentSequence()->getTransformVector("vic1")->at(currentFrame)), victimPRS, flipVictim);
 		drawCharacter(&_atk1FBO, attackTex, &(_appModel->getCurrentSequence()->getTransformVector("atk1")->at(currentFrame)), attackPRS, flipAttack);
-
+//LOG_VERBOSE("scene8");
 		if (_appModel->getCurrentSequence()->getTransformCount() > 2) {
 			drawCharacter(&_atk2FBO, attackTex, &(_appModel->getCurrentSequence()->getTransformVector("atk2")->at(currentFrame)), attackPRS, flipAttack);
 		}
 	}
-
+//LOG_VERBOSE("scene9");
     /********************************************************
      *      Draw Shader (composites webcams and movie)     	*
      ********************************************************/
@@ -145,7 +157,7 @@ void SceneView::update() {
 #endif
 		numTextures++;
 	}
-
+//LOG_VERBOSE("scene10");
 	// set number of heads we're blending.
 	_shader.setUniform1i("numTextures", numTextures);
 	_shader.setUniform1i("showUnmaskedTextures", (int)boost::any_cast<bool>(_appModel->getProperty("showUnmaskedTextures")));
@@ -157,7 +169,7 @@ void SceneView::update() {
 #else
 	// shader values are hard coded
 #endif
-
+//LOG_VERBOSE("scene11");
     glPushMatrix();
 
     // scale to screen
@@ -174,7 +186,7 @@ void SceneView::update() {
 
 	_shader.end();
 	_viewFBO.end();
-
+//LOG_VERBOSE("scene12");
 }
 #if OF_VERSION < 7
 void SceneView::drawCharacter(ofxFbo * targetFBO,

@@ -167,7 +167,7 @@ void VideoController::loadMovie(Sequence * seq, bool forceCurrentLoad, int lastF
         _lastSequenceWhenForced = _appModel->getCurrentSequence()->getName();
     }
 
-	ofAddListener(nextMovie->threadedVideoEvent, this, &VideoController::videoEvent);
+//	ofAddListener(nextMovie->threadedVideoEvent, this, &VideoController::videoEvent);
 
 	setState(kVIDCONTROLLER_NEXTVIDLOADING);
 
@@ -186,32 +186,32 @@ void VideoController::reset() {
 	_lastFrameWhenForced = 0;
 	ofxThreadedVideo * nextMovie = _appModel->getNextVideoPlayer();
 	ofxThreadedVideo * currentMovie = _appModel->getCurrentVideoPlayer();
-    ofRemoveListener(nextMovie->threadedVideoEvent, this, &VideoController::videoEvent);
-    ofRemoveListener(currentMovie->threadedVideoEvent, this, &VideoController::videoEvent);
+//    ofRemoveListener(nextMovie->threadedVideoEvent, this, &VideoController::videoEvent);
+//    ofRemoveListener(currentMovie->threadedVideoEvent, this, &VideoController::videoEvent);
 	nextMovie->close();
 	currentMovie->close();
 	//update();
 }
 
-void VideoController::videoEvent(ofxThreadedVideoEvent & event) {
-    string path = event.path;
-    switch(event.eventType){
-        case VIDEO_EVENT_LOAD_OK:
-        {
-            LOG_NOTICE("Next video successfully loaded: " + path);
-            ofxThreadedVideo * nextMovie = _appModel->getNextVideoPlayer();
-            ofRemoveListener(nextMovie->threadedVideoEvent, this, &VideoController::videoEvent);
-            break;
-        }
-        default:
-        {
-            LOG_ERROR("Next video error during load: " + event.eventTypeAsString);
-            setState(kVIDCONTROLLER_NEXTVIDERROR);
-            break;
-        }
-    }
-
-}
+//void VideoController::videoEvent(ofxThreadedVideoEvent & event) {
+//    string path = event.path;
+//    switch(event.eventType){
+//        case VIDEO_EVENT_LOAD_OK:
+//        {
+//            LOG_NOTICE("Next video successfully loaded: " + path);
+//            ofxThreadedVideo * nextMovie = _appModel->getNextVideoPlayer();
+//            ofRemoveListener(nextMovie->threadedVideoEvent, this, &VideoController::videoEvent);
+//            break;
+//        }
+//        default:
+//        {
+//            LOG_ERROR("Next video error during load: " + event.eventTypeAsString);
+//            setState(kVIDCONTROLLER_NEXTVIDERROR);
+//            break;
+//        }
+//    }
+//
+//}
 
 
 bool VideoController::isPreRolling() {
