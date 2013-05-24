@@ -11,6 +11,7 @@
         <property name="attackActionTimer" type="int">3000</property>
         <property name="attackFaceTimer" type="int">5000</property>
         <property name="audioDataPath" type="string">D:/finalALL/audio</property>
+        <property name="audioDevice" type="string">Microphone (Realtek High Definition Audio)</property>
         <property name="autoAttackTimer" type="int">5000</property>
         <property name="autoTest" type="bool">false</property>
         <property name="cameraPropToAdjust" type="string">POSITION</property>
@@ -19,7 +20,7 @@
         <property name="flashDataPath" type="string">D:/finalALL/flash</property>
         <property name="fullScreen" type="bool">true</property>
         <property name="graphicDataPath" type="string">graphics</property>
-        <property name="loadingMessage" type="string">STATE == kANAL_READY (0) :: </property>
+        <property name="loadingMessage" type="string">ok</property>
         <property name="loadingProgress" type="float">0.1</property>
         <property name="logToFile" type="bool">true</property>
         <property name="scenesDataPath" type="string">D:/finalALL/video</property>

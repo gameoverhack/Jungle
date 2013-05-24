@@ -13,8 +13,11 @@
 	<File name="..\..\..\addons\goVideoGrabber\src\goVideoGrabber.cpp" open="0" top="0" tabpos="26">
 		<Cursor position="33096" topLine="1143" />
 	</File>
-	<File name="..\..\..\addons\goVideoGrabber\src\goVideoGrabber.h" open="0" top="0" tabpos="56">
-		<Cursor position="2443" topLine="66" />
+	<File name="..\..\..\addons\goVideoGrabber\src\goVideoGrabber.h" open="1" top="0" tabpos="36">
+		<Cursor position="2437" topLine="70" />
+	</File>
+	<File name="..\..\..\addons\ofxCv\libs\ofxCv\include\ofxCv\Wrappers.h" open="1" top="0" tabpos="35">
+		<Cursor position="900" topLine="23" />
 	</File>
 	<File name="..\..\..\addons\ofxCv\src\ofxCv.h" open="1" top="0" tabpos="13">
 		<Cursor position="375" topLine="0" />
@@ -158,7 +161,7 @@
 		<Cursor position="2011" topLine="10" />
 	</File>
 	<File name="bin\data\config_properties.xml" open="1" top="0" tabpos="5">
-		<Cursor position="1067" topLine="0" />
+		<Cursor position="896" topLine="0" />
 	</File>
 	<File name="bin\data\config_scenes.xml" open="1" top="0" tabpos="29">
 		<Cursor position="1019" topLine="0" />
@@ -181,8 +184,8 @@
 	<File name="src\Analyzer.cpp" open="0" top="0" tabpos="52">
 		<Cursor position="4608" topLine="140" />
 	</File>
-	<File name="src\AppController.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="1017" topLine="31" />
+	<File name="src\AppController.cpp" open="1" top="1" tabpos="1">
+		<Cursor position="2789" topLine="69" />
 	</File>
 	<File name="src\AppController.h" open="1" top="0" tabpos="8">
 		<Cursor position="1723" topLine="66" />
@@ -191,7 +194,7 @@
 		<Cursor position="4160" topLine="173" />
 	</File>
 	<File name="src\AppModel.cpp" open="1" top="0" tabpos="6">
-		<Cursor position="4463" topLine="135" />
+		<Cursor position="14864" topLine="441" />
 	</File>
 	<File name="src\AppModel.h" open="1" top="0" tabpos="22">
 		<Cursor position="6714" topLine="192" />
@@ -236,10 +239,10 @@
 		<Cursor position="743" topLine="27" />
 	</File>
 	<File name="src\CamController.h" open="1" top="0" tabpos="31">
-		<Cursor position="1601" topLine="48" />
+		<Cursor position="1624" topLine="60" />
 	</File>
 	<File name="src\DataController.cpp" open="1" top="0" tabpos="11">
-		<Cursor position="1933" topLine="30" />
+		<Cursor position="1844" topLine="181" />
 	</File>
 	<File name="src\DataController.h" open="1" top="0" tabpos="10">
 		<Cursor position="582" topLine="0" />
@@ -337,8 +340,8 @@
 	<File name="src\VideoController.h" open="1" top="0" tabpos="21">
 		<Cursor position="765" topLine="6" />
 	</File>
-	<File name="src\config.h" open="1" top="1" tabpos="4">
-		<Cursor position="497" topLine="0" />
+	<File name="src\config.h" open="1" top="0" tabpos="4">
+		<Cursor position="172" topLine="0" />
 	</File>
 	<File name="src\main.cpp" open="1" top="0" tabpos="30">
 		<Cursor position="505" topLine="0" />

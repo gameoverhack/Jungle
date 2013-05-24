@@ -82,9 +82,12 @@ void AppController::setup() {
 	// setup videoController
 	_vidController = new VideoController();
 
+    //_appModel->setProperty("audioDevice", string("Microphone (Realtek High Definition Audio)"));
+    //_dataController->saveProperties();
+
 	// setup micController
 	// NOTE ACTUALLY JUST USING DEFAULT DEVICE SO WE CAN SET THIS THROUGH THE OPERATING SYSTEM!
-	_micController = new MicController("Microphone (Realtek High Definition Audio", 2); // other is Microphone (2- HD Pro Webcam C910) // TODO: make these a property
+	_micController = new MicController(boost::any_cast<string>(_appModel->getProperty("audioDevice")), 2); // other is Microphone (2- HD Pro Webcam C910) // TODO: make these a property
 	ofAddListener(_appModel->victimAction, this, &AppController::VictimEvent);
 
 	// setup ardController

@@ -449,7 +449,7 @@ void AppModel::setCurrentSequenceFrame(int frame) {
 	//_frame = CLAMP(frame, 0, getCurrentFrameTotal()-1); //frame clamped to one less than total number;
 	_currentSequenceFrame = CLAMP(frame, 0, _currentScene->getCurrentSequence()->getTransformVector("atk1")->size()-1); // to be sure, to be sure!
 	if (_currentScene->getCurrentSequence()->getType() == "a" && _currentScene->getCurrentSequence()->getNumber() > 0) {
-	    if(ofSplitString(_videoPlayers[_currentVideoPlayerIndex]->getName(), "_")[1] == _currentScene->getCurrentSequence()->getName() + ".mov"){
+	    if(ofSplitString(_videoPlayers[_currentVideoPlayerIndex]->getMovieName(), "_")[1] == _currentScene->getCurrentSequence()->getName() + ".mov"){
 	        _currentSceneFrame = _currentScene->getCurrentSequence()->getPreviousFrames() + _currentSequenceFrame;
 	    }
 	}
